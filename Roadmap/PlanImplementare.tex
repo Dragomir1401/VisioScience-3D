@@ -1,0 +1,75 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\title{VisioScience 3D - Platforma Web pentru Materii Stiintifice}
+\author{Andrei Dragomir}
+\date{Februarie 2025}
+
+\begin{document}
+
+\maketitle
+
+\section*{Prezentare generala a proiectului}
+Proiectul propune dezvoltarea unei platforme educationale, denumita \textbf{VisioScience 3D}, 
+dedicata vizualizarii interactive 3D si simularilor pentru discipline de nivelul gimaziu/liceu
+precum Matematica, Fizica, Chimie si altele pentru timpul liber ca si Astronomia.
+
+Platforma isi propune sa vina in ajutorul profesorilor si elevilor pentru a face invatarea mai 
+rapida si usoara prin vizualizari interactive si simulari ale fenomenelor stiintifice. De multe orice
+profesorii sunt nevoiti sa explice si sa deseneze pe table concepte 3D complexe care sunt greu de
+inteles pentru elevi. Aceasta platforma Web va functiona ca un loc centralizat pentru concepte 
+3D si fenomene pe care copiii le invata in scoala si liceu.
+
+\section*{Tehnologii utilizate}
+
+Platforma va avea la baza un backend scris in Go pentru gestionarea datelor si interactiunea cu
+utilizatorii, iar frontend-ul va fi realizat cu React si Three.js pentru randarea graficii 3D.
+Simularile fizice vor fi implementate cu ajutorul Cannon.js. Ambele framework-uri folosesc la 
+baza WebGL pentru randarea graficii 3D.
+
+\section*{Structura si continutul}
+Platforma va include un meniu cu disciplinele stiintifice si subiecte specifice fiecarei materii:
+\begin{itemize}
+    \item \textbf{Matematica:} Vizualizari interactive ale formelor geometrice 
+    (ex: cercuri cu raza si diametru ajustabile), graficul functiilor si formule asociate.
+    Acestea vor ajuta elevii sa vizualizeze invatarea geometriei printr-un mod interactiv si vizual.
+    \item \textbf{Fizica:} Simulari de probleme clasice precum planuri inclinate cu vectori
+    ai fortelor si unghiuri ajustabile, miscarea proiectilului in aruncari veticale si eliptice si altele.
+    Elevii vor putea vizualiza fortele cum actioneaza asupra obiectelor in mod interactiv. 
+    Astfel se pot intelege mai usor distributiile de energie cinetica si potentiala in timpul miscarii
+    si fortele care actioneaza pentru a mentine obiectele in echilibru sau in miscare. Vor exista
+    si simulari pentru tipuri de miscari ca cea rectilinie, rectilinie uniforma, ondulatorie si miscarea
+    pendulurilor.
+    \item \textbf{Chimie:} Modele 3D ale moleculelor compusilor de baza pentru a vedea unghiurile
+    la care se formeaza legaturile si structura tridimensionala a moleculelor de baza invatate in gimaziu
+    si liceu.
+    \item \textbf{Astronomie:} Reprezentari 3D ale planetelor, orbitelor si satelitilor acestora,
+    pentru vizualizarea minimalista a caracteristicilor de baza ale sistemului solar si a fenomenelor
+    astronomice.
+\end{itemize}
+
+\section*{Interactiunea cu utilizatorii}
+Utilizatorii vor putea interactiona cu obiectele 3D prin miscarea mouse-ului, ajustarea parametrilor
+si vizualizarea formulelor corespunzatoare. 
+Platforma va avea la baza un meniu de alegere a disciplinelor, fiecare avand o selectie de elemente
+de vizualizare sub forma de capitole ca pagini separate unde elementele principale vor fi fereastra
+de vizualizare 3D si un panou lateral cu setarile si formulele asociate.
+Navigarea va fi intuitiva si accesibila pentru elevi de orice varsta cu cunostinte de la nivel scazut
+pana la niveluri mai avansate cand se vizeaza forme sau fenomene mai complexe.
+
+\section*{Extensii viitoare}
+Extensiile viitoare pot include:
+\begin{itemize}
+    \item adaugarea de noi discipline
+    \item implementarea de teste interactive pentru fiecare disciplina
+    \item implementarea de sesiuni de autentificare pentru salvarea progresului
+    \item adaugarea de roluri de profesor pentru compilarea de lectii personalizate pentru clase de elevii
+    \item crearea de leaderboard-uri sau provocari pentru a stimula competitia intre elevi prin efectul de gamificare.
+\end{itemize}
+
+\section*{Concluzie}
+VisioScience 3D isi propune sa ofere o experienta de invatare captivanta prin combinarea 
+graficii interactive cu principiile fundamentale ale stiintei, facand educatia mai accesibila si mai atractiva.
+
+\end{document}
