@@ -1,0 +1,6 @@
+/bin
+/pkg
+/vendor
+*.log
+*.exe
+*.out

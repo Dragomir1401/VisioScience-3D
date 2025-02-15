@@ -1,6 +1,6 @@
-PWD D:\FACULTATE\ANUL4\LICENTA\Roadmap
+PWD D:\FACULTATE\ANUL4\LICENTA\src
 INPUT C:\Users\andre\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT d:\FACULTATE\ANUL4\LICENTA\Roadmap\PlanImplementare.tex
+INPUT d:\FACULTATE\ANUL4\LICENTA\src\PlanImplementare.tex
 OUTPUT PlanImplementare.log
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
