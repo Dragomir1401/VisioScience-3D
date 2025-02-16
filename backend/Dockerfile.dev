@@ -1,0 +1,9 @@
+FROM golang:1.24
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN go install github.com/githubnemo/CompileDaemon@latest
+RUN go install github.com/air-verse/air@latest
+CMD ["CompileDaemon", "-command=./main"]
+EXPOSE 8080

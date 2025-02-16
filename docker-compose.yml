@@ -4,7 +4,7 @@ services:
   backend:
     build:
       context: ./backend
-    image: visioscience-backend
+    image: visioscience-backend:1.0
     ports:
       - "8080:8080"
     deploy:
@@ -15,7 +15,7 @@ services:
   frontend:
     build:
       context: ./frontend
-    image: visioscience-frontend
+    image: visioscience-frontend:1.0
     ports:
       - "3000:3000"
     deploy:

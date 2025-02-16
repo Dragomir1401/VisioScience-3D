@@ -1,5 +1,4 @@
-# Dockerfile pentru Backend (Go)
-FROM golang:1.20
+FROM golang:1.24
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
