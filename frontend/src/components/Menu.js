@@ -4,9 +4,10 @@ function Menu() {
   const [menu, setMenu] = useState([]);
 
   useEffect(() => {
-    fetch('/menu')
+    fetch('http://localhost:8080/menu')
       .then(response => response.json())
-      .then(data => setMenu(data.subjects));
+      .then(data => setMenu(data.subjects))
+      .catch(err => console.error('API error:', err));
   }, []);
 
   return (
