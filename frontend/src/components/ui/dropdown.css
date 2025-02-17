@@ -1,0 +1,16 @@
+/* dropdown.css */
+.dropdown-container {
+    @apply relative inline-block;
+}
+
+.dropdown-button {
+    @apply px-4 py-2 border rounded-md bg-indigo-300 hover:bg-indigo-400 text-white font-semibold;
+}
+
+.dropdown-menu {
+    @apply absolute mt-1 bg-white border rounded shadow-lg z-10;
+}
+
+.dropdown-item {
+    @apply px-4 py-2 hover:bg-gray-100 cursor-pointer;
+}

@@ -3,25 +3,29 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@react-three/drei": "^9.121.5",
+    "@react-three/fiber": "^8.17.14",
     "@shadcn/ui": "^0.0.4",
     "cannon-es": "^0.19.0",
     "lucide-react": "^0.475.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-router-dom": "^6.29.0",
     "react-scripts": "^5.0.1",
-    "three": "^0.150.0"
+    "three": "^0.173.0"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.6",
     "autoprefixer": "^10.4.20",
-    "eslint": "^8.0.0",
+    "cross-env": "^7.0.3",
     "postcss": "^8.5.2",
-    "tailwindcss": "^4.0.6"
+    "tailwindcss": "^3.3.3"
   },
   "browserslist": {
     "production": [
