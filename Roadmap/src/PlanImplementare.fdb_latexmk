@@ -1,8 +1,8 @@
 # Fdb version 4
-["pdflatex"] 1739631885.91368 "d:/FACULTATE/ANUL4/LICENTA/src/PlanImplementare.tex" "PlanImplementare.pdf" "PlanImplementare" 1739631886.46487 0
-  "C:/Users/andre/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1734180679.10188 82507 a9eef8696c92627b87e9975edea03b2a ""
-  "C:/Users/andre/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1200.pk" 1652532574.75257 14064 27d1a267894fa85714b0a1e88cdef541 ""
-  "C:/Users/andre/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1733824936.97083 24225047 4ebde46a9287b0b7db95e130b9b7fda5 ""
+["pdflatex"] 1740068706.18815 "d:/FACULTATE/ANUL4/LICENTA/Roadmap/src/PlanImplementare.tex" "PlanImplementare.pdf" "PlanImplementare" 1740068706.66886 0
+  "C:/Users/andre/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1734180679 82507 a9eef8696c92627b87e9975edea03b2a ""
+  "C:/Users/andre/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1200.pk" 1652532574 14064 27d1a267894fa85714b0a1e88cdef541 ""
+  "C:/Users/andre/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1733824936 24225047 d918e3fdd55864288567c0ed9d0f850a ""
   "C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/tfm/jknappen/ec/tcrm1200.tfm" 993062508 1444 95ffe0f19b974d50849790c8225c7ef7 ""
   "C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmbx12.tfm" 1136765053 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmmi12.tfm" 1136765053 1524 4414a8315f39513458b80dfc63bff03a ""
@@ -21,8 +21,9 @@
   "C:/Users/andre/AppData/Local/Programs/MiKTeX/tex/latex/geometry/geometry.sty" 1578053545 42759 e63af52ccddba7489ac0e17d6a3344bd ""
   "C:/Users/andre/AppData/Local/Programs/MiKTeX/tex/latex/graphics/keyval.sty" 1665067579 2671 7e67d78d9b88c845599a85b2d41f2e39 ""
   "C:/Users/andre/AppData/Local/Programs/MiKTeX/tex/latex/l3backend/l3backend-pdftex.def" 1704400941 30006 57b07afb710ee2f649c65cfbafda39c1 ""
-  "PlanImplementare.aux" 1739631886.33854 32 044b7f8fc9779af7531264e0c5c84b6d "pdflatex"
-  "d:/FACULTATE/ANUL4/LICENTA/src/PlanImplementare.tex" 1739631769.46692 4345 f050a2a15ba111eb22195063467d705a ""
+  "PlanImplementare.aux" 1740068706 32 044b7f8fc9779af7531264e0c5c84b6d "pdflatex"
+  "PlanImplementare.tex" 1740068705 4545 23db620c52c9531d96e99ddd70a5d5a4 ""
+  "d:/FACULTATE/ANUL4/LICENTA/Roadmap/src/PlanImplementare.tex" 1740068705 4545 23db620c52c9531d96e99ddd70a5d5a4 ""
   (generated)
   "PlanImplementare.aux"
   "PlanImplementare.log"
