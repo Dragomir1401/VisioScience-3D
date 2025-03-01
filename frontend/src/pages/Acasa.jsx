@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import Loader from 'components/Loader'
+import Island from 'models/Island'
 
 const Acasa = () => {
   return (
@@ -13,7 +14,7 @@ const Acasa = () => {
             className='w-full h-screen bg-transparent'
             camera={{ near: 0.1, far: 1000, position: [0, 0, 5] }}>
             <Suspense fallback={<Loader />}>
-                
+                {/* <Island /> */}
             </Suspense>
 
         </Canvas>
