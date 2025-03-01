@@ -11,8 +11,7 @@ const Acasa = () => {
 
         <Canvas 
             className='w-full h-screen bg-transparent'
-            camera={{ near: 0.1, far: 1000, position: [0, 0, 5] }}
-        >
+            camera={{ near: 0.1, far: 1000, position: [0, 0, 5] }}>
             <Suspense fallback={<Loader />}>
                 
             </Suspense>
