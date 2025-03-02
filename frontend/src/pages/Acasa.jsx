@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import Loader from 'components/Loader'
-import Island from 'models/Island'
+import Loader from '../components/Loader'
+import Island from '../models/Island'
 
 const Acasa = () => {
   return (
