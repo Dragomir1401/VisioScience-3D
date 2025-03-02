@@ -6,8 +6,8 @@ import Island from "../models/Island";
 const Acasa = () => {
   const PositionIslandInCanvas = () => {
     let canvasScale = null;
-    let canvasPosition = [0, -5.95, -46];
-    let canvasRotation = [0.05, 1.32, 0];
+    let canvasPosition = [-7.2, -6.95, -45];
+    let canvasRotation = [-0.02, 1.52, 0.08];
 
     if (window.innerWidth < 768) {
       canvasScale = [0.9, 0.9, 0.9];
@@ -32,11 +32,13 @@ const Acasa = () => {
         camera={{ near: 0.1, far: 1000, position: [0, 0, 5] }}
       >
         <Suspense fallback={<Loader />}>
-          <directionalLight />
-          <ambientLight />
-          <pointLight />
-          <spotLight />
-          <hemisphereLight />
+          <directionalLight position={[1, 1, 1]} intensity={4} />
+          <ambientLight intensity={0.5} />
+          <hemisphereLight
+            skyColor="#b1e1ff"
+            groundColor="#000000"
+            intensity={1}
+          />
 
           <Island
             scale={islandScale}
