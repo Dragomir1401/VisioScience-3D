@@ -9,7 +9,7 @@ import { useFormState } from "react-dom";
 const Acasa = () => {
   const PositionIslandInCanvas = () => {
     let canvasScale = null;
-    let canvasPosition = [-7, -17.7, -50];
+    let canvasPosition = [-7, -17.7, -55];
     let canvasRotation = [-0.02, 1.52, 0.0];
 
     if (window.innerWidth < 768) {
@@ -23,13 +23,13 @@ const Acasa = () => {
 
   const PositionBaloonInCanvas = () => {
     let canvasScale = null;
-    let canvasPosition = [0.2, -6.9, -0.6];
+    let canvasPosition = [0.2, -6.9, 1.2];
     let canvasRotation = [-0.02, 1.52, 0.08];
 
     if (window.innerWidth < 768) {
-      canvasScale = [0.6, 0.6, 0.6];
+      canvasScale = [0.7, 0.7, 0.7];
     } else {
-      canvasScale = [0.85, 0.85, 0.85];
+      canvasScale = [0.9, 0.9, 0.9];
     }
 
     return [canvasScale, canvasPosition, canvasRotation];
@@ -54,7 +54,7 @@ const Acasa = () => {
         className={`w-full h-screen bg-transparent ${
           isRotating ? "cursor-grabbing" : "cursor-grab"
         }`}
-        camera={{ fov: 60, near: 0.5, far: 1000, position: [0, 4, 13] }}
+        camera={{ fov: 40, near: 0.8, far: 1000, position: [0, 8, 20] }}
       >
         <Suspense fallback={<Loader />}>
           <directionalLight position={[1, 1, 1]} intensity={4} />
