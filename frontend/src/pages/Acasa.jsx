@@ -9,13 +9,13 @@ import { useFormState } from "react-dom";
 const Acasa = () => {
   const PositionIslandInCanvas = () => {
     let canvasScale = null;
-    let canvasPosition = [-7, -17.7, -55];
+    let canvasPosition = [-7, -20.7, -54];
     let canvasRotation = [-0.02, 1.52, 0.0];
 
     if (window.innerWidth < 768) {
-      canvasScale = [0.9, 0.9, 0.9];
+      canvasScale = [0.85, 0.85, 0.85];
     } else {
-      canvasScale = [1, 1, 1];
+      canvasScale = [0.9, 0.9, 0.9];
     }
 
     return [canvasScale, canvasPosition, canvasRotation];
@@ -23,7 +23,7 @@ const Acasa = () => {
 
   const PositionBaloonInCanvas = () => {
     let canvasScale = null;
-    let canvasPosition = [0.2, -6.9, 1.2];
+    let canvasPosition = [0.2, -6.2, 1.2];
     let canvasRotation = [-0.02, 1.52, 0.08];
 
     if (window.innerWidth < 768) {
@@ -36,7 +36,8 @@ const Acasa = () => {
   };
 
   const [currentStage, currentStageSetter] = useState(1);
-  const [isRotating, isRotatingSetter] = useState(false);
+  const [isRotatingIsland, isRotatingIslandSetter] = useState(false);
+  const [isRotatingBackground, isRotatingBackgroundSetter] = useState(false);
 
   const [islandScale, islandPosition, islandRotation] =
     PositionIslandInCanvas();
@@ -52,7 +53,8 @@ const Acasa = () => {
 
       <Canvas
         className={`w-full h-screen bg-transparent ${
-          isRotating ? "cursor-grabbing" : "cursor-grab"
+          (isRotatingIsland ? "cursor-grabbing" : "cursor-grab",
+          isRotatingBackground ? "cursor-grabbing" : "cursor-grab")
         }`}
         camera={{ fov: 40, near: 0.8, far: 1000, position: [0, 8, 20] }}
       >
@@ -65,17 +67,20 @@ const Acasa = () => {
             intensity={1}
           />
 
-          <Background />
           <Island
-            isRotating={isRotating}
-            isRotatingSetter={isRotatingSetter}
+            isRotatingIsland={isRotatingIsland}
+            isRotatingIslandSetter={isRotatingIslandSetter}
             currentStageSetter={currentStageSetter}
             position={islandPosition}
             rotation={islandRotation}
             scale={islandScale}
           />
+          <Background
+            isRotatingBackground={isRotatingBackground}
+            isRotatingBackgroundSetter={isRotatingBackgroundSetter}
+          />
           <Ballon
-            isRotating={isRotating}
+            isRotatingIsland={isRotatingIsland}
             scale={baloonScale}
             position={baloonPosition}
             rotation={baloonRotation}

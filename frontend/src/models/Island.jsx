@@ -9,8 +9,8 @@ import { a } from "@react-spring/three";
 import islandScene from "../assets/3d/final_islands.glb";
 
 const Island = ({
-  isRotating,
-  isRotatingSetter,
+  isRotatingIsland,
+  isRotatingIslandSetter,
   currentStageSetter,
   currentFocusPoint,
   ...props
@@ -21,26 +21,26 @@ const Island = ({
   const lastMouseX = useRef(0);
   const rotationSpeed = useRef(0);
   const dampingFactor = 0.9;
-  const alfa = 0.01;
+  const alfa = 0.0075;
 
   const handleMouseDown = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    isRotatingSetter(true);
+    isRotatingIslandSetter(true);
     lastMouseX.current = e.touches ? e.touches[0].clientX : e.clientX;
   };
 
   const handleMouseUp = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    isRotatingSetter(false);
+    isRotatingIslandSetter(false);
   };
 
   const handleMouseMove = (e) => {
     e.stopPropagation();
     e.preventDefault();
 
-    if (isRotating) {
+    if (isRotatingIsland) {
       const currentX = e.touches ? e.touches[0].clientX : e.clientX;
       const deltaMove = (currentX - lastMouseX.current) / viewport.width;
 
@@ -51,13 +51,13 @@ const Island = ({
 
   const handleKeyDown = (e) => {
     if (e.key === "ArrowRight") {
-      if (!isRotating) {
-        isRotatingSetter(true);
+      if (!isRotatingIsland) {
+        isRotatingIslandSetter(true);
         islandRef.current.rotation.y += alfa * Math.PI;
       }
     } else if (e.key === "ArrowLeft") {
-      if (!isRotating) {
-        isRotatingSetter(true);
+      if (!isRotatingIsland) {
+        isRotatingIslandSetter(true);
         islandRef.current.rotation.y -= alfa * Math.PI;
       }
     }
@@ -65,7 +65,7 @@ const Island = ({
 
   const handleKeyUp = (e) => {
     if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-      isRotatingSetter(false);
+      isRotatingIslandSetter(false);
     }
   };
 
@@ -109,7 +109,7 @@ const Island = ({
   };
 
   useFrame(() => {
-    if (!isRotating) {
+    if (!isRotatingIsland) {
       rotationSpeed.current *= dampingFactor;
 
       if (Math.abs(rotationSpeed.current) < 0.001) {
