@@ -6,11 +6,12 @@ import Background from "../models/Background";
 import Ballon from "../models/Baloon";
 import { useFormState } from "react-dom";
 import Drone from "../models/drone";
+import Popup from "../components/Popup";
 
 const Acasa = () => {
   const PositionIslandInCanvas = () => {
     let canvasScale = null;
-    let canvasPosition = [-7, -20.7, -54];
+    let canvasPosition = [-7, -20.7, -60];
     let canvasRotation = [-0.02, 1.52, 0.0];
 
     if (window.innerWidth < 768) {
@@ -24,7 +25,7 @@ const Acasa = () => {
 
   const PositionBaloonInCanvas = () => {
     let canvasScale = null;
-    let canvasPosition = [0.2, -6.2, 1.2];
+    let canvasPosition = [0.2, -6.2, 2.2];
     let canvasRotation = [-0.02, 1.52, 0.08];
 
     if (window.innerWidth < 768) {
@@ -48,10 +49,9 @@ const Acasa = () => {
 
   return (
     <section className="w-full h-screen relative flex items-center justify-center">
-      <div className="absolute top-28 left-0 right-0 z-0 flex items-center justify-center">
-        {/* POPUP */}
+      <div className="absolute top-28 left-0 right-0 z-50 flex items-center justify-center">
+        {currentStage && <Popup currentStage={currentStage} />}
       </div>
-
       <Canvas
         className={`w-full h-screen bg-transparent ${
           (isRotatingIsland ? "cursor-grabbing" : "cursor-grab",
@@ -64,7 +64,7 @@ const Acasa = () => {
           <ambientLight intensity={0.7} />
           <hemisphereLight
             skyColor="0xb1e1ff"
-            groundColor="0xffb6b6"
+            groundColor="0xffffff"
             intensity={1}
           />
 
