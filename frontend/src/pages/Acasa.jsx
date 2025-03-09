@@ -5,6 +5,7 @@ import Island from "../models/Island";
 import Background from "../models/Background";
 import Ballon from "../models/Baloon";
 import { useFormState } from "react-dom";
+import Drone from "../models/drone";
 
 const Acasa = () => {
   const PositionIslandInCanvas = () => {
@@ -84,6 +85,26 @@ const Acasa = () => {
             scale={baloonScale}
             position={baloonPosition}
             rotation={baloonRotation}
+          />
+          <Drone
+            radiusX={18}
+            radiusZ={12}
+            centerY={3}
+            offset={3}
+            speed={0.2}
+            propellerSpeed={480}
+            tiltAmplitude={0.85}
+            basePosition={[0, -3, -50]}
+          />
+          <Drone
+            radiusX={3}
+            radiusZ={16}
+            centerY={5}
+            offset={17}
+            speed={0.5}
+            propellerSpeed={520}
+            tiltAmplitude={0.25}
+            basePosition={[2, -5.5, -60]}
           />
         </Suspense>
       </Canvas>

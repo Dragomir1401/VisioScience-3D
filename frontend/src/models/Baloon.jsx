@@ -21,7 +21,7 @@ const Baloon = (props) => {
       ];
       const randomState = states[Math.floor(Math.random() * states.length)];
       setAnimationState(randomState);
-    }, 4000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, []);
