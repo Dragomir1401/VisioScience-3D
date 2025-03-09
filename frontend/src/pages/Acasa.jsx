@@ -11,7 +11,7 @@ import Popup from "../components/Popup";
 const Acasa = () => {
   const PositionIslandInCanvas = () => {
     let canvasScale = null;
-    let canvasPosition = [-7, -20.7, -60];
+    let canvasPosition = [-7, -28, -65];
     let canvasRotation = [-0.02, 1.52, 0.0];
 
     if (window.innerWidth < 768) {
@@ -25,7 +25,7 @@ const Acasa = () => {
 
   const PositionBaloonInCanvas = () => {
     let canvasScale = null;
-    let canvasPosition = [0.2, -6.2, 2.2];
+    let canvasPosition = [0.2, -7.5, 0.4];
     let canvasRotation = [-0.02, 1.52, 0.08];
 
     if (window.innerWidth < 768) {
@@ -94,7 +94,7 @@ const Acasa = () => {
             speed={0.2}
             propellerSpeed={480}
             tiltAmplitude={0.85}
-            basePosition={[0, -3, -50]}
+            basePosition={[0, -11, -50]}
           />
           <Drone
             radiusX={3}
@@ -104,7 +104,7 @@ const Acasa = () => {
             speed={0.5}
             propellerSpeed={520}
             tiltAmplitude={0.25}
-            basePosition={[2, -5.5, -60]}
+            basePosition={[2, -10, -60]}
           />
         </Suspense>
       </Canvas>
