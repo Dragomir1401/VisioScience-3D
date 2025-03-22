@@ -27,6 +27,12 @@ import contact from "./contact.svg";
 import soundon from "./soundon.png";
 import soundoff from "./soundoff.png";
 import purple_arrow from "./purple-arrow.svg";
+import cube from "./cube.svg";
+import parallelepiped from "./parallelepiped.svg";
+import cylinder from "./cylinder.svg";
+import sphere from "./sphere.svg";
+import cone from "./cone.svg";
+import pyramid from "./pyramid.svg";
 
 export {
   css,
@@ -58,4 +64,10 @@ export {
   soundon,
   soundoff,
   purple_arrow,
+  cube,
+  parallelepiped,
+  cylinder,
+  sphere,
+  cone,
+  pyramid,
 };

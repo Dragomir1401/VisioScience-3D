@@ -1,14 +1,26 @@
-// pages/Math.jsx
 import React, { useState } from "react";
 import SideMenu from "../components/SideMenu";
+import {
+  cube,
+  parallelepiped,
+  cylinder,
+  sphere,
+  cone,
+  pyramid,
+} from "../assets/icons";
+import CubeScene from "../models/math/Cube";
+import CubeFormulas from "../components/math/CubeFormulas";
+import ParallelepipedScene from "../models/math/Parallelepiped";
+import ParallelepipedFormulas from "../components/math/ParallelepipedFormulas";
+import MathLanding from "../components/math/MathLanding";
 
 const mathObjects = [
-  { id: "cube", label: "Cub" },
-  { id: "parallelepiped", label: "Paralelipiped" },
-  { id: "cylinder", label: "Cilindru" },
-  { id: "sphere", label: "Sferă" },
-  { id: "cone", label: "Con" },
-  { id: "pyramid", label: "Piramidă" },
+  { id: "cube", label: "Cub", icon: cube },
+  { id: "parallelepiped", label: "Parallelepiped", icon: parallelepiped },
+  { id: "cylinder", label: "Cilindru", icon: cylinder },
+  { id: "sphere", label: "Sferă", icon: sphere },
+  { id: "cone", label: "Con", icon: cone },
+  { id: "pyramid", label: "Piramidă", icon: pyramid },
 ];
 
 const Math = () => {
@@ -23,16 +35,26 @@ const Math = () => {
       />
 
       <main className="flex-1 p-8">
+        {!selectedObject && <MathLanding />}
         {selectedObject ? (
-          <div>
-            <h1 className="text-2xl font-bold mb-4">
-              Volumul {selectedObject.label}
-            </h1>
-            {/* Replace this with 3D visualization or formula component */}
-            <p>
-              Aici poți afișa o animație sau formula pentru{" "}
-              {selectedObject.label}.
-            </p>
+          <div className="space-y-4">
+            {selectedObject.id === "cube" && (
+              <>
+                <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+                  <CubeScene />
+                </div>
+                <CubeFormulas />
+              </>
+            )}
+
+            {selectedObject.id === "parallelepiped" && (
+              <>
+                <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+                  <ParallelepipedScene />
+                </div>
+                <ParallelepipedFormulas />
+              </>
+            )}
           </div>
         ) : (
           <p className="text-gray-600">Selectează un obiect din meniu.</p>
