@@ -13,6 +13,8 @@ import CubeFormulas from "../components/math/CubeFormulas";
 import ParallelepipedScene from "../models/math/Parallelepiped";
 import ParallelepipedFormulas from "../components/math/ParallelepipedFormulas";
 import MathLanding from "../components/math/MathLanding";
+import SphereScene from "../models/math/Sphere";
+import SphereFormulas from "../components/math/SphereFormulas";
 
 const mathObjects = [
   { id: "cube", label: "Cub", icon: cube },
@@ -46,13 +48,21 @@ const Math = () => {
                 <CubeFormulas />
               </>
             )}
-
             {selectedObject.id === "parallelepiped" && (
               <>
                 <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
                   <ParallelepipedScene />
                 </div>
                 <ParallelepipedFormulas />
+              </>
+            )}
+
+            {selectedObject.id === "sphere" && (
+              <>
+                <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+                  <SphereScene />
+                </div>
+                <SphereFormulas />
               </>
             )}
           </div>

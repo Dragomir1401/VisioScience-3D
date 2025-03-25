@@ -19,7 +19,6 @@ const Parallelepiped = () => {
     const yOffset = 0.6;
     const zOffset = 0.6;
 
-    // L arrow (length - red)
     const lineGeometryL = new THREE.BufferGeometry().setFromPoints([
       new THREE.Vector3(-1.5, yOffset, zOffset),
       new THREE.Vector3(1.5, yOffset, zOffset),
@@ -127,7 +126,7 @@ const Parallelepiped = () => {
       <mesh ref={shapeRef} rotation={[0, 0, 0]} position={[0, 0.25, 0]}>
         <boxGeometry args={[3, 1, 2]} />
         <meshStandardMaterial
-          color="#8ecae6"
+          color="#D27D2D"
           opacity={0.5}
           transparent={true}
           roughness={0.3}
