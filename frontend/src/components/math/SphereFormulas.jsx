@@ -15,7 +15,7 @@ const SphereFormulas = () => {
           <span className="font-bold">Arie de suprafață:</span> A = 4 × π × r²
         </li>
         <li>
-          <span className="font-bold">Diagonală:</span> d = 2 × r
+          <span className="font-bold">Diametru:</span> d = 2 × r
         </li>
       </ul>
 

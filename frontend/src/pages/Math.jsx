@@ -15,6 +15,12 @@ import ParallelepipedFormulas from "../components/math/ParallelepipedFormulas";
 import MathLanding from "../components/math/MathLanding";
 import SphereScene from "../models/math/Sphere";
 import SphereFormulas from "../components/math/SphereFormulas";
+import CylinderScene from "../models/math/Cylinder";
+import CylinderFormulas from "../components/math/CylinderFormulas";
+import ConeScene from "../models/math/Cone";
+import ConeFormulas from "../components/math/ConeFormulas";
+import PyramidScene from "../models/math/Pyramid";
+import PyramidFormulas from "../components/math/PyramidFormulas";
 
 const mathObjects = [
   { id: "cube", label: "Cub", icon: cube },
@@ -63,6 +69,36 @@ const Math = () => {
                   <SphereScene />
                 </div>
                 <SphereFormulas />
+              </>
+            )}
+
+            {selectedObject.id === "cylinder" && (
+              <>
+                <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+                  <CylinderScene />
+                </div>
+                <CylinderFormulas />
+              </>
+            )}
+
+            {selectedObject.id === "cone" && (
+              <>
+                <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+                  <ConeScene />
+                </div>
+                <p className="text-gray-600">
+                  <ConeFormulas />
+                </p>
+              </>
+            )}
+
+            {selectedObject.id === "pyramid" && (
+              <>
+                <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+                  <PyramidScene />
+                </div>
+                <p className="text-gray-600"></p>
+                <PyramidFormulas />
               </>
             )}
           </div>

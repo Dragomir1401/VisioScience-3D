@@ -66,7 +66,7 @@ const Cube = () => {
         <boxGeometry args={[1.5, 1.5, 1.5]} />
         <meshStandardMaterial
           color="#D27D2D"
-          opacity={0.7}
+          opacity={0.8}
           transparent={true}
           roughness={0.3}
           metalness={0.1}

@@ -4,12 +4,13 @@ import { OrbitControls, Text } from "@react-three/drei";
 import * as THREE from "three";
 import ForestBackground from "../ForestBackground";
 
-const Sphere = () => {
-  const sphereRef = useRef();
+const Cone = () => {
+  const coneRef = useRef();
   const arrowGroupRef = useRef();
   const scene = useThree((state) => state.scene);
 
   const radius = 1;
+  const height = 2;
 
   useEffect(() => {
     const arrowGroup = new THREE.Group();
@@ -18,8 +19,8 @@ const Sphere = () => {
     const arrowHeadLength = 0.1;
     const arrowHeadWidth = 0.08;
 
-    const yOffset = 0;
-    const zOffset = 0.2;
+    const yOffset = -1;
+    const zOffset = 0;
 
     const lineGeometry = new THREE.BufferGeometry().setFromPoints([
       new THREE.Vector3(0, yOffset, 0),
@@ -39,6 +40,26 @@ const Sphere = () => {
     );
     arrowGroup.add(arrow);
 
+    const lineGeometryHeight = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(0, yOffset, 0),
+      new THREE.Vector3(0, yOffset + height, 0),
+    ]);
+    const lineMaterialHeight = new THREE.LineBasicMaterial({
+      color: "#0000ff",
+    });
+    const lineHeight = new THREE.Line(lineGeometryHeight, lineMaterialHeight);
+    arrowGroup.add(lineHeight);
+
+    const arrowHeight = new THREE.ArrowHelper(
+      new THREE.Vector3(0, 1, 0),
+      new THREE.Vector3(0, yOffset, 0),
+      height,
+      "#0000ff",
+      arrowHeadLength,
+      arrowHeadWidth
+    );
+    arrowGroup.add(arrowHeight);
+
     arrowGroupRef.current = arrowGroup;
     scene.add(arrowGroup);
 
@@ -46,19 +67,19 @@ const Sphere = () => {
   }, [scene]);
 
   useFrame(() => {
-    if (sphereRef.current && arrowGroupRef.current) {
-      arrowGroupRef.current.position.copy(sphereRef.current.position);
-      arrowGroupRef.current.rotation.copy(sphereRef.current.rotation);
+    if (coneRef.current && arrowGroupRef.current) {
+      arrowGroupRef.current.position.copy(coneRef.current.position);
+      arrowGroupRef.current.rotation.copy(coneRef.current.rotation);
     }
   });
 
   return (
     <>
-      <mesh ref={sphereRef} position={[0, 0, 0]}>
-        <sphereGeometry args={[radius, 32, 32]} />
+      <mesh ref={coneRef} rotation={[0, 0, 0]} position={[0, 0, 0]}>
+        <coneGeometry args={[radius, height, 32]} />
         <meshStandardMaterial
           color="#D27D2D"
-          opacity={0.8}
+          opacity={0.7}
           transparent={true}
           roughness={0.3}
           metalness={0.1}
@@ -66,18 +87,26 @@ const Sphere = () => {
       </mesh>
 
       <Text
-        position={[1.1, 0.2, 0]}
+        position={[radius + 0.1, -0.85, 0]}
         rotation={[0, 0, 0]}
         fontSize={0.35}
         color="#ff0000"
       >
         r
       </Text>
+      <Text
+        position={[0, 1.2, 0]}
+        rotation={[0, 0, 0]}
+        fontSize={0.35}
+        color="#0000ff"
+      >
+        h
+      </Text>
     </>
   );
 };
 
-const SphereScene = () => {
+const ConeScene = () => {
   const [isRotatingForestBackground, isRotatingForestBackgroundSetter] =
     useState(false);
 
@@ -100,10 +129,10 @@ const SphereScene = () => {
           isRotatingForestBackground={isRotatingForestBackground}
           isRotatingForestBackgroundSetter={isRotatingForestBackgroundSetter}
         />
-        <Sphere />
+        <Cone />
       </Canvas>
     </div>
   );
 };
 
-export default SphereScene;
+export default ConeScene;

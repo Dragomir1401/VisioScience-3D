@@ -127,7 +127,7 @@ const Parallelepiped = () => {
         <boxGeometry args={[3, 1, 2]} />
         <meshStandardMaterial
           color="#D27D2D"
-          opacity={0.5}
+          opacity={0.8}
           transparent={true}
           roughness={0.3}
           metalness={0.1}
