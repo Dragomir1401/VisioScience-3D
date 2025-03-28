@@ -4,3 +4,7 @@ Invoke-RestMethod -Uri "http://localhost:8000/formulas/cube" `
   -Body '{ "name": "Volum", "expr": "V = L³" }'
 
 Invoke-RestMethod -Uri "http://localhost:8000/formulas/cube" -Method Get
+
+docker build -t dragomir1401/formula-service:latest .
+docker push dragomir1401/formula-service:latest
+kubectl rollout restart deployment formula-deployment
