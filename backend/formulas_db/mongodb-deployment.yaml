@@ -22,3 +22,10 @@ spec:
               value: root
             - name: MONGO_INITDB_ROOT_PASSWORD
               value: example
+          volumeMounts:
+            - name: mongodb-storage
+              mountPath: /data/db
+      volumes: # <- mutat aici
+        - name: mongodb-storage
+          persistentVolumeClaim:
+            claimName: mongodb-pvc

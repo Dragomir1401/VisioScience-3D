@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: formula-service
+  labels:
+    app: formula
+spec:
+  selector:
+    app: formula
+  ports:
+    - port: 8080
+      targetPort: 8080

@@ -1,42 +1,21 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
-	"time"
+    "log"
+    "net/http"
+    "formulas_service/handlers"
 
-	"formulas_service/handlers"
-
-	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+    "github.com/gorilla/mux"
 )
 
 func main() {
-	mongoURI := "mongodb://mongodb-service.default.svc.cluster.local:27017"
-	clientOptions := options.Client().ApplyURI(mongoURI)
+    r := mux.NewRouter()
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+	r.HandleFunc("/formulas/{shape}", handlers.GetFormulas).Methods("GET")
+	r.HandleFunc("/formulas/{shape}", handlers.CreateFormula).Methods("POST")
 
-	client, err := mongo.Connect(ctx, clientOptions)
-	if err != nil {
-		log.Fatalf("MongoDB connection error: %v", err)
-	}
-
-	db := client.Database("formulasdb")
-	formulasCollection := db.Collection("formulas")
-
-	router := gin.Default()
-
-	// Inject collection into handler
-	router.GET("/formulas/:shape", handlers.GetFormulaHandler(formulasCollection))
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-	router.Run(":" + port)
+    log.Println("Server running on port 8080...")
+    if err := http.ListenAndServe(":8080", r); err != nil {
+        log.Fatal(err)
+    }
 }
