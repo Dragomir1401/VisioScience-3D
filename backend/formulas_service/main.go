@@ -11,7 +11,7 @@ import (
 func main() {
     r := mux.NewRouter()
 
-	r.HandleFunc("/formulas/{shape}", handlers.GetFormulas).Methods("GET")
+	r.HandleFunc("/formulas/{shape}", handlers.GetFormulasByShape).Methods("GET")
 	r.HandleFunc("/formulas/{shape}", handlers.CreateFormula).Methods("POST")
 
     log.Println("Server running on port 8080...")

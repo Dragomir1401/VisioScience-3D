@@ -3,8 +3,11 @@ package handlers
 import (
     "context"
     "encoding/json"
+    "log"
     "net/http"
+    "time"
 
+    "github.com/gorilla/mux"
     "go.mongodb.org/mongo-driver/bson"
     "go.mongodb.org/mongo-driver/mongo"
     "go.mongodb.org/mongo-driver/mongo/options"
@@ -27,15 +30,16 @@ type Formula struct {
 }
 
 func CreateFormula(w http.ResponseWriter, r *http.Request) {
-    log.Println("Creating formula")
+    log.Println("Creating formula...")
 
-    shape := r.URL.Path[len("/formulas/"):]
+    shape := mux.Vars(r)["shape"]
     var f Formula
     if err := json.NewDecoder(r.Body).Decode(&f); err != nil {
         http.Error(w, err.Error(), http.StatusBadRequest)
         return
     }
     f.Shape = shape
+
     collection := client.Database("formulasdb").Collection("formulas")
     _, err := collection.InsertOne(context.TODO(), f)
     if err != nil {
@@ -46,19 +50,27 @@ func CreateFormula(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetFormulas(w http.ResponseWriter, r *http.Request) {
-    log.Println("Getting formula")
+    w.Header().Set("Content-Type", "application/json")
+    shape := mux.Vars(r)["shape"]
 
-    shape := r.URL.Path[len("/formulas/"):]
+    log.Printf("Getting formulas for shape: %s", shape)
+
+    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+    defer cancel()
+
     collection := client.Database("formulasdb").Collection("formulas")
-    cursor, err := collection.Find(context.TODO(), bson.M{"shape": shape})
+    cursor, err := collection.Find(ctx, bson.M{"shape": shape})
     if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
+        http.Error(w, "Failed to fetch formulas", http.StatusInternalServerError)
         return
     }
-    var results []Formula
-    if err := cursor.All(context.TODO(), &results); err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
+    defer cursor.Close(ctx)
+
+    var formulas []Formula
+    if err := cursor.All(ctx, &formulas); err != nil {
+        http.Error(w, "Failed to decode formulas", http.StatusInternalServerError)
         return
     }
-    json.NewEncoder(w).Encode(results)
+
+    json.NewEncoder(w).Encode(formulas)
 }
