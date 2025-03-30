@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongodb
+  name: mongodb-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongodb
+      app: mongodb-service
   template:
     metadata:
       labels:
-        app: mongodb
+        app: mongodb-service
     spec:
       containers:
-        - name: mongodb
+        - name: mongodb-service
           image: mongo:6.0
           ports:
             - containerPort: 27017
@@ -21,11 +21,11 @@ spec:
             - name: MONGO_INITDB_ROOT_USERNAME
               value: root
             - name: MONGO_INITDB_ROOT_PASSWORD
-              value: example
+              value: root
           volumeMounts:
             - name: mongodb-storage
               mountPath: /data/db
-      volumes: # <- mutat aici
+      volumes:
         - name: mongodb-storage
           persistentVolumeClaim:
-            claimName: mongodb-pvc
+            claimName: mongodb-service-pvc

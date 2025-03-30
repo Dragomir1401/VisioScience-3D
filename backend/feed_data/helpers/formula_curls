@@ -1,0 +1,12 @@
+Invoke-RestMethod -Uri "http://localhost:8000/feed/formulas/cube" `
+  -Method Post `
+  -Headers @{ "Content-Type" = "application/json" } `
+  -Body '{ "name": "Volum", "expr": "V = L³" }'
+
+Invoke-RestMethod -Uri "http://localhost:8000/feed/formulas/cube" -Method Get
+
+docker build -t dragomir1401/feed-data:latest .
+docker push dragomir1401/feed-data:latest
+kubectl rollout restart deployment feed-data
+
+kubectl port-forward service/kong-kong-proxy 8000:80

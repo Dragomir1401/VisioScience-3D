@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: formula-deployment
+  name: feed-data
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: formula
+      app: feed-data
   template:
     metadata:
       labels:
-        app: formula
+        app: feed-data
     spec:
       containers:
         - name: formula
-          image: dragomir1401/formula-service:latest
+          image: dragomir1401/feed-data:latest
           ports:
             - containerPort: 8080

@@ -17,7 +17,7 @@ var client *mongo.Client
 
 func init() {
     var err error
-    client, err = mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://root:example@mongodb:27017"))
+    client, err = mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://root:root@mongodb:27017"))
     if err != nil {
         panic(err)
     }

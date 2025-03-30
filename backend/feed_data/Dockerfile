@@ -12,8 +12,8 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o formulas_service
+RUN go build -o feed-data-service
 
 EXPOSE 8080
 
-CMD ["./formulas_service"]
+CMD ["./feed-data-service"]

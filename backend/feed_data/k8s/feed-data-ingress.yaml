@@ -1,19 +1,18 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: formula-ingress
+  name: feed-data-ingress
   annotations:
     konghq.com/strip-path: "false"
-    konghq.com/protocol: "http"
 spec:
   ingressClassName: kong
   rules:
     - http:
         paths:
-          - path: /formulas
+          - path: /feed
             pathType: Prefix
             backend:
               service:
-                name: formula-service
+                name: feed-data
                 port:
                   number: 8080
