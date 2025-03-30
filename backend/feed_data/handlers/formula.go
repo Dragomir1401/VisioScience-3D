@@ -1,26 +1,27 @@
 package handlers
 
 import (
-    "context"
-    "encoding/json"
-    "log"
-    "net/http"
-    "time"
+	"context"
+	"encoding/json"
+	"log"
+	"net/http"
+	"time"
 
-    "github.com/gorilla/mux"
-    "go.mongodb.org/mongo-driver/bson"
-    "go.mongodb.org/mongo-driver/mongo"
-    "go.mongodb.org/mongo-driver/mongo/options"
+	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var client *mongo.Client
 
 func init() {
     var err error
-    client, err = mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://root:root@mongodb:27017"))
+    client, err = mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://root:root@mongodb-service:27017"))
     if err != nil {
         panic(err)
     }
+    log.Println("Connected to MongoDB!")
 }
 
 type Formula struct {
