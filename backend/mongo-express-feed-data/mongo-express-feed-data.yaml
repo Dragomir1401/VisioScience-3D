@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongo-express
+  name: mongo-express-feed-data
   labels:
-    app: mongo-express
+    app: mongo-express-feed-data
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongo-express
+      app: mongo-express-feed-data
   template:
     metadata:
       labels:
-        app: mongo-express
+        app: mongo-express-feed-data
     spec:
       containers:
-        - name: mongo-express
+        - name: mongo-express-feed-data
           image: mongo-express:latest
           env:
             # Adresa de host a serviciului MongoDB
             - name: ME_CONFIG_MONGODB_SERVER
-              value: "mongodb-service"
+              value: "mongo-feed-data-service"
             # Portul pe care ascultă MongoDB
             - name: ME_CONFIG_MONGODB_PORT
               value: "27017"
@@ -36,18 +36,18 @@ spec:
             - name: ME_CONFIG_BASICAUTH_PASSWORD
               value: "password"
             - name: ME_CONFIG_SITE_BASEURL
-              value: "/mongo-express"
+              value: "/mongo-express-feed-data"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-express-service
+  name: mongo-express-feed-data-service
   labels:
-    app: mongo-express
+    app: mongo-express-feed-data
 spec:
   type: ClusterIP
   selector:
-    app: mongo-express
+    app: mongo-express-feed-data
   ports:
     - name: http
       port: 8081
@@ -56,7 +56,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: mongo-express-ingress
+  name: mongo-express-feed-data-ingress
   annotations:
     konghq.com/strip-path: "false"
 spec:
@@ -64,10 +64,10 @@ spec:
   rules:
     - http:
         paths:
-          - path: /mongo-express
+          - path: /mongo-express-feed-data
             pathType: Prefix
             backend:
               service:
-                name: mongo-express-service
+                name: mongo-express-feed-data-service
                 port:
                   number: 8081

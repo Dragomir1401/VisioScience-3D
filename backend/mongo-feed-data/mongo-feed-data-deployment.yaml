@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongodb-service
+  name: mongo-feed-data-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongodb-service
+      app: mongo-feed-data-service
   template:
     metadata:
       labels:
-        app: mongodb-service
+        app: mongo-feed-data-service
     spec:
       containers:
-        - name: mongodb-service
+        - name: mongo-feed-data-service
           image: mongo:6.0
           ports:
             - containerPort: 27017
@@ -23,9 +23,9 @@ spec:
             - name: MONGO_INITDB_ROOT_PASSWORD
               value: root
           volumeMounts:
-            - name: mongodb-storage
+            - name: mongo-feed-data-storage
               mountPath: /data/db
       volumes:
-        - name: mongodb-storage
+        - name: mongo-feed-data-storage
           persistentVolumeClaim:
-            claimName: mongodb-service-pvc
+            claimName: mongo-feed-data-service-pvc

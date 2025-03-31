@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feed-data
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-data
+  template:
+    metadata:
+      labels:
+        app: user-data
+    spec:
+      containers:
+        - name: formula
+          image: dragomir1401/user-data:latest
+          ports:
+            - containerPort: 8080
