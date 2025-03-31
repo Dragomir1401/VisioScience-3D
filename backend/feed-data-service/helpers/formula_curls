@@ -1,7 +1,17 @@
-Invoke-RestMethod -Uri "http://localhost:8000/feed/formulas/cube" `
-  -Method Post `
+Invoke-RestMethod -Uri "http://localhost:8000/feed" `
+  -Method POST `
   -Headers @{ "Content-Type" = "application/json" } `
-  -Body '{ "name": "Volum", "expr": "V = L³" }'
+  -Body '{
+    "formula": {
+      "shape": "cube",
+      "name": "Volum",
+      "expr": "L^3"
+    },
+    "metadata": {
+      "name": "some_feed"
+    }
+  }'
+
 
 Invoke-RestMethod -Uri "http://localhost:8000/feed/formulas/cube" -Method Get
 
