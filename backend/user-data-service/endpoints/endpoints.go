@@ -34,7 +34,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		ID:       primitive.NewObjectID(),
 		Email:    req.Email,
 		Password: string(hashed),
-		Role:     models.Role(req.Role), // "ELEV" sau "PROFESOR", etc.
+		Role:     models.Role(req.Role),
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

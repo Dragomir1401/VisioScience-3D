@@ -13,7 +13,7 @@ Invoke-RestMethod -Uri "http://localhost:8000/feed" `
   }'
 
 
-Invoke-RestMethod -Uri "http://localhost:8000/feed/formulas/cube" -Method Get
+Invoke-RestMethod -Uri "http://localhost:8000/feed/shape/cube" -Method Get
 
 docker build -t dragomir1401/feed-data:latest .
 docker push dragomir1401/feed-data:latest
