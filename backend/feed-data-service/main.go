@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	handlers "formulas_service/endpoints"
+	handlers "feed-data-service/endpoints"
 
 	"github.com/gorilla/mux"
 )

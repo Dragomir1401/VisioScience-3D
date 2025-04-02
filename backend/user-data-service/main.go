@@ -1,30 +1,30 @@
 package main
 
 import (
-    "log"
-    "net/http"
+	"log"
+	"net/http"
 
-    "github.com/gorilla/mux"
+	"github.com/gorilla/mux"
 
-    "user-data-service/endpoints"
-    "user-data-service/mongo"
-    "user-data-service/middleware"
+	endpoints "user-data-service/endpoints"
+	middleware "user-data-service/middleware"
+	mongo "user-data-service/mongo"
 )
 
 func main() {
-    mongo.InitDB()
+	mongo.InitDB()
 
-    r := mux.NewRouter()
+	r := mux.NewRouter()
 
-    r.HandleFunc("/auth/register", endpoints.Register).Methods("POST")
-    r.HandleFunc("/auth/login", endpoints.Login).Methods("POST")
+	r.HandleFunc("/user/auth/register", endpoints.Register).Methods("POST")
+	r.HandleFunc("/user/auth/login", endpoints.Login).Methods("POST")
 
-    secured := r.PathPrefix("/auth").Subrouter()
-    secured.Use(middleware.JWTAuth) 
-    secured.HandleFunc("/me", endpoints.GetMe).Methods("GET")
+	secured := r.PathPrefix("/auth").Subrouter()
+	secured.Use(middleware.JWTAuth)
+	secured.HandleFunc("/user/me", endpoints.GetMe).Methods("GET")
 
-    log.Println("User-Data-Service running on port 8081...")
-    if err := http.ListenAndServe(":8081", r); err != nil {
-        log.Fatal(err)
-    }
+	log.Println("User-Data-Service running on port 8081...")
+	if err := http.ListenAndServe(":8081", r); err != nil {
+		log.Fatal(err)
+	}
 }

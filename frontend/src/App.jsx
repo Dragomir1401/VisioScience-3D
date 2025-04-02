@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import { Acasa, Despre, Contact, Math, Physics } from "./pages";
+import { Acasa, Despre, Contact, Math, Physics, Login } from "./pages";
 
 function App() {
   return (
@@ -14,6 +14,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/math" element={<Math />} />
           <Route path="/physics" element={<Physics />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
     </main>

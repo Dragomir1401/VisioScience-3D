@@ -1,4 +1,4 @@
-module formulas_service
+module feed-data-service
 
 go 1.21
 

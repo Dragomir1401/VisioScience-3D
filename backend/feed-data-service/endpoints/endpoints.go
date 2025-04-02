@@ -3,11 +3,10 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"feed-data-service/models"
 	"log"
 	"net/http"
 	"time"
-
-	"formulas_service/models"
 
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
