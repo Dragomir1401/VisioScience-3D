@@ -19,7 +19,7 @@ func main() {
 	r.HandleFunc("/user/auth/register", endpoints.Register).Methods("POST")
 	r.HandleFunc("/user/auth/login", endpoints.Login).Methods("POST")
 
-	secured := r.PathPrefix("/auth").Subrouter()
+	secured := r.PathPrefix("/user/auth").Subrouter()
 	secured.Use(middleware.JWTAuth)
 	secured.HandleFunc("/user/me", endpoints.GetMe).Methods("GET")
 
