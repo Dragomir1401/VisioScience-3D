@@ -3,6 +3,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { Acasa, Despre, Contact, Math, Physics } from "./pages";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import PrivateRoute from "./pages/PrivateRoute";
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
           <Route
             path="/"
@@ -24,17 +26,13 @@ function App() {
           <Route
             path="/despre"
             element={
-              <PrivateRoute>
                 <Despre />
-              </PrivateRoute>
             }
           />
           <Route
             path="/contact"
             element={
-              <PrivateRoute>
                 <Contact />
-              </PrivateRoute>
             }
           />
           <Route

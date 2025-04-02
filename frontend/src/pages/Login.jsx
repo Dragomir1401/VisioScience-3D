@@ -1,23 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const Login = () => {
-  // State-uri pentru email și parola
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // State suplimentar pentru mesaje de eroare
   const [error, setError] = useState("");
 
-  // Folosim `useNavigate` pentru a redirecționa după login
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // resetăm eroarea
+    setError("");
 
     try {
-      const response = await fetch("http://localhost:8000/auth/login", {
+      const response = await fetch("http://localhost:8000/user/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,7 +25,6 @@ const Login = () => {
       });
 
       if (!response.ok) {
-        // ex. 401 => credențiale invalide
         const errorData = await response.text();
         setError(errorData || "Eroare la login");
         return;
@@ -34,10 +32,8 @@ const Login = () => {
 
       const data = await response.json();
       if (data.token) {
-        // Salvăm token-ul în localStorage
         localStorage.setItem("token", data.token);
 
-        // Navigăm către pagina de Acasă ("/")
         navigate("/");
       } else {
         setError("Răspuns invalid de la server. Lipsește token-ul.");
@@ -103,6 +99,14 @@ const Login = () => {
             Login
           </button>
         </form>
+
+        <p className="mt-4 text-center">
+        Nu ai cont încă?{" "}
+        <Link className="text-purple-600" to="/register">
+            Înregistrează-te
+        </Link>
+        </p>
+
       </div>
     </div>
   );

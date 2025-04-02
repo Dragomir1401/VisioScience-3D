@@ -4,12 +4,14 @@ go 1.21
 
 require (
 	github.com/golang-jwt/jwt/v4 v4.5.2
+	github.com/gorilla/handlers v1.5.2
 	github.com/gorilla/mux v1.8.1
 	go.mongodb.org/mongo-driver v1.13.1
 	golang.org/x/crypto v0.9.0
 )
 
 require (
+	github.com/felixge/httpsnoop v1.0.3 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/google/go-cmp v0.5.5 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
