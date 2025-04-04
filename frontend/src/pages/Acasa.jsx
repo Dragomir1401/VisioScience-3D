@@ -30,55 +30,54 @@ function Scene3D({ setSceneLoaded, ...props }) {
   return (
     <>
       <directionalLight position={[1, 1, 1]} intensity={4} />
-          <ambientLight intensity={0.7} />
-          <hemisphereLight
-            skyColor="0xb1e1ff"
-            groundColor="0xb1e1ff"
-            intensity={1}
-          />
+      <ambientLight intensity={0.7} />
+      <hemisphereLight
+        skyColor="0xb1e1ff"
+        groundColor="0xb1e1ff"
+        intensity={1}
+      />
 
-          <Island
-            isRotatingIsland={isRotatingIsland}
-            isRotatingIslandSetter={isRotatingIslandSetter}
-            currentStageSetter={currentStageSetter}
-            position={islandPosition}
-            rotation={islandRotation}
-            scale={islandScale}
-          />
-          <Background
-            isRotatingBackground={isRotatingBackground}
-            isRotatingBackgroundSetter={isRotatingBackgroundSetter}
-          />
-          <Ballon
-            isRotatingIsland={isRotatingIsland}
-            scale={baloonScale}
-            position={baloonPosition}
-            rotation={baloonRotation}
-          />
-          <Drone
-            radiusX={18}
-            radiusZ={12}
-            centerY={3}
-            offset={3}
-            speed={0.2}
-            propellerSpeed={480}
-            tiltAmplitude={0.85}
-            basePosition={[0, -11, -50]}
-          />
-          <Drone
-            radiusX={3}
-            radiusZ={16}
-            centerY={5}
-            offset={17}
-            speed={0.5}
-            propellerSpeed={520}
-            tiltAmplitude={0.25}
-            basePosition={[2, -10, -60]}
-          />
+      <Island
+        isRotatingIsland={isRotatingIsland}
+        isRotatingIslandSetter={isRotatingIslandSetter}
+        currentStageSetter={currentStageSetter}
+        position={islandPosition}
+        rotation={islandRotation}
+        scale={islandScale}
+      />
+      <Background
+        isRotatingBackground={isRotatingBackground}
+        isRotatingBackgroundSetter={isRotatingBackgroundSetter}
+      />
+      <Ballon
+        isRotatingIsland={isRotatingIsland}
+        scale={baloonScale}
+        position={baloonPosition}
+        rotation={baloonRotation}
+      />
+      <Drone
+        radiusX={18}
+        radiusZ={12}
+        centerY={3}
+        offset={3}
+        speed={0.2}
+        propellerSpeed={480}
+        tiltAmplitude={0.85}
+        basePosition={[0, -11, -50]}
+      />
+      <Drone
+        radiusX={3}
+        radiusZ={16}
+        centerY={5}
+        offset={17}
+        speed={0.5}
+        propellerSpeed={520}
+        tiltAmplitude={0.25}
+        basePosition={[2, -10, -60]}
+      />
     </>
   );
 }
-
 
 const Acasa = () => {
   const PositionIslandInCanvas = () => {
@@ -124,10 +123,10 @@ const Acasa = () => {
     <section className="w-full h-screen relative flex items-center justify-center">
       <div className="absolute top-28 left-0 right-0 z-50 flex items-center justify-center">
         {sceneLoaded && currentStage && (
-        <div className="absolute top-28 left-0 right-0 z-50 flex items-center justify-center">
-          <Popup currentStage={currentStage} />
-        </div>
-      )}
+          <div className="absolute top-28 left-0 right-0 z-50 flex items-center justify-center">
+            <Popup currentStage={currentStage} />
+          </div>
+        )}
       </div>
       <Canvas
         className={`w-full h-screen bg-transparent ${

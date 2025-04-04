@@ -7,7 +7,6 @@ const Baloon = (props) => {
   const { scene } = useGLTF(baloonScene);
   const [animationState, setAnimationState] = useState("idle");
 
-  // Function to randomly switch states every 2.5s
   useEffect(() => {
     const interval = setInterval(() => {
       const states = [
