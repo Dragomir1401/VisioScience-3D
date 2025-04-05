@@ -4,7 +4,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { a } from "@react-spring/three";
 import ForestBackgroundScene from "../assets/3d/sky_swamp.glb";
 
-const ForestBackground = ({
+const ForestBackground2 = ({
   isRotatingForestBackground,
   isRotatingForestBackgroundSetter,
 }) => {
@@ -115,15 +115,15 @@ const ForestBackground = ({
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Sphere001_2_0.geometry}
-          material={materials.material}
+          geometry={nodes.Sphere002_3_0.geometry}
+          material={materials.material_1}
           position={[-7500, 0, 0]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          scale={20000}
+          rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+          scale={20000.001}
         />
       </group>
     </a.group>
   );
 };
 
-export default ForestBackground;
+export default ForestBackground2;
