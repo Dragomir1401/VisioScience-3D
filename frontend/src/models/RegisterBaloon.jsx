@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSpring, a } from "@react-spring/three";
 import { useGLTF } from "@react-three/drei";
 import baloonScene from "../assets/3d/baloon.glb";
@@ -11,7 +11,8 @@ const RegisterBaloon = ({
   scale = [2.5, 2.5, 2.5],
 }) => {
   const { scene } = useGLTF(baloonScene);
-  const initialPosition = useRef(position);
+  const [toggleTyping, setToggleTyping] = useState(false);
+  const prevIsTyping = useRef(isTyping);
 
   const [springProps, api] = useSpring(() => ({
     position,
@@ -23,35 +24,56 @@ const RegisterBaloon = ({
   useEffect(() => {
     if (registerClicked) {
       api.start({
-        position: [position[0] + 0.5, position[1] + 0.5, position[2]],
-        rotation: [Math.PI * 2, Math.PI * 4, Math.PI],
-        scale: scale.map((s) => s * 0.2),
-        config: { tension: 300, friction: 10, duration: 4000 },
+        position: [position[0], position[1] + 1.5, position[2]],
+        rotation: [0, Math.PI * 3, 0],
+        scale: scale.map((s) => s * 1.3),
+        config: { tension: 200, friction: 20, duration: 2000 },
         onRest: () => {
           api.start({
-            position: initialPosition.current,
+            position,
             rotation: [0, 0, 0],
             scale,
-            config: { tension: 180, friction: 15, duration: 4000 },
+            config: { tension: 100, friction: 18, duration: 1000 },
+            onRest: () => {
+              api.start({
+                position: [position[0], position[1] + 0.1, position[2]],
+                loop: { reverse: true },
+                config: { duration: 2000 },
+              });
+              setRegisterClicked(false);
+            },
           });
-          setRegisterClicked(false);
         },
       });
-    } else if (isTyping) {
+    } else if (isTyping !== prevIsTyping.current) {
+      const offsetY = toggleTyping ? 0.15 : -0.15;
+      setToggleTyping(!toggleTyping);
+
       api.start({
-        position: [position[0], position[1] + 0.2, position[2]],
-        rotation: [0, 0.2, 0],
-        scale: scale.map((s) => s * 1.1),
-        config: { tension: 120, friction: 14, duration: 300 },
+        position: [position[0], position[1] + offsetY, position[2]],
+        rotation: [0, 0, 0],
+        scale: scale.map((s) => s * 1.03),
+        config: { tension: 120, friction: 14, duration: 650 },
+        onRest: () => {
+          api.start({
+            position,
+            rotation: [0, 3 * offsetY, 0],
+            scale,
+            config: { tension: 120, friction: 14, duration: 650 },
+          });
+        },
       });
     } else {
       api.start({
-        position: initialPosition.current,
+        position: [position[0], position[1] + 0.1, position[2]],
         rotation: [0, 0, 0],
         scale,
-        config: { tension: 100, friction: 14, duration: 1500 },
+        loop: { reverse: true },
+        config: { duration: 2000 },
       });
     }
+
+    prevIsTyping.current = isTyping;
   }, [isTyping, registerClicked]);
 
   return (

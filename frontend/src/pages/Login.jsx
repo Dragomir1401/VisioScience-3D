@@ -37,8 +37,7 @@ const Login = () => {
       if (data.token) {
         localStorage.setItem("token", data.token);
 
-        // navighează după ce animația se încheie frumos
-        setTimeout(() => navigate("/"), 1200);
+        setTimeout(() => navigate("/"), 2500);
       } else {
         setError("Răspuns invalid de la server. Lipsește token-ul.");
         setLoginClicked(false);

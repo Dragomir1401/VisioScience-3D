@@ -25,6 +25,7 @@ const Register = () => {
 
     if (password !== confirmPassword) {
       setError("Parolele nu coincid.");
+      setRegisterClicked(false);
       return;
     }
 
