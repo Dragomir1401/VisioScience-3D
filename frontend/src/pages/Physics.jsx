@@ -2,8 +2,28 @@ import React, { useState } from "react";
 import SideMenu from "../components/SideMenu";
 import PhysicsLanding from "../components/physics/PhysicsLanding";
 import InclinedPlaneScene from "../models/physics/InclinedPlane";
+import Pulley2Scene from "../models/physics/PulleyFixed";
+import Pulley3Scene from "../models/physics/PulleyFixedMobile";
 
-const physicsObjects = [{ id: "inclined_plane", label: "InclinedPlane" }];
+const physicsObjects = [
+  { id: "inclined_plane", label: "InclinedPlane" },
+  { id: "pulley_system2", label: "Pullies2Bodies" },
+  { id: "pulley_system3", label: "Pullies3Bodies" },
+  // { id: "pendulum", label: "Pendul" },
+  // { id: "spring", label: "Arc" },
+  // { id: "circular_motion", label: "Mișcare circulară" },
+  // { id: "projectile_motion", label: "Mișcare de proiectil" },
+  // { id: "free_fall", label: "Cădere liberă" },
+  // { id: "collision", label: "Coliziune" },
+  // { id: "torque", label: "Moment de forță" },
+  // { id: "work_energy", label: "Lucru mecanic și energie" },
+  // { id: "fluid_dynamics", label: "Dinamică fluidelor" },
+  // { id: "thermodynamics", label: "Termodinamică" },
+  // { id: "electromagnetism", label: "Electromagnetism" },
+  // { id: "waves", label: "Unde" },
+  // { id: "optics", label: "Optică" },
+  // { id: "relativity", label: "Relativitate" },
+];
 
 const Physics = () => {
   const [selectedObject, setSelectedObject] = useState(null);
@@ -44,6 +64,50 @@ const Physics = () => {
                 transition-all"
                 />
               </div>
+            </div>
+          </>
+        )}
+        {selectedObject && selectedObject.id === "pulley_system2" && (
+          <>
+            <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg relative">
+              <Pulley2Scene sliderValue={sliderValue} />
+            </div>
+
+            <div className="flex items-center gap-4">
+              <label className="text-purple-800 font-semibold">
+                Poziție mase:
+              </label>
+              <input
+                type="range"
+                min={-1.5}
+                max={1.5}
+                step={0.01}
+                value={sliderValue}
+                onChange={(e) => setSliderValue(parseFloat(e.target.value))}
+                className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
+              />
+            </div>
+          </>
+        )}
+        {selectedObject && selectedObject.id === "pulley_system3" && (
+          <>
+            <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg relative">
+              <Pulley3Scene sliderValue={sliderValue} />
+            </div>
+
+            <div className="flex items-center gap-4">
+              <label className="text-purple-800 font-semibold">
+                Poziție mase:
+              </label>
+              <input
+                type="range"
+                min={-1.5}
+                max={1.5}
+                step={0.01}
+                value={sliderValue}
+                onChange={(e) => setSliderValue(parseFloat(e.target.value))}
+                className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
+              />
             </div>
           </>
         )}

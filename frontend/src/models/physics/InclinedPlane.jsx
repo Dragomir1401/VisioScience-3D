@@ -27,7 +27,6 @@ const InclinedPlane = ({ sliderValue }) => {
     const origin = new THREE.Vector3(posX, posY, 0);
     const offset = 0.25;
 
-    // Gravitație
     const gArrow = new THREE.ArrowHelper(
       new THREE.Vector3(0, -1, 0),
       origin,
@@ -36,7 +35,6 @@ const InclinedPlane = ({ sliderValue }) => {
     );
     group.add(gArrow);
 
-    // Normală
     const normalDir = new THREE.Vector3(Math.sin(rad), Math.cos(rad), 0);
     const nArrow = new THREE.ArrowHelper(
       normalDir.normalize(),
@@ -59,8 +57,7 @@ const InclinedPlane = ({ sliderValue }) => {
     );
     group.add(fArrow);
 
-    // Forță activă (aplicată de utilizator)
-    const activeDir = frictionDir.clone().multiplyScalar(-1); // opusă frecării
+    const activeDir = frictionDir.clone().multiplyScalar(-1);
     const aArrow = new THREE.ArrowHelper(
       activeDir.normalize(),
       origin.clone().add(new THREE.Vector3(0, 0, 0)),
@@ -99,9 +96,7 @@ const InclinedPlane = ({ sliderValue }) => {
       </Text>
       <Text
         position={
-          sign === -1
-            ? [posX - 2, posY + 0.7, 0] // Ff la stânga
-            : [posX + 1.8, posY - 0.3, 0] // Ff devine Fa
+          sign === -1 ? [posX - 2, posY + 0.7, 0] : [posX + 1.8, posY - 0.3, 0]
         }
         fontSize={0.4}
         color="#0000ff"
@@ -110,9 +105,7 @@ const InclinedPlane = ({ sliderValue }) => {
       </Text>
       <Text
         position={
-          sign === -1
-            ? [posX + 1.8, posY - 0.3, 0] // Fa la dreapta
-            : [posX - 2, posY + 0.7, 0] // Fa devine Ff
+          sign === -1 ? [posX + 1.8, posY - 0.3, 0] : [posX - 2, posY + 0.7, 0]
         }
         fontSize={0.4}
         color="#ffaa00"
