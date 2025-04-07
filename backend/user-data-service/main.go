@@ -25,7 +25,7 @@ func main() {
 	secured.HandleFunc("/me", endpoints.GetMe).Methods("GET")
 
 	corsObj := handlers.CORS(
-		handlers.AllowedOrigins([]string{"http://localhost:5173"}),
+		handlers.AllowedOrigins([]string{"*"}), // Allow all origins for development purposes
 		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
 		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 	)

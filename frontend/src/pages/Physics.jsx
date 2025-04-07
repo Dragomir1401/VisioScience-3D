@@ -4,12 +4,13 @@ import PhysicsLanding from "../components/physics/PhysicsLanding";
 import InclinedPlaneScene from "../models/physics/InclinedPlane";
 import Pulley2Scene from "../models/physics/PulleyFixed";
 import Pulley3Scene from "../models/physics/PulleyFixedMobile";
+import PendulumScene from "../models/physics/Pendulum";
 
 const physicsObjects = [
   { id: "inclined_plane", label: "InclinedPlane" },
   { id: "pulley_system2", label: "Pullies2Bodies" },
   { id: "pulley_system3", label: "Pullies3Bodies" },
-  // { id: "pendulum", label: "Pendul" },
+  { id: "pendulum", label: "Pendul" },
   // { id: "spring", label: "Arc" },
   // { id: "circular_motion", label: "Mișcare circulară" },
   // { id: "projectile_motion", label: "Mișcare de proiectil" },
@@ -104,6 +105,28 @@ const Physics = () => {
                 min={-1.5}
                 max={1.5}
                 step={0.01}
+                value={sliderValue}
+                onChange={(e) => setSliderValue(parseFloat(e.target.value))}
+                className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
+              />
+            </div>
+          </>
+        )}
+        {selectedObject && selectedObject.id === "pendulum" && (
+          <>
+            <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg relative">
+              <PendulumScene sliderValue={sliderValue} />
+            </div>
+
+            <div className="flex items-center gap-4">
+              <label className="text-purple-800 font-semibold">
+                Unghi pendul (°):
+              </label>
+              <input
+                type="range"
+                min={-60}
+                max={60}
+                step={1}
                 value={sliderValue}
                 onChange={(e) => setSliderValue(parseFloat(e.target.value))}
                 className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
