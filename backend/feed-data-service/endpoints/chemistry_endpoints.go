@@ -7,16 +7,13 @@ import (
 	"net/http"
 	"time"
 
-	"feed-data-service/models"
-
 	helpers "feed-data-service/helpers"
+	"feed-data-service/models"
 
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
-
-var chemCollection = helpers.Client.Database("data-feed-db").Collection("molecules")
 
 // CreateMolecule - POST /chem/molecules
 // Primește JSON cu name, formula, molFile etc.
@@ -48,7 +45,8 @@ func CreateMolecule(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("[CreateMolecule] Inserting molecule:", mol.Name)
 
-	result, err := chemCollection.InsertOne(ctx, mol)
+	collection := helpers.Client.Database("data-feed-db").Collection("molecules")
+	result, err := collection.InsertOne(ctx, mol)
 	if err != nil {
 		log.Println("[CreateMolecule] DB insertion error:", err)
 		http.Error(w, "Failed to insert molecule", http.StatusInternalServerError)
@@ -72,7 +70,8 @@ func GetAllMolecules(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("[GetAllMolecules] Fetching all molecules")
 
-	cursor, err := chemCollection.Find(ctx, bson.M{})
+	collection := helpers.Client.Database("data-feed-db").Collection("molecules")
+	cursor, err := collection.Find(ctx, bson.M{})
 	if err != nil {
 		log.Println("[GetAllMolecules] Find error:", err)
 		http.Error(w, "DB error", http.StatusInternalServerError)
@@ -104,7 +103,8 @@ func GetMoleculeByID(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 
 	var mol models.Molecule
-	err = chemCollection.FindOne(ctx, bson.M{"_id": objID}).Decode(&mol)
+	collection := helpers.Client.Database("data-feed-db").Collection("molecules")
+	err = collection.FindOne(ctx, bson.M{"_id": objID}).Decode(&mol)
 	if err != nil {
 		log.Println("[GetMoleculeByID] error:", err)
 		if err.Error() == "mongo: no documents in result" {
@@ -146,7 +146,8 @@ func UpdateMolecule(w http.ResponseWriter, r *http.Request) {
 		"description": updatedMol.Description,
 	}}
 
-	result, err := chemCollection.UpdateOne(ctx, bson.M{"_id": objID}, update)
+	collection := helpers.Client.Database("data-feed-db").Collection("molecules")
+	result, err := collection.UpdateOne(ctx, bson.M{"_id": objID}, update)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -177,7 +178,8 @@ func DeleteMolecule(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	result, err := chemCollection.DeleteOne(ctx, bson.M{"_id": objID})
+	collection := helpers.Client.Database("data-feed-db").Collection("molecules")
+	result, err := collection.DeleteOne(ctx, bson.M{"_id": objID})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

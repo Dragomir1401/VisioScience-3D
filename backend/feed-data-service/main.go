@@ -27,26 +27,26 @@ func main() {
 	)
 
 	// POST /feeds
-	r.HandleFunc("/feeds", handlers.CreateFeed).Methods("POST")
+	r.HandleFunc("/feed", handlers.CreateFeed).Methods("POST")
 	// GET /feeds
-	r.HandleFunc("/feeds/{id}", handlers.GetFeedByID).Methods("GET")
+	r.HandleFunc("/feed/{id}", handlers.GetFeedByID).Methods("GET")
 	// GET /feeds
-	r.HandleFunc("/feeds/{id}", handlers.UpdateFeedByID).Methods("PUT")
+	r.HandleFunc("/feed/{id}", handlers.UpdateFeedByID).Methods("PUT")
 	// GET /feeds
-	r.HandleFunc("/feeds/{id}", handlers.DeleteFeedByID).Methods("DELETE")
+	r.HandleFunc("/feed/{id}", handlers.DeleteFeedByID).Methods("DELETE")
 	// GET /feeds
-	r.HandleFunc("/feeds/shape/{shape}", handlers.GetFeedsByShape).Methods("GET")
+	r.HandleFunc("/feed/shape/{shape}", handlers.GetFeedsByShape).Methods("GET")
 
 	// GET /chem/molecules
-	r.HandleFunc("/chem/molecules", handlers.GetAllMolecules).Methods("GET")
+	r.HandleFunc("/feed/chem/molecules", handlers.GetAllMolecules).Methods("GET")
 	// POST /chem/molecules
-	r.HandleFunc("/chem/molecules", handlers.CreateMolecule).Methods("POST")
+	r.HandleFunc("/feed/chem/molecules", handlers.CreateMolecule).Methods("POST")
 	// GET /chem/molecules/{id}
-	r.HandleFunc("/chem/molecules/{id}", handlers.GetMoleculeByID).Methods("GET")
+	r.HandleFunc("/feed/chem/molecules/{id}", handlers.GetMoleculeByID).Methods("GET")
 	// PUT /chem/molecules/{id}
-	r.HandleFunc("/chem/molecules/{id}", handlers.UpdateMolecule).Methods("PUT")
+	r.HandleFunc("/feed/chem/molecules/{id}", handlers.UpdateMolecule).Methods("PUT")
 	// DELETE /chem/molecules/{id}
-	r.HandleFunc("/chem/molecules/{id}", handlers.DeleteMolecule).Methods("DELETE")
+	r.HandleFunc("/feed/chem/molecules/{id}", handlers.DeleteMolecule).Methods("DELETE")
 
 	log.Println("feed-data-service running on :8080")
 	if err := http.ListenAndServe(":8080", corsObj(r)); err != nil {
