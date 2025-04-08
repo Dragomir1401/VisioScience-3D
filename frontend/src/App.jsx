@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import { Acasa, Despre, Contact, Math, Physics } from "./pages";
+import { Acasa, Despre, Contact, Math, Physics, Chemistry } from "./pages";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PrivateRoute from "./pages/PrivateRoute";
@@ -23,18 +23,8 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route
-            path="/despre"
-            element={
-                <Despre />
-            }
-          />
-          <Route
-            path="/contact"
-            element={
-                <Contact />
-            }
-          />
+          <Route path="/despre" element={<Despre />} />
+          <Route path="/contact" element={<Contact />} />
           <Route
             path="/math"
             element={
@@ -48,6 +38,14 @@ function App() {
             element={
               <PrivateRoute>
                 <Physics />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/chemistry"
+            element={
+              <PrivateRoute>
+                <Chemistry />
               </PrivateRoute>
             }
           />
