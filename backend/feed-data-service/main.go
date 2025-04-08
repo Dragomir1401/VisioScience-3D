@@ -5,22 +5,51 @@ import (
 	"net/http"
 
 	handlers "feed-data-service/endpoints"
+	helpers "feed-data-service/helpers"
+
+	gorillaHandlers "github.com/gorilla/handlers"
 
 	"github.com/gorilla/mux"
 )
 
 func main() {
+	// init e deja apelat pentru client etc.
 	r := mux.NewRouter()
 
-	r.HandleFunc("/feed/router", handlers.CreateFeed).Methods("POST")
-	r.HandleFunc("/feed/router/{id}", handlers.GetFeedByID).Methods("GET")
-	r.HandleFunc("/feed/router/{id}", handlers.UpdateFeedByID).Methods("PUT")
-	r.HandleFunc("/feed/router/{id}", handlers.DeleteFeedByID).Methods("DELETE")
+	// init mongo client
+	helpers.InitMongoClient()
 
-	r.HandleFunc("/feed/router/shape/{shape}", handlers.GetFeedsByShape).Methods("GET")
+	// CORS middleware to accept all origins for development purposes
+	corsObj := gorillaHandlers.CORS(
+		gorillaHandlers.AllowedOrigins([]string{"*"}), // Allow all origins for development purposes
+		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
+		gorillaHandlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
+	)
 
-	log.Println("Feed-data server router running on port 8080...")
-	if err := http.ListenAndServe(":8080", r); err != nil {
+	// POST /feeds
+	r.HandleFunc("/feeds", handlers.CreateFeed).Methods("POST")
+	// GET /feeds
+	r.HandleFunc("/feeds/{id}", handlers.GetFeedByID).Methods("GET")
+	// GET /feeds
+	r.HandleFunc("/feeds/{id}", handlers.UpdateFeedByID).Methods("PUT")
+	// GET /feeds
+	r.HandleFunc("/feeds/{id}", handlers.DeleteFeedByID).Methods("DELETE")
+	// GET /feeds
+	r.HandleFunc("/feeds/shape/{shape}", handlers.GetFeedsByShape).Methods("GET")
+
+	// GET /chem/molecules
+	r.HandleFunc("/chem/molecules", handlers.GetAllMolecules).Methods("GET")
+	// POST /chem/molecules
+	r.HandleFunc("/chem/molecules", handlers.CreateMolecule).Methods("POST")
+	// GET /chem/molecules/{id}
+	r.HandleFunc("/chem/molecules/{id}", handlers.GetMoleculeByID).Methods("GET")
+	// PUT /chem/molecules/{id}
+	r.HandleFunc("/chem/molecules/{id}", handlers.UpdateMolecule).Methods("PUT")
+	// DELETE /chem/molecules/{id}
+	r.HandleFunc("/chem/molecules/{id}", handlers.DeleteMolecule).Methods("DELETE")
+
+	log.Println("feed-data-service running on :8080")
+	if err := http.ListenAndServe(":8080", corsObj(r)); err != nil {
 		log.Fatal(err)
 	}
 }

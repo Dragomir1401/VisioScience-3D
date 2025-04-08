@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	helpers "feed-data-service/helpers"
 	"feed-data-service/models"
 	"log"
 	"net/http"
@@ -12,24 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
-
-var client *mongo.Client
-
-func init() {
-	var err error
-	client, err = mongo.Connect(context.TODO(),
-		options.Client().ApplyURI("mongodb://root:root@mongo-feed-data-service:27017"),
-	)
-	if err != nil {
-		panic(err)
-	}
-	if err = client.Ping(context.TODO(), nil); err != nil {
-		panic(err)
-	}
-	log.Println("Connected to MongoDB!")
-}
 
 // CreateFeed - POST /feeds
 func CreateFeed(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +30,7 @@ func CreateFeed(w http.ResponseWriter, r *http.Request) {
 		feed.Metadata.Name = "default_feed"
 	}
 
-	collection := client.Database("data-feed-db").Collection("formulas")
+	collection := helpers.Client.Database("data-feed-db").Collection("formulas")
 
 	result, err := collection.InsertOne(context.TODO(), feed)
 	if err != nil {
@@ -78,7 +62,7 @@ func GetFeedByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	collection := client.Database("data-feed-db").Collection("formulas")
+	collection := helpers.Client.Database("data-feed-db").Collection("formulas")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -114,7 +98,7 @@ func UpdateFeedByID(w http.ResponseWriter, r *http.Request) {
 
 	updatedFeed.Metadata.CreatedAt = time.Now().Format(time.RFC3339)
 
-	collection := client.Database("data-feed-db").Collection("formulas")
+	collection := helpers.Client.Database("data-feed-db").Collection("formulas")
 
 	update := bson.M{"$set": bson.M{
 		"formula":  updatedFeed.Formula,
@@ -150,7 +134,7 @@ func DeleteFeedByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	collection := client.Database("data-feed-db").Collection("formulas")
+	collection := helpers.Client.Database("data-feed-db").Collection("formulas")
 	result, err := collection.DeleteOne(context.TODO(), bson.M{"_id": objID})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -174,7 +158,7 @@ func GetFeedsByShape(w http.ResponseWriter, r *http.Request) {
 	shape := mux.Vars(r)["shape"]
 	log.Printf("Finding all feeds with shape: %s", shape)
 
-	collection := client.Database("data-feed-db").Collection("formulas")
+	collection := helpers.Client.Database("data-feed-db").Collection("formulas")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
