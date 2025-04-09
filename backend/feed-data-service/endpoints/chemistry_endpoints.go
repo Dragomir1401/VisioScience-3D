@@ -9,6 +9,7 @@ import (
 
 	helpers "feed-data-service/helpers"
 	"feed-data-service/models"
+	prettifier "feed-data-service/prettifier"
 
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
@@ -35,6 +36,14 @@ func CreateMolecule(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing molFile data", http.StatusBadRequest)
 		return
 	}
+
+	// Apelez parseMolFile
+	parsed, parseErr := prettifier.ParseMolFile(mol.MolFile)
+	if parseErr != nil {
+		http.Error(w, "ParseMolFile error: "+parseErr.Error(), http.StatusBadRequest)
+		return
+	}
+	mol.ParsedData = parsed
 
 	// Completează date extra
 	mol.ID = primitive.NewObjectID()
@@ -139,12 +148,26 @@ func UpdateMolecule(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("[UpdateMolecule]", updatedMol.Name)
 
-	update := bson.M{"$set": bson.M{
+	// Build un map pentru "$set"
+	updateFields := bson.M{
 		"name":        updatedMol.Name,
 		"formula":     updatedMol.Formula,
-		"molFile":     updatedMol.MolFile,
 		"description": updatedMol.Description,
-	}}
+	}
+
+	// Dacă s-a schimbat molFile, parsez din nou
+	if updatedMol.MolFile != "" {
+		updateFields["molFile"] = updatedMol.MolFile
+
+		parsed, parseErr := prettifier.ParseMolFile(updatedMol.MolFile)
+		if parseErr != nil {
+			http.Error(w, "ParseMolFile error: "+parseErr.Error(), http.StatusBadRequest)
+			return
+		}
+		updateFields["parsedData"] = parsed
+	}
+
+	update := bson.M{"$set": updateFields}
 
 	collection := helpers.Client.Database("data-feed-db").Collection("molecules")
 	result, err := collection.UpdateOne(ctx, bson.M{"_id": objID}, update)
