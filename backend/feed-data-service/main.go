@@ -47,6 +47,8 @@ func main() {
 	r.HandleFunc("/feed/chem/molecules/{id}", handlers.UpdateMolecule).Methods("PUT")
 	// DELETE /chem/molecules/{id}
 	r.HandleFunc("/feed/chem/molecules/{id}", handlers.DeleteMolecule).Methods("DELETE")
+	// GET /chem/molecules/{id}/3d
+	r.HandleFunc("/feed/chem/molecules/{id}/3d", handlers.GetMolecule3D).Methods("GET")
 
 	log.Println("feed-data-service running on :8080")
 	if err := http.ListenAndServe(":8080", corsObj(r)); err != nil {

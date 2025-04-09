@@ -14,6 +14,7 @@ import (
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // CreateMolecule - POST /chem/molecules
@@ -216,4 +217,36 @@ func DeleteMolecule(w http.ResponseWriter, r *http.Request) {
 		"message":       "Molecule deleted",
 		"deleted_count": result.DeletedCount,
 	})
+}
+
+// GetMolecule3D - GET /chem/molecules/{id}/3d
+func GetMolecule3D(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	idStr := mux.Vars(r)["id"]
+
+	objID, err := primitive.ObjectIDFromHex(idStr)
+	if err != nil {
+		http.Error(w, "Invalid ID format", http.StatusBadRequest)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	var result struct {
+		ParsedData models.MolParsedData `bson:"parsedData" json:"parsedData"`
+	}
+	collection := helpers.Client.Database("data-feed-db").Collection("molecules")
+	err = collection.FindOne(ctx, bson.M{"_id": objID}).Decode(&result)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			http.Error(w, "Not found", http.StatusNotFound)
+			return
+		}
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Returnăm direct JSON-ul din result.ParsedData
+	json.NewEncoder(w).Encode(result.ParsedData)
 }
