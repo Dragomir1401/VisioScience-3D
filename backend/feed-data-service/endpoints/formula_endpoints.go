@@ -17,6 +17,7 @@ import (
 
 // CreateFeed - POST /feeds
 func CreateFeed(w http.ResponseWriter, r *http.Request) {
+	log.Println("[CreateFeed] Received request to create a new feed")
 	w.Header().Set("Content-Type", "application/json")
 	var feed models.Feed
 
@@ -25,7 +26,7 @@ func CreateFeed(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	feed.Metadata.CreatedAt = time.Now().Format(time.RFC3339)
+	feed.Metadata.CreatedAt = time.Now()
 	if feed.Metadata.Name == "" {
 		feed.Metadata.Name = "default_feed"
 	}
@@ -53,6 +54,7 @@ func CreateFeed(w http.ResponseWriter, r *http.Request) {
 
 // GetFeedByID - GET /feeds/{id}
 func GetFeedByID(w http.ResponseWriter, r *http.Request) {
+	log.Println("[GetFeedByID] Received request to get feed by ID")
 	w.Header().Set("Content-Type", "application/json")
 	idStr := mux.Vars(r)["id"]
 
@@ -81,6 +83,7 @@ func GetFeedByID(w http.ResponseWriter, r *http.Request) {
 
 // UpdateFeedByID - PUT /feeds/{id}
 func UpdateFeedByID(w http.ResponseWriter, r *http.Request) {
+	log.Println("[UpdateFeedByID] Received request to update feed by ID")
 	w.Header().Set("Content-Type", "application/json")
 	idStr := mux.Vars(r)["id"]
 
@@ -96,7 +99,7 @@ func UpdateFeedByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	updatedFeed.Metadata.CreatedAt = time.Now().Format(time.RFC3339)
+	updatedFeed.Metadata.CreatedAt = time.Now()
 
 	collection := helpers.Client.Database("data-feed-db").Collection("formulas")
 
@@ -125,6 +128,7 @@ func UpdateFeedByID(w http.ResponseWriter, r *http.Request) {
 
 // DeleteFeedByID - DELETE /feeds/{id}
 func DeleteFeedByID(w http.ResponseWriter, r *http.Request) {
+	log.Println("[DeleteFeedByID] Received request to delete feed by ID")
 	w.Header().Set("Content-Type", "application/json")
 	idStr := mux.Vars(r)["id"]
 
@@ -154,6 +158,7 @@ func DeleteFeedByID(w http.ResponseWriter, r *http.Request) {
 
 // (Opțional) GetFeedsByShape - GET /feeds/shape/{shape}
 func GetFeedsByShape(w http.ResponseWriter, r *http.Request) {
+	log.Println("[GetFeedsByShape] Received request to get feeds by shape")
 	w.Header().Set("Content-Type", "application/json")
 	shape := mux.Vars(r)["shape"]
 	log.Printf("Finding all feeds with shape: %s", shape)

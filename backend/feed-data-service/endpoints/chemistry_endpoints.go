@@ -20,6 +20,7 @@ import (
 // CreateMolecule - POST /chem/molecules
 // Primește JSON cu name, formula, molFile etc.
 func CreateMolecule(w http.ResponseWriter, r *http.Request) {
+	log.Println("[CreateMolecule] Received request to create a new molecule")
 	w.Header().Set("Content-Type", "application/json")
 
 	var mol models.Molecule
@@ -28,34 +29,26 @@ func CreateMolecule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Validări minime
-	if mol.Name == "" {
-		http.Error(w, "Missing name", http.StatusBadRequest)
-		return
-	}
-	if mol.MolFile == "" {
-		http.Error(w, "Missing molFile data", http.StatusBadRequest)
-		return
-	}
-
-	// Apelez parseMolFile
+	// Încercăm să parsez .mol (dacă e gol, o să returneze eroare, dar nu o mai considerăm fatală)
 	parsed, parseErr := prettifier.ParseMolFile(mol.MolFile)
 	if parseErr != nil {
-		http.Error(w, "ParseMolFile error: "+parseErr.Error(), http.StatusBadRequest)
-		return
+		// Logăm, dar NU mai oprim
+		log.Println("[CreateMolecule] ParseMolFile error (ignored):", parseErr)
+		// lăsăm parsedData gol
+	} else {
+		mol.ParsedData = parsed
 	}
-	mol.ParsedData = parsed
 
 	// Completează date extra
 	mol.ID = primitive.NewObjectID()
-	mol.CreatedAt = time.Now()
+	mol.Metadata.CreatedAt = time.Now()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	log.Println("[CreateMolecule] Inserting molecule:", mol.Name)
-
+	log.Println("[CreateMolecule] Inserting molecule:", mol.Metadata.Name)
 	collection := helpers.Client.Database("data-feed-db").Collection("molecules")
+
 	result, err := collection.InsertOne(ctx, mol)
 	if err != nil {
 		log.Println("[CreateMolecule] DB insertion error:", err)
@@ -66,7 +59,7 @@ func CreateMolecule(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"message": "Molecule created",
+		"message": "Molecule created (best effort)",
 		"id":      insertedID.Hex(),
 	})
 }
@@ -74,6 +67,7 @@ func CreateMolecule(w http.ResponseWriter, r *http.Request) {
 // GetAllMolecules - GET /chem/molecules
 // Returnează lista completă de molecule
 func GetAllMolecules(w http.ResponseWriter, r *http.Request) {
+	log.Println("[GetAllMolecules] Received request to get all molecules")
 	w.Header().Set("Content-Type", "application/json")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -129,6 +123,7 @@ func GetMoleculeByID(w http.ResponseWriter, r *http.Request) {
 
 // UpdateMolecule - PUT /chem/molecules/{id}
 func UpdateMolecule(w http.ResponseWriter, r *http.Request) {
+	log.Println("[UpdateMolecule] Received request to update molecule")
 	w.Header().Set("Content-Type", "application/json")
 	idStr := mux.Vars(r)["id"]
 
@@ -147,25 +142,28 @@ func UpdateMolecule(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	log.Println("[UpdateMolecule]", updatedMol.Name)
+	log.Println("[UpdateMolecule]", updatedMol.Metadata.Name)
 
-	// Build un map pentru "$set"
+	// Build un map pt "$set". Tot "best effort"
 	updateFields := bson.M{
-		"name":        updatedMol.Name,
+		"name":        updatedMol.Metadata.Name,
 		"formula":     updatedMol.Formula,
-		"description": updatedMol.Description,
+		"description": updatedMol.Metadata.Description,
+		// dacă `MolFile` e gol, e ok, nu-l actualizăm
 	}
 
-	// Dacă s-a schimbat molFile, parsez din nou
+	// Dacă a venit totuși `MolFile` => îl parsez best effort
 	if updatedMol.MolFile != "" {
 		updateFields["molFile"] = updatedMol.MolFile
 
 		parsed, parseErr := prettifier.ParseMolFile(updatedMol.MolFile)
 		if parseErr != nil {
-			http.Error(w, "ParseMolFile error: "+parseErr.Error(), http.StatusBadRequest)
-			return
+			log.Println("[UpdateMolecule] ParseMolFile error (ignored):", parseErr)
+			// punem un `MolParsedData` gol, doar ca exemplu
+			updateFields["parsedData"] = models.MolParsedData{}
+		} else {
+			updateFields["parsedData"] = parsed
 		}
-		updateFields["parsedData"] = parsed
 	}
 
 	update := bson.M{"$set": updateFields}
@@ -182,7 +180,7 @@ func UpdateMolecule(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"message":        "Molecule updated",
+		"message":        "Molecule updated (best effort)",
 		"matched_count":  result.MatchedCount,
 		"modified_count": result.ModifiedCount,
 	})
@@ -190,6 +188,7 @@ func UpdateMolecule(w http.ResponseWriter, r *http.Request) {
 
 // DeleteMolecule - DELETE /chem/molecules/{id}
 func DeleteMolecule(w http.ResponseWriter, r *http.Request) {
+	log.Println("[DeleteMolecule] Received request to delete molecule")
 	w.Header().Set("Content-Type", "application/json")
 	idStr := mux.Vars(r)["id"]
 

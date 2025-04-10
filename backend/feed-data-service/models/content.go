@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -17,8 +19,19 @@ type Formula struct {
 }
 
 type Metadata struct {
-	Name      string `json:"name"        bson:"name"`
-	CreatedAt string `json:"created_at"  bson:"created_at"`
+	Name        string    `json:"name"        bson:"name"`
+	Description string    `json:"description" bson:"description"`
+	CreatedAt   time.Time `json:"created_at"  bson:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"  bson:"updated_at"`
+	DeletedAt   time.Time `json:"deleted_at"  bson:"deleted_at"`
+}
+
+type Molecule struct {
+	ID         primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	Metadata   Metadata           `bson:"metadata"    json:"metadata"`
+	Formula    string             `bson:"formula"     json:"formula"`
+	MolFile    string             `bson:"molFile"     json:"molFile"`
+	ParsedData MolParsedData      `bson:"parsedData"  json:"parsedData"`
 }
 
 type MolHeader struct {

@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import ChemistryLanding from "../components/chemistry/ChemistryLanding";
 import ChemistryAddForm from "../components/chemistry/ChemistryForm";
 
+// Import componenta 3D
+import Molecule3DViewer from "../models/chemistry/Molecule";
+
 export default function Chemistry() {
   const [molecules, setMolecules] = useState([]);
   const [selectedMol, setSelectedMol] = useState(null);
-  const [viewMode, setViewMode] = useState("landing"); 
-  // landing | upload | detail
-
+  const [viewMode, setViewMode] = useState("landing");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  // La montare, fetch molecules
   useEffect(() => {
     fetchMolecules();
   }, []);
@@ -25,7 +25,6 @@ export default function Chemistry() {
         throw new Error(`Fetch error: ${res.status}`);
       }
       const data = await res.json();
-      // if data is empty, set error
       if (!data || data.length === 0) {
         setError("No molecules found");
         return;
@@ -51,7 +50,6 @@ export default function Chemistry() {
     setMessage("");
   }
 
-  // Callback la crearea reușită a unei molecule
   function onCreateSuccess() {
     setMessage("Molecule created successfully.");
     setViewMode("landing");
@@ -59,12 +57,10 @@ export default function Chemistry() {
     fetchMolecules();
   }
 
-  // Callback la eroare
   function onError(msg) {
     setError(msg);
   }
 
-  // Buton jos pt revenire la landing
   function handleGoLanding() {
     setViewMode("landing");
     setSelectedMol(null);
@@ -108,7 +104,6 @@ export default function Chemistry() {
           </ul>
         </div>
 
-        {/* Buton jos pt revenire la landing */}
         <div>
           <hr className="my-2 border-purple-300" />
           <button
@@ -126,16 +121,11 @@ export default function Chemistry() {
         {message && <p className="text-green-600">{message}</p>}
 
         {/* LANDING */}
-        {viewMode === "landing" && !selectedMol && (
-          <ChemistryLanding />
-        )}
+        {viewMode === "landing" && !selectedMol && <ChemistryLanding />}
 
         {/* UPLOAD FORM */}
         {viewMode === "upload" && (
-          <ChemistryAddForm
-            onCreateSuccess={onCreateSuccess}
-            onError={onError}
-          />
+          <ChemistryAddForm onCreateSuccess={onCreateSuccess} onError={onError} />
         )}
 
         {/* DETAIL */}
@@ -152,9 +142,13 @@ export default function Chemistry() {
               <br />
               <pre>{selectedMol.molFile}</pre>
             </p>
+
+            {/* AICI se integrează viewer-ul 3D: */}
+            <Molecule3DViewer moleculeId={selectedMol.id} />
           </div>
         )}
       </main>
     </div>
   );
 }
+
