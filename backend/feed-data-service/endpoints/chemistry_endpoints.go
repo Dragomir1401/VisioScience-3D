@@ -23,23 +23,32 @@ func CreateMolecule(w http.ResponseWriter, r *http.Request) {
 	log.Println("[CreateMolecule] Received request to create a new molecule")
 	w.Header().Set("Content-Type", "application/json")
 
-	var mol models.Molecule
-	if err := json.NewDecoder(r.Body).Decode(&mol); err != nil {
+	// Decodificăm în structura intermediară
+	var req models.MoleculeRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid JSON: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	// Încercăm să parsez .mol (dacă e gol, o să returneze eroare, dar nu o mai considerăm fatală)
+	// Log pentru a verifica datele primite
+	log.Println("[CreateMolecule] Received data:", req.Name, req.Description)
+
+	// Mapăm datele din structura intermediară în structura Molecule
+	var mol models.Molecule
+	mol.Metadata.Name = req.Name
+	mol.Metadata.Description = req.Description
+	mol.Formula = req.Formula
+	mol.MolFile = req.MolFile
+
+	// Procesăm fișierul .mol
 	parsed, parseErr := prettifier.ParseMolFile(mol.MolFile)
 	if parseErr != nil {
-		// Logăm, dar NU mai oprim
 		log.Println("[CreateMolecule] ParseMolFile error (ignored):", parseErr)
-		// lăsăm parsedData gol
 	} else {
 		mol.ParsedData = parsed
 	}
 
-	// Completează date extra
+	// Completează datele suplimentare
 	mol.ID = primitive.NewObjectID()
 	mol.Metadata.CreatedAt = time.Now()
 
@@ -133,11 +142,22 @@ func UpdateMolecule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var updatedMol models.Molecule
-	if err := json.NewDecoder(r.Body).Decode(&updatedMol); err != nil {
+	// Decodificăm cererea într-un tip intermediar
+	var req models.MoleculeRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid JSON: "+err.Error(), http.StatusBadRequest)
 		return
 	}
+
+	// Log pentru a verifica datele primite
+	log.Println("[UpdateMolecule] Received data:", req.Name, req.Description)
+
+	// Mapăm datele primite în structura Molecule
+	var updatedMol models.Molecule
+	updatedMol.Metadata.Name = req.Name
+	updatedMol.Metadata.Description = req.Description
+	updatedMol.Formula = req.Formula
+	updatedMol.MolFile = req.MolFile
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -149,7 +169,6 @@ func UpdateMolecule(w http.ResponseWriter, r *http.Request) {
 		"name":        updatedMol.Metadata.Name,
 		"formula":     updatedMol.Formula,
 		"description": updatedMol.Metadata.Description,
-		// dacă `MolFile` e gol, e ok, nu-l actualizăm
 	}
 
 	// Dacă a venit totuși `MolFile` => îl parsez best effort

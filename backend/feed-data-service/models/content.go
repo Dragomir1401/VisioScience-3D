@@ -68,3 +68,10 @@ type MolParsedData struct {
 	Atoms  []Atom    `bson:"atoms"     json:"atoms"`
 	Bonds  []Bond    `bson:"bonds"     json:"bonds"`
 }
+
+type MoleculeRequest struct {
+	Name        string `json:"name"`
+	Formula     string `json:"formula"`
+	Description string `json:"description"`
+	MolFile     string `json:"molFile"`
+}

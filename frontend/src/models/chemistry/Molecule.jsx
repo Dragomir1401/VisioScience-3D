@@ -1,8 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-// Poți pune un mic dictionary pentru culori/radii, custom cum dorești
 const elementColors = {
   H: 0xffffff,
   C: 0xaaaaaa,
@@ -11,7 +10,6 @@ const elementColors = {
   S: 0xffff00,
   Cl: 0x00ff00,
   Br: 0x996600,
-  // etc.
 };
 
 function Molecule3DViewer({ moleculeId }) {
@@ -27,14 +25,15 @@ function Molecule3DViewer({ moleculeId }) {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(
       75,
-      800 / 600, // dimensiuni fixe, doar exemplu
+      window.innerWidth / window.innerHeight, // Dimensiuni dinamic
       0.1,
       1000
     );
     camera.position.set(0, 0, 15);
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(800, 600);
+    renderer.setSize(window.innerWidth, window.innerHeight); // Canvas mare
+    renderer.setClearColor(0xeeeeee); // Culoare fundal deschisă
 
     // Adăugăm la DOM
     if (mountRef.current) {
@@ -46,10 +45,10 @@ function Molecule3DViewer({ moleculeId }) {
     controls.enableDamping = true;
 
     // Lumină
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7); // Lumină ambientală
     scene.add(ambientLight);
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    dirLight.position.set(5, 5, 5);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1); // Lumină direcțională
+    dirLight.position.set(5, 5, 5).normalize();
     scene.add(dirLight);
 
     // Facem fetch la structura JSON: { header, counts, atoms[], bonds[] }
@@ -69,8 +68,7 @@ function Molecule3DViewer({ moleculeId }) {
         // 1. Desenăm atomi
         atoms.forEach((atom, idx) => {
           const color = elementColors[atom.type] || 0xcccccc;
-          // exemplu simplu: radius = 0.4, doar pt demo
-          // sau personalizat după `atom.type`
+          // Exemplu simplu: radius = 0.4, doar pentru demo
           const radius = atom.type === "H" ? 0.2 : 0.4;
 
           const geom = new THREE.SphereGeometry(radius, 32, 32);
@@ -83,38 +81,25 @@ function Molecule3DViewer({ moleculeId }) {
 
         // 2. Desenăm legături
         bonds.forEach((bond) => {
-          // bond.atom1, bond.atom2 = index 1-based => scădem 1
           const startAtom = atoms[bond.atom1 - 1];
           const endAtom = atoms[bond.atom2 - 1];
           if (!startAtom || !endAtom) return;
 
-          // Poziții
           const startVec = new THREE.Vector3(startAtom.x, startAtom.y, startAtom.z);
           const endVec = new THREE.Vector3(endAtom.x, endAtom.y, endAtom.z);
 
-          // Definim cilindrul
           const bondGeom = new THREE.CylinderGeometry(0.1, 0.1, 1, 6);
           const bondMat = new THREE.MeshPhongMaterial({ color: 0x888888 });
           const bondMesh = new THREE.Mesh(bondGeom, bondMat);
 
-          // Ca să așezăm cilindrul între 2 puncte:
-          // 1) îl poziționăm la mijloc
           const midPoint = new THREE.Vector3().lerpVectors(startVec, endVec, 0.5);
           bondMesh.position.copy(midPoint);
 
-          // 2) îl "întoarcem" să fie aliniat
-          // Observație: By default, CylinderGeometry e pe axa Y
-          // => "lookAt" transformă axa Y să se îndrepte către endVec
           bondMesh.lookAt(endVec);
-
-          // 3) scale pe lungime
           const dist = startVec.distanceTo(endVec);
           bondMesh.scale.set(1, dist, 1);
 
           moleculeGroup.add(bondMesh);
-
-          // Poți face ceva și cu bondType (1=single, 2=double etc.)
-          // ex. double bond => două cilindri subțiri, paralele
         });
 
         // (opțional) Poți centra totul la origine, calculând bounding box
@@ -148,20 +133,16 @@ function Molecule3DViewer({ moleculeId }) {
 
   // Funcție helper pt centrare la origine
   const centerGroupAtOrigin = (group) => {
-    // Calculează boundingBox
     const box = new THREE.Box3().setFromObject(group);
     const center = new THREE.Vector3();
     box.getCenter(center);
-    // Translatare inversă
     group.position.x -= center.x;
     group.position.y -= center.y;
     group.position.z -= center.z;
   };
 
   return (
-    <div style={{ border: "1px solid #ddd", display: "inline-block" }}>
-      <div ref={mountRef} />
-    </div>
+    <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />
   );
 }
 

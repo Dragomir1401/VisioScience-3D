@@ -40,6 +40,8 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
       return;
     }
 
+    console.log("Submitting form data:", formData);
+
     try {
       const res = await fetch("http://localhost:8000/feed/chem/molecules", {
         method: "POST",

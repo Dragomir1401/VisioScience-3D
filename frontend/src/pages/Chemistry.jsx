@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ChemistryLanding from "../components/chemistry/ChemistryLanding";
 import ChemistryAddForm from "../components/chemistry/ChemistryForm";
 
-// Import componenta 3D
+// Import componenta 3D (unde ai implementat Three.js)
 import Molecule3DViewer from "../models/chemistry/Molecule";
 
 export default function Chemistry() {
@@ -12,6 +12,7 @@ export default function Chemistry() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
+  // La mount, facem fetch la lista de molecule
   useEffect(() => {
     fetchMolecules();
   }, []);
@@ -20,18 +21,24 @@ export default function Chemistry() {
     try {
       setError("");
       setMessage("");
+  
       const res = await fetch("http://localhost:8000/feed/chem/molecules");
+      console.log("Response status:", res.status); // Log statusul răspunsului
+      const data = await res.json();
+      console.log("Response data:", data); // Log răspunsul JSON
+  
       if (!res.ok) {
         throw new Error(`Fetch error: ${res.status}`);
       }
-      const data = await res.json();
+  
       if (!data || data.length === 0) {
         setError("No molecules found");
         return;
       }
+  
       setMolecules(data);
     } catch (err) {
-      console.error(err);
+      console.error("Fetch error:", err); // Log eroarea
       setError("Could not fetch molecules");
     }
   }
@@ -50,6 +57,7 @@ export default function Chemistry() {
     setMessage("");
   }
 
+  // Când crearea reușește, reîncărcăm lista
   function onCreateSuccess() {
     setMessage("Molecule created successfully.");
     setViewMode("landing");
@@ -57,10 +65,12 @@ export default function Chemistry() {
     fetchMolecules();
   }
 
+  // Eroarea venită din formular
   function onError(msg) {
     setError(msg);
   }
 
+  // Buton „Go to Landing”
   function handleGoLanding() {
     setViewMode("landing");
     setSelectedMol(null);
@@ -98,7 +108,7 @@ export default function Chemistry() {
                 }`}
                 onClick={() => handleSelectMol(mol)}
               >
-                {mol.name}
+                {mol.metadata.name}
               </li>
             ))}
           </ul>
@@ -120,30 +130,25 @@ export default function Chemistry() {
         {error && <p className="text-red-500">{error}</p>}
         {message && <p className="text-green-600">{message}</p>}
 
-        {/* LANDING */}
+        {/* LANDING: doar un ecran de întâmpinare */}
         {viewMode === "landing" && !selectedMol && <ChemistryLanding />}
 
-        {/* UPLOAD FORM */}
+        {/* UPLOAD FORM: formularul de încărcare */}
         {viewMode === "upload" && (
           <ChemistryAddForm onCreateSuccess={onCreateSuccess} onError={onError} />
         )}
 
-        {/* DETAIL */}
+        {/* DETAIL: când am selectat o moleculă din stânga */}
         {viewMode === "detail" && selectedMol && (
           <div className="p-4 border rounded bg-white shadow">
             <h2 className="text-xl font-semibold mb-2">
-              {selectedMol.name} ({selectedMol.formula})
+              {selectedMol.metadata.name} ({selectedMol.formula})
             </h2>
             <p className="text-sm text-gray-700 mb-2">
-              <strong>Description:</strong> {selectedMol.description}
-            </p>
-            <p className="text-sm text-gray-700 mb-2 overflow-auto max-h-32 border p-2 rounded">
-              <strong>MolFile:</strong>
-              <br />
-              <pre>{selectedMol.molFile}</pre>
+              <strong>Description:</strong> {selectedMol.metadata.description}
             </p>
 
-            {/* AICI se integrează viewer-ul 3D: */}
+            {/* AICI integrăm viewer-ul 3D */}
             <Molecule3DViewer moleculeId={selectedMol.id} />
           </div>
         )}
@@ -151,4 +156,3 @@ export default function Chemistry() {
     </div>
   );
 }
-
