@@ -30,6 +30,8 @@ const Molecule = ({ moleculeId, onParsed }) => {
   const groupRef = useRef();
   const [atoms, setAtoms] = useState([]);
   const [bonds, setBonds] = useState([]);
+  const [header, setHeader] = useState(null);
+  const [counts, setCounts] = useState(null);
 
   useEffect(() => {
     fetch(`http://localhost:8000/feed/chem/molecules/${moleculeId}/3d`)
@@ -37,6 +39,8 @@ const Molecule = ({ moleculeId, onParsed }) => {
       .then((data) => {
         setAtoms(data.atoms || []);
         setBonds(data.bonds || []);
+        setHeader(data.header);
+        setCounts(data.counts);
         onParsed && onParsed(data);
       })
       .catch((err) => console.error('Eroare la fetch:', err));
@@ -114,10 +118,12 @@ function Molecule3DViewer({ moleculeId }) {
 
   return (
     <div className="w-full h-[600px] relative">
-      <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
+      <Canvas camera={{ position: [0, 0, 20], fov: 75 }}>
         <ambientLight intensity={0.3} />
         <directionalLight position={[10, 10, 10]} intensity={1} />
         <OrbitControls />
+        {/* Adăugăm AxesHelper */}
+        <axesHelper args={[5]} />
         <Molecule moleculeId={moleculeId} onParsed={handleParsedData} />
         <ForestBackground2 />
       </Canvas>
