@@ -1,7 +1,6 @@
 package prettifier
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -17,9 +16,15 @@ func ParseMolFile(molFile string) (models.MolParsedData, error) {
 
 	// Împărțim fișierul pe linii
 	lines := strings.Split(molFile, "\n")
-	if len(lines) == 0 || (len(lines) == 1 && strings.TrimSpace(lines[0]) == "") {
-		return molObj, fmt.Errorf("no .mol content to parse (empty)")
+
+	// Filtrăm liniile complet goale (cu spații)
+	var cleanLines []string
+	for _, l := range lines {
+		if strings.TrimSpace(l) != "" {
+			cleanLines = append(cleanLines, l)
+		}
 	}
+	lines = cleanLines
 
 	//----------------------------------------------------------------
 	// HEADER

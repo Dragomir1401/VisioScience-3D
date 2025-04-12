@@ -1,148 +1,132 @@
-import React, { useEffect, useRef, useState } from "react";
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import React, { useEffect, useRef, useState } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+import * as THREE from 'three';
+import ForestBackground2 from '../ForestBackground2';
 
-const elementColors = {
-  H: 0xffffff,
-  C: 0xaaaaaa,
-  O: 0xff0000,
-  N: 0x0000ff,
-  S: 0xffff00,
-  Cl: 0x00ff00,
-  Br: 0x996600,
+const vdwRadii = {
+  H: 1.2,
+  C: 1.7,
+  N: 1.55,
+  O: 1.52,
+  F: 1.47,
+  Cl: 1.75,
+  Br: 1.85,
+  I: 1.98,
 };
 
-function Molecule3DViewer({ moleculeId }) {
-  const mountRef = useRef(null);
+const elementColors = {
+  H: '#ffffff',
+  C: '#aaaaaa',
+  O: '#ff0000',
+  N: '#0000ff',
+  S: '#ffff00',
+  Cl: '#00ff00',
+  Br: '#996600',
+  I: '#6600cc',
+};
+
+const Molecule = ({ moleculeId, onParsed }) => {
+  const groupRef = useRef();
+  const [atoms, setAtoms] = useState([]);
+  const [bonds, setBonds] = useState([]);
+  const [header, setHeader] = useState(null);
+  const [counts, setCounts] = useState(null);
+  const [elementTypesInMolecule, setElementTypesInMolecule] = useState(new Set());
 
   useEffect(() => {
-    if (!moleculeId) return;
-
-    let scene, camera, renderer, controls;
-    let requestId = null;
-
-    // Creăm scena, camera, renderer
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight, // Dimensiuni dinamic
-      0.1,
-      1000
-    );
-    camera.position.set(0, 0, 15);
-
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight); // Canvas mare
-    renderer.setClearColor(0xeeeeee); // Culoare fundal deschisă
-
-    // Adăugăm la DOM
-    if (mountRef.current) {
-      mountRef.current.appendChild(renderer.domElement);
-    }
-
-    // Controale (rotație, zoom, pan)
-    controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-
-    // Lumină
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7); // Lumină ambientală
-    scene.add(ambientLight);
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1); // Lumină direcțională
-    dirLight.position.set(5, 5, 5).normalize();
-    scene.add(dirLight);
-
-    // Facem fetch la structura JSON: { header, counts, atoms[], bonds[] }
     fetch(`http://localhost:8000/feed/chem/molecules/${moleculeId}/3d`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch 3D data");
-        }
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
-        // data = { header, counts, atoms, bonds }
-        const { atoms, bonds } = data;
-        // Cream un grup ca să putem manipula totul la pachet
-        const moleculeGroup = new THREE.Group();
+        setAtoms(data.atoms || []);
+        setBonds(data.bonds || []);
+        setHeader(data.header);
+        setCounts(data.counts);
 
-        // 1. Desenăm atomi
-        atoms.forEach((atom, idx) => {
-          const color = elementColors[atom.type] || 0xcccccc;
-          // Exemplu simplu: radius = 0.4, doar pentru demo
-          const radius = atom.type === "H" ? 0.2 : 0.4;
+        // Extragem tipurile de atomi din moleculă pentru a le adăuga în legendă
+        const elementsInMolecule = new Set(data.atoms.map((atom) => atom.type));
+        setElementTypesInMolecule(elementsInMolecule);
 
-          const geom = new THREE.SphereGeometry(radius, 32, 32);
-          const mat = new THREE.MeshPhongMaterial({ color });
-          const sphere = new THREE.Mesh(geom, mat);
-          sphere.position.set(atom.x, atom.y, atom.z);
-
-          moleculeGroup.add(sphere);
-        });
-
-        // 2. Desenăm legături
-        bonds.forEach((bond) => {
-          const startAtom = atoms[bond.atom1 - 1];
-          const endAtom = atoms[bond.atom2 - 1];
-          if (!startAtom || !endAtom) return;
-
-          const startVec = new THREE.Vector3(startAtom.x, startAtom.y, startAtom.z);
-          const endVec = new THREE.Vector3(endAtom.x, endAtom.y, endAtom.z);
-
-          const bondGeom = new THREE.CylinderGeometry(0.1, 0.1, 1, 6);
-          const bondMat = new THREE.MeshPhongMaterial({ color: 0x888888 });
-          const bondMesh = new THREE.Mesh(bondGeom, bondMat);
-
-          const midPoint = new THREE.Vector3().lerpVectors(startVec, endVec, 0.5);
-          bondMesh.position.copy(midPoint);
-
-          bondMesh.lookAt(endVec);
-          const dist = startVec.distanceTo(endVec);
-          bondMesh.scale.set(1, dist, 1);
-
-          moleculeGroup.add(bondMesh);
-        });
-
-        // (opțional) Poți centra totul la origine, calculând bounding box
-        centerGroupAtOrigin(moleculeGroup);
-
-        scene.add(moleculeGroup);
+        onParsed && onParsed(data);
       })
-      .catch((err) => {
-        console.error("Error fetching molecule 3D data:", err);
-      });
-
-    // Anim loop
-    const animate = () => {
-      requestId = requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
-    };
-    animate();
-
-    // Cleanup la demontare
-    return () => {
-      if (requestId) cancelAnimationFrame(requestId);
-      if (renderer) {
-        renderer.dispose();
-      }
-      if (mountRef.current) {
-        mountRef.current.removeChild(renderer.domElement);
-      }
-    };
+      .catch((err) => console.error('Eroare la fetch:', err));
   }, [moleculeId]);
 
-  // Funcție helper pt centrare la origine
-  const centerGroupAtOrigin = (group) => {
-    const box = new THREE.Box3().setFromObject(group);
-    const center = new THREE.Vector3();
-    box.getCenter(center);
-    group.position.x -= center.x;
-    group.position.y -= center.y;
-    group.position.z -= center.z;
-  };
+  useEffect(() => {
+    if (groupRef.current) {
+      const box = new THREE.Box3().setFromObject(groupRef.current);
+      const center = new THREE.Vector3();
+      box.getCenter(center);
+      groupRef.current.position.sub(center);
+    }
+  }, [atoms, bonds]);
 
   return (
-    <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />
+    <group ref={groupRef}>
+      {atoms.map((atom, idx) => {
+        const radius = vdwRadii[atom.type] || 1.5;
+        const color = new THREE.Color().setStyle(elementColors[atom.type] || '#cccccc');
+        return (
+          <mesh key={idx} position={[atom.x, atom.y, atom.z]}>
+            <sphereGeometry args={[radius * 0.4, 32, 32]} />
+            <meshStandardMaterial color={color} />
+          </mesh>
+        );
+      })}
+      {bonds.map((bond, idx) => {
+        const start = atoms[bond.atom1];
+        const end = atoms[bond.atom2];
+        if (!start || !end) return null;
+
+        const startVec = new THREE.Vector3(start.x, start.y, start.z);
+        const endVec = new THREE.Vector3(end.x, end.y, end.z);
+        const midPoint = new THREE.Vector3().addVectors(startVec, endVec).multiplyScalar(0.5);
+        const dir = new THREE.Vector3().subVectors(endVec, startVec);
+        const length = dir.length();
+        dir.normalize();
+
+        const bondRadius = bond.bondType === 2 ? 0.1 : bond.bondType === 3 ? 0.12 : 0.08;
+
+        const quaternion = new THREE.Quaternion();
+        quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+
+        return (
+          <mesh key={idx} position={midPoint} quaternion={quaternion}>
+            <cylinderGeometry args={[bondRadius, bondRadius, length, 16]} />
+            <meshStandardMaterial color={0x888888} />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+};
+
+const AtomLegend = ({ elementTypesInMolecule }) => (
+  <div className="absolute bottom-4 left-4 bg-white/80 p-2 rounded shadow text-sm space-y-1 z-10">
+    {[...elementTypesInMolecule].map((el) => (
+      <p key={el} className="flex items-center">
+        <span className="inline-block w-4 h-4 mr-2 rounded-full" style={{ background: elementColors[el] }}></span>
+        {el}
+      </p>
+    ))}
+  </div>
+);
+
+function Molecule3DViewer({ moleculeId }) {
+  const [parsedData, setParsedData] = useState(null);
+  const [elementTypesInMolecule, setElementTypesInMolecule] = useState(new Set());
+
+  return (
+    <div className="w-full h-[600px] relative">
+      <Canvas camera={{ position: [0, 0, 20], fov: 75 }}>
+        <ambientLight intensity={0.3} />
+        <directionalLight position={[10, 10, 10]} intensity={1} />
+        <OrbitControls />
+        <Molecule moleculeId={moleculeId} onParsed={(data) => setElementTypesInMolecule(data.atoms.map((atom) => atom.type))} />
+        <ForestBackground2 />
+      </Canvas>
+      <AtomLegend elementTypesInMolecule={elementTypesInMolecule} />
+    </div>
   );
 }
 
