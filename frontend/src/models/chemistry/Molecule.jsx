@@ -30,9 +30,6 @@ const Molecule = ({ moleculeId, onParsed }) => {
   const groupRef = useRef();
   const [atoms, setAtoms] = useState([]);
   const [bonds, setBonds] = useState([]);
-  const [header, setHeader] = useState(null);
-  const [counts, setCounts] = useState(null);
-  const [elementTypesInMolecule, setElementTypesInMolecule] = useState(new Set());
 
   useEffect(() => {
     fetch(`http://localhost:8000/feed/chem/molecules/${moleculeId}/3d`)
@@ -40,13 +37,6 @@ const Molecule = ({ moleculeId, onParsed }) => {
       .then((data) => {
         setAtoms(data.atoms || []);
         setBonds(data.bonds || []);
-        setHeader(data.header);
-        setCounts(data.counts);
-
-        // Extragem tipurile de atomi din moleculă pentru a le adăuga în legendă
-        const elementsInMolecule = new Set(data.atoms.map((atom) => atom.type));
-        setElementTypesInMolecule(elementsInMolecule);
-
         onParsed && onParsed(data);
       })
       .catch((err) => console.error('Eroare la fetch:', err));
@@ -116,13 +106,19 @@ function Molecule3DViewer({ moleculeId }) {
   const [parsedData, setParsedData] = useState(null);
   const [elementTypesInMolecule, setElementTypesInMolecule] = useState(new Set());
 
+  // Resetăm culorile la schimbarea moleculei
+  const handleParsedData = (data) => {
+    const elementTypes = new Set(data.atoms.map((atom) => atom.type));
+    setElementTypesInMolecule(elementTypes);
+  };
+
   return (
     <div className="w-full h-[600px] relative">
-      <Canvas camera={{ position: [0, 0, 20], fov: 75 }}>
+      <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
         <ambientLight intensity={0.3} />
         <directionalLight position={[10, 10, 10]} intensity={1} />
         <OrbitControls />
-        <Molecule moleculeId={moleculeId} onParsed={(data) => setElementTypesInMolecule(data.atoms.map((atom) => atom.type))} />
+        <Molecule moleculeId={moleculeId} onParsed={handleParsedData} />
         <ForestBackground2 />
       </Canvas>
       <AtomLegend elementTypesInMolecule={elementTypesInMolecule} />
