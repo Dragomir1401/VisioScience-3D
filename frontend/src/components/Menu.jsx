@@ -13,7 +13,7 @@ function Menu() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">VisioScience 3dddD</h1>
+      <h1 className="text-2xl font-bold">VisioScience 3D</h1>
       <Dropdown subjects={subjects} />
     </div>
   );

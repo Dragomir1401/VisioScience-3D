@@ -2,7 +2,7 @@ import React from "react";
 
 const ParallelepipedFormulas = () => {
   return (
-    <div className="bg-purple-100 p-6 rounded-lg shadow-md mt-6 space-y-4 text-purple-900">
+    <div className="bg-white border border-purple-300 p-6 rounded-lg shadow-md mt-6 space-y-4 text-purple-800">
       <h2 className="text-xl font-semibold border-b border-purple-300 pb-2">
         Formule pentru <span className="text-purple-700">Paralelipiped</span>
       </h2>

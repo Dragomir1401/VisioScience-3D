@@ -24,7 +24,7 @@ import PyramidFormulas from "../components/math/PyramidFormulas";
 
 const mathObjects = [
   { id: "cube", label: "Cub", icon: cube },
-  { id: "parallelepiped", label: "Parallelepiped", icon: parallelepiped },
+  { id: "parallelepiped", label: "Paralelipiped", icon: parallelepiped },
   { id: "cylinder", label: "Cilindru", icon: cylinder },
   { id: "sphere", label: "Sferă", icon: sphere },
   { id: "cone", label: "Con", icon: cone },
@@ -35,28 +35,32 @@ const Math = () => {
   const [selectedObject, setSelectedObject] = useState(null);
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen bg-gradient-to-br from-lavender via-[#f8edf7] to-[#fdf6f6] pt-[80px]">
+      {/* Sidebar */}
       <SideMenu
         items={mathObjects}
         selectedItem={selectedObject}
         onSelect={setSelectedObject}
       />
 
-      <main className="flex-1 p-8">
+      {/* Main content */}
+      <main className="flex-1 p-7 overflow-y-auto text-black-500">
         {!selectedObject && <MathLanding />}
-        {selectedObject ? (
-          <div className="space-y-4">
+
+        {selectedObject && (
+          <div className="space-y-6">
             {selectedObject.id === "cube" && (
               <>
-                <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+                <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
                   <CubeScene />
                 </div>
                 <CubeFormulas />
               </>
             )}
+
             {selectedObject.id === "parallelepiped" && (
               <>
-                <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+                <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-rosy-brown bg-white shadow-md">
                   <ParallelepipedScene />
                 </div>
                 <ParallelepipedFormulas />
@@ -65,7 +69,7 @@ const Math = () => {
 
             {selectedObject.id === "sphere" && (
               <>
-                <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+                <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
                   <SphereScene />
                 </div>
                 <SphereFormulas />
@@ -74,7 +78,7 @@ const Math = () => {
 
             {selectedObject.id === "cylinder" && (
               <>
-                <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+                <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-rosy-brown bg-white shadow-md">
                   <CylinderScene />
                 </div>
                 <CylinderFormulas />
@@ -83,27 +87,28 @@ const Math = () => {
 
             {selectedObject.id === "cone" && (
               <>
-                <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+                <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
                   <ConeScene />
                 </div>
-                <p className="text-gray-600">
-                  <ConeFormulas />
-                </p>
+                <ConeFormulas />
               </>
             )}
 
             {selectedObject.id === "pyramid" && (
               <>
-                <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+                <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-rosy-brown bg-white shadow-md">
                   <PyramidScene />
                 </div>
-                <p className="text-gray-600"></p>
                 <PyramidFormulas />
               </>
             )}
           </div>
-        ) : (
-          <p className="text-gray-600">Selectează un obiect din meniu.</p>
+        )}
+
+        {!selectedObject && (
+          <p className="text-rosy-brown italic mt-6">
+            Selectează un obiect din meniu pentru a începe explorarea 3D.
+          </p>
         )}
       </main>
     </div>

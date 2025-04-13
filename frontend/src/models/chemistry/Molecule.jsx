@@ -30,8 +30,6 @@ const Molecule = ({ moleculeId, onParsed }) => {
   const groupRef = useRef();
   const [atoms, setAtoms] = useState([]);
   const [bonds, setBonds] = useState([]);
-  const [header, setHeader] = useState(null);
-  const [counts, setCounts] = useState(null);
 
   useEffect(() => {
     fetch(`http://localhost:8000/feed/chem/molecules/${moleculeId}/3d`)
@@ -39,8 +37,6 @@ const Molecule = ({ moleculeId, onParsed }) => {
       .then((data) => {
         setAtoms(data.atoms || []);
         setBonds(data.bonds || []);
-        setHeader(data.header);
-        setCounts(data.counts);
         onParsed && onParsed(data);
       })
       .catch((err) => console.error('Eroare la fetch:', err));
@@ -80,7 +76,6 @@ const Molecule = ({ moleculeId, onParsed }) => {
         dir.normalize();
 
         const bondRadius = bond.bondType === 2 ? 0.1 : bond.bondType === 3 ? 0.12 : 0.08;
-
         const quaternion = new THREE.Quaternion();
         quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
 
@@ -96,10 +91,13 @@ const Molecule = ({ moleculeId, onParsed }) => {
 };
 
 const AtomLegend = ({ elementTypesInMolecule }) => (
-  <div className="absolute bottom-4 left-4 bg-white/80 p-2 rounded shadow text-sm space-y-1 z-10">
+  <div className="absolute bottom-4 left-4 bg-white/90 border border-mulberry text-black p-3 rounded-lg shadow-md text-sm space-y-1 z-10">
     {[...elementTypesInMolecule].map((el) => (
       <p key={el} className="flex items-center">
-        <span className="inline-block w-4 h-4 mr-2 rounded-full" style={{ background: elementColors[el] }}></span>
+        <span
+          className="inline-block w-4 h-4 mr-2 rounded-full border border-gray-300"
+          style={{ background: elementColors[el] }}
+        ></span>
         {el}
       </p>
     ))}
@@ -109,23 +107,20 @@ const AtomLegend = ({ elementTypesInMolecule }) => (
 function Molecule3DViewer({ moleculeId }) {
   const [parsedData, setParsedData] = useState(null);
   const [elementTypesInMolecule, setElementTypesInMolecule] = useState(new Set());
+  const [isRotatingForestBackground, isRotatingForestBackgroundSetter] = useState(false);
 
-  // Resetăm culorile la schimbarea moleculei
   const handleParsedData = (data) => {
     const elementTypes = new Set(data.atoms.map((atom) => atom.type));
     setElementTypesInMolecule(elementTypes);
+    setParsedData(data);
   };
 
-  const [isRotatingForestBackground, isRotatingForestBackgroundSetter] =
-    useState(false);
-
   return (
-    <div className="w-full h-[600px] relative">
+    <div className="relative w-full h-[600px] border border-mulberry rounded-xl shadow-xl overflow-hidden">
       <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
         <ambientLight intensity={0.3} />
         <directionalLight position={[10, 10, 10]} intensity={1} />
         <OrbitControls />
-        {/* Adăugăm AxesHelper */}
         <axesHelper args={[5]} />
         <Molecule moleculeId={moleculeId} onParsed={handleParsedData} />
         <ForestBackground3

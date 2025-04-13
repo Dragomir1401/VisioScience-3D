@@ -1,6 +1,5 @@
 import React, { useState, Suspense } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Canvas } from "@react-three/fiber";
 import RegisterBaloon from "../models/RegisterBaloon";
 import Loader from "../components/Loader";
@@ -16,6 +15,9 @@ const Register = () => {
   const [registerClicked, setRegisterClicked] = useState(false);
 
   const navigate = useNavigate();
+
+  const inputClass =
+    "w-full px-4 py-2 text-sm text-black bg-white/90 border border-mulberry rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-mulberry";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,20 +60,13 @@ const Register = () => {
   };
 
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center 
-             bg-gradient-to-b from-purple-300 via-violet-200 to-orange-100"
-    >
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#DAA89B] via-[#AE847E] to-[#CB429F]">
+      {/* Balon 3D */}
       <div className="absolute top-0 w-full h-[300px] z-0 pointer-events-none">
         <Canvas camera={{ fov: 40, near: 0.1, far: 1000, position: [0, 0, 5] }}>
           <Suspense fallback={<Loader />}>
-            <directionalLight position={[1, 1, 1]} intensity={4} />
             <ambientLight intensity={0.7} />
-            <hemisphereLight
-              skyColor="0xb1e1ff"
-              groundColor="0xb1e1ff"
-              intensity={1}
-            />
+            <directionalLight position={[1, 2, 1]} intensity={3} />
             <RegisterBaloon
               isTyping={isTyping}
               registerClicked={registerClicked}
@@ -84,45 +79,42 @@ const Register = () => {
         </Canvas>
       </div>
 
-      <div className="bg-white z-10 p-8 rounded shadow-md w-full max-w-2xl mt-56">
-        <h2 className="text-2xl font-bold mb-6 text-purple-800 text-center">
+      {/* Formular */}
+      <div className="bg-white z-10 p-8 rounded-xl shadow-md w-full max-w-2xl mt-56">
+        <h2 className="text-2xl font-bold mb-6 text-[#690375] text-center font-poppins">
           Creează un cont
         </h2>
 
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded relative mb-4">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded relative mb-4 text-center text-sm">
             {error}
           </div>
         )}
 
         {successMessage && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded relative mb-4">
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded relative mb-4 text-center text-sm">
             {successMessage}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
-          {/* Email */}
+        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4 font-worksans">
           <div className="col-span-1">
-            <label className="block mb-1 text-gray-700">Email:</label>
             <input
               type="email"
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className={inputClass}
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
-                setIsTyping((prev) => !prev);
+                setIsTyping(true);
               }}
               required
-              placeholder="ex: user@example.com"
+              placeholder="Email"
             />
           </div>
 
-          {/* Rol */}
           <div className="col-span-1">
-            <label className="block mb-1 text-gray-700">Rol:</label>
             <select
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className={inputClass}
               value={role}
               onChange={(e) => setRole(e.target.value)}
             >
@@ -131,50 +123,45 @@ const Register = () => {
             </select>
           </div>
 
-          {/* Parola */}
           <div className="col-span-1">
-            <label className="block mb-1 text-gray-700">Parola:</label>
             <input
               type="password"
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className={inputClass}
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
-                setIsTyping((prev) => !prev);
+                setIsTyping(true);
               }}
               required
-              placeholder="******"
+              placeholder="Parola"
             />
           </div>
 
-          {/* Confirm Parola */}
           <div className="col-span-1">
-            <label className="block mb-1 text-gray-700">Confirmă parola:</label>
             <input
               type="password"
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className={inputClass}
               value={confirmPassword}
               onChange={(e) => {
                 setConfirmPassword(e.target.value);
-                setIsTyping((prev) => !prev);
+                setIsTyping(true);
               }}
               required
-              placeholder="******"
+              placeholder="Confirmă parola"
             />
           </div>
 
-          {/* Butonul și link-ul */}
           <div className="col-span-2 text-center mt-4">
             <button
               type="submit"
-              className="w-full py-2 bg-purple-700 text-white rounded-md hover:bg-purple-800 transition"
+              className="w-full py-2 bg-[#690375] text-white font-semibold rounded-md hover:bg-[#2C0E37] transition"
             >
               Creează cont
             </button>
 
-            <p className="mt-6 text-gray-700">
+            <p className="mt-6 text-black font-medium">
               Ai deja cont?{" "}
-              <Link to="/login" className="text-purple-600 hover:underline">
+              <Link to="/login" className="text-mulberry underline hover:text-[#42023C]">
                 Conectează-te
               </Link>
             </p>

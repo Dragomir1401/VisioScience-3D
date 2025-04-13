@@ -31,7 +31,7 @@ const Physics = () => {
   const [sliderValue, setSliderValue] = useState(0);
 
   return (
-    <div className="flex">
+    <div className="flex bg-gradient-to-b from-[#fdf4ff] via-[#f3e8ff] to-[#fff7ed] min-h-screen pt-[80px]">
       <SideMenu
         items={physicsObjects}
         selectedItem={selectedObject}
@@ -41,41 +41,38 @@ const Physics = () => {
         }}
       />
 
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-8 overflow-y-auto text-black-500">
         {!selectedObject && <PhysicsLanding />}
-        {selectedObject && selectedObject.id === "inclined_plane" && (
-          <>
-            <div className="space-y-4">
-              <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg relative">
-                <InclinedPlaneScene sliderValue={sliderValue} />
-              </div>
 
-              <div className="flex items-center gap-4">
-                <label className="text-gray-700 font-medium">Poziție:</label>
-                <input
-                  type="range"
-                  min={-4}
-                  max={4}
-                  step={0.01}
-                  value={sliderValue}
-                  onChange={(e) => setSliderValue(parseFloat(e.target.value))}
-                  className="w-full max-w-lg accent-purple-600 
-                bg-purple-200/40 rounded-lg overflow-hidden 
-                appearance-none h-2 cursor-pointer 
-                transition-all"
-                />
-              </div>
+        {selectedObject && selectedObject.id === "inclined_plane" && (
+          <div className="space-y-6">
+            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md relative">
+              <InclinedPlaneScene sliderValue={sliderValue} />
             </div>
-          </>
+
+            <div className="flex items-center gap-4">
+              <label className="text-mulberry font-semibold">Poziție:</label>
+              <input
+                type="range"
+                min={-4}
+                max={4}
+                step={0.01}
+                value={sliderValue}
+                onChange={(e) => setSliderValue(parseFloat(e.target.value))}
+                className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
+              />
+            </div>
+          </div>
         )}
+
         {selectedObject && selectedObject.id === "pulley_system2" && (
           <>
-            <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg relative">
+            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md relative">
               <Pulley2Scene sliderValue={sliderValue} />
             </div>
 
-            <div className="flex items-center gap-4">
-              <label className="text-purple-800 font-semibold">
+            <div className="flex items-center gap-4 mt-4">
+              <label className="text-mulberry font-semibold">
                 Poziție mase:
               </label>
               <input
@@ -90,14 +87,15 @@ const Physics = () => {
             </div>
           </>
         )}
+
         {selectedObject && selectedObject.id === "pulley_system3" && (
           <>
-            <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg relative">
+            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-rosy-brown bg-white shadow-md relative">
               <Pulley3Scene sliderValue={sliderValue} />
             </div>
 
-            <div className="flex items-center gap-4">
-              <label className="text-purple-800 font-semibold">
+            <div className="flex items-center gap-4 mt-4">
+              <label className="text-rosy-brown font-semibold">
                 Poziție mase:
               </label>
               <input
@@ -112,14 +110,15 @@ const Physics = () => {
             </div>
           </>
         )}
+
         {selectedObject && selectedObject.id === "pendulum" && (
           <>
-            <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg relative">
+            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md relative">
               <PendulumScene sliderValue={sliderValue} />
             </div>
 
-            <div className="flex items-center gap-4">
-              <label className="text-purple-800 font-semibold">
+            <div className="flex items-center gap-4 mt-4">
+              <label className="text-mulberry font-semibold">
                 Unghi pendul (°):
               </label>
               <input

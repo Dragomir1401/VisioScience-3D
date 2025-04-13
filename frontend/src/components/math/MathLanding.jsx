@@ -3,8 +3,8 @@ import { cube } from "../../assets/icons";
 
 const MathLanding = () => {
   return (
-    <div className="bg-purple-50 p-8 rounded-lg shadow-md text-purple-800 space-y-6">
-      <h2 className="text-3xl font-bold text-purple-700">
+    <div className="bg-[#fef6ff] p-8 rounded-xl shadow-xl text-black-500 space-y-6 border border-mulberry">
+      <h2 className="text-3xl font-bold bg-gradient-to-r from-mulberry to-rosy-brown bg-clip-text text-transparent">
         Bine ai venit la secțiunea de Matematică
       </h2>
       <p className="text-lg">

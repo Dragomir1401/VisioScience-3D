@@ -6,34 +6,34 @@ const renderContent = {
   1: <MainPopupBox text="Bine ai venit la VisioScience3D!" />,
   2: (
     <PopupBox
-      text="Invata matematica prin vizualizarea formelor geometrice!"
+      text="Învață matematica prin vizualizarea formelor geometrice!"
       link="/math"
-      buttonText="Intra"
+      buttonText="Intră"
     />
   ),
   3: (
     <PopupBox
-      text="Invata fizica prin vizualizarea fenomenelor in 3D!"
+      text="Învață fizica prin vizualizarea fenomenelor în 3D!"
       link="/physics"
-      buttonText="Intra"
+      buttonText="Intră"
     />
   ),
   4: (
     <PopupBox
-      text="Vezi formulele chimice in 3D!"
+      text="Vezi formulele chimice în 3D!"
       link="/chemistry"
-      buttonText="Intra"
+      buttonText="Intră"
     />
   ),
   5: (
     <PopupBox
-      text="Exploreaza Sistemul Solar din browserul tau!"
+      text="Explorează Sistemul Solar din browserul tău!"
       link="/astronomy"
-      buttonText="Intra"
+      buttonText="Intră"
     />
   ),
-  6: <PopupBox text="In curand" link="#" buttonText="..." />,
-  7: <PopupBox text="In curand" link="#" buttonText="..." />,
+  6: <PopupBox text="În curând..." link="#" buttonText="..." />,
+  7: <PopupBox text="În curând..." link="#" buttonText="..." />,
 };
 
 const Popup = ({ currentStage }) => {
