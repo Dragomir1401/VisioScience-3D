@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
+import { Canvas } from "@react-three/fiber";
+import ChemistryBaloon from "../../models/chemistry/ChemistryBaloon";
+import Loader from "../Loader";
 
 const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
   const [uploadMode, setUploadMode] = useState("file");
@@ -11,9 +14,13 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
 
   function handleChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setIsTyping(true);
+    setTimeout(() => setIsTyping(false), 300);
   }
 
   async function handleFileChange(e) {
@@ -33,14 +40,13 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
     e.preventDefault();
     setError("");
     setMessage("");
+    setUploadSuccess(false);
 
     if (!formData.name || !formData.molFile) {
       setError("Name și MolFile sunt obligatorii!");
       onError && onError("Name și MolFile obligatorii");
       return;
     }
-
-    console.log("Submitting form data:", formData);
 
     try {
       const res = await fetch("http://localhost:8000/feed/chem/molecules", {
@@ -52,12 +58,16 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
         const txt = await res.text();
         throw new Error(txt);
       }
-      const data = await res.json();
-      setMessage(`Molecule created with id: ${data.id}`);
 
-      // Cleanup
-      setFormData({ name: "", formula: "", description: "", molFile: "" });
-      onCreateSuccess && onCreateSuccess();
+      const data = await res.json();
+      setMessage(`Molecula a fost creată! ID: ${data.id}`);
+      setUploadSuccess(true);
+
+      setTimeout(() => {
+        setFormData({ name: "", formula: "", description: "", molFile: "" });
+        setUploadSuccess(false);
+        onCreateSuccess && onCreateSuccess();
+      }, 2000); 
     } catch (err) {
       console.error(err);
       setError(err.message);
@@ -66,100 +76,121 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
   }
 
   return (
-    <div className="max-w-md bg-white p-4 border rounded shadow space-y-3">
-      <h2 className="text-lg font-semibold">Add New Molecule</h2>
-      {error && <p className="text-red-500">{error}</p>}
-      {message && <p className="text-green-600">{message}</p>}
+    <div className="relative min-h-screen w-full h-full flex items-center justify-center bg-gradient-to-b from-purple-300 via-violet-200 to-orange-100">
+      {/* Balon 3D */}
+      <div className="absolute top-0 w-full h-[300px] z-0 pointer-events-none">
+        <Canvas camera={{ fov: 45, near: 0.1, far: 1000, position: [0, 0, 5] }}>
+          <Suspense fallback={<Loader />}>
+            <ambientLight intensity={0.7} />
+            <directionalLight position={[1, 2, 1]} intensity={3} />
+            <ChemistryBaloon
+              isTyping={isTyping}
+              uploadSuccess={uploadSuccess}
+              position={[0, -0.5, 0]}
+              scale={[0.65, 0.65, 0.65]}
+            />
+          </Suspense>
+        </Canvas>
+      </div>
 
-      <div className="flex items-center gap-4">
-        <label className="flex items-center gap-1 cursor-pointer">
+      {/* Formular */}
+      <div className="relative z-10 bg-white p-8 rounded shadow-md w-full max-w-md mt-48">
+        <h2 className="text-2xl font-bold mb-6 text-purple-800">
+          Adaugă o moleculă
+        </h2>
+
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
+            {error}
+          </div>
+        )}
+
+        {message && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4">
+            {message}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="flex gap-4">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="uploadMode"
+                value="file"
+                checked={uploadMode === "file"}
+                onChange={() => setUploadMode("file")}
+              />
+              Upload .mol
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="uploadMode"
+                value="text"
+                checked={uploadMode === "text"}
+                onChange={() => setUploadMode("text")}
+              />
+              Paste mol text
+            </label>
+          </div>
+
           <input
-            type="radio"
-            name="uploadMode"
-            value="file"
-            checked={uploadMode === "file"}
-            onChange={() => setUploadMode("file")}
-          />
-          <span>Upload .mol file</span>
-        </label>
-        <label className="flex items-center gap-1 cursor-pointer">
-          <input
-            type="radio"
-            name="uploadMode"
-            value="text"
-            checked={uploadMode === "text"}
-            onChange={() => setUploadMode("text")}
-          />
-          <span>Paste molFile text</span>
-        </label>
-      </div>
-
-      {/* Name */}
-      <div className="space-y-2">
-        <label className="block text-sm font-medium">Name</label>
-        <input
-          type="text"
-          name="name"
-          className="border w-full p-2"
-          value={formData.name}
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* Formula */}
-      <div className="space-y-2">
-        <label className="block text-sm font-medium">Formula</label>
-        <input
-          type="text"
-          name="formula"
-          className="border w-full p-2"
-          value={formData.formula}
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* Description */}
-      <div className="space-y-2">
-        <label className="block text-sm font-medium">Description</label>
-        <textarea
-          name="description"
-          rows={2}
-          className="border w-full p-2"
-          value={formData.description}
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* MolFile */}
-      {uploadMode === "file" ? (
-        <div className="space-y-2">
-          <label className="block text-sm font-medium">MolFile Upload</label>
-          <input type="file" accept=".mol" onChange={handleFileChange} />
-          {formData.molFile && (
-            <p className="text-sm text-gray-500 border p-1 rounded">
-              {formData.molFile.substring(0, 80)}...
-            </p>
-          )}
-        </div>
-      ) : (
-        <div className="space-y-2">
-          <label className="block text-sm font-medium">Paste MolFile text</label>
-          <textarea
-            name="molFile"
-            rows={4}
-            className="border w-full p-2"
-            value={formData.molFile}
+            type="text"
+            name="name"
+            placeholder="Nume moleculă"
+            className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-purple-400"
+            value={formData.name}
             onChange={handleChange}
           />
-        </div>
-      )}
 
-      <button
-        onClick={handleSubmit}
-        className="bg-purple-700 text-white px-4 py-2 rounded"
-      >
-        Add Molecule
-      </button>
+          <input
+            type="text"
+            name="formula"
+            placeholder="Formulă chimică"
+            className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-purple-400"
+            value={formData.formula}
+            onChange={handleChange}
+          />
+
+          <textarea
+            name="description"
+            placeholder="Descriere"
+            rows={2}
+            className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-purple-400"
+            value={formData.description}
+            onChange={handleChange}
+          />
+
+          {uploadMode === "file" ? (
+            <div>
+              <input type="file" accept=".mol" onChange={handleFileChange} />
+              {formData.molFile && (
+                <p className="text-sm mt-2 text-gray-500 border p-2 rounded max-h-32 overflow-auto">
+                  {formData.molFile.slice(0, 100)}...
+                </p>
+              )}
+            </div>
+          ) : (
+            <textarea
+              name="molFile"
+              rows={6}
+              placeholder="Lipește conținutul .mol aici"
+              className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-purple-400"
+              value={formData.molFile}
+              onChange={handleChange}
+            />
+          )}
+
+          <button
+            type="submit"
+            className="w-full py-2 mt-4 bg-purple-700 text-white 
+                       rounded-md hover:bg-purple-800 transition"
+          >
+            Încarcă molecula
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

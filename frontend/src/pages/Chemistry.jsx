@@ -60,7 +60,6 @@ export default function Chemistry() {
   // Când crearea reușește, reîncărcăm lista
   function onCreateSuccess() {
     setMessage("Molecule created successfully.");
-    setViewMode("landing");
     setSelectedMol(null);
     fetchMolecules();
   }
@@ -127,7 +126,6 @@ export default function Chemistry() {
 
       {/* --- MAIN CONTENT --- */}
       <main className="flex-1 p-8 space-y-4">
-        {error && <p className="text-red-500">{error}</p>}
         {message && <p className="text-green-600">{message}</p>}
 
         {/* LANDING: doar un ecran de întâmpinare */}
