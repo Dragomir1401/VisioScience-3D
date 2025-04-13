@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
-import ForestBackground2 from '../ForestBackground2';
+import ForestBackground3 from '../ForestBackground3';
 
 const vdwRadii = {
   H: 1.2,
@@ -116,16 +116,22 @@ function Molecule3DViewer({ moleculeId }) {
     setElementTypesInMolecule(elementTypes);
   };
 
+  const [isRotatingForestBackground, isRotatingForestBackgroundSetter] =
+    useState(false);
+
   return (
     <div className="w-full h-[600px] relative">
-      <Canvas camera={{ position: [0, 0, 20], fov: 75 }}>
+      <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
         <ambientLight intensity={0.3} />
         <directionalLight position={[10, 10, 10]} intensity={1} />
         <OrbitControls />
         {/* Adăugăm AxesHelper */}
         <axesHelper args={[5]} />
         <Molecule moleculeId={moleculeId} onParsed={handleParsedData} />
-        <ForestBackground2 />
+        <ForestBackground3
+          isRotatingForestBackground={isRotatingForestBackground}
+          isRotatingForestBackgroundSetter={isRotatingForestBackgroundSetter}
+        />
       </Canvas>
       <AtomLegend elementTypesInMolecule={elementTypesInMolecule} />
     </div>

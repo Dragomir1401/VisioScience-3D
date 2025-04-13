@@ -117,6 +117,9 @@ const InclinedPlane = ({ sliderValue }) => {
 };
 
 const InclinedPlaneScene = ({ sliderValue }) => {
+  const [isRotatingForestBackground, isRotatingForestBackgroundSetter] =
+    useState(false);
+
   return (
     <div className="w-full h-[600px] relative">
       <div className="absolute top-4 right-4 z-10 bg-white/80 backdrop-blur-md p-2 rounded shadow-md">
@@ -150,7 +153,10 @@ const InclinedPlaneScene = ({ sliderValue }) => {
         />
         <OrbitControls enablePan={false} />
         <InclinedPlane sliderValue={sliderValue} />
-        <ForestBackground2 />
+        <ForestBackground2
+          isRotatingForestBackground={isRotatingForestBackground}
+          isRotatingForestBackgroundSetter={isRotatingForestBackgroundSetter}
+         />
       </Canvas>
     </div>
   );

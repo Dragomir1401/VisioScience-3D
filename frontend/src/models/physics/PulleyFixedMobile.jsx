@@ -240,34 +240,42 @@ const PulleyFixedMobileSystem = ({ sliderValue }) => {
   );
 };
 
-const PulleyFixedMobileScene = ({ sliderValue }) => (
-  <div className="w-full h-[600px] relative">
-    <div className="absolute top-4 right-4 z-10 bg-white/80 backdrop-blur-md p-2 rounded shadow-md">
-      <span className="block text-sm font-medium text-gray-700 text-center">
-        Poziție masă
-      </span>
-      <input
-        type="range"
-        min={-2}
-        max={2}
-        step={0.01}
-        value={sliderValue}
-        readOnly
-        className="w-48 accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
-      />
+const PulleyFixedMobileScene = ({ sliderValue }) => {
+  const [isRotatingForestBackground, isRotatingForestBackgroundSetter] =
+    useState(false);
+
+  return (
+    <div className="w-full h-[600px] relative">
+      <div className="absolute top-4 right-4 z-10 bg-white/80 backdrop-blur-md p-2 rounded shadow-md">
+        <span className="block text-sm font-medium text-gray-700 text-center">
+          Poziție masă
+        </span>
+        <input
+          type="range"
+          min={-2}
+          max={2}
+          step={0.01}
+          value={sliderValue}
+          readOnly
+          className="w-48 accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
+        />
+      </div>
+
+      <Canvas camera={{ position: [0, 2.5, 8], fov: 75 }}>
+        <ambientLight intensity={0.3} />
+        <directionalLight position={[5, 5, 5]} intensity={1.5} />
+        <spotLight position={[0, 5, 0]} angle={0.5} intensity={1} />
+        <OrbitControls enablePan={false} />
+
+        <PulleyFixedMobileSystem sliderValue={sliderValue} />
+
+        <ForestBackground2
+          isRotatingForestBackground={isRotatingForestBackground}
+          isRotatingForestBackgroundSetter={isRotatingForestBackgroundSetter}
+        />
+      </Canvas>
     </div>
-
-    <Canvas camera={{ position: [0, 2.5, 8], fov: 75 }}>
-      <ambientLight intensity={0.3} />
-      <directionalLight position={[5, 5, 5]} intensity={1.5} />
-      <spotLight position={[0, 5, 0]} angle={0.5} intensity={1} />
-      <OrbitControls enablePan={false} />
-
-      <PulleyFixedMobileSystem sliderValue={sliderValue} />
-
-      <ForestBackground2 />
-    </Canvas>
-  </div>
-);
+  )
+};
 
 export default PulleyFixedMobileScene;

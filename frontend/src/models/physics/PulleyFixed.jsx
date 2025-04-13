@@ -189,7 +189,10 @@ const PulleySystem = ({ sliderValue }) => {
   );
 };
 
-const PulleyScene = ({ sliderValue }) => (
+const PulleyScene = ({ sliderValue }) => {
+  const [isRotatingForestBackground, isRotatingForestBackgroundSetter] =
+    useState(false);
+  return (
   <div className="w-full h-[600px] relative">
     <div className="absolute top-4 right-4 z-10 bg-white/80 backdrop-blur-md p-2 rounded shadow-md">
       <span className="block text-sm font-medium text-gray-700 text-center">
@@ -212,9 +215,13 @@ const PulleyScene = ({ sliderValue }) => (
       <spotLight position={[0, 5, 0]} angle={0.5} intensity={1} />
       <OrbitControls enablePan={false} />
       <PulleySystem sliderValue={sliderValue} />
-      <ForestBackground2 />
+      <ForestBackground2 
+        isRotatingForestBackground={isRotatingForestBackground}
+        isRotatingForestBackgroundSetter={isRotatingForestBackgroundSetter}
+      />
     </Canvas>
   </div>
-);
+  )
+};
 
 export default PulleyScene;
