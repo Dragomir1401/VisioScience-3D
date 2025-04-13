@@ -6,6 +6,7 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 
 	endpoints "user-data-service/endpoints"
 	middleware "user-data-service/middleware"
@@ -13,16 +14,17 @@ import (
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	mongo.InitDB()
 
 	r := mux.NewRouter()
 
 	r.HandleFunc("/user/auth/register", endpoints.Register).Methods("POST")
 	r.HandleFunc("/user/auth/login", endpoints.Login).Methods("POST")
-
-	secured := r.PathPrefix("/user/auth").Subrouter()
-	secured.Use(middleware.JWTAuth)
-	secured.HandleFunc("/me", endpoints.GetMe).Methods("GET")
+	r.Handle("/user/me", middleware.JWTAuth(http.HandlerFunc(endpoints.GetMe)))
 
 	corsObj := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}), // Allow all origins for development purposes

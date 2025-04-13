@@ -35,6 +35,16 @@ const Navbar = () => {
           >
             Contact
           </NavLink>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              isActive
+                ? "text-mulberry font-semibold border-b-2 border-mulberry"
+                : "text-gray-700 hover:text-mulberry transition"
+            }
+          >
+            Profil
+          </NavLink>
         </nav>
       </div>
     </header>

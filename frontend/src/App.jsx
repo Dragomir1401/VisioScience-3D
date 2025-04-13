@@ -5,6 +5,7 @@ import { Acasa, Despre, Contact, Math, Physics, Chemistry } from "./pages";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PrivateRoute from "./pages/PrivateRoute";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -25,6 +26,14 @@ function App() {
           />
           <Route path="/despre" element={<Despre />} />
           <Route path="/contact" element={<Contact />} />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/math"
             element={
