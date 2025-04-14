@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PrivateRoute from "./pages/PrivateRoute";
 import Profile from "./pages/Profile";
+import ClassDetails from "./components/teacher/ClassDetails";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path="/clasa/:id" element={<ClassDetails />} />
           <Route
             path="/math"
             element={

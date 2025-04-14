@@ -232,3 +232,40 @@ func GetClassStudents(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(students)
 }
+
+func RemoveStudentFromClass(w http.ResponseWriter, r *http.Request) {
+	claims := r.Context().Value("claims").(*utils.CustomClaims)
+	if claims.Role != string(models.RoleTeacher) {
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
+	classID := mux.Vars(r)["id"]
+	studentID := mux.Vars(r)["studentId"]
+
+	classOID, err := primitive.ObjectIDFromHex(classID)
+	if err != nil {
+		http.Error(w, "Invalid class ID", http.StatusBadRequest)
+		return
+	}
+
+	studentOID, err := primitive.ObjectIDFromHex(studentID)
+	if err != nil {
+		http.Error(w, "Invalid student ID", http.StatusBadRequest)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	update := bson.M{"$pull": bson.M{"students": studentOID}}
+
+	_, err = db.ClassCollection.UpdateByID(ctx, classOID, update)
+	if err != nil {
+		http.Error(w, "Failed to remove student", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Student removed"})
+}
