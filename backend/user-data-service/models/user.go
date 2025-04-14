@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -22,6 +24,16 @@ var roleMap = map[string]Role{
 type User struct {
 	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
 	Email    string             `bson:"email" json:"email"`
-	Password string             `bson:"password" json:"-"` // Encrypted password
+	Password string             `bson:"password" json:"-"`
 	Role     Role               `bson:"role"   json:"role"`
+
+	// Optional fields
+	Classes      []primitive.ObjectID `bson:"classes,omitempty" json:"classes,omitempty"`             // clasele la care e înscris sau pe care le deține
+	QuizzResults []QuizResultMeta     `bson:"quizz_results,omitempty" json:"quizz_results,omitempty"` // doar pentru elevi
+}
+
+type QuizResultMeta struct {
+	QuizID    primitive.ObjectID `bson:"quiz_id"`
+	Score     int                `bson:"score"`     // punctaj final
+	Timestamp time.Time          `bson:"timestamp"` // când a completat
 }

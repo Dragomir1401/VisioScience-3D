@@ -4,11 +4,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gorilla/handlers"
+	gorillaHandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 
-	endpoints "user-data-service/endpoints"
+	handlers "user-data-service/endpoints"
 	middleware "user-data-service/middleware"
 	mongo "user-data-service/mongo"
 )
@@ -22,14 +22,20 @@ func main() {
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/user/auth/register", endpoints.Register).Methods("POST")
-	r.HandleFunc("/user/auth/login", endpoints.Login).Methods("POST")
-	r.Handle("/user/me", middleware.JWTAuth(http.HandlerFunc(endpoints.GetMe)))
+	r.HandleFunc("/user/auth/register", handlers.Register).Methods("POST")
+	r.HandleFunc("/user/auth/login", handlers.Login).Methods("POST")
+	r.Handle("/user/me", middleware.JWTAuth(http.HandlerFunc(handlers.GetMe)))
 
-	corsObj := handlers.CORS(
-		handlers.AllowedOrigins([]string{"*"}), // Allow all origins for development purposes
-		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
-		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
+	r.Handle("/user/classes", middleware.JWTAuth(http.HandlerFunc(handlers.CreateClass))).Methods("POST")
+	r.Handle("/user/classes", middleware.JWTAuth(http.HandlerFunc(handlers.ListMyClasses))).Methods("GET")
+
+	r.Handle("/user/classes/{code}/join", middleware.JWTAuth(http.HandlerFunc(handlers.JoinClass))).Methods("POST")
+	r.Handle("/user/class/add-student", middleware.JWTAuth(http.HandlerFunc(handlers.AddStudentToClass))).Methods("POST")
+
+	corsObj := gorillaHandlers.CORS(
+		gorillaHandlers.AllowedOrigins([]string{"*"}), // Allow all origins for development purposes
+		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
+		gorillaHandlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 	)
 
 	log.Println("User-Data-Service running on port 8081...")
