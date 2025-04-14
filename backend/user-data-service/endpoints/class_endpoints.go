@@ -11,6 +11,7 @@ import (
 
 	"user-data-service/utils"
 
+	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -186,4 +187,48 @@ func AddStudentToClass(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "Student adăugat cu succes în clasă.",
 	})
+}
+
+func GetClassStudents(w http.ResponseWriter, r *http.Request) {
+	claims := r.Context().Value("claims").(*utils.CustomClaims)
+	if claims.Role != string(models.RoleTeacher) {
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
+	classIDHex := mux.Vars(r)["id"]
+	classID, err := primitive.ObjectIDFromHex(classIDHex)
+	if err != nil {
+		http.Error(w, "Invalid class ID", http.StatusBadRequest)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	var class models.Class
+	if err := db.ClassCollection.FindOne(ctx, bson.M{"_id": classID}).Decode(&class); err != nil {
+		http.Error(w, "Class not found", http.StatusNotFound)
+		return
+	}
+
+	// Căutăm detalii despre toți studenții
+	cursor, err := db.UserCollection.Find(ctx, bson.M{"_id": bson.M{"$in": class.Students}})
+	if err != nil {
+		http.Error(w, "Error fetching students", http.StatusInternalServerError)
+		return
+	}
+
+	var students []models.User
+	if err := cursor.All(ctx, &students); err != nil {
+		http.Error(w, "Cursor error", http.StatusInternalServerError)
+		return
+	}
+
+	// Ascundem parolele
+	for i := range students {
+		students[i].Password = ""
+	}
+
+	json.NewEncoder(w).Encode(students)
 }

@@ -31,6 +31,7 @@ func main() {
 
 	r.Handle("/user/classes/{code}/join", middleware.JWTAuth(http.HandlerFunc(handlers.JoinClass))).Methods("POST")
 	r.Handle("/user/class/add-student", middleware.JWTAuth(http.HandlerFunc(handlers.AddStudentToClass))).Methods("POST")
+	r.Handle("/user/classes/{id}/students", middleware.JWTAuth(http.HandlerFunc(handlers.GetClassStudents))).Methods("GET")
 
 	corsObj := gorillaHandlers.CORS(
 		gorillaHandlers.AllowedOrigins([]string{"*"}), // Allow all origins for development purposes

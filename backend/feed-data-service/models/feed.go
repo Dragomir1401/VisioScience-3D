@@ -1,3 +1,11 @@
+package models
+
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
 type Feed struct {
 	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
 	Formula  Formula            `json:"formula"       bson:"formula"`
