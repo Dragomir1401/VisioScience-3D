@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TeacherDashboard from "../components/teacher/TeacherDashboard";
+import InvitesPanel from "../components/user/InvitePanel";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -50,10 +51,12 @@ const Profile = () => {
             <span className="font-semibold text-black">Rol:</span> {user?.role}
           </div>
           <div>
-            <span className="font-semibold text-black">ID:</span> {user?._id}
+            <span className="font-semibold text-black">ID:</span> {user?.id}
           </div>
         </div>
       </div>
+
+      <InvitesPanel />
 
       {/* Dacă utilizatorul este profesor, afișăm dashboardul */}
       {user?.role === "PROFESOR" && (

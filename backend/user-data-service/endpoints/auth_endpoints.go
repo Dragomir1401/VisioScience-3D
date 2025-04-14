@@ -88,7 +88,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// generăm token
-	token, err := utils.GenerateToken(user.ID.Hex(), string(user.Role))
+	token, err := utils.GenerateToken(user.ID.Hex(), string(user.Role), user.Email)
 	if err != nil {
 		http.Error(w, "Cannot generate token", http.StatusInternalServerError)
 		return

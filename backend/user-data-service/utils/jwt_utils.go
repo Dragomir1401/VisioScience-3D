@@ -11,6 +11,7 @@ import (
 type CustomClaims struct {
 	UserID string `json:"user_id"`
 	Role   string `json:"role"`
+	Email  string `json:"email"`
 	jwt.RegisteredClaims
 }
 
@@ -24,10 +25,11 @@ func getJwtSecret() []byte {
 }
 
 // ✅ Generează token JWT valid
-func GenerateToken(userID, role string) (string, error) {
+func GenerateToken(userID, role, email string) (string, error) {
 	claims := CustomClaims{
 		UserID: userID,
 		Role:   role,
+		Email:  email,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),

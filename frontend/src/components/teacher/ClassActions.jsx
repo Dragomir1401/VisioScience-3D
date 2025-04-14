@@ -5,10 +5,13 @@ const ClassActions = ({ classId, onSuccess }) => {
   const [status, setStatus] = useState("");
   const token = localStorage.getItem("token");
 
-  const handleAddStudent = async () => {
+  const handleInviteStudent = async () => {
+    setStatus("");
+    console.log("Class ID primit:", classId);
+
     try {
       const res = await fetch(
-        `http://localhost:8000/user/classes/${classId}/add-student`,
+        `http://localhost:8000/user/classes/${classId}/invite`,
         {
           method: "POST",
           headers: {
@@ -22,41 +25,21 @@ const ClassActions = ({ classId, onSuccess }) => {
       const result = await res.json();
 
       if (!res.ok) {
-        throw new Error(result.message || "Eroare la adăugare.");
+        throw new Error(result.message || "Eroare la trimiterea invitației.");
       }
 
-      setStatus("Elev adăugat cu succes!");
+      setStatus("Invitație trimisă cu succes!");
       setEmail("");
-      onSuccess && onSuccess(); // Reîncarcă elevii
+      onSuccess && onSuccess();
     } catch (err) {
-      setStatus(err.message);
-    }
-  };
-
-  const handleRemoveStudent = async (studentId) => {
-    if (!window.confirm("Sigur vrei să elimini acest elev?")) return;
-
-    try {
-      const res = await fetch(
-        `http://localhost:8000/user/classes/${classId}/students/${studentId}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (!res.ok) throw new Error("Eroare la eliminarea elevului.");
-
-      setStudents((prev) => prev.filter((s) => s.ID !== studentId));
-    } catch (err) {
-      alert("Eroare: " + err.message);
+      setStatus("Eroare: " + err.message);
     }
   };
 
   return (
     <div className="bg-purple-50 border border-purple-200 p-4 rounded-md mt-6">
       <h4 className="font-semibold text-purple-700 mb-2">
-        Adaugă elev în clasă
+        Invită un elev să se alăture clasei
       </h4>
       <div className="flex gap-2">
         <input
@@ -67,10 +50,10 @@ const ClassActions = ({ classId, onSuccess }) => {
           className="flex-1 px-3 py-2 border rounded-md text-sm border-mulberry focus:outline-none"
         />
         <button
-          onClick={handleAddStudent}
+          onClick={handleInviteStudent}
           className="bg-mulberry text-white px-4 py-2 rounded-md hover:bg-purple transition"
         >
-          Adaugă
+          Trimite invitație
         </button>
       </div>
       {status && <p className="text-sm mt-2 text-mulberry">{status}</p>}

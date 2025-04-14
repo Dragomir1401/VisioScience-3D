@@ -34,6 +34,10 @@ func main() {
 	r.Handle("/user/classes/{id}/students", middleware.JWTAuth(http.HandlerFunc(handlers.GetClassStudents))).Methods("GET")
 	r.Handle("/user/classes/{id}/students/{studentId}", middleware.JWTAuth(http.HandlerFunc(handlers.RemoveStudentFromClass))).Methods("DELETE")
 
+	r.Handle("/user/classes/{id}/invite", middleware.JWTAuth(http.HandlerFunc(handlers.SendInvite))).Methods("POST")
+	r.Handle("/user/invites", middleware.JWTAuth(http.HandlerFunc(handlers.GetMyInvites))).Methods("GET")
+	r.Handle("/user/invites/{id}/respond", middleware.JWTAuth(http.HandlerFunc(handlers.RespondToInvite))).Methods("POST")
+
 	corsObj := gorillaHandlers.CORS(
 		gorillaHandlers.AllowedOrigins([]string{"*"}), // Allow all origins for development purposes
 		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),

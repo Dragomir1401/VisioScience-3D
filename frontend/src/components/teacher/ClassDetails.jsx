@@ -5,9 +5,9 @@ import ClassActions from "./ClassActions";
 const ClassDetails = () => {
   const { id } = useParams();
   const [students, setStudents] = useState([]);
-  const [token] = useState(localStorage.getItem("token"));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchStudents();
@@ -23,53 +23,14 @@ const ClassDetails = () => {
       );
 
       if (!res.ok) throw new Error(await res.text());
+
       const data = await res.json();
-      setStudents(data || []);
+      setStudents(Array.isArray(data) ? data : []);
     } catch (err) {
       setError("Eroare la încărcarea elevilor.");
       setStudents([]);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleRemoveStudent = async (studentId) => {
-    if (!window.confirm("Sigur vrei să elimini acest elev din clasă?")) return;
-
-    try {
-      const res = await fetch(
-        `http://localhost:8000/user/classes/${id}/students/${studentId}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (!res.ok) throw new Error(await res.text());
-      setStudents((prev) => prev.filter((s) => s.ID !== studentId));
-    } catch (err) {
-      alert("Eroare: " + err.message);
-    }
-  };
-
-  const handleAddStudent = async (email) => {
-    try {
-      const res = await fetch(
-        `http://localhost:8000/user/classes/${id}/students`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ student_email: email }),
-        }
-      );
-
-      if (!res.ok) throw new Error(await res.text());
-      await fetchStudents();
-    } catch (err) {
-      alert("Eroare la adăugare elev: " + err.message);
     }
   };
 
@@ -82,24 +43,15 @@ const ClassDetails = () => {
         </p>
       </div>
 
-      {/* Secțiune adăugare elev */}
-      <div>
-        <h3 className="text-md font-semibold text-purple-700 mb-2">
-          Adaugă elev în clasă
-        </h3>
-        <ClassActions
-          students={[]}
-          onAdd={handleAddStudent}
-          onRemove={() => {}}
-          onlyAdd
-        />
-      </div>
+      {/* Secțiune: Invită elevi */}
+      <ClassActions classId={id} onSuccess={fetchStudents} />
 
-      {/* Secțiune listă elevi */}
+      {/* Secțiune: Elevi */}
       <div>
         <h3 className="text-md font-semibold text-purple-700 mb-2">
           Elevi înscriși
         </h3>
+
         {loading ? (
           <p className="text-sm text-gray-500">Se încarcă elevii...</p>
         ) : error ? (
@@ -109,11 +61,17 @@ const ClassDetails = () => {
             Niciun elev înscris încă.
           </p>
         ) : (
-          <ClassActions students={students} onRemove={handleRemoveStudent} />
+          <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
+            {students.map((student) => (
+              <li key={student.id}>
+                {student.email}{" "}
+                <span className="text-gray-500">(ID: {student.id})</span>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
 
-      {/* Placeholder Quizuri */}
       <QuizList />
     </div>
   );

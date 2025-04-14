@@ -12,6 +12,7 @@ import (
 var MongoClient *mongo.Client
 var UserCollection *mongo.Collection
 var ClassCollection *mongo.Collection
+var InviteCollection *mongo.Collection
 
 func InitDB() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -33,4 +34,5 @@ func InitDB() {
 	MongoClient = client
 	UserCollection = client.Database("userdata").Collection("users")
 	ClassCollection = client.Database("userdata").Collection("classes")
+	InviteCollection = client.Database("visioscience").Collection("invites")
 }
