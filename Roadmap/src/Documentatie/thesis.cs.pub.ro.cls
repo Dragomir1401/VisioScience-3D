@@ -19,7 +19,7 @@
 % Use UTF8 file encoding when writing .tex files in Romanian
 % Romanian Language support
 \usepackage{ucs}
-\usepackage[utf8x]{inputenc}
+% \usepackage[utf8x]{inputenc}
 %\usepackage[english,romanian]{babel}
 \usepackage[english]{babel}
 
@@ -100,21 +100,21 @@
 
 % for some reason I can't use \VAR@author as described in
 % http://www.gocad.org/meeting/Nancy2008/papers/gocad.sty
-\newcommand{\VARauthor} {}
-\newcommand{\VARdate} {}
-\newcommand{\VARadviser} {}
-\newcommand{\VARtitleen} {}
-\newcommand{\VARtitlero} {}
-\newcommand{\VARtitlefooteren} {}
-\newcommand{\VARtitlefooterro} {}
+% \newcommand{\VARauthor} {}
+% \newcommand{\VARdate} {}
+% \newcommand{\VARadviser} {}
+% \newcommand{\VARtitleen} {}
+% \newcommand{\VARtitlero} {}
+% \newcommand{\VARtitlefooteren} {}
+% \newcommand{\VARtitlefooterro} {}
 
-\renewcommand{\author}[1]{ \renewcommand{\VARauthor}{#1} }
-\renewcommand{\date}[1]{ \renewcommand{\VARdate}{#1} }
-\newcommand{\adviser}[1]{ \renewcommand{\VARadviser}{#1} }
-\newcommand{\titleen}[1]{ \renewcommand{\VARtitleen}{#1} }
-\newcommand{\titlero}[1]{ \renewcommand{\VARtitlero}{#1} }
-\newcommand{\titlefooteren}[1]{ \renewcommand{\VARtitlefooteren}{#1} }
-\newcommand{\titlefooterro}[1]{ \renewcommand{\VARtitlefooterro}{#1} }
+% \renewcommand{\author}[1]{ \renewcommand{\VARauthor}{#1} }
+% \renewcommand{\date}[1]{ \renewcommand{\VARdate}{#1} }
+% \newcommand{\adviser}[1]{ \renewcommand{\VARadviser}{#1} }
+% \newcommand{\titleen}[1]{ \renewcommand{\VARtitleen}{#1} }
+% \newcommand{\titlero}[1]{ \renewcommand{\VARtitlero}{#1} }
+% \newcommand{\titlefooteren}[1]{ \renewcommand{\VARtitlefooteren}{#1} }
+% \newcommand{\titlefooterro}[1]{ \renewcommand{\VARtitlefooterro}{#1} }
 
 
 % fancyhdr package
