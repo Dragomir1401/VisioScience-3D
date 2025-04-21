@@ -49,7 +49,7 @@ const TeacherDashboard = () => {
   };
 
   const handleGoToClass = (cls) => {
-    navigate(`/clasa/${cls.ID}`);
+    navigate(`/classes/${cls.ID}`);
   };
 
   return (

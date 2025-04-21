@@ -93,7 +93,10 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(models.AuthResponse{Token: token})
+	json.NewEncoder(w).Encode(models.AuthResponse{
+		Token: token,
+		ID:    user.ID.Hex(),
+	})
 }
 
 func GetMe(w http.ResponseWriter, r *http.Request) {

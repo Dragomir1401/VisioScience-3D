@@ -36,7 +36,7 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/clasa/:id" element={<ClassDetails />} />
+          <Route path="/classes/:id" element={<ClassDetails />} />
           <Route path="/classes/:id/quiz/create" element={<QuizzCreation />} />
           <Route
             path="/math"

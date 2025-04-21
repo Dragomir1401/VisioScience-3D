@@ -16,18 +16,35 @@ import (
 
 // POST /evaluation/quiz
 func CreateQuiz(w http.ResponseWriter, r *http.Request) {
-	var quiz models.Quiz
-	if err := json.NewDecoder(r.Body).Decode(&quiz); err != nil {
+	var input models.QuizInput
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	quiz.ID = primitive.NewObjectID()
-	quiz.CreatedAt = time.Now()
+	classID, err := primitive.ObjectIDFromHex(input.ClassID)
+	if err != nil {
+		http.Error(w, "Invalid class_id", http.StatusBadRequest)
+		return
+	}
+
+	userID, ok := r.Context().Value("userID").(primitive.ObjectID)
+	if !ok {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	quiz := models.Quiz{
+		ID:        primitive.NewObjectID(),
+		Title:     input.Title,
+		ClassID:   classID,
+		OwnerID:   userID,
+		Questions: input.Questions,
+		CreatedAt: time.Now(),
+	}
 
 	collection := helpers.Client.Database("data-feed-db").Collection("quizzes")
-	_, err := collection.InsertOne(context.Background(), quiz)
-	if err != nil {
+	if _, err := collection.InsertOne(context.TODO(), quiz); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -64,18 +81,24 @@ func UpdateQuiz(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var updated models.Quiz
-	if err := json.NewDecoder(r.Body).Decode(&updated); err != nil {
+	// Folosim QuizInput, la fel ca la CreateQuiz
+	var input models.QuizInput
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	classID, err := primitive.ObjectIDFromHex(input.ClassID)
+	if err != nil {
+		http.Error(w, "Invalid class_id", http.StatusBadRequest)
 		return
 	}
 
 	update := bson.M{
 		"$set": bson.M{
-			"title":     updated.Title,
-			"class_id":  updated.ClassID,
-			"owner_id":  updated.OwnerID,
-			"questions": updated.Questions,
+			"title":     input.Title,
+			"class_id":  classID,
+			"questions": input.Questions,
 		},
 	}
 
@@ -90,7 +113,11 @@ func UpdateQuiz(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(result)
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"message": "Quiz updated",
+		"result":  result,
+	})
 }
 
 // DELETE /evaluation/quiz/{id}

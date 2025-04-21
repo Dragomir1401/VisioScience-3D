@@ -15,10 +15,19 @@ type Quiz struct {
 	CreatedAt time.Time          `bson:"created_at"`
 }
 
+type QuizInput struct {
+	Title     string     `json:"title"`
+	ClassID   string     `json:"class_id"`
+	Questions []Question `json:"questions"`
+}
+
 type Question struct {
-	Text    string   `bson:"text"`
-	Choices []string `bson:"choices"`
-	Answer  int      `bson:"answer"`
+	ID      primitive.ObjectID `bson:"_id,omitempty"`
+	Images  []string           `bson:"images"`
+	Text    string             `bson:"text"`
+	Choices []string           `bson:"choices"`
+	Answer  []int              `bson:"answer"`
+	Points  int                `bson:"points"`
 }
 
 type QuizResult struct {

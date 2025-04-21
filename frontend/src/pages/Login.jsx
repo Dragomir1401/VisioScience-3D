@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Canvas } from "@react-three/fiber";
 import LoginBaloon from "../models/LoginBaloon";
 import Loader from "../components/Loader";
+import * as jwt_decode from "jwt-decode";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -38,6 +39,16 @@ const Login = () => {
       const data = await response.json();
       if (data.token) {
         localStorage.setItem("token", data.token);
+
+        const decoded = jwt_decode(data.token);
+        if (decoded && decoded.userId) {
+          localStorage.setItem("userId", decoded.userId);
+        } else {
+          setError("Token invalid. Nu s-a putut extrage userId.");
+          setLoginClicked(false);
+          return;
+        }
+
         setTimeout(() => navigate("/"), 2500);
       } else {
         setError("Răspuns invalid de la server. Lipsește token-ul.");
@@ -118,7 +129,10 @@ const Login = () => {
 
         <p className="mt-6 text-center text-black font-medium">
           Nu ai cont?{" "}
-          <Link to="/register" className="text-mulberry underline hover:text-[#42023C]">
+          <Link
+            to="/register"
+            className="text-mulberry underline hover:text-[#42023C]"
+          >
             Înregistrează-te
           </Link>
         </p>

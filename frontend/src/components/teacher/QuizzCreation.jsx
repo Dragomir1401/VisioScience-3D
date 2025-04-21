@@ -7,13 +7,19 @@ const QuizzCreation = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [questions, setQuestions] = useState([
-    { text: "", choices: ["", "", "", ""], answer: 0, image: null },
+    { text: "", choices: ["", "", "", ""], answer: [], image: null, points: 1 },
   ]);
 
   const handleAddQuestion = () => {
     setQuestions([
       ...questions,
-      { text: "", choices: ["", "", "", ""], answer: 0 },
+      {
+        text: "",
+        choices: ["", "", "", ""],
+        answer: [],
+        image: null,
+        points: 1,
+      },
     ]);
   };
 
@@ -33,6 +39,17 @@ const QuizzCreation = () => {
     setQuestions(newQuestions);
   };
 
+  const handleAnswerToggle = (qIdx, cIdx) => {
+    const newQuestions = [...questions];
+    const currentAnswers = newQuestions[qIdx].answer;
+    if (currentAnswers.includes(cIdx)) {
+      newQuestions[qIdx].answer = currentAnswers.filter((i) => i !== cIdx);
+    } else {
+      newQuestions[qIdx].answer = [...currentAnswers, cIdx];
+    }
+    setQuestions(newQuestions);
+  };
+
   const handleImageChange = (index, file) => {
     const newQuestions = [...questions];
     newQuestions[index].image = file;
@@ -40,11 +57,39 @@ const QuizzCreation = () => {
   };
 
   const handleSubmit = async () => {
+    if (!title.trim()) {
+      alert("Titlul quizului nu poate fi gol.");
+      return;
+    }
+
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i];
+      if (!q.text.trim()) {
+        alert(`Întrebarea ${i + 1} nu are text completat.`);
+        return;
+      }
+      if (q.choices.some((c) => !c.trim())) {
+        alert(`Întrebarea ${i + 1} conține răspunsuri goale.`);
+        return;
+      }
+      if (q.answer.length === 0) {
+        alert(`Întrebarea ${i + 1} nu are niciun răspuns corect marcat.`);
+        return;
+      }
+    }
+
     const token = localStorage.getItem("token");
+    const owner_id = localStorage.getItem("userId");
+
+    if (!owner_id) {
+      alert("Nu s-a putut obține ID-ul utilizatorului.");
+      return;
+    }
 
     const payload = {
       title,
       class_id: classId,
+      owner_id,
       questions,
     };
 
@@ -60,7 +105,7 @@ const QuizzCreation = () => {
 
       if (!res.ok) throw new Error(await res.text());
       alert("Quiz creat cu succes!");
-      navigate(`/class/${classId}`);
+      navigate(`/classes/${classId}`);
     } catch (err) {
       alert("Eroare la creare quiz: " + err.message);
     }
@@ -92,7 +137,7 @@ const QuizzCreation = () => {
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {questions.map((q, qIdx) => (
-                <Draggable draggableId={`q-${qIdx}`} index={qIdx}>
+                <Draggable key={qIdx} draggableId={`q-${qIdx}`} index={qIdx}>
                   {(provided) => (
                     <div
                       ref={provided.innerRef}
@@ -100,15 +145,17 @@ const QuizzCreation = () => {
                       className="bg-white p-4 mb-4 rounded-lg shadow-md border border-mulberry"
                     >
                       <div className="flex justify-between items-center mb-2">
-                        <div
-                          {...provided.dragHandleProps}
-                          className="cursor-grab text-gray-400 mr-2"
-                        >
-                          ☰
+                        <div className="flex items-center gap-2">
+                          <div
+                            {...provided.dragHandleProps}
+                            className="cursor-grab text-gray-400 text-lg"
+                          >
+                            ☰
+                          </div>
+                          <h2 className="font-semibold text-mulberry">
+                            Întrebarea {qIdx + 1}
+                          </h2>
                         </div>
-                        <h2 className="font-semibold text-mulberry">
-                          Întrebarea {qIdx + 1}
-                        </h2>
                         <button
                           onClick={() => handleDeleteQuestion(qIdx)}
                           className="text-sm text-red-500 hover:text-red-700"
@@ -126,44 +173,109 @@ const QuizzCreation = () => {
                         }
                       />
 
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) =>
-                          handleImageChange(qIdx, e.target.files[0])
-                        }
-                      />
-                      {q.image && (
-                        <img
-                          src={URL.createObjectURL(q.image)}
-                          alt={`Întrebarea ${qIdx + 1}`}
-                          className="mt-2 max-h-48 object-contain"
+                      <div className="mt-3 mb-4">
+                        <label className="block mb-1 text-sm font-medium text-gray-700">
+                          Imagine întrebare
+                        </label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) =>
+                            handleImageChange(qIdx, e.target.files[0])
+                          }
+                          className="block w-full text-sm text-mulberry file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-mulberry file:text-white hover:file:bg-purple-600"
                         />
-                      )}
+                        {q.image && (
+                          <img
+                            src={URL.createObjectURL(q.image)}
+                            alt={`Întrebarea ${qIdx + 1}`}
+                            className="mt-2 max-h-48 object-contain rounded border border-gray-300"
+                          />
+                        )}
+                      </div>
 
-                      {q.choices.map((choice, cIdx) => (
-                        <div
-                          key={cIdx}
-                          className="flex items-center gap-2 mb-2"
-                        >
-                          <input
-                            type="radio"
-                            name={`answer-${qIdx}`}
-                            checked={q.answer === cIdx}
-                            onChange={() =>
-                              handleQuestionChange(qIdx, "answer", cIdx)
-                            }
-                          />
-                          <input
-                            className="flex-1 p-2 border border-gray-300 rounded"
-                            placeholder={`Răspuns ${cIdx + 1}`}
-                            value={choice}
-                            onChange={(e) =>
-                              handleChoiceChange(qIdx, cIdx, e.target.value)
-                            }
-                          />
-                        </div>
-                      ))}
+                      {q.choices.map((choice, cIdx) => {
+                        const isCorrect = q.answer.includes(cIdx);
+                        return (
+                          <div
+                            key={cIdx}
+                            className="flex items-center gap-2 mb-2"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={isCorrect}
+                              onChange={() => handleAnswerToggle(qIdx, cIdx)}
+                            />
+                            <input
+                              className={`flex-1 p-2 border rounded ${
+                                isCorrect
+                                  ? "border-green-500 bg-green-50"
+                                  : "border-gray-300"
+                              }`}
+                              placeholder={`Răspuns ${cIdx + 1}`}
+                              value={choice}
+                              onChange={(e) =>
+                                handleChoiceChange(qIdx, cIdx, e.target.value)
+                              }
+                            />
+                            {isCorrect && (
+                              <span className="text-green-600 text-xs font-medium">
+                                ✔ Corect
+                              </span>
+                            )}
+                            {q.choices.length > 2 && (
+                              <button
+                                className="text-red-500 text-sm ml-1"
+                                onClick={() => {
+                                  const newQuestions = [...questions];
+                                  newQuestions[qIdx].choices.splice(cIdx, 1);
+                                  // trebuie să actualizăm și răspunsurile corecte
+                                  newQuestions[qIdx].answer = newQuestions[
+                                    qIdx
+                                  ].answer
+                                    .filter((i) => i !== cIdx)
+                                    .map((i) => (i > cIdx ? i - 1 : i));
+                                  setQuestions(newQuestions);
+                                }}
+                                title="Șterge răspuns"
+                              >
+                                🗑
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+
+                      {/* ➕ Buton adăugare răspuns */}
+                      <button
+                        onClick={() => {
+                          const newQuestions = [...questions];
+                          newQuestions[qIdx].choices.push("");
+                          setQuestions(newQuestions);
+                        }}
+                        className="text-sm text-purple-700 hover:underline mt-1"
+                      >
+                        ➕ Adaugă răspuns
+                      </button>
+
+                      <div className="mt-2">
+                        <label className="text-sm text-gray-700 font-medium">
+                          Punctaj întrebare:
+                        </label>
+                        <input
+                          type="number"
+                          min="1"
+                          value={q.points || 1}
+                          onChange={(e) =>
+                            handleQuestionChange(
+                              qIdx,
+                              "points",
+                              parseInt(e.target.value) || 1
+                            )
+                          }
+                          className="ml-2 w-16 p-1 border border-gray-300 rounded text-sm"
+                        />
+                      </div>
                     </div>
                   )}
                 </Draggable>
