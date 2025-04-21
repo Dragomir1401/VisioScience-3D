@@ -34,13 +34,13 @@ metadata:
   labels:
     app: portainer
 spec:
-  type: ClusterIP
   selector:
     app: portainer
   ports:
-    - port: 9000
+    - name: http
+      port: 9000
       targetPort: 9000
-      name: http
+  type: ClusterIP
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -48,7 +48,7 @@ kind: Ingress
 metadata:
   name: portainer-ingress
   annotations:
-    konghq.com/strip-path: "false"
+    konghq.com/strip-path: "true"
 spec:
   ingressClassName: kong
   rules:
