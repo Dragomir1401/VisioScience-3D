@@ -72,6 +72,30 @@ func GetAllQuizzes(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(quizzes)
 }
 
+// GET /evaluation/quiz/{quiz_id}
+func GetQuizByID(w http.ResponseWriter, r *http.Request) {
+	idStr := mux.Vars(r)["quiz_id"]
+	quizID, err := primitive.ObjectIDFromHex(idStr)
+	if err != nil {
+		http.Error(w, "Invalid quiz ID", http.StatusBadRequest)
+		return
+	}
+
+	var quiz models.Quiz
+	collection := helpers.Client.Database("data-feed-db").Collection("quizzes")
+	err = collection.FindOne(context.Background(), bson.M{"_id": quizID}).Decode(&quiz)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			http.Error(w, "Quiz not found", http.StatusNotFound)
+			return
+		}
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(quiz)
+}
+
 // PUT /evaluation/quiz/{id}
 func UpdateQuiz(w http.ResponseWriter, r *http.Request) {
 	idStr := mux.Vars(r)["id"]

@@ -7,7 +7,8 @@ import Register from "./pages/Register";
 import PrivateRoute from "./pages/PrivateRoute";
 import Profile from "./pages/Profile";
 import ClassDetails from "./components/teacher/ClassDetails";
-import QuizzCreation from "./components/teacher/QuizzCreation";
+import QuizCreation from "./components/quiz/QuizCreation";
+import QuizDetails from "./components/quiz/QuizDetails";
 
 function App() {
   return (
@@ -37,7 +38,8 @@ function App() {
             }
           />
           <Route path="/classes/:id" element={<ClassDetails />} />
-          <Route path="/classes/:id/quiz/create" element={<QuizzCreation />} />
+          <Route path="/classes/:id/quiz/create" element={<QuizCreation />} />
+          <Route path="/quiz/:quizId" element={<QuizDetails />} />
           <Route
             path="/math"
             element={

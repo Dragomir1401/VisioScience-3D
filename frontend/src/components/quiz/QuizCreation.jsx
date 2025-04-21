@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-const QuizzCreation = () => {
+const QuizCreation = () => {
   const { id: classId } = useParams();
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
@@ -303,4 +303,4 @@ const QuizzCreation = () => {
   );
 };
 
-export default QuizzCreation;
+export default QuizCreation;

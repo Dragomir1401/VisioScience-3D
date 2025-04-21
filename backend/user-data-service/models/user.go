@@ -28,8 +28,8 @@ type User struct {
 	Role     Role               `bson:"role"   json:"role"`
 
 	// Optional fields
-	Classes      []primitive.ObjectID `bson:"classes,omitempty" json:"classes,omitempty"`
-	QuizzResults []QuizResultMeta     `bson:"quizz_results,omitempty" json:"quizz_results,omitempty"`
+	Classes     []primitive.ObjectID `bson:"classes,omitempty" json:"classes,omitempty"`
+	QuizResults []QuizResultMeta     `bson:"quiz_results,omitempty" json:"quiz_results,omitempty"`
 }
 
 type QuizResultMeta struct {
