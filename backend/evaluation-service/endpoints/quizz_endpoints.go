@@ -28,9 +28,9 @@ func CreateQuiz(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID, ok := r.Context().Value("userID").(primitive.ObjectID)
-	if !ok {
-		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+	ownerID, err := primitive.ObjectIDFromHex(input.OwnerID)
+	if err != nil {
+		http.Error(w, "Invalid owner_id", http.StatusBadRequest)
 		return
 	}
 
@@ -38,7 +38,7 @@ func CreateQuiz(w http.ResponseWriter, r *http.Request) {
 		ID:        primitive.NewObjectID(),
 		Title:     input.Title,
 		ClassID:   classID,
-		OwnerID:   userID,
+		OwnerID:   ownerID,
 		Questions: input.Questions,
 		CreatedAt: time.Now(),
 	}

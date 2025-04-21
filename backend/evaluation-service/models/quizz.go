@@ -18,6 +18,7 @@ type Quiz struct {
 type QuizInput struct {
 	Title     string     `json:"title"`
 	ClassID   string     `json:"class_id"`
+	OwnerID   string     `json:"owner_id"`
 	Questions []Question `json:"questions"`
 }
 
