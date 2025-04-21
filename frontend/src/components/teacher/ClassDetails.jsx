@@ -43,6 +43,7 @@ const ClassDetails = () => {
       );
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
+      console.log("Quizzes:", data);
       setQuizzes(Array.isArray(data) ? data : []);
     } catch (err) {
       setErrorQuizzes("Eroare la încărcarea quiz-urilor.");
@@ -117,12 +118,12 @@ const ClassDetails = () => {
           ) : (
             <ul className="list-disc list-inside space-y-2 text-sm text-gray-800">
               {quizzes.map((quiz) => (
-                <li key={quiz._id}>
+                <li key={quiz.ID}>
                   <Link
-                    to={`/quiz/${quiz._id}`}
+                    to={`/quiz/${quiz.ID}`}
                     className="text-mulberry hover:underline"
                   >
-                    {quiz.title}
+                    {quiz.Title || "Quiz fără titlu"}
                   </Link>
                 </li>
               ))}

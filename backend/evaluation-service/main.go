@@ -26,7 +26,7 @@ func main() {
 	r.HandleFunc("/evaluation/quiz", handlers.GetAllQuizzes).Methods("GET")
 	r.HandleFunc("/evaluation/quiz/{id}", handlers.UpdateQuiz).Methods("PUT")
 	r.HandleFunc("/evaluation/quiz/{id}", handlers.DeleteQuiz).Methods("DELETE")
-	r.HandleFunc("/evaluation/quiz/class/{class_id}", handlers.GetQuizzesByClassID).Methods("GET")
+	r.HandleFunc("/evaluation/quiz/class/{class_id}", handlers.GetQuizzesByClass).Methods("GET")
 
 	log.Println("evaluation-service running on :8080")
 	http.ListenAndServe(":8080", cors(r))

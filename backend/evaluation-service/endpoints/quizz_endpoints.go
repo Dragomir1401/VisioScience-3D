@@ -146,7 +146,9 @@ func DeleteQuiz(w http.ResponseWriter, r *http.Request) {
 }
 
 // GET /evaluation/quiz/class/{class_id}
-func GetQuizzesByClassID(w http.ResponseWriter, r *http.Request) {
+func GetQuizzesByClass(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	classIDStr := mux.Vars(r)["class_id"]
 	classID, err := primitive.ObjectIDFromHex(classIDStr)
 	if err != nil {
@@ -154,18 +156,21 @@ func GetQuizzesByClassID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	collection := helpers.Client.Database("data-feed-db").Collection("quizzes")
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
-	cursor, err := collection.Find(context.Background(), bson.M{"class_id": classID})
+	cursor, err := helpers.Client.Database("data-feed-db").Collection("quizzes").
+		Find(ctx, bson.M{"class_id": classID})
+
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Database error: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-	defer cursor.Close(context.Background())
+	defer cursor.Close(ctx)
 
 	var quizzes []models.Quiz
-	if err := cursor.All(context.Background(), &quizzes); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if err := cursor.All(ctx, &quizzes); err != nil {
+		http.Error(w, "Error decoding quizzes: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
