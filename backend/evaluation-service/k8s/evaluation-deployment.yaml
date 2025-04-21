@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: evaluation-service
-          image: ghcr.io/username/evaluation-service:latest
+          image: dragomir1401/evaluation-service:latest
           ports:
             - containerPort: 8080
           env:

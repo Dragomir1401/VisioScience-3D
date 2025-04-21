@@ -1,6 +1,6 @@
 module evaluation-service
 
-go 1.24.0
+go 1.21
 
 require (
 	github.com/gorilla/handlers v1.5.2
