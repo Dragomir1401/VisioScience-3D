@@ -18,9 +18,8 @@ const Profile = () => {
           },
         });
 
-        if (!res.ok) {
+        if (!res.ok)
           throw new Error("Nu s-au putut obține datele utilizatorului.");
-        }
 
         const data = await res.json();
         setUser(data);
@@ -45,38 +44,52 @@ const Profile = () => {
     return <div className="text-red-600 mt-12 text-center">{error}</div>;
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gradient-to-b from-[#fff0f5] via-[#f3e8ff] to-[#fff7ed] px-4 pt-24">
-      <div className="bg-white p-8 rounded-xl shadow-md border border-mulberry w-full max-w-2xl mb-10">
-        <h2 className="text-xl font-bold text-mulberry mb-6">Profilul tău</h2>
+    <div className="min-h-screen bg-gradient-to-b from-[#fff0f5] via-[#f3e8ff] to-[#fff7ed] px-6 pt-24">
+      <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
+        {/* Col Stânga: Info profil */}
+        <div className="bg-white rounded-xl border border-mulberry p-6 shadow-md w-full lg:w-1/3">
+          <h2 className="text-xl font-bold text-mulberry mb-4">Profilul tău</h2>
+          <div className="space-y-2 text-sm text-gray-800">
+            <p>
+              <span className="font-semibold text-black">Email:</span>{" "}
+              {user?.email}
+            </p>
+            <p>
+              <span className="font-semibold text-black">Rol:</span>{" "}
+              {user?.role}
+            </p>
+            <p>
+              <span className="font-semibold text-black">ID:</span> {user?.id}
+            </p>
+          </div>
 
-        <div className="space-y-3 text-sm text-gray-700">
-          <div>
-            <span className="font-semibold text-black">Email:</span>{" "}
-            {user?.email}
-          </div>
-          <div>
-            <span className="font-semibold text-black">Rol:</span> {user?.role}
-          </div>
-          <div>
-            <span className="font-semibold text-black">ID:</span> {user?.id}
-          </div>
+          <button
+            onClick={handleLogout}
+            className="mt-6 w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition text-sm"
+          >
+            Deconectează-te
+          </button>
         </div>
 
-        <button
-          onClick={handleLogout}
-          className="mt-6 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition text-sm"
-        >
-          Deconectează-te
-        </button>
+        {/* Col Dreapta: Invitații + Dashboard */}
+        <div className="flex flex-col gap-6 w-full lg:w-2/3">
+          <div className="bg-white rounded-xl border border-mulberry p-6 shadow-sm">
+            <h3 className="text-md font-semibold text-mulberry mb-4">
+              Invitații primite
+            </h3>
+            <InvitesPanel />
+          </div>
+
+          {user?.role === "PROFESOR" && (
+            <div className="bg-white rounded-xl border border-mulberry p-6 shadow-sm">
+              <h3 className="text-md font-semibold text-mulberry mb-4">
+                Dashboard profesor
+              </h3>
+              <TeacherDashboard />
+            </div>
+          )}
+        </div>
       </div>
-
-      <InvitesPanel />
-
-      {user?.role === "PROFESOR" && (
-        <div className="w-full max-w-4xl">
-          <TeacherDashboard />
-        </div>
-      )}
     </div>
   );
 };
