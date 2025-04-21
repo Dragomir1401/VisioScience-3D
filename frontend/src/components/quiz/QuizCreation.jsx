@@ -121,6 +121,12 @@ const QuizCreation = () => {
 
   return (
     <div className="min-h-screen pt-28 px-6 pb-12 bg-gradient-to-b from-[#fff0f5] via-[#f3e8ff] to-[#fff7ed]">
+      <button
+        onClick={() => navigate(`/class/${classId}`)}
+        className="mb-6 text-sm px-4 py-2 bg-gradient-to-r from-mulberry to-pink-500 text-white rounded-md shadow hover:opacity-90 transition"
+      >
+        ⬅ Înapoi la detalii clasă
+      </button>
       <h1 className="text-2xl font-bold text-mulberry mb-6">
         Creează un quiz pentru clasă
       </h1>

@@ -29,6 +29,12 @@ const TeacherDashboard = () => {
     e.preventDefault();
     setError("");
     setMessage("");
+
+    if (!newClassName.trim()) {
+      setError("Numele clasei nu poate fi gol.");
+      return;
+    }
+
     try {
       const res = await fetch("http://localhost:8000/user/classes", {
         method: "POST",

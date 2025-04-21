@@ -43,7 +43,6 @@ const ClassDetails = () => {
       );
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
-      console.log("Quizzes:", data);
       setQuizzes(Array.isArray(data) ? data : []);
     } catch (err) {
       setErrorQuizzes("Eroare la încărcarea quiz-urilor.");
@@ -56,6 +55,12 @@ const ClassDetails = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#fff0f5] via-[#f3e8ff] to-[#fff7ed] px-6 pt-24">
       <div className="max-w-6xl mx-auto space-y-8">
+        <button
+          onClick={() => navigate("/profile")}
+          className="mb-4 text-sm px-4 py-2 bg-gradient-to-r from-mulberry to-pink-500 text-white rounded-md shadow hover:opacity-90 transition"
+        >
+          ⬅ Înapoi la profil
+        </button>
         {/* Header */}
         <div className="flex items-center justify-between bg-white p-6 rounded-xl shadow-md border border-mulberry">
           <div>
