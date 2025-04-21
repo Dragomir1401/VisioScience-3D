@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import { Canvas } from "@react-three/fiber";
 import LoginBaloon from "../models/LoginBaloon";
 import Loader from "../components/Loader";
-import * as jwt_decode from "jwt-decode";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +10,27 @@ const Login = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [loginClicked, setLoginClicked] = useState(false);
   const [error, setError] = useState("");
+
+  const parseJwt = (token) => {
+    if (!token) {
+      console.error("Token invalid.");
+      return null;
+    }
+    try {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map((c) => `%${("00" + c.charCodeAt(0).toString(16)).slice(-2)}`)
+          .join("")
+      );
+      return JSON.parse(jsonPayload);
+    } catch (err) {
+      console.error("Eroare la decodarea tokenului:", err);
+      return null;
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -47,10 +67,9 @@ const Login = () => {
       if (data.token) {
         localStorage.setItem("token", data.token);
 
-        const decoded = jwt_decode.default(data.token);
-        localStorage.setItem("userId", decoded.userId);
-        if (decoded && decoded.userId) {
-          localStorage.setItem("userId", decoded.userId);
+        const decoded = parseJwt(data.token);
+        if (decoded && decoded.user_id) {
+          localStorage.setItem("userId", decoded.user_id);
         } else {
           setError("Token invalid. Nu s-a putut extrage userId.");
           setLoginClicked(false);
