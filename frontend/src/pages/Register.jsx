@@ -16,6 +16,13 @@ const Register = () => {
 
   const navigate = useNavigate();
 
+  const handleTyping = (setter) => (e) => {
+    setter(e.target.value);
+    setIsTyping(true);
+
+    setTimeout(() => setIsTyping(false), 100);
+  };
+
   const inputClass =
     "w-full px-4 py-2 text-sm text-black bg-white/90 border border-mulberry rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-mulberry";
 
@@ -97,16 +104,16 @@ const Register = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4 font-worksans">
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-2 gap-4 font-worksans"
+        >
           <div className="col-span-1">
             <input
               type="email"
               className={inputClass}
               value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setIsTyping(true);
-              }}
+              onChange={handleTyping(setEmail)}
               required
               placeholder="Email"
             />
@@ -128,10 +135,7 @@ const Register = () => {
               type="password"
               className={inputClass}
               value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                setIsTyping(true);
-              }}
+              onChange={handleTyping(setPassword)}
               required
               placeholder="Parola"
             />
@@ -142,10 +146,7 @@ const Register = () => {
               type="password"
               className={inputClass}
               value={confirmPassword}
-              onChange={(e) => {
-                setConfirmPassword(e.target.value);
-                setIsTyping(true);
-              }}
+              onChange={handleTyping(setConfirmPassword)}
               required
               placeholder="Confirmă parola"
             />
@@ -161,7 +162,10 @@ const Register = () => {
 
             <p className="mt-6 text-black font-medium">
               Ai deja cont?{" "}
-              <Link to="/login" className="text-mulberry underline hover:text-[#42023C]">
+              <Link
+                to="/login"
+                className="text-mulberry underline hover:text-[#42023C]"
+              >
                 Conectează-te
               </Link>
             </p>

@@ -17,6 +17,13 @@ const Login = () => {
   const inputClass =
     "w-full px-4 py-2 text-sm text-black bg-white/90 border border-mulberry rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-mulberry";
 
+  const handleTyping = (setter) => (e) => {
+    setter(e.target.value);
+    setIsTyping(true);
+
+    setTimeout(() => setIsTyping(false), 100); // sau 200ms
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -40,7 +47,8 @@ const Login = () => {
       if (data.token) {
         localStorage.setItem("token", data.token);
 
-        const decoded = jwt_decode(data.token);
+        const decoded = jwt_decode.default(data.token);
+        localStorage.setItem("userId", decoded.userId);
         if (decoded && decoded.userId) {
           localStorage.setItem("userId", decoded.userId);
         } else {
@@ -99,10 +107,7 @@ const Login = () => {
             name="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setIsTyping(true);
-            }}
+            onChange={handleTyping(setEmail)}
             className={inputClass}
           />
 
@@ -111,10 +116,7 @@ const Login = () => {
             name="password"
             placeholder="Parola"
             value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setIsTyping(true);
-            }}
+            onChange={handleTyping(setPassword)}
             className={inputClass}
           />
 
