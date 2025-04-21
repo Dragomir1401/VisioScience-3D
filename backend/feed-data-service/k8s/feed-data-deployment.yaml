@@ -13,7 +13,7 @@ spec:
         app: feed-data
     spec:
       containers:
-        - name: formula
+        - name: feed-data
           image: dragomir1401/feed-data:latest
           ports:
             - containerPort: 8080

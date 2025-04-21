@@ -18,19 +18,14 @@ spec:
         - name: mongo-express-feed-data
           image: mongo-express:latest
           env:
-            # Adresa de host a serviciului MongoDB
             - name: ME_CONFIG_MONGODB_SERVER
               value: "mongo-feed-data-service"
-            # Portul pe care ascultă MongoDB
             - name: ME_CONFIG_MONGODB_PORT
               value: "27017"
-            # Nume utilizator root (din MONGO_INITDB_ROOT_USERNAME)
             - name: ME_CONFIG_MONGODB_ADMINUSERNAME
               value: "root"
-            # Parola root (din MONGO_INITDB_ROOT_PASSWORD)
             - name: ME_CONFIG_MONGODB_ADMINPASSWORD
               value: "root"
-            # Opțional, user + pass pentru acces la interfața mongo-express
             - name: ME_CONFIG_BASICAUTH_USERNAME
               value: "admin"
             - name: ME_CONFIG_BASICAUTH_PASSWORD
