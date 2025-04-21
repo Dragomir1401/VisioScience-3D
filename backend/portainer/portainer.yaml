@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portainer
+  labels:
+    app: portainer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portainer
+  template:
+    metadata:
+      labels:
+        app: portainer
+    spec:
+      containers:
+        - name: portainer
+          image: portainer/portainer-ce:latest
+          ports:
+            - containerPort: 9000
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portainer-service
+  labels:
+    app: portainer
+spec:
+  type: ClusterIP
+  selector:
+    app: portainer
+  ports:
+    - port: 9000
+      targetPort: 9000
+      name: http
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portainer-ingress
+  annotations:
+    konghq.com/strip-path: "false"
+spec:
+  ingressClassName: kong
+  rules:
+    - http:
+        paths:
+          - path: /portainer
+            pathType: Prefix
+            backend:
+              service:
+                name: portainer-service
+                port:
+                  number: 9000
