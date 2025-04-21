@@ -126,7 +126,6 @@ const Island = ({
         rotationSpeed.current = 0;
       }
 
-      // Slow down the rotation
       islandRef.current.rotation.y += rotationSpeed.current;
     } else {
       rotateIsland(islandRef.current.rotation.y);

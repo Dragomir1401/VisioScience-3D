@@ -156,7 +156,7 @@ func DeleteFeedByID(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// (Opțional) GetFeedsByShape - GET /feeds/shape/{shape}
+// GetFeedsByShape - GET /feeds/shape/{shape}
 func GetFeedsByShape(w http.ResponseWriter, r *http.Request) {
 	log.Println("[GetFeedsByShape] Received request to get feeds by shape")
 	w.Header().Set("Content-Type", "application/json")
@@ -167,7 +167,6 @@ func GetFeedsByShape(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	// Filtrăm după formula.shape
 	cursor, err := collection.Find(ctx, bson.M{"formula.shape": shape})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

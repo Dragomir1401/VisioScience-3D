@@ -62,7 +62,6 @@ const Background = ({ isRotatingBackground, isRotatingBackgroundSetter }) => {
     const normalizedRotation =
       ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
 
-    // Set the current stage based on the island's orientation
     switch (true) {
       case normalizedRotation >= 5.45 && normalizedRotation <= 5.85:
         break;
@@ -83,7 +82,6 @@ const Background = ({ isRotatingBackground, isRotatingBackgroundSetter }) => {
         rotationSpeed.current = 0;
       }
 
-      // Slow down the rotation
       backgroundRef.current.rotation.y += rotationSpeed.current;
     } else {
       rotateBackground(backgroundRef.current.rotation.y);

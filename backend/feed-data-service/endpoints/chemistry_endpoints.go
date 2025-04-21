@@ -18,29 +18,24 @@ import (
 )
 
 // CreateMolecule - POST /chem/molecules
-// Primește JSON cu name, formula, molFile etc.
 func CreateMolecule(w http.ResponseWriter, r *http.Request) {
 	log.Println("[CreateMolecule] Received request to create a new molecule")
 	w.Header().Set("Content-Type", "application/json")
 
-	// Decodificăm în structura intermediară
 	var req models.MoleculeRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid JSON: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	// Log pentru a verifica datele primite
 	log.Println("[CreateMolecule] Received data:", req.Name, req.Description)
 
-	// Mapăm datele din structura intermediară în structura Molecule
 	var mol models.Molecule
 	mol.Metadata.Name = req.Name
 	mol.Metadata.Description = req.Description
 	mol.Formula = req.Formula
 	mol.MolFile = req.MolFile
 
-	// Procesăm fișierul .mol
 	parsed, parseErr := prettifier.ParseMolFile(mol.MolFile)
 	if parseErr != nil {
 		log.Println("[CreateMolecule] ParseMolFile error (ignored):", parseErr)
@@ -48,7 +43,6 @@ func CreateMolecule(w http.ResponseWriter, r *http.Request) {
 		mol.ParsedData = parsed
 	}
 
-	// Completează datele suplimentare
 	mol.ID = primitive.NewObjectID()
 	mol.Metadata.CreatedAt = time.Now()
 
@@ -74,7 +68,6 @@ func CreateMolecule(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetAllMolecules - GET /chem/molecules
-// Returnează lista completă de molecule
 func GetAllMolecules(w http.ResponseWriter, r *http.Request) {
 	log.Println("[GetAllMolecules] Received request to get all molecules")
 	w.Header().Set("Content-Type", "application/json")
@@ -142,17 +135,14 @@ func UpdateMolecule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Decodificăm cererea într-un tip intermediar
 	var req models.MoleculeRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid JSON: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	// Log pentru a verifica datele primite
 	log.Println("[UpdateMolecule] Received data:", req.Name, req.Description)
 
-	// Mapăm datele primite în structura Molecule
 	var updatedMol models.Molecule
 	updatedMol.Metadata.Name = req.Name
 	updatedMol.Metadata.Description = req.Description
@@ -164,21 +154,18 @@ func UpdateMolecule(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("[UpdateMolecule]", updatedMol.Metadata.Name)
 
-	// Build un map pt "$set". Tot "best effort"
 	updateFields := bson.M{
 		"name":        updatedMol.Metadata.Name,
 		"formula":     updatedMol.Formula,
 		"description": updatedMol.Metadata.Description,
 	}
 
-	// Dacă a venit totuși `MolFile` => îl parsez best effort
 	if updatedMol.MolFile != "" {
 		updateFields["molFile"] = updatedMol.MolFile
 
 		parsed, parseErr := prettifier.ParseMolFile(updatedMol.MolFile)
 		if parseErr != nil {
 			log.Println("[UpdateMolecule] ParseMolFile error (ignored):", parseErr)
-			// punem un `MolParsedData` gol, doar ca exemplu
 			updateFields["parsedData"] = models.MolParsedData{}
 		} else {
 			updateFields["parsedData"] = parsed
@@ -265,6 +252,5 @@ func GetMolecule3D(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Returnăm direct JSON-ul din result.ParsedData
 	json.NewEncoder(w).Encode(result.ParsedData)
 }

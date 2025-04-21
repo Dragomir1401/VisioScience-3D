@@ -4,30 +4,21 @@ import { OrbitControls, Text } from "@react-three/drei";
 import * as THREE from "three";
 import ForestBackground2 from "../ForestBackground2";
 
-// Componenta care simulează pendulul
 const Pendulum = ({ angle }) => {
-  // Obținem scena, ca să adăugăm forțele
   const scene = useThree((state) => state.scene);
 
-  // Parametrii
-  const pivotY = 3; // pivot la (0, pivotY)
-  const length = 2.5; // lungimea firului pendulului
-  const bobRadius = 0.3; // raza bob
-  const g = 9.8; // gravitația (opțional pt calcul)
+  const pivotY = 3;
+  const length = 2.5;
+  const bobRadius = 0.3;
+  const g = 9.8;
 
-  // Convertim unghiul (în grade) la radiani, dacă slider trimite grade
   const theta = THREE.MathUtils.degToRad(angle);
 
-  // Calculăm poziția bob-ului:
-  // pivot (0, pivotY)
-  // bob (x = L sinθ, y = pivotY - L cosθ) (dacă unghiul 0 => vertical)
   const bobX = length * Math.sin(theta);
   const bobY = pivotY - length * Math.cos(theta);
 
-  // Forțe
   const [forceGroup, setForceGroup] = useState(null);
   useEffect(() => {
-    // Ștergem vechiul group (dacă există)
     if (forceGroup) scene.remove(forceGroup);
     const group = new THREE.Group();
 
@@ -37,30 +28,22 @@ const Pendulum = ({ angle }) => {
         origin,
         length,
         color,
-        0.25, // arrowhead
+        0.25,
         0.15
       );
       group.add(arrow);
     };
 
-    // Poziția bob
     const bobPos = new THREE.Vector3(bobX, bobY, 0);
 
-    // Vector greutate: (0, -1, 0)
     addArrow(new THREE.Vector3(0, -1, 0), bobPos, 1.5, "#ff0000");
 
-    // Vector tensiune: e către pivot
-    // pivot (0, pivotY) -> bob (bobX, bobY)
-    // deci T = pivot - bob
     const tension = new THREE.Vector3(0 - bobX, pivotY - bobY, 0).normalize();
     addArrow(tension, bobPos.clone(), 1.5, "#ffaa00");
 
-    // (Opțional) Descompunem greutatea în direcție tangentială & radială:
-    // radial e de-a lungul firului (opuse tensiunii)
-    // tangential e perpendicular pe radial
     const weight = new THREE.Vector3(0, -1, 0).normalize();
     const radial = tension.clone();
-    // tangential = weight - ( weight dot radial ) radial
+
     const dot = weight.dot(radial);
     const tangential = weight
       .clone()
@@ -69,13 +52,13 @@ const Pendulum = ({ angle }) => {
 
     addArrow(
       radial,
-      bobPos.clone().add(new THREE.Vector3(-0.3, 0, 0)), // offset vizual
+      bobPos.clone().add(new THREE.Vector3(-0.3, 0, 0)),
       1.0,
       "#00ff00"
     );
     addArrow(
       tangential,
-      bobPos.clone().add(new THREE.Vector3(0.3, 0, 0)), // offset vizual
+      bobPos.clone().add(new THREE.Vector3(0.3, 0, 0)),
       1.0,
       "#0000ff"
     );
@@ -86,17 +69,15 @@ const Pendulum = ({ angle }) => {
     return () => scene.remove(group);
   }, [angle]);
 
-  // Firul: (pivot) -> (bob)
   const lineRef = useRef();
   useFrame(() => {
     if (!lineRef.current) return;
     const arr = lineRef.current.array;
 
-    // Punct 1: pivot
     arr[0] = 0;
     arr[1] = pivotY;
     arr[2] = 0;
-    // Punct 2: bob
+
     arr[3] = bobX;
     arr[4] = bobY;
     arr[5] = 0;
@@ -118,7 +99,7 @@ const Pendulum = ({ angle }) => {
           <bufferAttribute
             ref={lineRef}
             attach="attributes-position"
-            array={new Float32Array(6)} // 2 puncte * 3 coordonate
+            array={new Float32Array(6)}
             count={2}
             itemSize={3}
           />
@@ -188,7 +169,7 @@ const PendulumScene = ({ angle }) => {
 
         <Pendulum angle={angle} />
 
-        <ForestBackground2 
+        <ForestBackground2
           isRotatingForestBackground={isRotatingForestBackground}
           isRotatingForestBackgroundSetter={isRotatingForestBackgroundSetter}
         />

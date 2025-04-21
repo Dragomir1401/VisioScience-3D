@@ -13,7 +13,6 @@ import (
 )
 
 func main() {
-	// init e deja apelat pentru client etc.
 	r := mux.NewRouter()
 
 	// init mongo client

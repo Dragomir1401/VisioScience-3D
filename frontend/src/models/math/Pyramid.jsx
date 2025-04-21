@@ -9,9 +9,9 @@ const Pyramid = () => {
   const arrowGroupRef = useRef();
   const scene = useThree((state) => state.scene);
 
-  const baseLength = 1.5; // Base length of the pyramid
-  const height = 1.2; // Height of the pyramid
-  const lateral = Math.sqrt((baseLength / 2) ** 2 + height ** 2); // Lateral height
+  const baseLength = 1.5;
+  const height = 1.2;
+  const lateral = Math.sqrt((baseLength / 2) ** 2 + height ** 2);
 
   useEffect(() => {
     const arrowGroup = new THREE.Group();

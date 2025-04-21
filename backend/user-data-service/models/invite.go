@@ -17,8 +17,8 @@ const (
 type Invite struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
 	ClassID   primitive.ObjectID `bson:"class_id"`
-	SenderID  primitive.ObjectID `bson:"sender_id"` // profesor
-	Receiver  string             `bson:"receiver"`  // email elev
+	SenderID  primitive.ObjectID `bson:"sender_id"`
+	Receiver  string             `bson:"receiver"`
 	Status    InviteStatus       `bson:"status"`
 	CreatedAt time.Time          `bson:"created_at"`
 }

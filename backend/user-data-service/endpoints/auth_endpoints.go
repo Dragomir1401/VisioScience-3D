@@ -87,7 +87,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// generăm token
 	token, err := utils.GenerateToken(user.ID.Hex(), string(user.Role), user.Email)
 	if err != nil {
 		http.Error(w, "Cannot generate token", http.StatusInternalServerError)
@@ -100,7 +99,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 func GetMe(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	// Extra info din context (vezi un potential middleware de JWT)
 	claims, ok := r.Context().Value("claims").(*utils.CustomClaims)
 	if !ok {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)

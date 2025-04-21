@@ -20,7 +20,6 @@ const PulleySystem = ({ sliderValue }) => {
     if (cablePositionsRef.current) {
       const pos = cablePositionsRef.current.array;
 
-      // stânga
       pos[0] = -0.9;
       pos[1] = m1Y + 0.4;
       pos[2] = 0;
@@ -28,7 +27,6 @@ const PulleySystem = ({ sliderValue }) => {
       pos[4] = pulleyY + 0.3;
       pos[5] = 0;
 
-      // dreapta
       pos[6] = 0.9;
       pos[7] = m2Y + 0.4;
       pos[8] = 0;
@@ -62,11 +60,9 @@ const PulleySystem = ({ sliderValue }) => {
     const m1Pos = new THREE.Vector3(-0.9, m1Y, 0);
     const m2Pos = new THREE.Vector3(0.9, m2Y, 0);
 
-    // Forțe gravitaționale
-    addArrow(g, m1Pos, 1.2, "#ff0000"); // G1
-    addArrow(g, m2Pos, 1.2, "#ff0000"); // G2
+    addArrow(g, m1Pos, 1.2, "#ff0000");
+    addArrow(g, m2Pos, 1.2, "#ff0000");
 
-    // Tensiune în corpurile 1 și 2
     addArrow(
       t,
       m1Pos.clone().add(new THREE.Vector3(-0.05, 0.4, 0)),
@@ -80,7 +76,6 @@ const PulleySystem = ({ sliderValue }) => {
       "#ffaa00"
     );
 
-    // Forță activă aplicată masei care coboară (cea mai jos poziționată)
     const isM1Lower = m1Y < m2Y;
     const faPos = isM1Lower ? m1Pos : m2Pos;
     addArrow(
@@ -90,7 +85,6 @@ const PulleySystem = ({ sliderValue }) => {
       "#00ffcc"
     );
 
-    // Tensiune în scripete
     const leftT = new THREE.Vector3(0, -1, 0).normalize();
     const rightT = new THREE.Vector3(0, -1, 0).normalize();
     addArrow(
@@ -138,7 +132,7 @@ const PulleySystem = ({ sliderValue }) => {
           <bufferAttribute
             ref={cablePositionsRef}
             attach="attributes-position"
-            array={new Float32Array(12)} // 4 puncte * 3 coordonate
+            array={new Float32Array(12)}
             count={4}
             itemSize={3}
           />
@@ -193,35 +187,35 @@ const PulleyScene = ({ sliderValue }) => {
   const [isRotatingForestBackground, isRotatingForestBackgroundSetter] =
     useState(false);
   return (
-  <div className="w-full h-[600px] relative">
-    <div className="absolute top-4 right-4 z-10 bg-white/80 backdrop-blur-md p-2 rounded shadow-md">
-      <span className="block text-sm font-medium text-gray-700 text-center">
-        Poziție mase
-      </span>
-      <input
-        type="range"
-        min={-2}
-        max={2}
-        step={0.01}
-        value={sliderValue}
-        readOnly
-        className="w-48 accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
-      />
-    </div>
+    <div className="w-full h-[600px] relative">
+      <div className="absolute top-4 right-4 z-10 bg-white/80 backdrop-blur-md p-2 rounded shadow-md">
+        <span className="block text-sm font-medium text-gray-700 text-center">
+          Poziție mase
+        </span>
+        <input
+          type="range"
+          min={-2}
+          max={2}
+          step={0.01}
+          value={sliderValue}
+          readOnly
+          className="w-48 accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
+        />
+      </div>
 
-    <Canvas camera={{ position: [0, 2.5, 8.5], fov: 75 }}>
-      <ambientLight intensity={0.3} />
-      <directionalLight position={[5, 5, 5]} intensity={1.5} />
-      <spotLight position={[0, 5, 0]} angle={0.5} intensity={1} />
-      <OrbitControls enablePan={false} />
-      <PulleySystem sliderValue={sliderValue} />
-      <ForestBackground2 
-        isRotatingForestBackground={isRotatingForestBackground}
-        isRotatingForestBackgroundSetter={isRotatingForestBackgroundSetter}
-      />
-    </Canvas>
-  </div>
-  )
+      <Canvas camera={{ position: [0, 2.5, 8.5], fov: 75 }}>
+        <ambientLight intensity={0.3} />
+        <directionalLight position={[5, 5, 5]} intensity={1.5} />
+        <spotLight position={[0, 5, 0]} angle={0.5} intensity={1} />
+        <OrbitControls enablePan={false} />
+        <PulleySystem sliderValue={sliderValue} />
+        <ForestBackground2
+          isRotatingForestBackground={isRotatingForestBackground}
+          isRotatingForestBackgroundSetter={isRotatingForestBackgroundSetter}
+        />
+      </Canvas>
+    </div>
+  );
 };
 
 export default PulleyScene;

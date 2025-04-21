@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import ChemistryLanding from "../components/chemistry/ChemistryLanding";
 import ChemistryAddForm from "../components/chemistry/ChemistryForm";
 
-// Import componenta 3D (unde ai implementat Three.js)
 import Molecule3DViewer from "../models/chemistry/Molecule";
 
 export default function Chemistry() {
@@ -12,7 +11,6 @@ export default function Chemistry() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  // La mount, facem fetch la lista de molecule
   useEffect(() => {
     fetchMolecules();
   }, []);
@@ -21,24 +19,24 @@ export default function Chemistry() {
     try {
       setError("");
       setMessage("");
-  
+
       const res = await fetch("http://localhost:8000/feed/chem/molecules");
-      console.log("Response status:", res.status); // Log statusul răspunsului
+      console.log("Response status:", res.status);
       const data = await res.json();
-      console.log("Response data:", data); // Log răspunsul JSON
-  
+      console.log("Response data:", data);
+
       if (!res.ok) {
         throw new Error(`Fetch error: ${res.status}`);
       }
-  
+
       if (!data || data.length === 0) {
         setError("No molecules found");
         return;
       }
-  
+
       setMolecules(data);
     } catch (err) {
-      console.error("Fetch error:", err); // Log eroarea
+      console.error("Fetch error:", err);
       setError("Could not fetch molecules");
     }
   }
@@ -57,19 +55,16 @@ export default function Chemistry() {
     setMessage("");
   }
 
-  // Când crearea reușește, reîncărcăm lista
   function onCreateSuccess() {
     setMessage("Molecule created successfully.");
     setSelectedMol(null);
     fetchMolecules();
   }
 
-  // Eroarea venită din formular
   function onError(msg) {
     setError(msg);
   }
 
-  // Buton „Go to Landing”
   function handleGoLanding() {
     setViewMode("landing");
     setSelectedMol(null);
@@ -140,7 +135,10 @@ export default function Chemistry() {
 
         {viewMode === "upload" && (
           <div className="p-6 bg-white border-2 border-mulberry rounded-lg shadow-xl">
-            <ChemistryAddForm onCreateSuccess={onCreateSuccess} onError={onError} />
+            <ChemistryAddForm
+              onCreateSuccess={onCreateSuccess}
+              onError={onError}
+            />
           </div>
         )}
 
@@ -156,7 +154,6 @@ export default function Chemistry() {
           </div>
         )}
       </main>
-
     </div>
   );
 }

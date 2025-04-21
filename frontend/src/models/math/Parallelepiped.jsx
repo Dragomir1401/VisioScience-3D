@@ -48,7 +48,6 @@ const Parallelepiped = () => {
       )
     );
 
-    // l arrow (width - green)
     const lineGeometryl = new THREE.BufferGeometry().setFromPoints([
       new THREE.Vector3(-0.5, yOffset, 1),
       new THREE.Vector3(-0.5, yOffset, -1),
@@ -78,7 +77,6 @@ const Parallelepiped = () => {
       )
     );
 
-    // h arrow (height - blue)
     const lineGeometryH = new THREE.BufferGeometry().setFromPoints([
       new THREE.Vector3(1.6, -0.5, 0.5),
       new THREE.Vector3(1.6, 0.5, 0.5),

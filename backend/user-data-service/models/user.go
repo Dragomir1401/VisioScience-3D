@@ -28,12 +28,12 @@ type User struct {
 	Role     Role               `bson:"role"   json:"role"`
 
 	// Optional fields
-	Classes      []primitive.ObjectID `bson:"classes,omitempty" json:"classes,omitempty"`             // clasele la care e înscris sau pe care le deține
-	QuizzResults []QuizResultMeta     `bson:"quizz_results,omitempty" json:"quizz_results,omitempty"` // doar pentru elevi
+	Classes      []primitive.ObjectID `bson:"classes,omitempty" json:"classes,omitempty"`
+	QuizzResults []QuizResultMeta     `bson:"quizz_results,omitempty" json:"quizz_results,omitempty"`
 }
 
 type QuizResultMeta struct {
 	QuizID    primitive.ObjectID `bson:"quiz_id"`
-	Score     int                `bson:"score"`     // punctaj final
-	Timestamp time.Time          `bson:"timestamp"` // când a completat
+	Score     int                `bson:"score"`
+	Timestamp time.Time          `bson:"timestamp"`
 }

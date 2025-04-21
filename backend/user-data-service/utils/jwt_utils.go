@@ -18,13 +18,11 @@ type CustomClaims struct {
 func getJwtSecret() []byte {
 	secret := os.Getenv("JWT_SECRET")
 	if secret == "" {
-		// fallback temporar pentru debug
 		secret = "fallback-hardcoded"
 	}
 	return []byte(secret)
 }
 
-// ✅ Generează token JWT valid
 func GenerateToken(userID, role, email string) (string, error) {
 	claims := CustomClaims{
 		UserID: userID,
@@ -40,10 +38,8 @@ func GenerateToken(userID, role, email string) (string, error) {
 	return token.SignedString(getJwtSecret())
 }
 
-// ✅ Parsează token-ul și returnează claims dacă e valid
 func ParseToken(tokenString string) (*CustomClaims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
-		// asigură-te că semnătura e cu HMAC și HS256
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("unexpected signing method")
 		}

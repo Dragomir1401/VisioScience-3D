@@ -44,7 +44,7 @@ const InvitesPanel = () => {
 
       if (!res.ok) throw new Error(await res.text());
 
-      fetchInvites(); // Refacem lista după răspuns
+      fetchInvites();
     } catch (err) {
       alert("Eroare: " + err.message);
     }
