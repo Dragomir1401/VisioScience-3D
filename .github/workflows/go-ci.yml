@@ -1,0 +1,40 @@
+name: Go Services CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+
+      - name: Install dependencies
+        run: go mod tidy
+
+      - name: Format Go code
+        run: |
+          go fmt ./...
+
+      - name: Build all services
+        run: |
+          mkdir -p build
+          for service in user-data-service feed-data-service evaluation-service; do
+            echo "Building $service..."
+            cd $service
+            go build -o "../build/$service"
+            cd ..
+          done
+
+      - name: List built binaries
+        run: ls -l build/
