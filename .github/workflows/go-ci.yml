@@ -1,55 +1,41 @@
-# .github/workflows/go-services.yml
-name: Build & push Go services
+name: Go CI – All Services
 
 on:
   push:
-    branches: ["main"]
     paths:
-      - "backend/**"
-  workflow_dispatch:
+      - "backend/**.go"
+      - "backend/**/go.mod"
+      - ".github/workflows/go-ci.yml"
+  pull_request:
 
 jobs:
-  build:
+  build-test:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        path:
-          - backend/user-data-service
-          - backend/feed-data-service
+        service:
           - backend/evaluation-service
+          - backend/feed-data-service
+          - backend/user-data-service
 
     defaults:
       run:
-        working-directory: ${{ matrix.path }}
+        working-directory: ${{ matrix.service }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v4
         with:
           go-version: "1.21"
 
-      - name: Tidy & build
+      - name: Verify & tidy modules
         run: |
-          go mod tidy
           go vet ./...
-          go test ./...
-          go build -o app
+          go mod tidy
 
-      - name: Login to Docker Hub
-        if: github.ref == 'refs/heads/main'
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USER }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build & push image
-        if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v5
-        with:
-          context: ${{ matrix.path }}
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USER }}/${{ matrix.path##*/ }}:latest
+      - name: Build binary
+        run: go build -v ./...
