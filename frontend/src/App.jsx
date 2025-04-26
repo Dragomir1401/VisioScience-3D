@@ -9,6 +9,8 @@ import Profile from "./pages/Profile";
 import ClassDetails from "./components/teacher/ClassDetails";
 import QuizCreation from "./components/quiz/QuizCreation";
 import QuizDetails from "./components/quiz/QuizDetails";
+import QuizAttempt from "./components/quiz/QuizAttempt";
+import QuizMeta from "./components/quiz/QuizMeta";
 
 function App() {
   return (
@@ -40,6 +42,8 @@ function App() {
           <Route path="/classes/:id" element={<ClassDetails />} />
           <Route path="/classes/:id/quiz/create" element={<QuizCreation />} />
           <Route path="/quiz/:quizId" element={<QuizDetails />} />
+          <Route path="/quiz/attempt/:quizId" element={<QuizAttempt />} />
+          <Route path="/quiz/meta/:quizId" element={<QuizMeta />} />
           <Route
             path="/math"
             element={
