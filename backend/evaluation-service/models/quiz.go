@@ -7,12 +7,13 @@ import (
 )
 
 type Quiz struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty"`
-	Title     string             `bson:"title"`
-	ClassID   primitive.ObjectID `bson:"class_id"`
-	OwnerID   primitive.ObjectID `bson:"owner_id"`
-	Questions []Question         `bson:"questions"`
-	CreatedAt time.Time          `bson:"created_at"`
+	ID          primitive.ObjectID `bson:"_id,omitempty"`
+	Title       string             `bson:"title"`
+	ClassID     primitive.ObjectID `bson:"class_id"`
+	OwnerID     primitive.ObjectID `bson:"owner_id"`
+	Questions   []Question         `bson:"questions"`
+	QuizResults []QuizResult       `bson:"quiz_results"`
+	CreatedAt   time.Time          `bson:"created_at"`
 }
 
 type QuizInput struct {

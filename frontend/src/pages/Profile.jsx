@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TeacherDashboard from "../components/teacher/TeacherDashboard";
 import InvitesPanel from "../components/user/InvitePanel";
+import StudentQuizDetails from "../components/quiz/StudentQuizDetails";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -79,13 +80,31 @@ const Profile = () => {
             </h3>
             <InvitesPanel />
           </div>
-
           {user?.role === "PROFESOR" && (
             <div className="bg-white rounded-xl border border-mulberry p-6 shadow-sm">
               <h3 className="text-md font-semibold text-mulberry mb-4">
                 Dashboard profesor
               </h3>
               <TeacherDashboard />
+            </div>
+          )}
+          {user?.role === "ELEV" && user?.classes?.length > 0 && (
+            <div className="bg-white rounded-xl border border-mulberry p-6 shadow-sm space-y-4">
+              <h3 className="text-md font-semibold text-mulberry">Clasa mea</h3>
+
+              <p className="text-sm">
+                ID clasă: <code className="font-mono">{user.classes[0]}</code>
+              </p>
+
+              <h4 className="text-sm font-semibold text-purple-700 mt-4">
+                Quiz-uri disponibile
+              </h4>
+
+              <StudentQuizDetails
+                classId={user.classes[0]}
+                userId={user.id}
+                token={localStorage.getItem("token")}
+              />
             </div>
           )}
         </div>

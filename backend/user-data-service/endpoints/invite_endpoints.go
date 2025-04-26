@@ -105,38 +105,42 @@ func RespondToInvite(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 
 	var invite models.Invite
-	err := db.InviteCollection.FindOne(ctx, bson.M{"_id": inviteID, "receiver": claims.Email}).Decode(&invite)
-	if err != nil {
+	if err := db.InviteCollection.FindOne(
+		ctx,
+		bson.M{"_id": inviteID, "receiver": claims.Email},
+	).Decode(&invite); err != nil {
 		http.Error(w, "Invite not found", http.StatusNotFound)
 		return
 	}
 
-	// Update status
 	newStatus := models.Declined
 	if req.Accept {
 		newStatus = models.Accepted
 	}
-
-	_, err = db.InviteCollection.UpdateByID(ctx, inviteID, bson.M{
-		"$set": bson.M{"status": newStatus},
-	})
-	if err != nil {
+	if _, err := db.InviteCollection.UpdateByID(
+		ctx, inviteID,
+		bson.M{"$set": bson.M{"status": newStatus}},
+	); err != nil {
 		http.Error(w, "Update failed", http.StatusInternalServerError)
 		return
 	}
 
-	studentID, err := primitive.ObjectIDFromHex(claims.UserID)
-	if err != nil {
-		http.Error(w, "Invalid student ID", http.StatusBadRequest)
-		return
-	}
-
 	if req.Accept {
-		_, err = db.ClassCollection.UpdateByID(ctx, invite.ClassID, bson.M{
-			"$addToSet": bson.M{"students": studentID},
-		})
-		if err != nil {
+		studentID, _ := primitive.ObjectIDFromHex(claims.UserID)
+
+		if _, err := db.ClassCollection.UpdateByID(
+			ctx, invite.ClassID,
+			bson.M{"$addToSet": bson.M{"students": studentID}},
+		); err != nil {
 			http.Error(w, "Failed to add student to class", http.StatusInternalServerError)
+			return
+		}
+
+		if _, err := db.UserCollection.UpdateByID(
+			ctx, studentID,
+			bson.M{"$addToSet": bson.M{"classes": invite.ClassID}},
+		); err != nil {
+			http.Error(w, "Failed to update user", http.StatusInternalServerError)
 			return
 		}
 	}
