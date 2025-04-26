@@ -6,7 +6,6 @@ import (
 	helpers "evaluation-service/helpers"
 	models "evaluation-service/models"
 	"net/http"
-	"slices"
 	"time"
 
 	"evaluation-service/utils"
@@ -329,10 +328,15 @@ func GetQuizForAttempt(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(quiz)
 }
 
-// POST /evaluation/quiz/{id}/attempt
-// body: { answers: []int }
+// POST /evaluation/quiz/attempt/{quizId}
 func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
-	quizID, _ := primitive.ObjectIDFromHex(mux.Vars(r)["id"])
+	quizIDHex := mux.Vars(r)["quizId"]
+	quizID, err := primitive.ObjectIDFromHex(quizIDHex)
+	if err != nil {
+		http.Error(w, "invalid quiz id", http.StatusBadRequest)
+		return
+	}
+
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 	userID, _ := primitive.ObjectIDFromHex(claims.UserID)
 
@@ -340,23 +344,30 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		Answers []int `json:"answers"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		http.Error(w, "Bad body", http.StatusBadRequest)
+		http.Error(w, "bad body", http.StatusBadRequest)
 		return
 	}
 
 	var quiz models.Quiz
-	quizColl := helpers.Client.Database("data-feed-db").Collection("quizzes")
-
-	if err := quizColl.FindOne(r.Context(), bson.M{"_id": quizID}).Decode(&quiz); err != nil {
-		http.Error(w, "Quiz not found", http.StatusNotFound)
+	coll := helpers.Client.Database("data-feed-db").Collection("quizzes")
+	if err := coll.FindOne(r.Context(), bson.M{"_id": quizID}).Decode(&quiz); err != nil {
+		http.Error(w, "quiz not found", http.StatusNotFound)
 		return
 	}
 
 	score := 0
 	for i, q := range quiz.Questions {
-		if i < len(body.Answers) && q.Answer != nil &&
-			slices.Contains(q.Answer, body.Answers[i]) {
-			score += q.Points
+		if i >= len(body.Answers) {
+			continue
+		}
+		if q.Points == 0 {
+			q.Points = 1
+		}
+		for _, idx := range q.Answer {
+			if idx == body.Answers[i] {
+				score += q.Points
+				break
+			}
 		}
 	}
 
@@ -369,8 +380,11 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		SubmittedAt: time.Now(),
 	}
 
-	_, _ = quizColl.UpdateByID(r.Context(), quizID,
-		bson.M{"$push": bson.M{"quiz_results": result}})
+	_, _ = coll.UpdateByID(
+		context.Background(),
+		quizID,
+		bson.M{"$push": bson.M{"quiz_results": result}},
+	)
 
-	json.NewEncoder(w).Encode(bson.M{"score": score})
+	_ = json.NewEncoder(w).Encode(bson.M{"score": score})
 }

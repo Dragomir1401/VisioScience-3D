@@ -18,7 +18,7 @@ func main() {
 	// CORS middleware to accept all origins for development purposes
 	cors := gorillaHandlers.CORS(
 		gorillaHandlers.AllowedOrigins([]string{"*"}),
-		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"}),
+		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
 		gorillaHandlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 	)
 
@@ -48,6 +48,9 @@ func main() {
 
 	// GET /evaluation/quiz/attempt/{quizId}
 	r.HandleFunc("/evaluation/quiz/attempt/{quizId}", handlers.GetQuizForAttempt).Methods("GET")
+
+	// POST /evaluation/quiz/attempt/{quizId}
+	r.HandleFunc("/evaluation/quiz/attempt/{quizId}", handlers.SubmitAttempt).Methods("POST")
 
 	log.Println("evaluation-service running on :8080")
 	http.ListenAndServe(":8080", cors(r))
