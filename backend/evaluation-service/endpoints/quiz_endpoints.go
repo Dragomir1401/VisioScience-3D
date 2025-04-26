@@ -294,21 +294,20 @@ func GetLastResult(w http.ResponseWriter, r *http.Request) {
 	}{Score: nil})
 }
 
-// GET /evaluation/quiz/attempt/{id}
+// GET /evaluation/quiz/attempt/{quizId}
 func GetQuizForAttempt(w http.ResponseWriter, r *http.Request) {
-	idStr := mux.Vars(r)["id"]
+	idStr := mux.Vars(r)["quizId"]
 	quizID, err := primitive.ObjectIDFromHex(idStr)
 	if err != nil {
 		http.Error(w, "invalid quiz id", http.StatusBadRequest)
 		return
 	}
 
-	// proiectăm doar câmpurile necesare (fără Answer)
 	proj := bson.M{
 		"_id":               1,
 		"title":             1,
 		"class_id":          1,
-		"questions._id":     1, // <-- AICI
+		"questions._id":     1,
 		"questions.text":    1,
 		"questions.images":  1,
 		"questions.choices": 1,

@@ -46,8 +46,8 @@ func main() {
 	// POST /evaluation/quiz/{quizId}/attempt
 	r.HandleFunc("/evaluation/quiz/{quizId}/result/{userId}", handlers.GetLastResult).Methods("GET")
 
-	// GET /evaluation/quiz/{quizId}/attempt
-	r.HandleFunc("/evaluation/quiz/{quizId}/attempt", handlers.GetQuizForAttempt).Methods("POST")
+	// GET /evaluation/quiz/attempt/{quizId}
+	r.HandleFunc("/evaluation/quiz/attempt/{quizId}", handlers.GetQuizForAttempt).Methods("GET")
 
 	log.Println("evaluation-service running on :8080")
 	http.ListenAndServe(":8080", cors(r))
