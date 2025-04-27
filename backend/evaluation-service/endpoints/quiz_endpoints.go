@@ -108,7 +108,6 @@ func UpdateQuiz(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Folosim QuizInput, la fel ca la CreateQuiz
 	var input models.QuizInput
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -204,21 +203,14 @@ func GetQuizzesByClass(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(quizzes)
 }
 
-/*
-	----------------------------------------------------------
-	  GET /evaluation/quiz/meta/{id}
-	  titlu, class_id, nr-întrebări, punctaj total – no responses
-
-------------------------------------------------------------
-*/
+// GET /evaluation/quiz/meta/{id}
 func GetQuizMeta(w http.ResponseWriter, r *http.Request) {
 	qID, _ := primitive.ObjectIDFromHex(mux.Vars(r)["id"])
 
 	p := bson.M{
-		"title":      1,
-		"class_id":   1,
-		"created_at": 1,
-		// nu trimitem răspunsuri
+		"title":            1,
+		"class_id":         1,
+		"created_at":       1,
 		"questions.text":   1,
 		"questions.points": 1,
 	}
@@ -247,13 +239,7 @@ func GetQuizMeta(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(meta)
 }
 
-/*
-	----------------------------------------------------------
-	  GET /evaluation/quiz/{quizId}/result/{userId}
-	  last score or null if not submitted yet
-
-------------------------------------------------------------
-*/
+// GET /evaluation/quiz/{quizId}/result/{userId}
 func GetLastResult(w http.ResponseWriter, r *http.Request) {
 	qID, _ := primitive.ObjectIDFromHex(mux.Vars(r)["quizId"])
 	uID, _ := primitive.ObjectIDFromHex(mux.Vars(r)["userId"])

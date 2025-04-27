@@ -15,7 +15,6 @@ func main() {
 	r := mux.NewRouter()
 	helpers.InitMongoClient()
 
-	// CORS middleware to accept all origins for development purposes
 	cors := gorillaHandlers.CORS(
 		gorillaHandlers.AllowedOrigins([]string{"*"}),
 		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),

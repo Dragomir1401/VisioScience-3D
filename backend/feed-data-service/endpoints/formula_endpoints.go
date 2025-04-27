@@ -33,7 +33,7 @@ func CreateFeed(w http.ResponseWriter, r *http.Request) {
 
 	collection := helpers.Client.Database("data-feed-db").Collection("formulas")
 
-	result, err := collection.InsertOne(context.TODO(), feed)
+	result, err := collection.InsertOne(context.Background(), feed)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -108,7 +108,7 @@ func UpdateFeedByID(w http.ResponseWriter, r *http.Request) {
 		"metadata": updatedFeed.Metadata,
 	}}
 
-	result, err := collection.UpdateOne(context.TODO(), bson.M{"_id": objID}, update)
+	result, err := collection.UpdateOne(context.Background(), bson.M{"_id": objID}, update)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -139,7 +139,7 @@ func DeleteFeedByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	collection := helpers.Client.Database("data-feed-db").Collection("formulas")
-	result, err := collection.DeleteOne(context.TODO(), bson.M{"_id": objID})
+	result, err := collection.DeleteOne(context.Background(), bson.M{"_id": objID})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

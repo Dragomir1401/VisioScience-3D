@@ -142,7 +142,7 @@ func AddStudentToClass(w http.ResponseWriter, r *http.Request) {
 
 	var req struct {
 		ClassID   string `json:"class_id"`
-		StudentID string `json:"student_id"` // alternativ: email
+		StudentID string `json:"student_id"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -164,7 +164,6 @@ func AddStudentToClass(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// verifică dacă profesorul chiar deține clasa
 	var class models.Class
 	if err := db.ClassCollection.FindOne(ctx, bson.M{
 		"_id":      classOID,
@@ -174,7 +173,6 @@ func AddStudentToClass(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// adaugă studentul
 	_, err = db.ClassCollection.UpdateByID(ctx, classOID, bson.M{
 		"$addToSet": bson.M{"students": studentOID},
 	})
@@ -212,7 +210,6 @@ func GetClassStudents(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Căutăm detalii despre toți studenții
 	cursor, err := db.UserCollection.Find(ctx, bson.M{"_id": bson.M{"$in": class.Students}})
 	if err != nil {
 		http.Error(w, "Error fetching students", http.StatusInternalServerError)
@@ -225,7 +222,6 @@ func GetClassStudents(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Ascundem parolele
 	for i := range students {
 		students[i].Password = ""
 	}

@@ -39,7 +39,7 @@ func main() {
 	r.Handle("/user/invites/{id}/respond", middleware.JWTAuth(http.HandlerFunc(handlers.RespondToInvite))).Methods("POST")
 
 	corsObj := gorillaHandlers.CORS(
-		gorillaHandlers.AllowedOrigins([]string{"*"}), // Allow all origins for development purposes
+		gorillaHandlers.AllowedOrigins([]string{"*"}),
 		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
 		gorillaHandlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 	)

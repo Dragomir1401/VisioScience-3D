@@ -23,18 +23,12 @@ func ParseMolFile(molFile string) (models.MolParsedData, error) {
 	//----------------------------------------------------------------
 	// HEADER
 	//----------------------------------------------------------------
-	// JS cod:
-	//  molObj.header.title     = split[0];
-	//  molObj.header.program   = split[1].split('  ')[1];
-	//  molObj.header.timeStamp = split[1].split('  ')[2];
-	//  molObj.header.comment   = split[2];
-
 	if len(lines) >= 1 {
 		molObj.Header.Title = lines[0]
 	}
 
 	if len(lines) >= 2 {
-		line1Parts := strings.SplitN(lines[1], "  ", 3) // split by 2 spaces
+		line1Parts := strings.SplitN(lines[1], "  ", 3)
 		if len(line1Parts) > 1 {
 			molObj.Header.Program = strings.TrimSpace(line1Parts[1])
 		}
@@ -92,11 +86,9 @@ func ParseMolFile(molFile string) (models.MolParsedData, error) {
 		for idx := startAtoms; idx < endAtoms && idx < len(lines); idx++ {
 			line := lines[idx]
 			if len(strings.TrimSpace(line)) == 0 {
-				continue // linie goală
+				continue
 			}
-			// În JS: x=0..10, y=10..20, z=20..30, type=31..33
-			// Verificăm dacă linia are lungimea necesară
-			// dar, "best effort": dacă e prea scurtă, încercăm să parsez ce pot.
+
 			xStr := safeSlice(line, 0, 10)
 			yStr := safeSlice(line, 10, 20)
 			zStr := safeSlice(line, 20, 30)

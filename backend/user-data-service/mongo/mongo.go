@@ -13,13 +13,14 @@ var MongoClient *mongo.Client
 var UserCollection *mongo.Collection
 var ClassCollection *mongo.Collection
 var InviteCollection *mongo.Collection
+var mongoUri = "mongodb://root:root@mongo-user-data-service:27017/?authSource=admin"
 
 func InitDB() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	client, err := mongo.Connect(ctx,
-		options.Client().ApplyURI("mongodb://root:root@mongo-user-data-service:27017/?authSource=admin"),
+		options.Client().ApplyURI(mongoUri),
 	)
 	if err != nil {
 		log.Fatal("Cannot connect to user-data Mongo:", err)
