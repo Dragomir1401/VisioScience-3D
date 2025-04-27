@@ -1,0 +1,551 @@
+commit 25ad5d5dfdfe82c4207fa4e5e493d03263a54bba
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Apr 26 18:19:01 2025 +0300
+
+    [BE] issues with submit attempt endpoint
+
+commit 6a25a99142bf15edac8a13c072318a51e094ff89
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Apr 26 15:17:17 2025 +0300
+
+    [BE] added get route for quiz
+
+commit 431c84bce022d21599d35afaa235234bd57db253
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Apr 26 15:03:41 2025 +0300
+
+    [BE + FE] added taking quizz be logic and frontend mock logic
+
+commit 0e03ec23b248eb026df427e3a6c3c228259bd8f5
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Apr 26 13:58:49 2025 +0300
+
+    [BE + FE] modified quiz service model endpoint and fe
+
+commit 86c3056112bf414a85a5708d823166cea91da81c
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Apr 26 01:40:18 2025 +0300
+
+    [BE] changed workflow to check go.mod just in microservices
+
+commit 6fb913ef452a8477c14228a17b0aebf0dcf28cfc
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Apr 26 01:32:48 2025 +0300
+
+    [BE] added matrix approach in workflow
+
+commit e6afe6525dad9853ada97edaa90ae90e8c7e1a90
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Apr 26 01:27:24 2025 +0300
+
+    [BE] corrected branch in workflows
+
+commit 206c9e9c698873618604ded4bda9ebe1ab9354ec
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Apr 26 01:21:56 2025 +0300
+
+    [BE] fixed buggy port in user data service
+
+commit d8445ccf281b2ca10a1123c84fe7669e119c858b
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Apr 26 00:00:12 2025 +0300
+
+    [BE] added github workflow for ci cd
+
+commit 847ad6dc31fed16ad715f83204e8ec21dc450939
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 21 18:55:07 2025 +0300
+
+    [FE] added back buttons in profile pages
+
+commit f574ad2fe15c8854242eb8e4a3e021bfc150ff0b
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 21 18:42:09 2025 +0300
+
+    [BE + FE] quizz details page works
+
+commit be35a9f1889b642349b26f25f60d5fc5c0396376
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 21 18:16:30 2025 +0300
+
+    [BE + FE] fixed quizz details fetching in class page
+
+commit 06be674e901840cd0ca310ca4b3722ec29a4bf2c
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 21 17:37:19 2025 +0300
+
+    [BE] added correct quizz owner setting
+
+commit 9e15380dcef7ed2be6e93bc35f5efed95be7a826
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 21 17:23:51 2025 +0300
+
+    [FE] added correct jwt parsing in fe
+
+commit 6e789f8d30550b395860078064e3a96beb32ebdf
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 21 16:59:07 2025 +0300
+
+    [FE] fixed baloon login register animation
+
+commit 2fcf964679698dcb70f3caf5aaed7dab5c48a180
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 21 16:53:13 2025 +0300
+
+    [BE + FE] modified bearer token structure and quizz creation logic
+
+commit c1c6a2521dcd675d475f39133ce96abe6db1a86e
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 21 15:15:06 2025 +0300
+
+    [BE + FE] finished eval endpoints and started use in frontend
+
+commit 6100f57bf5400b0682e81ac40656439b2792930d
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 21 14:23:23 2025 +0300
+
+    [BE] corrected image name in manifest for eval service
+
+commit b5f07c1ff8eba9e3ccd7a24b0f6bb08af1f3ebb4
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 21 14:11:55 2025 +0300
+
+    [BE] added skel of evaluation service
+
+commit bc062a727dcbb08476adda5ec507b0e00fb67e09
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 21 13:51:05 2025 +0300
+
+    portainer works
+
+commit ef08821d120d8dc9405c2b96344fa0a920a6fe72
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 21 12:58:02 2025 +0300
+
+    [BE] added portainer manifest
+
+commit 0a54998d9f74da9ceca9db1dbbdf1eba8b7c0609
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 21 12:50:16 2025 +0300
+
+    [BE + FE] eliminated irelavant comms
+
+commit 65f11620b593860e1498fd27a9efe810abce8747
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 21 00:41:10 2025 +0300
+
+    [DOC] added first touches of pdf doc
+
+commit d2acde34f42e5af10436bc1f1e5225a205864f65
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sun Apr 20 23:54:38 2025 +0300
+
+    [DOC] added doc skel
+
+commit 415934c7ab843e3b21a4ee6177f889fcb99f67f5
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 14 23:31:21 2025 +0300
+
+    [FE] added deisconnect button
+
+commit 0c2dfc7bdd8f0e4507ce159b006834f1ec5d2c6a
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 14 23:29:09 2025 +0300
+
+    [BE + FE] added minimal implementation of invite for classes
+
+commit eeb695020bf77875f0d9ef029329df40dde9ed2a
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 14 22:22:04 2025 +0300
+
+    [FE] added class details component page
+
+commit c9901d12059bc3772af9532707468ac8a7999f7b
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 14 21:54:13 2025 +0300
+
+    [BE + FE] skecthed dashboard control for proffessors
+
+commit 041b9258ebef8c08ea18e43a3eb347990aca0ac8
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 14 21:18:21 2025 +0300
+
+    [BE] sketched class support in user service
+
+commit 3a1a02d0c126a31abd450afa1f3ef0b239bb4dac
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 14 18:22:06 2025 +0300
+
+    Delete docker-compose.yml
+
+commit 3f0e7bfabb26bc7b33c4d6abf7860052f903b150
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 14 18:21:56 2025 +0300
+
+    Delete docker-compose.dev.yml
+
+commit 8189f34b6c4d5a13cbd13eb0576e3edccba8fdd8
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 14 18:21:47 2025 +0300
+
+    Delete .gitignore
+
+commit fc861cb5cc9ad5bfd367c4c0c245e2bca88aab69
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Sun Apr 13 16:34:25 2025 +0300
+
+    [BE+ FE] added profile page and fixed jwt middleware
+
+commit 4d86c8fafbbb1372ffddd5d11ab005134f496d82
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Sun Apr 13 15:36:39 2025 +0300
+
+    [FE] changed whole site tailwind style
+
+commit 704e297adceb01691b83091ace7d0882a0ad9f75
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Sun Apr 13 14:17:17 2025 +0300
+
+    [FE] added baloon animation in chemistry
+
+commit 147eea48f8f05d6071e09770a1747b5d3ed7f480
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Sun Apr 13 13:27:57 2025 +0300
+
+    [FE] fixed background for molecules
+
+commit eed4a364d9fbc95017ae0446d3b51c6d9c37f3b1
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Sun Apr 13 02:28:06 2025 +0300
+
+    [FE] added axes in molecules
+
+commit 262c3289c8481e2685ee15b883d7101ae214506c
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Sun Apr 13 02:22:08 2025 +0300
+
+    [FE] fixed atom legend
+
+commit 85cabb47d4ca6e787af3f6940a7eddc1f8709c48
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Sun Apr 13 02:10:13 2025 +0300
+
+    [FE] sketched molecule 3d vis
+
+commit c01feff6d917e12522775b4e53665e96320c1b60
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Sat Apr 12 23:10:55 2025 +0300
+
+    [BE] fixed mol fetching from BE
+
+commit 6315fe599584f1b902a473284e8850e0199f1757
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Fri Apr 11 01:57:06 2025 +0300
+
+    [BE] removed extra non best effort validation from chem creation endpoints
+
+commit 70680b34deccb71def3b061c7e7c9d8efdc2d6c1
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Thu Apr 10 00:52:59 2025 +0300
+
+    [BE] sketched get parsed 3d molecule route
+
+commit fa3960bf08724598a35875eedb7943fd187ff8bd
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Thu Apr 10 00:43:19 2025 +0300
+
+    [BE] sketched mol file prettifier and added chem landing
+
+commit 9bcc885f06c3cafe9e868f7f51ab7c7b211a14bc
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Wed Apr 9 00:36:28 2025 +0300
+
+    [FE] added sketch for chem page component
+
+commit 8537c6c848fd88ebd0d1b15a78c926798ee18330
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Wed Apr 9 00:26:01 2025 +0300
+
+    [BE] functional chem proxy server
+
+commit 1903e79d17da6cc51bbaa05f207b156c523493c1
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Tue Apr 8 23:55:39 2025 +0300
+
+    [BE] added sketch for chem endpoints
+
+commit c3062515a11acb843eeedd0fca41bb72c2eb4331
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 7 20:31:24 2025 +0300
+
+    [FE] added pendulum sketch
+
+commit d418114904a2052883eb5bd92c8fee9766dc0578
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Apr 7 00:52:27 2025 +0300
+
+    added both pulley problems
+
+commit 2df1fdaeef7c6f3c44a8e4d8070c0ec597b88c92
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Apr 5 13:53:59 2025 +0300
+
+    finished inclined plane
+
+commit f72e01547111eb2bc0270f38641c53c01b44f725
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Apr 5 13:25:12 2025 +0300
+
+    added static inclined plane
+
+commit b65bbc8df37829ac532a3c3f26441c744a8d7969
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Apr 5 12:40:21 2025 +0300
+
+    swapped register and login animations
+
+commit c5a1ed61721d8904dcbf5d761f904c791ccffca8
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Apr 5 00:13:25 2025 +0300
+
+    added baloon in login and register page
+
+commit 29a96dd018ca437f8e92957712ee0309e69bde73
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Wed Apr 2 16:46:50 2025 +0300
+
+    made loader fallback popup as well and register/login works
+
+commit 30014de912b6eeb9389d1de3d21a5b34c87acfa2
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Wed Apr 2 15:57:45 2025 +0300
+
+    Added private route
+
+commit c2b13d3451c15ed414781a65448132cc17d1ccfd
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Wed Apr 2 15:52:34 2025 +0300
+
+    added auth frontend
+
+commit 17c7961b2c4780ca6709d756be68f2cd02e2fcc2
+Author: Dragomir Andrei <andrei.dragomir1401@stud.acs.upb.ro>
+Date:   Wed Apr 2 00:05:12 2025 +0300
+
+    added correct user data main
+
+commit 100a04854e7b85ecb269823ee3bfd372f5977bf4
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Tue Apr 1 00:40:12 2025 +0300
+
+    scketched user service
+
+commit 211ffe2ab842945a42f147ed3221c4bf5fe4be57
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Tue Apr 1 00:22:35 2025 +0300
+
+    added mongo for users
+
+commit a0f8ece92b5b2053fdef98eb4fa41db459e69d01
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Tue Apr 1 00:17:13 2025 +0300
+
+    added another db for users
+
+commit 905a8b5dbc0b94e9e866723910a409aff8850e09
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Mar 31 23:47:38 2025 +0300
+
+    sketched usable data feed service
+
+commit 609423a4db7a58d824f2e7ee1e0c03f67bcc9d58
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Mar 31 00:46:40 2025 +0300
+
+    add/get from db works
+
+commit 73fe41bb16ffb2e2fe2c8b54a9cdd6e7228d6a20
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Mar 31 00:14:07 2025 +0300
+
+    Added mexpress
+
+commit 20e7f80d7f57b3cc6060b7cd6b3c2257918cd23b
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Fri Mar 28 20:25:13 2025 +0200
+
+    added port forward
+
+commit 398549da15965faacd96ef58dc4f7df56ab36fe0
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Fri Mar 28 19:11:11 2025 +0200
+
+    same issue
+
+commit 7dc91e8d8b9336557e58ad2211c7b47551b53cc2
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Fri Mar 28 19:07:57 2025 +0200
+
+    same problem
+
+commit fc9eae00cf12ea5b899b32979b98f09f81ea1395
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Fri Mar 28 18:53:53 2025 +0200
+
+    made formula service work but post get not working yet
+
+commit 818f765ff5efa3d6bd408d630de9014eb1e01fff
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Fri Mar 28 17:14:01 2025 +0200
+
+    sketched formulas service
+
+commit 4bf2a0f5561230ea851b769319e9f60fd271a90d
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Wed Mar 26 01:45:37 2025 +0200
+
+    finished sketch for math visuals:
+
+commit 9d97fca50aaabf5df0ec3ccf2fa1700b7af1a67b
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Wed Mar 26 00:29:16 2025 +0200
+
+    added sphere
+
+commit 8fd5339ce958b0ac8e4993e605216ed0f39f5bef
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sun Mar 23 01:30:29 2025 +0200
+
+    Added math pages layout and backgrounds
+
+commit b88cfede1468aae9e05d27330df90dcaef7b91e8
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Mar 22 21:45:13 2025 +0200
+
+    modified navbar and added math page
+
+commit 9a67f2117ade72b9d54764b65b248e34e2caa2cc
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Mar 10 01:16:18 2025 +0200
+
+    added buttons for popups
+
+commit 37dd5091135dfd054c086571f98a289e08fae284
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sun Mar 9 23:01:55 2025 +0200
+
+    defined state setters
+
+commit dffe833b07cdb4eccbc755168188138065297286
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sun Mar 9 21:58:26 2025 +0200
+
+    added drones animation
+
+commit b3bb791b77d7d6f47f041d8145465ca966246bbb
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sun Mar 9 13:30:50 2025 +0200
+
+    made background rotate
+
+commit 073d2ed1088193e5de4e5b37d4fc38fb93ef557f
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Fri Mar 7 21:14:22 2025 +0200
+
+    fixed mai mesh
+
+commit b7b1927837b8fec104c4094a1a1935441f1e159f
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Fri Mar 7 01:14:58 2025 +0200
+
+    added rotation animation on islands
+
+commit a2335533478a9deee6ee904cdcc5d9511f490aed
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sun Mar 2 17:08:19 2025 +0200
+
+    added lights
+
+commit 3687d248b3c5db894555af6444d8a7520cddb295
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sun Mar 2 16:55:53 2025 +0200
+
+    mesh shows
+
+commit 5127d20bce4d45f9e03b78cee4b2a34524b6b2b7
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sun Mar 2 13:32:44 2025 +0200
+
+    added vite with react
+
+commit 9c1797ed160c46d156d7cb0a5d4de3653b96c569
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Mar 1 19:10:43 2025 +0200
+
+    moved models
+
+commit 8ac1f9bd457c3316479e0b28bd95067a3da645e9
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Mar 1 19:10:16 2025 +0200
+
+    problems with vite
+
+commit 43419728cf595aa5a2d81d97756b1a449e4fcc85
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Mar 1 15:15:56 2025 +0200
+
+    added island with subjects
+
+commit a1d4ee8e13cdd0693f5c3d420a9e92d1eba200a8
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Thu Feb 20 18:25:42 2025 +0200
+
+    sent roadmap
+
+commit 83f7189d52b466f4b2bd2ce1d1bdd2dc7b794c0f
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Thu Feb 20 17:42:54 2025 +0200
+
+    added useful models
+
+commit 063f4ae455909631e07a5c6131af10ef7da7d308
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Tue Feb 18 20:54:51 2025 +0200
+
+    added empty islands model
+
+commit 9d6f3756d692816a284dfe446c9c8495ca17d1f9
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Mon Feb 17 19:03:28 2025 +0200
+
+    started to work with canvases
+
+commit 4daeac7bf756d29e4e72cfbded25906f7cc4d658
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sun Feb 16 11:59:24 2025 +0200
+
+    added tailwind
+
+commit 50e46b7a7ace58efb2255d3d44569a512224d361
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sun Feb 16 02:27:54 2025 +0200
+
+    will work locally
+
+commit 96096d7cc3cdfe6710508b5f85813d81f1b1e7d3
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sun Feb 16 02:11:36 2025 +0200
+
+    added docker dev for fast prototyping
+
+commit 130c188656f440783b57f2bee5c9b8ce66bec3e2
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sun Feb 16 00:27:04 2025 +0200
+
+    added first go code
+
+commit 8f3b36fa4db72f8141b46447ecef9d6a5889d621
+Author: Dragomir Andrei <andreidragomir1401@stud.acs.upb.ro>
+Date:   Sat Feb 15 16:56:15 2025 +0200
+
+    added roadmap
