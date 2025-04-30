@@ -1,3 +1,4 @@
+// src/components/quiz/StudentQuizDetails.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -16,22 +17,34 @@ const StudentQuizDetails = ({ classId }) => {
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (!qRes.ok) throw new Error(await qRes.text());
+
         const quizzes = await qRes.json();
 
+        if (!Array.isArray(quizzes) || quizzes.length === 0) {
+          setData([]);
+          return;
+        }
+
+        // otherwise fetch last score for each quiz
         const combined = await Promise.all(
           quizzes.map(async (q) => {
-            const r = await fetch(
-              `http://localhost:8000/evaluation/quiz/${q.ID}/result/${userId}`,
-              { headers: { Authorization: `Bearer ${token}` } }
-            );
             let lastScore = null;
-            if (r.ok) {
-              const { score } = await r.json();
-              lastScore = score ?? null;
+            try {
+              const r = await fetch(
+                `http://localhost:8000/evaluation/quiz/${q.ID}/result/${userId}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+              );
+              if (r.ok) {
+                const { score } = await r.json();
+                lastScore = score ?? null;
+              }
+            } catch {
+              /* ignore individual errors */
             }
             return { id: q.ID, title: q.Title, lastScore };
           })
         );
+
         setData(combined);
       } catch (e) {
         setError("Eroare la încărcarea quiz-urilor.");
@@ -43,8 +56,8 @@ const StudentQuizDetails = ({ classId }) => {
 
   if (load) return <p className="text-sm text-gray-500">Se încarcă…</p>;
   if (error) return <p className="text-red-600 text-sm">{error}</p>;
-  if (!data.length)
-    return <p className="text-sm italic text-gray-500">Nu există quiz-uri.</p>;
+  if (data.length === 0)
+    return <p className="text-sm italic text-gray-500">Nu există quiz-uri încă.</p>;
 
   return (
     <ul className="space-y-3 text-sm">
@@ -63,7 +76,10 @@ const StudentQuizDetails = ({ classId }) => {
             ) : (
               <span className="text-gray-400 italic">Neînceput</span>
             )}
-            <Link to={`/quiz/attempt/${q.id}`} className="btn-primary">
+            <Link
+              to={`/quiz/attempt/${q.id}`}
+              className="bg-gradient-to-r from-pink-500 to-mulberry text-white px-3 py-1 rounded-md hover:opacity-90 text-xs"
+            >
               Rezolvă quiz
             </Link>
           </div>

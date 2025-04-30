@@ -52,10 +52,6 @@ const InvitesPanel = () => {
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md border border-purple-200 w-full max-w-2xl mt-6">
-      <h3 className="text-lg font-semibold text-mulberry mb-4">
-        Invitații primite
-      </h3>
-
       {loading ? (
         <p className="text-sm text-gray-500">Se încarcă invitațiile...</p>
       ) : error ? (

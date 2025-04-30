@@ -65,7 +65,7 @@ const TeacherDashboard = () => {
         <h3 className="text-lg font-semibold text-mulberry mb-4">
           Clasele tale
         </h3>
-        {classes.length === 0 ? (
+        {!classes || classes.length === 0 ? (
           <p className="text-sm text-gray-500">Nu ai creat nicio clasă încă.</p>
         ) : (
           <ul className="space-y-3">
@@ -80,7 +80,7 @@ const TeacherDashboard = () => {
                   Cod înscriere: <code className="font-mono">{cls.Code}</code>
                 </div>
                 <div className="text-sm text-gray-600">
-                  Elevi înscriși: {cls.Students?.length ?? 0}
+                  Elevi înscriși: {cls.Students ? cls.Students.length : 0}
                 </div>
               </li>
             ))}
