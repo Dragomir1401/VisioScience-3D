@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 
-const log = (...args) => console.debug("[QuizMeta]", ...args);
-
 const QuizMeta = () => {
   const { quizId } = useParams();
-  const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("userId");
+  const navigate    = useNavigate();
+  const token       = localStorage.getItem("token");
+  const userId      = localStorage.getItem("userId");
 
-  const [meta, setMeta]     = useState({ questions: 0, maxPoints: 0 });
-  const [result, setResult] = useState(null);
+  const [meta,    setMeta]    = useState({ questions: 0, maxPoints: 0 });
+  const [result,  setResult]  = useState(null);
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState("");
 
@@ -25,39 +23,32 @@ const QuizMeta = () => {
     };
   };
 
-  const readError = async (resp) =>
-    typeof resp.text === "function" ? await resp.text() : String(resp);
+  const readError = async (r) =>
+    typeof r.text === "function" ? await r.text() : String(r);
 
   useEffect(() => {
     (async () => {
-      log("Fetching meta & last-result for quiz", quizId);
       try {
         const rMeta = await fetch(
           `http://localhost:8000/evaluation/quiz/meta/${quizId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        log("GET /quiz/meta status", rMeta.status);
-        if (!rMeta.ok) {
-          throw new Error(await readError(rMeta));
-        }
+        if (!rMeta.ok) throw new Error(await readError(rMeta));
         const metaRaw = await rMeta.json();
-        log("META response", metaRaw);
         setMeta(normalize(metaRaw));
 
         const rRes = await fetch(
-          `http://localhost:8000/evaluation/quiz/${quizId}/result/${userId}`,
+          `http://localhost:8000/user/quiz/results/${quizId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        log("GET /quiz/result status", rRes.status);
         if (rRes.ok) {
-          const resJSON = await rRes.json();
-          log("RESULT response", resJSON);
-          setResult(resJSON);
-        } else if (rRes.status !== 404) {
-          throw new Error(await readError(rRes));
+          const resultMeta = await rRes.json();
+          setResult({
+            score:     resultMeta.Score,
+            timestamp: resultMeta.Timestamp,
+          });
         }
       } catch (e) {
-        log("Caught error", e);
         setError(e.message || "Eroare necunoscută");
       } finally {
         setLoading(false);
@@ -73,6 +64,10 @@ const QuizMeta = () => {
         {error}
       </p>
     );
+
+  const pct = result
+    ? Math.round((result.score / meta.maxPoints) * 100)
+    : 0;
 
   return (
     <div className="min-h-screen pt-24 px-6 bg-gradient-to-b from-[#fff0f5] via-[#f3e8ff] to-[#fff7ed]">
@@ -99,17 +94,30 @@ const QuizMeta = () => {
             <span className="font-semibold">Punctaj maxim:</span>{" "}
             {meta.maxPoints}
           </p>
-
-          {result ? (
-            <p className="text-green-700">
-              Ultimul scor obținut: <b>{result.score}</b> / {meta.maxPoints}
-            </p>
-          ) : (
-            <p className="italic text-gray-500">
-              Nu ai susținut încă acest quiz.
-            </p>
-          )}
         </div>
+
+        {result ? (
+          <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
+            <p className="text-lg font-semibold text-green-700">
+              Ultimul scor obținut:
+            </p>
+            <p className="text-3xl font-bold text-green-800">
+              {result.score} / {meta.maxPoints}{" "}
+              <span className="text-xl font-medium text-green-600">
+                ({pct}%)
+              </span>
+            </p>
+            {result.timestamp && (
+              <p className="text-xs text-gray-500 mt-1">
+                {new Date(result.timestamp).toLocaleString()}
+              </p>
+            )}
+          </div>
+        ) : (
+          <div className="italic text-gray-500">
+            Nu ai susținut încă acest quiz.
+          </div>
+        )}
 
         <div className="flex justify-between">
           <button

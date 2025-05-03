@@ -62,41 +62,32 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 }
 
 // GET /user/quiz/results/{quizId}
-func GetQuizResultsForQuiz(w http.ResponseWriter, r *http.Request) {
+func GetUserQuizResult(w http.ResponseWriter, r *http.Request) {
 	quizOID, err := primitive.ObjectIDFromHex(mux.Vars(r)["quizId"])
 	if err != nil {
 		http.Error(w, "Invalid quiz ID", http.StatusBadRequest)
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+	claims := r.Context().Value("claims").(*utils.CustomClaims)
+	userOID, _ := primitive.ObjectIDFromHex(claims.UserID)
 
-	cursor, err := db.UserCollection.Find(ctx,
-		bson.M{"quiz_results.quiz_id": quizOID},
-	)
-	if err != nil {
-		http.Error(w, "DB error: "+err.Error(), http.StatusInternalServerError)
+	var user models.User
+	if err := db.UserCollection.FindOne(
+		r.Context(),
+		bson.M{"_id": userOID, "quiz_results.quiz_id": quizOID},
+	).Decode(&user); err != nil {
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
-	defer cursor.Close(ctx)
 
-	type Out struct {
-		UserID    primitive.ObjectID `json:"user_id"`
-		Score     int                `json:"score"`
-		Timestamp time.Time          `json:"timestamp"`
-	}
-	var all []Out
-	for cursor.Next(ctx) {
-		var u models.User
-		if err := cursor.Decode(&u); err != nil {
-			continue
-		}
-		for _, qr := range u.QuizResults {
-			if qr.QuizID == quizOID {
-				all = append(all, Out{u.ID, qr.Score, qr.Timestamp})
-			}
+	var last models.QuizResultMeta
+	for _, qr := range user.QuizResults {
+		if qr.QuizID == quizOID && (last.Timestamp.IsZero() || qr.Timestamp.After(last.Timestamp)) {
+			last = qr
 		}
 	}
-	json.NewEncoder(w).Encode(all)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(last)
 }
