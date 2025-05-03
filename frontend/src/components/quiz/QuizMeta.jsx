@@ -1,4 +1,4 @@
-/*  src/components/quiz/QuizMeta.jsx  */
+// src/components/quiz/QuizMeta.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 
@@ -10,22 +10,26 @@ const QuizMeta = () => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
 
-  const [meta, setMeta] = useState({ questions: 0, maxPoints: 0 });
+  // we’ll store exactly what we need for the UI
+  const [meta, setMeta]     = useState({ questions: 0, maxPoints: 0 });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error,   setError]   = useState("");
 
+  // raw JSON shape from /evaluation/quiz/meta/:id is:
+  // { id, title, class_id, created_at, questions: [{ text, points}, ...] }
   const normalize = (raw) => {
-    const qArr = Array.isArray(raw?.Questions) ? raw.Questions : [];
+    const qs = Array.isArray(raw.questions) ? raw.questions : [];
     return {
-      id: raw?.ID || quizId,
-      title: raw?.Title || "(Fără titlu)",
-      classId: raw?.ClassID || "-",
-      questions: qArr.length,
-      maxPoints: qArr.reduce((s, q) => s + (q?.Points || 1), 0),
+      id:        raw.id         || quizId,
+      title:     raw.title      || "(Fără titlu)",
+      classId:   raw.class_id   || "-",
+      questions: qs.length,
+      maxPoints: qs.reduce((sum, q) => sum + (q.points || 1), 0),
     };
   };
 
+  // helper to pull error text out of a non‐200 response
   const readError = async (resp) =>
     typeof resp.text === "function" ? await resp.text() : String(resp);
 
@@ -33,25 +37,25 @@ const QuizMeta = () => {
     (async () => {
       log("Fetching meta & last-result for quiz", quizId);
       try {
-        /** === META ===================================================== */
+        // --- fetch quiz metadata ---
         const rMeta = await fetch(
           `http://localhost:8000/evaluation/quiz/meta/${quizId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         log("GET /quiz/meta status", rMeta.status);
-        if (!rMeta.ok) throw new Error(await readError(rMeta));
-
+        if (!rMeta.ok) {
+          throw new Error(await readError(rMeta));
+        }
         const metaRaw = await rMeta.json();
         log("META response", metaRaw);
         setMeta(normalize(metaRaw));
 
-        /** === LAST RESULT ======================================== */
+        // --- fetch last result for this user (if any) ---
         const rRes = await fetch(
           `http://localhost:8000/evaluation/quiz/${quizId}/result/${userId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         log("GET /quiz/result status", rRes.status);
-
         if (rRes.ok) {
           const resJSON = await rRes.json();
           log("RESULT response", resJSON);
@@ -68,13 +72,12 @@ const QuizMeta = () => {
     })();
   }, [quizId, token, userId]);
 
-  /* ---------------------- UI ---------------------------------------- */
   if (loading)
     return <p className="text-center mt-12 text-mulberry">Se încarcă…</p>;
   if (error)
     return (
       <p className="text-center mt-12 text-red-600 whitespace-pre-wrap">
-        {String(error)}
+        {error}
       </p>
     );
 
@@ -122,7 +125,6 @@ const QuizMeta = () => {
           >
             ⬅ Înapoi
           </button>
-
           <button
             onClick={() => navigate(`/quiz/attempt/${quizId}`)}
             className="bg-gradient-to-r from-pink-500 to-mulberry text-white px-4 py-2 rounded-md hover:opacity-90 transition text-sm"

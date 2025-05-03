@@ -61,7 +61,6 @@ const ClassDetails = () => {
         >
           ⬅ Înapoi la profil
         </button>
-        {/* Header */}
         <div className="flex items-center justify-between bg-white p-6 rounded-xl shadow-md border border-mulberry">
           <div>
             <h2 className="text-2xl font-bold text-mulberry">Detalii clasă</h2>
@@ -77,12 +76,10 @@ const ClassDetails = () => {
           </button>
         </div>
 
-        {/* Acțiuni - invitații etc */}
         <div className="bg-white p-6 rounded-xl shadow-md border border-purple-200">
           <ClassActions classId={id} onSuccess={fetchStudents} />
         </div>
 
-        {/* Elevi */}
         <div className="bg-white p-6 rounded-xl shadow-md border border-purple-200">
           <h3 className="text-md font-semibold text-purple-700 mb-3">
             Elevi înscriși
@@ -107,7 +104,6 @@ const ClassDetails = () => {
           )}
         </div>
 
-        {/* Quiz-uri */}
         <div className="bg-white p-6 rounded-xl shadow-md border border-purple-200">
           <h3 className="text-md font-semibold text-purple-700 mb-3">
             Quiz-uri atribuite

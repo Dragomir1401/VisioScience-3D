@@ -205,9 +205,14 @@ func GetQuizzesByClass(w http.ResponseWriter, r *http.Request) {
 
 // GET /evaluation/quiz/meta/{id}
 func GetQuizMeta(w http.ResponseWriter, r *http.Request) {
-	qID, _ := primitive.ObjectIDFromHex(mux.Vars(r)["id"])
+	qID, err := primitive.ObjectIDFromHex(mux.Vars(r)["id"])
+	if err != nil {
+		http.Error(w, "invalid quiz ID", http.StatusBadRequest)
+		return
+	}
 
-	p := bson.M{
+	proj := bson.M{
+		"_id":              1,
 		"title":            1,
 		"class_id":         1,
 		"created_at":       1,
@@ -216,26 +221,32 @@ func GetQuizMeta(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var meta struct {
-		ID        primitive.ObjectID `json:"id"         bson:"_id"`
-		Title     string             `json:"title"`
-		ClassID   primitive.ObjectID `json:"class_id"`
-		CreatedAt time.Time          `json:"created_at"`
+		ID        primitive.ObjectID `bson:"_id"         json:"id"`
+		Title     string             `bson:"title"       json:"title"`
+		ClassID   primitive.ObjectID `bson:"class_id"    json:"class_id"`
+		CreatedAt time.Time          `bson:"created_at"  json:"created_at"`
 		Questions []struct {
-			Text   string `json:"text"`
-			Points int    `json:"points"`
-		} `json:"questions"`
+			Text   string `bson:"text"   json:"text"`
+			Points int    `bson:"points" json:"points"`
+		} `bson:"questions" json:"questions"`
 	}
-	quizColl := helpers.Client.Database("data-feed-db").Collection("quizzes")
 
-	if err := quizColl.FindOne(
+	coll := helpers.Client.Database("data-feed-db").Collection("quizzes")
+	err = coll.FindOne(
 		r.Context(),
 		bson.M{"_id": qID},
-		options.FindOne().SetProjection(p)).
-		Decode(&meta); err != nil {
-
-		http.Error(w, "Quiz not found", http.StatusNotFound)
+		options.FindOne().SetProjection(proj),
+	).Decode(&meta)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			http.Error(w, "Quiz not found", http.StatusNotFound)
+		} else {
+			http.Error(w, "DB error: "+err.Error(), http.StatusInternalServerError)
+		}
 		return
 	}
+
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(meta)
 }
 
