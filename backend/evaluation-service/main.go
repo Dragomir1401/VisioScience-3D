@@ -6,12 +6,19 @@ import (
 
 	handlers "evaluation-service/endpoints"
 	helpers "evaluation-service/helpers"
+	"evaluation-service/middleware"
 
 	gorillaHandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	r := mux.NewRouter()
 	helpers.InitMongoClient()
 
@@ -42,14 +49,18 @@ func main() {
 	// GET /evaluation/quiz/meta/{id}
 	r.HandleFunc("/evaluation/quiz/meta/{id}", handlers.GetQuizMeta).Methods("GET")
 
-	// POST /evaluation/quiz/{quizId}/attempt
-	r.HandleFunc("/evaluation/quiz/{quizId}/result/{userId}", handlers.GetLastResult).Methods("GET")
+	// Protected routes
+	r.Handle("/evaluation/quiz/attempt/{quizId}",
+		middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizForAttempt)),
+	).Methods("GET")
 
-	// GET /evaluation/quiz/attempt/{quizId}
-	r.HandleFunc("/evaluation/quiz/attempt/{quizId}", handlers.GetQuizForAttempt).Methods("GET")
+	r.Handle("/evaluation/quiz/attempt/{quizId}",
+		middleware.JWTAuth(http.HandlerFunc(handlers.SubmitAttempt)),
+	).Methods("POST")
 
-	// POST /evaluation/quiz/attempt/{quizId}
-	r.HandleFunc("/evaluation/quiz/attempt/{quizId}", handlers.SubmitAttempt).Methods("POST")
+	r.Handle("/evaluation/quiz/{quizId}/result/{userId}",
+		middleware.JWTAuth(http.HandlerFunc(handlers.GetLastResult)),
+	).Methods("GET")
 
 	log.Println("evaluation-service running on :8080")
 	http.ListenAndServe(":8080", cors(r))

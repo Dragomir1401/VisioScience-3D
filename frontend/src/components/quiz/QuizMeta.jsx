@@ -1,4 +1,3 @@
-// src/components/quiz/QuizMeta.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 
@@ -10,14 +9,11 @@ const QuizMeta = () => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
 
-  // we’ll store exactly what we need for the UI
   const [meta, setMeta]     = useState({ questions: 0, maxPoints: 0 });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState("");
 
-  // raw JSON shape from /evaluation/quiz/meta/:id is:
-  // { id, title, class_id, created_at, questions: [{ text, points}, ...] }
   const normalize = (raw) => {
     const qs = Array.isArray(raw.questions) ? raw.questions : [];
     return {
@@ -29,7 +25,6 @@ const QuizMeta = () => {
     };
   };
 
-  // helper to pull error text out of a non‐200 response
   const readError = async (resp) =>
     typeof resp.text === "function" ? await resp.text() : String(resp);
 
@@ -37,7 +32,6 @@ const QuizMeta = () => {
     (async () => {
       log("Fetching meta & last-result for quiz", quizId);
       try {
-        // --- fetch quiz metadata ---
         const rMeta = await fetch(
           `http://localhost:8000/evaluation/quiz/meta/${quizId}`,
           { headers: { Authorization: `Bearer ${token}` } }
@@ -50,7 +44,6 @@ const QuizMeta = () => {
         log("META response", metaRaw);
         setMeta(normalize(metaRaw));
 
-        // --- fetch last result for this user (if any) ---
         const rRes = await fetch(
           `http://localhost:8000/evaluation/quiz/${quizId}/result/${userId}`,
           { headers: { Authorization: `Bearer ${token}` } }

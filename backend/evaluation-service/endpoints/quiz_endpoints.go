@@ -10,6 +10,8 @@ import (
 
 	"evaluation-service/utils"
 
+	"slices"
+
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -360,11 +362,8 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		if q.Points == 0 {
 			q.Points = 1
 		}
-		for _, idx := range q.Answer {
-			if idx == body.Answers[i] {
-				score += q.Points
-				break
-			}
+		if slices.Contains(q.Answer, body.Answers[i]) {
+			score += q.Points
 		}
 	}
 
