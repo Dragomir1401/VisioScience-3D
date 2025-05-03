@@ -6,14 +6,23 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+type Role string
+
+const (
+	RoleStudent Role = "ELEV"
+	RoleTeacher Role = "PROFESOR"
+	RoleAdmin   Role = "ADMIN"
+)
+
 type Quiz struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty"`
-	Title       string             `bson:"title"`
-	ClassID     primitive.ObjectID `bson:"class_id"`
-	OwnerID     primitive.ObjectID `bson:"owner_id"`
-	Questions   []Question         `bson:"questions"`
-	QuizResults []QuizResult       `bson:"quiz_results"`
-	CreatedAt   time.Time          `bson:"created_at"`
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	Title       string             `bson:"title" json:"title"`
+	ClassID     primitive.ObjectID `bson:"class_id" json:"class_id"`
+	OwnerID     primitive.ObjectID `bson:"owner_id" json:"owner_id"`
+	Questions   []Question         `bson:"questions" json:"questions"`
+	QuizResults []QuizResult       `bson:"quiz_results" json:"quiz_results"`
+	CreatedAt   time.Time          `bson:"created_at" json:"created_at"`
+	IsOpen      bool               `bson:"is_open" json:"is_open"`
 }
 
 type QuizInput struct {
@@ -21,6 +30,7 @@ type QuizInput struct {
 	ClassID   string     `json:"class_id"`
 	OwnerID   string     `json:"owner_id"`
 	Questions []Question `json:"questions"`
+	IsOpen    *bool      `json:"is_open,omitempty"`
 }
 
 type Question struct {

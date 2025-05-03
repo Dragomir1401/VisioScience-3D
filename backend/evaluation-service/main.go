@@ -61,6 +61,9 @@ func main() {
 	// POST /evaluation/quiz/{quizId}/results
 	r.Handle("/evaluation/quiz/{quizId}/results", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizResults))).Methods("GET")
 
+	// POST /evaluation/quiz/{quizId}/results
+	r.Handle("/evaluation/quiz/{id}/status", middleware.JWTAuth(http.HandlerFunc(handlers.SetQuizStatus))).Methods("PUT")
+
 	log.Println("evaluation-service running on :8080")
 	http.ListenAndServe(":8080", cors(r))
 }

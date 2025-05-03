@@ -64,10 +64,10 @@ const QuizDetails = () => {
           </h1>
           <h2 className="text-lg text-gray-600 mt-2">
             Clasă asociată:{" "}
-            <code className="font-mono text-purple-700">{quiz.classId}</code>
+            <code className="font-mono text-purple-700">{quiz.class_id}</code>
           </h2>
           <button
-            onClick={() => navigate(`/classes/${quiz.classId}`)}
+            onClick={() => navigate(`/classes/${quiz.class_id}`)}
             className="text-sm bg-gradient-to-r from-mulberry to-pink-500 text-white px-4 py-2 rounded-md hover:bg-purple"
           >
             ⬅ Înapoi la clasă

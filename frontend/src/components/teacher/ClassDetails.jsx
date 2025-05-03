@@ -5,13 +5,13 @@ import ClassActions from "./ClassActions";
 const ClassDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   const [students, setStudents] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
   const [loadingStudents, setLoadingStudents] = useState(true);
   const [loadingQuizzes, setLoadingQuizzes] = useState(true);
   const [errorStudents, setErrorStudents] = useState("");
   const [errorQuizzes, setErrorQuizzes] = useState("");
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchStudents();
@@ -19,15 +19,15 @@ const ClassDetails = () => {
   }, [id]);
 
   const fetchStudents = async () => {
+    setLoadingStudents(true);
     try {
-      const res = await fetch(
-        `http://localhost:8000/user/classes/${id}/students`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const res = await fetch(`http://localhost:8000/user/classes/${id}/students`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
       setStudents(Array.isArray(data) ? data : []);
-    } catch (err) {
+    } catch {
       setErrorStudents("Eroare la încărcarea elevilor.");
       setStudents([]);
     } finally {
@@ -36,15 +36,15 @@ const ClassDetails = () => {
   };
 
   const fetchClassQuizzes = async () => {
+    setLoadingQuizzes(true);
     try {
-      const res = await fetch(
-        `http://localhost:8000/evaluation/quiz/class/${id}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const res = await fetch(`http://localhost:8000/evaluation/quiz/class/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
       setQuizzes(Array.isArray(data) ? data : []);
-    } catch (err) {
+    } catch {
       setErrorQuizzes("Eroare la încărcarea quiz-urilor.");
       setQuizzes([]);
     } finally {
@@ -75,57 +75,50 @@ const ClassDetails = () => {
             Creează quiz
           </button>
         </div>
-
         <div className="bg-white p-6 rounded-xl shadow-md border border-purple-200">
           <ClassActions classId={id} onSuccess={fetchStudents} />
         </div>
-
         <div className="bg-white p-6 rounded-xl shadow-md border border-purple-200">
-          <h3 className="text-md font-semibold text-purple-700 mb-3">
-            Elevi înscriși
-          </h3>
+          <h3 className="text-md font-semibold text-purple-700 mb-3">Elevi înscriși</h3>
           {loadingStudents ? (
             <p className="text-sm text-gray-500">Se încarcă elevii...</p>
           ) : errorStudents ? (
             <p className="text-red-600 text-sm">{errorStudents}</p>
           ) : students.length === 0 ? (
-            <p className="text-sm italic text-gray-500">
-              Niciun elev înscris încă.
-            </p>
+            <p className="text-sm italic text-gray-500">Niciun elev înscris încă.</p>
           ) : (
             <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
               {students.map((student) => (
                 <li key={student.id}>
-                  {student.email}{" "}
-                  <span className="text-gray-500">(ID: {student.id})</span>
+                  {student.email} <span className="text-gray-500">(ID: {student.id})</span>
                 </li>
               ))}
             </ul>
           )}
         </div>
-
         <div className="bg-white p-6 rounded-xl shadow-md border border-purple-200">
-          <h3 className="text-md font-semibold text-purple-700 mb-3">
-            Quiz-uri atribuite
-          </h3>
+          <h3 className="text-md font-semibold text-purple-700 mb-3">Quiz-uri atribuite</h3>
           {loadingQuizzes ? (
             <p className="text-sm text-gray-500">Se încarcă quiz-urile...</p>
           ) : errorQuizzes ? (
             <p className="text-red-600 text-sm">{errorQuizzes}</p>
           ) : quizzes.length === 0 ? (
-            <p className="text-sm italic text-gray-500">
-              Niciun quiz atribuit încă.
-            </p>
+            <p className="text-sm italic text-gray-500">Niciun quiz atribuit încă.</p>
           ) : (
             <ul className="list-disc list-inside space-y-2 text-sm text-gray-800">
               {quizzes.map((quiz) => (
-                <li key={quiz.ID}>
-                  <Link
-                    to={`/quiz/${quiz.ID}`}
-                    className="text-mulberry hover:underline"
-                  >
-                    {quiz.Title || "Quiz fără titlu"}
+                <li key={quiz.id} className="flex items-center justify-between">
+                  <Link to={`/quiz/${quiz.id}`} className="text-mulberry hover:underline">
+                    {quiz.title || "Quiz fără titlu"}
                   </Link>
+                  <button
+                    onClick={() =>
+                      navigate(`/classes/${id}/quiz/${quiz.id}/results`)
+                    }
+                     className="bg-gradient-to-r from-pink-500 to-mulberry text-white px-3 py-1 rounded-md hover:opacity-90 text-xs"
+                  >
+                    Vezi rezultate
+                  </button>
                 </li>
               ))}
             </ul>

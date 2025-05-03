@@ -3,6 +3,8 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -264,4 +266,104 @@ func RemoveStudentFromClass(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Student removed"})
+}
+
+// GET /user/classes/{classId}/quiz/{quizId}/results
+func GetClassQuizResults(w http.ResponseWriter, r *http.Request) {
+	claims := r.Context().Value("claims").(*utils.CustomClaims)
+	if claims.Role != string(models.RoleTeacher) {
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
+	classIDHex := mux.Vars(r)["classId"]
+	quizIDHex := mux.Vars(r)["quizId"]
+	classID, err := primitive.ObjectIDFromHex(classIDHex)
+	if err != nil {
+		http.Error(w, "Invalid class ID", http.StatusBadRequest)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	var class models.Class
+	if err := db.ClassCollection.FindOne(ctx, bson.M{"_id": classID}).Decode(&class); err != nil {
+		http.Error(w, "Class not found", http.StatusNotFound)
+		return
+	}
+
+	cursor, err := db.UserCollection.Find(ctx, bson.M{"_id": bson.M{"$in": class.Students}})
+	if err != nil {
+		http.Error(w, "Error fetching students", http.StatusInternalServerError)
+		return
+	}
+	var users []models.User
+	if err := cursor.All(ctx, &users); err != nil {
+		http.Error(w, "Cursor error", http.StatusInternalServerError)
+		return
+	}
+	for i := range users {
+		users[i].Password = ""
+	}
+
+	evalURL := fmt.Sprintf("%s/evaluation/quiz/%s/results", utils.GetEnv("EVAL_SERVICE_URL", "http://localhost:8000"), quizIDHex)
+	reqEval, _ := http.NewRequestWithContext(ctx, "GET", evalURL, nil)
+	reqEval.Header.Set("Authorization", r.Header.Get("Authorization"))
+	respEval, err := http.DefaultClient.Do(reqEval)
+	if err != nil {
+		http.Error(w, "Error contacting evaluation service", http.StatusInternalServerError)
+		return
+	}
+	defer respEval.Body.Close()
+
+	if respEval.StatusCode != http.StatusOK {
+		body, _ := ioutil.ReadAll(respEval.Body)
+		http.Error(w, string(body), respEval.StatusCode)
+		return
+	}
+
+	var evalResults []struct {
+		UserID      primitive.ObjectID `json:"user_id"`
+		Score       int                `json:"score"`
+		SubmittedAt time.Time          `json:"submitted_at"`
+	}
+	if err := json.NewDecoder(respEval.Body).Decode(&evalResults); err != nil {
+		http.Error(w, "Failed to decode results", http.StatusInternalServerError)
+		return
+	}
+
+	best := make(map[string]models.StudentResult)
+	for _, er := range evalResults {
+		key := er.UserID.Hex()
+		prev, ok := best[key]
+		if !ok || (prev.SubmittedAt != nil && er.SubmittedAt.After(*prev.SubmittedAt)) {
+			sc := er.Score
+			t := er.SubmittedAt
+			best[key] = models.StudentResult{
+				ID:          er.UserID,
+				Email:       "",
+				Score:       &sc,
+				SubmittedAt: &t,
+			}
+		}
+	}
+
+	out := make([]models.StudentResult, 0, len(users))
+	for _, u := range users {
+		key := u.ID.Hex()
+		if r, ok := best[key]; ok {
+			r.Email = u.Email
+			out = append(out, r)
+		} else {
+			out = append(out, models.StudentResult{
+				ID:    u.ID,
+				Email: u.Email,
+				Score: nil,
+			})
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(out)
 }

@@ -11,8 +11,6 @@ import (
 
 	"evaluation-service/utils"
 
-	"slices"
-
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -46,11 +44,16 @@ func CreateQuiz(w http.ResponseWriter, r *http.Request) {
 		ClassID:   classID,
 		OwnerID:   ownerID,
 		Questions: input.Questions,
+		IsOpen:    false,
 		CreatedAt: time.Now(),
 	}
 
+	if input.IsOpen != nil {
+		quiz.IsOpen = *input.IsOpen
+	}
+
 	collection := helpers.Client.Database("data-feed-db").Collection("quizzes")
-	if _, err := collection.InsertOne(context.TODO(), quiz); err != nil {
+	if _, err := collection.InsertOne(context.Background(), quiz); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -363,7 +366,7 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		if q.Points == 0 {
 			q.Points = 1
 		}
-		if slices.Contains(q.Answer, body.Answers[i]) {
+		if containsInt(q.Answer, body.Answers[i]) {
 			score += q.Points
 		}
 	}
@@ -416,4 +419,66 @@ func GetQuizResults(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	json.NewEncoder(w).Encode(quiz.QuizResults)
+}
+
+// PUT /evaluation/quiz/{id}/status
+func SetQuizStatus(w http.ResponseWriter, r *http.Request) {
+	claims := r.Context().Value("claims").(*utils.CustomClaims)
+	if claims.Role != string(models.RoleTeacher) {
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
+	idHex := mux.Vars(r)["id"]
+	quizID, err := primitive.ObjectIDFromHex(idHex)
+	if err != nil {
+		http.Error(w, "Invalid quiz ID", http.StatusBadRequest)
+		return
+	}
+
+	var body struct {
+		IsOpen bool `json:"is_open"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		http.Error(w, "Bad request", http.StatusBadRequest)
+		return
+	}
+
+	coll := helpers.Client.Database("data-feed-db").Collection("quizzes")
+
+	var quiz models.Quiz
+	if err := coll.FindOne(r.Context(), bson.M{"_id": quizID}).Decode(&quiz); err != nil {
+		http.Error(w, "Quiz not found", http.StatusNotFound)
+		return
+	}
+	if quiz.OwnerID.Hex() != claims.UserID {
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
+	upd, err := coll.UpdateByID(
+		r.Context(),
+		quizID,
+		bson.M{"$set": bson.M{"is_open": body.IsOpen}},
+	)
+	if err != nil {
+		http.Error(w, "Update failed: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if upd.ModifiedCount == 0 {
+		http.Error(w, "No document updated", http.StatusNotFound)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]bool{"is_open": body.IsOpen})
+}
+
+func containsInt(arr []int, v int) bool {
+	for _, x := range arr {
+		if x == v {
+			return true
+		}
+	}
+	return false
 }
