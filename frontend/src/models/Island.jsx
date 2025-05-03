@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { a } from "@react-spring/three";
+import { a, useSpring } from "@react-spring/three";
 import islandScene from "../assets/3d/final_islands.glb";
 
 const Island = ({
@@ -16,19 +16,20 @@ const Island = ({
   const { gl, viewport } = useThree();
   const lastMouseX = useRef(0);
   const rotationSpeed = useRef(0);
-  const dampingFactor = 0.9;
+  const dampingFactor = 0.8;
   const alfa = 0.0075;
+  const baseY = props.position[1];
 
-  // useEffect(() => {
-  //   const animate = () => {
-  //     if (islandRef.current) {
-  //       islandRef.current.position.y =
-  //         Math.sin(Date.now() * 0.001) * 0.05 + currentFocusPoint.current[1];
-  //     }
-  //     requestAnimationFrame(animate);
-  //   };
-  //   animate();
-  // }, [currentFocusPoint]);
+  const { floatY } = useSpring({
+    from: { floatY: baseY - 0.15 },
+    to: async (next) => {
+      while (1) {
+        await next({ floatY: baseY + 0.15 });
+        await next({ floatY: baseY - 0.15 });
+      }
+    },
+    config: { mass: 5, tension: 30, friction: 20 },
+  });
 
 
   const handleMouseDown = (e) => {
@@ -115,6 +116,7 @@ const Island = ({
   };
 
   useFrame(() => {
+    islandRef.current.position.y = floatY.get();
     if (!isRotatingIsland) {
       rotationSpeed.current *= dampingFactor;
 
