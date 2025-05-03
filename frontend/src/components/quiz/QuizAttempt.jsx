@@ -73,6 +73,8 @@ const QuizAttempt = () => {
       const { score: sc } = await r.json();
       setScore(sc);
       setStage("sent");
+      console.log("Sending score", sc);
+
 
       await fetch("http://localhost:8000/user/quiz/result", {
         method: "POST",

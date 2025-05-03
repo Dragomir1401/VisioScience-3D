@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	helpers "evaluation-service/helpers"
 	models "evaluation-service/models"
+	"log"
 	"net/http"
 	"time"
 
@@ -376,13 +377,29 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		SubmittedAt: time.Now(),
 	}
 
-	_, _ = coll.UpdateByID(
-		context.Background(),
+	upd, err := coll.UpdateByID(
+		r.Context(),
 		quizID,
 		bson.M{"$push": bson.M{"quiz_results": result}},
 	)
+	if err != nil {
+		log.Printf("SubmitAttempt ERROR pushing result: %v", err)
+		http.Error(w, "Failed to save result: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if upd.ModifiedCount == 0 {
+		log.Printf("SubmitAttempt WARNING: no documents modified for quiz %s", quizIDHex)
+		http.Error(w, "Quiz not found or not updated", http.StatusNotFound)
+		return
+	}
 
-	_ = json.NewEncoder(w).Encode(bson.M{"score": score})
+	log.Printf(
+		"SubmitAttempt OK: quiz=%s user=%s score=%d modified=%d",
+		quizIDHex, claims.UserID, score, upd.ModifiedCount,
+	)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(bson.M{"score": score})
 }
 
 // GET /evaluation/quiz/{quizId}/results
