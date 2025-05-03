@@ -12,6 +12,7 @@ import QuizDetails from "./components/quiz/QuizDetails";
 import QuizAttempt from "./components/quiz/QuizAttempt";
 import QuizMeta from "./components/quiz/QuizMeta";
 import QuizResults from "./components/quiz/QuizResults";
+import ComputerScience from "./pages/ComputerScience";
 
 
 function App() {
@@ -94,6 +95,15 @@ function App() {
             element={
               <PrivateRoute>
                 <Chemistry />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/computer-science"
+            element={
+              <PrivateRoute>
+                <ComputerScience />
               </PrivateRoute>
             }
           />
