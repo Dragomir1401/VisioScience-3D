@@ -64,29 +64,29 @@ const InvitesPanel = () => {
         <ul className="space-y-4">
           {invites.map((invite) => (
             <li
-              key={invite.ID}
+              key={invite.id}
               className="border border-purple-100 bg-purple-50 p-4 rounded shadow-sm"
             >
               <p className="text-sm text-gray-700 mb-2">
                 Ai fost invitat să te alături clasei cu ID-ul{" "}
                 <code className="font-mono text-purple-700">
-                  {invite.ClassID}
+                  {invite.class_id}
                 </code>{" "}
                 de către profesorul cu ID{" "}
                 <code className="font-mono text-purple-700">
-                  {invite.SenderID}
+                  {invite.sender_id}
                 </code>
                 .
               </p>
               <div className="flex gap-3">
                 <button
-                  onClick={() => respondToInvite(invite.ID, true)}
+                  onClick={() => respondToInvite(invite.id, true)}
                   className="px-4 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition"
                 >
                   Acceptă
                 </button>
                 <button
-                  onClick={() => respondToInvite(invite.ID, false)}
+                  onClick={() => respondToInvite(invite.id, false)}
                   className="px-4 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition"
                 >
                   Refuză

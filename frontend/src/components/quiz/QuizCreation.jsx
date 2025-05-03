@@ -235,7 +235,6 @@ const QuizCreation = () => {
                                 onClick={() => {
                                   const newQuestions = [...questions];
                                   newQuestions[qIdx].choices.splice(cIdx, 1);
-                                  // trebuie să actualizăm și răspunsurile corecte
                                   newQuestions[qIdx].answer = newQuestions[
                                     qIdx
                                   ].answer

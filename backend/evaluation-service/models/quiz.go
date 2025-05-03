@@ -34,19 +34,19 @@ type QuizInput struct {
 }
 
 type Question struct {
-	ID      primitive.ObjectID `bson:"_id,omitempty"`
-	Images  []string           `bson:"images"`
-	Text    string             `bson:"text"`
-	Choices []string           `bson:"choices"`
-	Answer  []int              `bson:"answer"`
-	Points  int                `bson:"points"`
+	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	Images  []string           `bson:"images" json:"images"`
+	Text    string             `bson:"text" json:"text"`
+	Choices []string           `bson:"choices" json:"choices"`
+	Answer  []int              `bson:"answer" json:"answer"`
+	Points  int                `bson:"points" json:"points"`
 }
 
 type QuizResult struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty"`
-	QuizID      primitive.ObjectID `bson:"quiz_id"`
-	UserID      primitive.ObjectID `bson:"user_id"`
-	Answers     []int              `bson:"answers"`
-	Score       int                `bson:"score"`
-	SubmittedAt time.Time          `bson:"submitted_at"`
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	QuizID      primitive.ObjectID `bson:"quiz_id" json:"quiz_id"`
+	UserID      primitive.ObjectID `bson:"user_id" json:"user_id"`
+	Answers     []int              `bson:"answers" json:"answers"`
+	Score       int                `bson:"score" json:"score"`
+	SubmittedAt time.Time          `bson:"submitted_at" json:"submitted_at"`
 }

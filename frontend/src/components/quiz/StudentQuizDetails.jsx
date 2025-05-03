@@ -25,10 +25,9 @@ const StudentQuizDetails = ({ classId }) => {
           return;
         }
 
-        // otherwise fetch last score for each quiz
         const combined = await Promise.all(
           quizzes.map(async (q) => {
-            let lastScore = null;
+            let last_score = null;
             try {
               const r = await fetch(
                 `http://localhost:8000/evaluation/quiz/${q.ID}/result/${userId}`,
@@ -36,12 +35,11 @@ const StudentQuizDetails = ({ classId }) => {
               );
               if (r.ok) {
                 const { score } = await r.json();
-                lastScore = score ?? null;
+                last_score = score ?? null;
               }
             } catch {
-              /* ignore individual errors */
             }
-            return { id: q.ID, title: q.Title, lastScore };
+            return { id: q.id, title: q.title, last_score };
           })
         );
 
@@ -71,8 +69,8 @@ const StudentQuizDetails = ({ classId }) => {
           </Link>
 
           <div className="flex items-center gap-4">
-            {q.lastScore !== null ? (
-              <span className="text-green-700">Scor: {q.lastScore}</span>
+            {q.last_score !== null ? (
+              <span className="text-green-700">Scor: {q.last_score}</span>
             ) : (
               <span className="text-gray-400 italic">Neînceput</span>
             )}

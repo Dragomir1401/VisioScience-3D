@@ -55,12 +55,11 @@ const TeacherDashboard = () => {
   };
 
   const handleGoToClass = (cls) => {
-    navigate(`/classes/${cls.ID}`);
+    navigate(`/classes/${cls.id}`);
   };
 
   return (
     <div className="mt-10 px-4 max-w-4xl mx-auto space-y-10">
-      {/* Lista clase */}
       <div className="bg-white p-6 rounded-xl shadow-md border border-purple-200">
         <h3 className="text-lg font-semibold text-mulberry mb-4">
           Clasele tale
@@ -71,16 +70,16 @@ const TeacherDashboard = () => {
           <ul className="space-y-3">
             {classes.map((cls) => (
               <li
-                key={cls.ID}
+                key={cls.id}
                 onClick={() => handleGoToClass(cls)}
                 className="p-4 bg-purple-50 border border-purple-200 rounded shadow-sm cursor-pointer hover:bg-purple-100 transition"
               >
-                <div className="font-semibold text-purple-800">{cls.Name}</div>
+                <div className="font-semibold text-purple-800">{cls.name}</div>
                 <div className="text-sm text-gray-600">
-                  Cod înscriere: <code className="font-mono">{cls.Code}</code>
+                  Cod înscriere: <code className="font-mono">{cls.code}</code>
                 </div>
                 <div className="text-sm text-gray-600">
-                  Elevi înscriși: {cls.Students ? cls.Students.length : 0}
+                  Elevi înscriși: {cls.students ? cls.students.length : 0}
                 </div>
               </li>
             ))}

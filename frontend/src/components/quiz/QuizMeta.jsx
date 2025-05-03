@@ -3,25 +3,19 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 
 const QuizMeta = () => {
   const { quizId } = useParams();
-  const navigate    = useNavigate();
-  const token       = localStorage.getItem("token");
-  const userId      = localStorage.getItem("userId");
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
-  const [meta,    setMeta]    = useState({ questions: 0, maxPoints: 0 });
-  const [result,  setResult]  = useState(null);
+  const [meta, setMeta] = useState({
+    id: "",
+    title: "",
+    class_id: "",
+    questions: 0,
+    max_points: 0,
+  });
+  const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error,   setError]   = useState("");
-
-  const normalize = (raw) => {
-    const qs = Array.isArray(raw.questions) ? raw.questions : [];
-    return {
-      id:        raw.id         || quizId,
-      title:     raw.title      || "(Fără titlu)",
-      classId:   raw.class_id   || "-",
-      questions: qs.length,
-      maxPoints: qs.reduce((sum, q) => sum + (q.points || 1), 0),
-    };
-  };
+  const [error, setError] = useState("");
 
   const readError = async (r) =>
     typeof r.text === "function" ? await r.text() : String(r);
@@ -34,18 +28,28 @@ const QuizMeta = () => {
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (!rMeta.ok) throw new Error(await readError(rMeta));
-        const metaRaw = await rMeta.json();
-        setMeta(normalize(metaRaw));
+        const raw = await rMeta.json();
+
+        const qs = Array.isArray(raw.questions) ? raw.questions : [];
+        const totalPoints = qs.reduce((sum, q) => sum + (q.points || 1), 0);
+
+        setMeta({
+          id: raw.id,
+          title: raw.title,
+          class_id: raw.class_id,
+          questions: qs.length,
+          max_points: totalPoints,
+        });
 
         const rRes = await fetch(
           `http://localhost:8000/user/quiz/results/${quizId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (rRes.ok) {
-          const resultMeta = await rRes.json();
+          const resRaw = await rRes.json();
           setResult({
-            score:     resultMeta.Score,
-            timestamp: resultMeta.Timestamp,
+            score: resRaw.score,
+            timestamp: resRaw.timestamp,
           });
         }
       } catch (e) {
@@ -54,7 +58,7 @@ const QuizMeta = () => {
         setLoading(false);
       }
     })();
-  }, [quizId, token, userId]);
+  }, [quizId, token]);
 
   if (loading)
     return <p className="text-center mt-12 text-mulberry">Se încarcă…</p>;
@@ -65,15 +69,16 @@ const QuizMeta = () => {
       </p>
     );
 
-  const pct = result
-    ? Math.round((result.score / meta.maxPoints) * 100)
-    : 0;
+  // Dacă nu există rezultat sau max_points e zero, pct rămâne null
+  const pct =
+    result && meta.max_points > 0
+      ? Math.round((result.score / meta.max_points) * 100)
+      : null;
 
   return (
     <div className="min-h-screen pt-24 px-6 bg-gradient-to-b from-[#fff0f5] via-[#f3e8ff] to-[#fff7ed]">
       <div className="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-md border border-mulberry space-y-6">
         <h1 className="text-2xl font-bold text-mulberry">{meta.title}</h1>
-
         <div className="text-sm text-gray-700 space-y-1">
           <p>
             <span className="font-semibold">ID Quiz:</span> {meta.id}
@@ -81,10 +86,10 @@ const QuizMeta = () => {
           <p>
             <span className="font-semibold">ID Clasă:</span>{" "}
             <Link
-              to={`/classes/${meta.classId}`}
+              to={`/classes/${meta.class_id}`}
               className="text-purple-700 hover:underline"
             >
-              {meta.classId}
+              {meta.class_id}
             </Link>
           </p>
           <p>
@@ -92,7 +97,7 @@ const QuizMeta = () => {
           </p>
           <p>
             <span className="font-semibold">Punctaj maxim:</span>{" "}
-            {meta.maxPoints}
+            {meta.max_points}
           </p>
         </div>
 
@@ -101,11 +106,15 @@ const QuizMeta = () => {
             <p className="text-lg font-semibold text-green-700">
               Ultimul scor obținut:
             </p>
-            <p className="text-3xl font-bold text-green-800">
-              {result.score} / {meta.maxPoints}{" "}
-              <span className="text-xl font-medium text-green-600">
-                ({pct}%)
+            <p className="text-3xl font-bold text-green-800 flex items-baseline space-x-2">
+              <span>
+                {result.score} / {meta.max_points}
               </span>
+              {pct !== null && (
+                <span className="text-xl font-medium text-green-600">
+                  ({pct}%)
+                </span>
+              )}
             </p>
             {result.timestamp && (
               <p className="text-xs text-gray-500 mt-1">

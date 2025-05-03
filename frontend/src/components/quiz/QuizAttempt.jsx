@@ -25,15 +25,15 @@ const QuizAttempt = () => {
         if (!r.ok) throw new Error(`${r.status} – ${await r.text()}`);
         const raw = await r.json();
 
-        const questions = (raw.Questions || []).map((q) => ({
-          id:      q.ID,
-          text:    q.Text,
-          choices: q.Choices || [],
-          images:  q.Images  || [],
-          points:  q.Points  || 1,
+        const questions = (raw.questions || []).map((q) => ({
+          id:      q.id,
+          text:    q.text,
+          choices: q.choices || [],
+          images:  q.images  || [],
+          points:  q.points  || 1,
         }));
 
-        setQuiz({ title: raw.Title, questions });
+        setQuiz({ title: raw.title, questions });
         setAnswers(Array(questions.length).fill(null));
         setStage("ready");
       } catch (e) {

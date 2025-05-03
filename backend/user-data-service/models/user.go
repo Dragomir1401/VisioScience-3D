@@ -26,7 +26,7 @@ type User struct {
 }
 
 type QuizResultMeta struct {
-	QuizID    primitive.ObjectID `bson:"quiz_id"`
-	Score     int                `bson:"score"`
-	Timestamp time.Time          `bson:"timestamp"`
+	QuizID    primitive.ObjectID `bson:"quiz_id" json:"quiz_id"`
+	Score     int                `bson:"score" json:"score"`
+	Timestamp time.Time          `bson:"timestamp" json:"timestamp"`
 }

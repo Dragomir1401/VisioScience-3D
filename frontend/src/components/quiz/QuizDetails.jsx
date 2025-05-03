@@ -10,22 +10,6 @@ const QuizDetails = () => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
-  const normalizeQuiz = (raw) => ({
-    id: raw.ID,
-    title: raw.Title,
-    classId: raw.ClassID,
-    ownerId: raw.OwnerID,
-    createdAt: raw.CreatedAt,
-    questions: raw.Questions.map((q) => ({
-      id: q.ID,
-      text: q.Text,
-      choices: q.Choices,
-      answer: q.Answer,
-      images: q.Images,
-      points: q.Points,
-    })),
-  });
-
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
@@ -39,7 +23,7 @@ const QuizDetails = () => {
         );
         if (!res.ok) throw new Error(await res.text());
         const data = await res.json();
-        setQuiz(normalizeQuiz(data));
+        setQuiz(data);
       } catch (err) {
         setError("Eroare la încărcarea quizului.");
       } finally {
