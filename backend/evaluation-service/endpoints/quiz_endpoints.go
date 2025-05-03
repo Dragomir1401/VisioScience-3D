@@ -209,9 +209,9 @@ func GetQuizzesByClass(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(quizzes)
 }
 
-// GET /evaluation/quiz/meta/{id}
+// GET /evaluation/quiz/meta/{quiz_id}
 func GetQuizMeta(w http.ResponseWriter, r *http.Request) {
-	qID, err := primitive.ObjectIDFromHex(mux.Vars(r)["id"])
+	qID, err := primitive.ObjectIDFromHex(mux.Vars(r)["quiz_id"])
 	if err != nil {
 		http.Error(w, "invalid quiz ID", http.StatusBadRequest)
 		return
@@ -224,6 +224,7 @@ func GetQuizMeta(w http.ResponseWriter, r *http.Request) {
 		"created_at":       1,
 		"questions.text":   1,
 		"questions.points": 1,
+		"is_open":          1,
 	}
 
 	var meta struct {
@@ -235,6 +236,7 @@ func GetQuizMeta(w http.ResponseWriter, r *http.Request) {
 			Text   string `bson:"text"   json:"text"`
 			Points int    `bson:"points" json:"points"`
 		} `bson:"questions" json:"questions"`
+		IsOpen bool `bson:"is_open" json:"is_open"`
 	}
 
 	coll := helpers.Client.Database("data-feed-db").Collection("quizzes")

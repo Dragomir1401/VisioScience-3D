@@ -6,6 +6,7 @@ const ClassDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+
   const [students, setStudents] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
   const [loadingStudents, setLoadingStudents] = useState(true);
@@ -49,6 +50,22 @@ const ClassDetails = () => {
       setQuizzes([]);
     } finally {
       setLoadingQuizzes(false);
+    }
+  };
+
+  const toggleQuizStatus = async (quizId, currentStatus) => {
+    try {
+      await fetch(`http://localhost:8000/evaluation/quiz/${quizId}/status`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ is_open: !currentStatus }),
+      });
+      fetchClassQuizzes();
+    } catch (e) {
+      console.error("Eroare la actualizarea statusului quiz-ului:", e);
     }
   };
 
@@ -105,20 +122,32 @@ const ClassDetails = () => {
           ) : quizzes.length === 0 ? (
             <p className="text-sm italic text-gray-500">Niciun quiz atribuit încă.</p>
           ) : (
-            <ul className="list-disc list-inside space-y-2 text-sm text-gray-800">
+            <ul className="space-y-2 text-sm text-gray-800">
               {quizzes.map((quiz) => (
                 <li key={quiz.id} className="flex items-center justify-between">
-                  <Link to={`/quiz/${quiz.id}`} className="text-mulberry hover:underline">
-                    {quiz.title || "Quiz fără titlu"}
-                  </Link>
-                  <button
-                    onClick={() =>
-                      navigate(`/classes/${id}/quiz/${quiz.id}/results`)
-                    }
-                     className="bg-gradient-to-r from-pink-500 to-mulberry text-white px-3 py-1 rounded-md hover:opacity-90 text-xs"
-                  >
-                    Vezi rezultate
-                  </button>
+                  <div className="flex-1">
+                    <Link to={`/quiz/${quiz.id}`} className="text-mulberry hover:underline">
+                      {quiz.title || "Quiz fără titlu"}
+                    </Link>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => navigate(`/classes/${id}/quiz/${quiz.id}/results`)}
+                      className="bg-gradient-to-r from-pink-500 to-mulberry text-white px-3 py-1 rounded-md hover:opacity-90 text-xs"
+                    >
+                      Vezi rezultate
+                    </button>
+                    <button
+                      onClick={() => toggleQuizStatus(quiz.id, quiz.is_open)}
+                      className={`px-3 py-1 rounded-md text-xs ${
+                        quiz.is_open
+                          ? "bg-red-500 text-white hover:bg-red-600"
+                          : "bg-green-500 text-white hover:bg-green-600"
+                      }`}
+                    >
+                      {quiz.is_open ? "Închide quiz" : "Deschide quiz"}
+                    </button>
+                  </div>
                 </li>
               ))}
             </ul>

@@ -47,7 +47,7 @@ func main() {
 	r.HandleFunc("/evaluation/quiz/{quiz_id}", handlers.GetQuizByID).Methods("GET")
 
 	// GET /evaluation/quiz/meta/{id}
-	r.HandleFunc("/evaluation/quiz/meta/{id}", handlers.GetQuizMeta).Methods("GET")
+	r.HandleFunc("/evaluation/quiz/meta/{quiz_id}", handlers.GetQuizMeta).Methods("GET")
 
 	// Protected routes
 	r.Handle("/evaluation/quiz/attempt/{quizId}", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizForAttempt))).Methods("GET")

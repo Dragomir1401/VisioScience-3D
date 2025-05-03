@@ -39,6 +39,7 @@ const QuizMeta = () => {
           class_id: raw.class_id,
           questions: qs.length,
           max_points: totalPoints,
+          is_open: raw.is_open,
         });
 
         const rRes = await fetch(
@@ -135,12 +136,18 @@ const QuizMeta = () => {
           >
             ⬅ Înapoi
           </button>
-          <button
-            onClick={() => navigate(`/quiz/attempt/${quizId}`)}
-            className="bg-gradient-to-r from-pink-500 to-mulberry text-white px-4 py-2 rounded-md hover:opacity-90 transition text-sm"
-          >
-            {result ? "Reia quiz-ul" : "Începe quiz-ul"}
-          </button>
+          {!meta.is_open ? (
+          <span className="text-gray-500 italic self-center">
+              Quiz închis
+            </span>
+          ) : (
+              <button
+                onClick={() => navigate(`/quiz/attempt/${quizId}`)}
+                className="bg-gradient-to-r from-pink-500 to-mulberry text-white px-4 py-2 rounded-md hover:opacity-90 transition text-sm"
+              >
+                {result ? "Reia quiz-ul" : "Începe quiz-ul"}
+              </button>
+          )}
         </div>
       </div>
     </div>
