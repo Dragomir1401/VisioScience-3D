@@ -38,6 +38,9 @@ func main() {
 	r.Handle("/user/invites", middleware.JWTAuth(http.HandlerFunc(handlers.GetMyInvites))).Methods("GET")
 	r.Handle("/user/invites/{id}/respond", middleware.JWTAuth(http.HandlerFunc(handlers.RespondToInvite))).Methods("POST")
 
+	r.Handle("/user/quiz/result", middleware.JWTAuth(http.HandlerFunc(handlers.SubmitUserQuizResult))).Methods("POST")
+	r.Handle("/user/quiz/results/{quizId}", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizResultsForQuiz))).Methods("GET")
+
 	corsObj := gorillaHandlers.CORS(
 		gorillaHandlers.AllowedOrigins([]string{"*"}),
 		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),

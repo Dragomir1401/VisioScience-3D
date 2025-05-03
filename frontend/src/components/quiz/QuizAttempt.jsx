@@ -1,5 +1,3 @@
-/*  src/components/quiz/QuizAttempt.jsx  */
-
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -8,42 +6,35 @@ const dbg = (...a) => console.debug("[QuizAttempt]", ...a);
 const QuizAttempt = () => {
   const { quizId } = useParams();
   const navigate = useNavigate();
-
   const token = localStorage.getItem("token");
 
-  const [quiz, setQuiz] = useState(null);
-  const [answers, setAnswers] = useState([]);
-  const [stage, setStage] = useState("loading");
-  const [error, setError] = useState("");
+  const [quiz, setQuiz]         = useState(null);
+  const [answers, setAnswers]   = useState([]);
+  const [stage, setStage]       = useState("loading"); 
+  const [error, setError]       = useState("");
+  const [score, setScore]       = useState(null);
 
-  /* ---------- 1. Încărcăm quizul (fără răspunsuri corecte) --------- */
   useEffect(() => {
     (async () => {
       try {
-        dbg("GET /evaluation/quiz/attempt/", quizId);
+        dbg("GET quiz for attempt", quizId);
         const r = await fetch(
           `http://localhost:8000/evaluation/quiz/attempt/${quizId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (!r.ok) throw new Error(`${r.status} – ${await r.text()}`);
-
         const raw = await r.json();
 
-        // --- normalizare camelCase ----------------------------------
-        const quizData = {
-          title: raw.Title,
-          questions: (raw.Questions || []).map((q) => ({
-            id: q.ID,
-            text: q.Text,
-            choices: q.Choices ?? [],
-            images: q.Images ?? [],
-            points: q.Points ?? 1,
-          })),
-        };
-        //--------------------------------------------------------------
+        const questions = (raw.Questions || []).map((q) => ({
+          id:      q.ID,
+          text:    q.Text,
+          choices: q.Choices || [],
+          images:  q.Images  || [],
+          points:  q.Points  || 1,
+        }));
 
-        setQuiz(quizData);
-        setAnswers(Array(quizData.questions.length).fill(null));
+        setQuiz({ title: raw.Title, questions });
+        setAnswers(Array(questions.length).fill(null));
         setStage("ready");
       } catch (e) {
         dbg("Fetch error:", e);
@@ -52,7 +43,6 @@ const QuizAttempt = () => {
     })();
   }, [quizId, token]);
 
-  /* ---------- 2. Handlers ----------------------------------------- */
   const choose = (qIdx, cIdx) =>
     setAnswers((prev) => {
       const cp = [...prev];
@@ -80,26 +70,36 @@ const QuizAttempt = () => {
       );
       if (!r.ok) throw new Error(`${r.status} – ${await r.text()}`);
 
-      const { score } = await r.json();
+      const { score: sc } = await r.json();
+      setScore(sc);
       setStage("sent");
-      alert(`Felicitări! Ai obţinut ${score} puncte.`);
+
+      await fetch("http://localhost:8000/user/quiz/result", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ quiz_id: quizId, score: sc }),
+      });
+
     } catch (e) {
       alert(`Eroare la trimitere: ${e.message}`);
     }
   };
 
-  /* ---------- 3. Render ------------------------------------------- */
   if (stage === "loading")
     return <p className="pt-24 text-center text-mulberry">Se încarcă…</p>;
-
   if (error)
     return (
       <p className="pt-24 text-center text-red-600 whitespace-pre-wrap">
         {error}
       </p>
     );
-
   if (!quiz) return null;
+
+  const maxPoints = quiz.questions.reduce((sum, q) => sum + q.points, 0);
+  const pct       = score != null ? Math.round((score / maxPoints) * 100) : 0;
 
   return (
     <div className="min-h-screen pt-24 px-6 bg-gradient-to-b from-[#fff0f5] via-[#f3e8ff] to-[#fff7ed]">
@@ -114,7 +114,6 @@ const QuizAttempt = () => {
             <p className="font-semibold text-purple-800">
               {i + 1}. {q.text}
             </p>
-
             {!!q.images.length && (
               <div className="my-2 flex flex-wrap gap-2">
                 {q.images.map((src, k) => (
@@ -127,7 +126,6 @@ const QuizAttempt = () => {
                 ))}
               </div>
             )}
-
             <ul className="mt-2 space-y-1">
               {q.choices.map((c, j) => (
                 <li key={j} className="flex items-center gap-2">
@@ -146,18 +144,27 @@ const QuizAttempt = () => {
         {stage !== "sent" ? (
           <button
             onClick={handleSubmit}
-            className="bg-gradient-to-r from-mulberry to-pink-500
-                       text-white px-6 py-2 rounded-md hover:opacity-90"
+            className="bg-gradient-to-r from-mulberry to-pink-500 text-white px-6 py-2 rounded-md hover:opacity-90"
           >
             Trimite răspunsurile
           </button>
         ) : (
-          <button
-            onClick={() => navigate(-1)}
-            className="bg-purple-200 text-mulberry px-6 py-2 rounded-md"
-          >
-            ⬅ Înapoi
-          </button>
+          <>
+            <div className="bg-white p-4 rounded-md shadow text-center space-y-2">
+              <p className="text-lg font-semibold text-mulberry">
+                Ai obținut {score} / {maxPoints} puncte
+              </p>
+              <p className="text-sm text-gray-600">
+                ({pct}%)
+              </p>
+            </div>
+            <button
+              onClick={() => navigate(-1)}
+              className="mt-4 bg-purple-200 text-mulberry px-6 py-2 rounded-md hover:bg-purple-300"
+            >
+              ⬅ Înapoi
+            </button>
+          </>
         )}
       </div>
     </div>

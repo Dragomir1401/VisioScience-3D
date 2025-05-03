@@ -384,3 +384,19 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 
 	_ = json.NewEncoder(w).Encode(bson.M{"score": score})
 }
+
+// GET /evaluation/quiz/{quizId}/results
+func GetQuizResults(w http.ResponseWriter, r *http.Request) {
+	quizID, _ := primitive.ObjectIDFromHex(mux.Vars(r)["quizId"])
+	coll := helpers.Client.Database("data-feed-db").Collection("quizzes")
+
+	var quiz models.Quiz
+	if err := coll.FindOne(r.Context(),
+		bson.M{"_id": quizID},
+		options.FindOne().SetProjection(bson.M{"quiz_results": 1}),
+	).Decode(&quiz); err != nil {
+		http.Error(w, "Quiz not found", http.StatusNotFound)
+		return
+	}
+	json.NewEncoder(w).Encode(quiz.QuizResults)
+}

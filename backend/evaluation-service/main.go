@@ -50,17 +50,16 @@ func main() {
 	r.HandleFunc("/evaluation/quiz/meta/{id}", handlers.GetQuizMeta).Methods("GET")
 
 	// Protected routes
-	r.Handle("/evaluation/quiz/attempt/{quizId}",
-		middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizForAttempt)),
-	).Methods("GET")
+	r.Handle("/evaluation/quiz/attempt/{quizId}", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizForAttempt))).Methods("GET")
 
-	r.Handle("/evaluation/quiz/attempt/{quizId}",
-		middleware.JWTAuth(http.HandlerFunc(handlers.SubmitAttempt)),
-	).Methods("POST")
+	// POST /evaluation/quiz/attempt/{quizId}
+	r.Handle("/evaluation/quiz/attempt/{quizId}", middleware.JWTAuth(http.HandlerFunc(handlers.SubmitAttempt))).Methods("POST")
 
-	r.Handle("/evaluation/quiz/{quizId}/result/{userId}",
-		middleware.JWTAuth(http.HandlerFunc(handlers.GetLastResult)),
-	).Methods("GET")
+	// POST /evaluation/quiz/{quizId}/result
+	r.Handle("/evaluation/quiz/{quizId}/result/{userId}", middleware.JWTAuth(http.HandlerFunc(handlers.GetLastResult))).Methods("GET")
+
+	// POST /evaluation/quiz/{quizId}/results
+	r.Handle("/evaluation/quiz/{quizId}/results", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizResults))).Methods("GET")
 
 	log.Println("evaluation-service running on :8080")
 	http.ListenAndServe(":8080", cors(r))
