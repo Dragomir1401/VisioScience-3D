@@ -23,6 +23,8 @@ const ComputerScience = () => {
       .fill([])
       .map(() => [])
   );
+  const [root, setRoot] = useState(null);
+
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-lavender via-[#f8edf7] to-[#fdf6f6] pt-[80px]">
@@ -50,10 +52,10 @@ const ComputerScience = () => {
         )}
 
         {selected?.id === "map" && (
-          <div className="space-y-6">
-            <AVLTreeScene />
-            <AVLTreeOperations root={null} setRoot={() => {}} />
-          </div>
+        <div className="h-[650px] mb-6">
+            <AVLTreeScene root={root} />
+            <AVLTreeOperations root={root} setRoot={setRoot} />
+       </div>
         )}
 
         {!selected && (
