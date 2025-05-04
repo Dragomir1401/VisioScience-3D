@@ -1,4 +1,3 @@
-// src/models/computer_science/VectorOperations.jsx
 import React, { useState } from "react";
 
 const VectorOperations = ({ elements = [], onChange }) => {
@@ -21,11 +20,7 @@ const VectorOperations = ({ elements = [], onChange }) => {
     const num = parseFloat(value);
     const idx = parseInt(index, 10);
     if (isNaN(num) || isNaN(idx) || idx < 0 || idx > elements.length) return;
-    const newArr = [
-      ...elements.slice(0, idx),
-      num,
-      ...elements.slice(idx),
-    ];
+    const newArr = [...elements.slice(0, idx), num, ...elements.slice(idx)];
     onChange(newArr);
     setValue("");
     setIndex("");
@@ -34,17 +29,16 @@ const VectorOperations = ({ elements = [], onChange }) => {
   const eraseAt = () => {
     const idx = parseInt(index, 10);
     if (isNaN(idx) || idx < 0 || idx >= elements.length) return;
-    const newArr = [
-      ...elements.slice(0, idx),
-      ...elements.slice(idx + 1),
-    ];
+    const newArr = [...elements.slice(0, idx), ...elements.slice(idx + 1)];
     onChange(newArr);
     setIndex("");
   };
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4">
-      <h4 className="text-lg font-semibold text-mulberry">Operații pe vector</h4>
+      <h4 className="text-lg font-semibold text-mulberry">
+        Operații pe vector
+      </h4>
 
       <div className="flex gap-2">
         <input
@@ -52,14 +46,14 @@ const VectorOperations = ({ elements = [], onChange }) => {
           placeholder="Valoare"
           className="border rounded px-2 py-1 flex-1"
           value={value}
-          onChange={e => setValue(e.target.value)}
+          onChange={(e) => setValue(e.target.value)}
         />
         <input
           type="number"
           placeholder="Index"
           className="border rounded px-2 py-1 w-24"
           value={index}
-          onChange={e => setIndex(e.target.value)}
+          onChange={(e) => setIndex(e.target.value)}
         />
       </div>
 

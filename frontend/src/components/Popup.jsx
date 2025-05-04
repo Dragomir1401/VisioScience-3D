@@ -32,10 +32,13 @@ const renderContent = {
       buttonText="Intră"
     />
   ),
-  6: <PopupSidebar 
-    text="Explorează structuri de date în 3D!"
-    link="/computer-science"
-    buttonText="Intră" />,
+  6: (
+    <PopupSidebar
+      text="Învață programarea prin vizualizarea algoritmilor si structurilor de date!"
+      link="/computer-science"
+      buttonText="Intră"
+    />
+  ),
   7: <PopupSidebar text="În curând..." link="#" buttonText="..." />,
 };
 
