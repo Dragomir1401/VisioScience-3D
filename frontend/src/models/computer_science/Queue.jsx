@@ -2,11 +2,18 @@ import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Line } from "@react-three/drei";
 import ForestBackground4 from "../ForestBackground4";
+import {
+  PlusIcon,
+  ArrowCircleLeftIcon,
+  EyeIcon,
+  RefreshIcon,
+} from "@heroicons/react/solid";
 
 export default function QueueDemo() {
   const [elements, setElements] = useState([]);
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
+  const [isRotating, setIsRotating] = useState(false);
 
   const handlePush = () => {
     if (!input) return;
@@ -48,7 +55,8 @@ export default function QueueDemo() {
     <div className="flex gap-6">
       <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry w-1/3 space-y-4">
         <h4 className="text-lg font-semibold text-mulberry">FIFO Queue</h4>
-        <div className="flex gap-2">
+
+        <div className="flex gap-2 mt-2">
           <input
             type="text"
             placeholder="Value"
@@ -57,33 +65,43 @@ export default function QueueDemo() {
             className="flex-1 border rounded px-2 py-1"
           />
         </div>
-        <div className="flex gap-2">
+
+        <div className="flex flex-wrap gap-2 mt-2">
           <button
             onClick={handlePush}
-            className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
+            className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
           >
-            push(v)
+            <PlusIcon className="w-5 h-5" />
+            <span className="text-sm">push(v)</span>
           </button>
+
           <button
             onClick={handlePop}
-            className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+            className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-4 rounded-lg shadow transition"
           >
-            pop()
+            <ArrowCircleLeftIcon className="w-5 h-5" />
+            <span className="text-sm">pop()</span>
           </button>
+
           <button
             onClick={handleTop}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+            className="flex items-center gap-1 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-indigo-600 hover:to-blue-600 text-white py-2 px-4 rounded-lg shadow transition"
           >
-            top()
+            <EyeIcon className="w-5 h-5" />
+            <span className="text-sm">top()</span>
           </button>
+
           <button
             onClick={handleClear}
-            className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded"
+            className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
           >
-            clear()
+            <RefreshIcon className="w-5 h-5" />
+            <span className="text-sm">clear()</span>
           </button>
         </div>
-        {message && <div className="text-sm text-gray-700">{message}</div>}
+
+        {message && <div className="text-sm text-gray-700 mt-2">{message}</div>}
+
         <div className="text-sm text-gray-700">
           Contents: [{elements.join(", ")}]
         </div>
@@ -93,7 +111,10 @@ export default function QueueDemo() {
         <Canvas camera={{ position: [centerX, camY, camDist], fov: 50 }}>
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 5, 5]} intensity={1} />
-          <ForestBackground4 />
+          <ForestBackground4
+            isRotatingForestBackground={isRotating}
+            isRotatingForestBackgroundSetter={setIsRotating}
+          />
 
           {elements.map((val, i) => {
             const x = i * spacing;

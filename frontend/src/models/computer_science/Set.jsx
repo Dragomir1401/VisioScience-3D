@@ -1,201 +1,209 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Line } from "@react-three/drei";
 import ForestBackground4 from "../ForestBackground4";
+import { PlusIcon, TrashIcon, RefreshIcon } from "@heroicons/react/solid";
 
-class PriorityQueue {
-  constructor(comparator) {
-    this.heap = [];
-    this.compare = comparator;
-  }
-  push(val) {
-    this.heap.push(val);
-    this._siftUp(this.heap.length - 1);
-  }
-  pop() {
-    if (this.heap.length === 0) return null;
-    const top = this.heap[0];
-    const last = this.heap.pop();
-    if (this.heap.length > 0) {
-      this.heap[0] = last;
-      this._siftDown(0);
-    }
-    return top;
-  }
-  peek() {
-    return this.heap[0] ?? null;
-  }
-  size() {
-    return this.heap.length;
-  }
-  _siftUp(idx) {
-    while (idx > 0) {
-      const parent = Math.floor((idx - 1) / 2);
-      if (this.compare(this.heap[idx], this.heap[parent]) < 0) {
-        [this.heap[idx], this.heap[parent]] = [
-          this.heap[parent],
-          this.heap[idx],
-        ];
-        idx = parent;
-      } else break;
-    }
-  }
-  _siftDown(idx) {
-    const n = this.heap.length;
-    while (true) {
-      let left = 2 * idx + 1;
-      let right = 2 * idx + 2;
-      let best = idx;
-      if (left < n && this.compare(this.heap[left], this.heap[best]) < 0)
-        best = left;
-      if (right < n && this.compare(this.heap[right], this.heap[best]) < 0)
-        best = right;
-      if (best !== idx) {
-        [this.heap[idx], this.heap[best]] = [this.heap[best], this.heap[idx]];
-        idx = best;
-      } else break;
-    }
-  }
-}
-
-class TreeNode {
-  constructor(value) {
-    this.value = value;
+class AVLNode {
+  constructor(key) {
+    this.key = key;
     this.left = null;
     this.right = null;
+    this.height = 1;
   }
 }
-const buildTree = (arr) => {
-  if (!arr.length) return null;
-  const nodes = arr.map((v) => new TreeNode(v));
-  arr.forEach((_, i) => {
-    const left = 2 * i + 1;
-    const right = 2 * i + 2;
-    if (left < arr.length) nodes[i].left = nodes[left];
-    if (right < arr.length) nodes[i].right = nodes[right];
-  });
-  return nodes[0];
+
+const height = (node) => (node ? node.height : 0);
+const updateHeight = (node) => {
+  node.height = 1 + Math.max(height(node.left), height(node.right));
+};
+const balanceFactor = (node) => height(node.left) - height(node.right);
+const rotateRight = (y) => {
+  const x = y.left;
+  y.left = x.right;
+  x.right = y;
+  updateHeight(y);
+  updateHeight(x);
+  return x;
+};
+const rotateLeft = (x) => {
+  const y = x.right;
+  x.right = y.left;
+  y.left = x;
+  updateHeight(x);
+  updateHeight(y);
+  return y;
 };
 
-const inorder = (node, arr = []) => {
+export function insertNode(node, key) {
+  if (!node) return new AVLNode(key);
+  if (key < node.key) node.left = insertNode(node.left, key);
+  else if (key > node.key) node.right = insertNode(node.right, key);
+  else return node;
+  updateHeight(node);
+  const bf = balanceFactor(node);
+  if (bf > 1 && key < node.left.key) return rotateRight(node);
+  if (bf < -1 && key > node.right.key) return rotateLeft(node);
+  if (bf > 1 && key > node.left.key) {
+    node.left = rotateLeft(node.left);
+    return rotateRight(node);
+  }
+  if (bf < -1 && key < node.right.key) {
+    node.right = rotateRight(node.right);
+    return rotateLeft(node);
+  }
+  return node;
+}
+
+export function deleteNode(node, key) {
+  if (!node) return null;
+  if (key < node.key) node.left = deleteNode(node.left, key);
+  else if (key > node.key) node.right = deleteNode(node.right, key);
+  else {
+    if (!node.left || !node.right) node = node.left || node.right;
+    else {
+      let temp = node.right;
+      while (temp.left) temp = temp.left;
+      node.key = temp.key;
+      node.right = deleteNode(node.right, temp.key);
+    }
+  }
+  if (!node) return null;
+  updateHeight(node);
+  const bf = balanceFactor(node);
+  if (bf > 1 && balanceFactor(node.left) >= 0) return rotateRight(node);
+  if (bf > 1 && balanceFactor(node.left) < 0) {
+    node.left = rotateLeft(node.left);
+    return rotateRight(node);
+  }
+  if (bf < -1 && balanceFactor(node.right) <= 0) return rotateLeft(node);
+  if (bf < -1 && balanceFactor(node.right) > 0) {
+    node.right = rotateRight(node.right);
+    return rotateLeft(node);
+  }
+  return node;
+}
+
+function inorder(node, arr = []) {
   if (!node) return arr;
   inorder(node.left, arr);
-  arr.push(node);
+  arr.push(node.key);
   inorder(node.right, arr);
   return arr;
-};
-const computePositions = (node, x0, x1, y, gapY, list) => {
+}
+
+function computePositions(node, x0, x1, y, gapY, list) {
   if (!node) return;
   const x = (x0 + x1) / 2;
   list.push({ node, x, y });
   computePositions(node.left, x0, x, y - gapY, gapY, list);
   computePositions(node.right, x, x1, y - gapY, gapY, list);
-};
+}
 
-export default function PriorityQueueDemo() {
-  const comparators = { min: (a, b) => a - b, max: (a, b) => b - a };
-  const [type, setType] = useState("min");
-  const [value, setValue] = useState("");
-  const [pq, setPq] = useState(new PriorityQueue(comparators[type]));
-  const [msg, setMsg] = useState("");
+export default function AVLSetDemo() {
+  const [root, setRoot] = useState(null);
+  const [valueInput, setValueInput] = useState("");
+  const [message, setMessage] = useState("");
+  const [inorderList, setInorderList] = useState([]);
+  const [isRotating, setIsRotating] = useState(false);
+
+  const handleInsert = () => {
+    if (!valueInput) return;
+    const v = isNaN(valueInput) ? valueInput : Number(valueInput);
+    const newRoot = insertNode(root, v);
+    setRoot(newRoot);
+    setMessage(`Inserted ${v}`);
+    setValueInput("");
+  };
+
+  const handleDelete = () => {
+    if (!valueInput) return;
+    const v = isNaN(valueInput) ? valueInput : Number(valueInput);
+    const newRoot = deleteNode(root, v);
+    setRoot(newRoot);
+    setMessage(`Deleted ${v}`);
+    setValueInput("");
+  };
+
+  const handleClear = () => {
+    setRoot(null);
+    setMessage("Cleared all");
+  };
 
   useEffect(() => {
-    const newPq = new PriorityQueue(comparators[type]);
-    pq.heap.forEach((v) => newPq.push(v));
-    setPq(newPq);
-  }, [type]);
+    setInorderList(inorder(root));
+  }, [root]);
 
-  const list = useMemo(() => [...pq.heap], [pq]);
-
-  const handlePush = () => {
-    if (value === "") return;
-    const v = isNaN(value) ? value : Number(value);
-    const newPq = new PriorityQueue(comparators[type]);
-    pq.heap.forEach((x) => newPq.push(x));
-    newPq.push(v);
-    setPq(newPq);
-    setMsg(`Pushed ${v}`);
-    setValue("");
-  };
-  const handlePop = () => {
-    if (pq.size() === 0) return;
-    const newPq = new PriorityQueue(comparators[type]);
-    pq.heap.forEach((x) => newPq.push(x));
-    const top = newPq.pop();
-    setPq(newPq);
-    setMsg(`Popped ${top}`);
-  };
-  const handleClear = () => {
-    setPq(new PriorityQueue(comparators[type]));
-    setMsg(`Cleared`);
-  };
-
-  const root = buildTree(list);
   const flat = [];
   const edges = [];
-  const total = list.length;
-  const halfWidth = Math.max(total * 1.5, 5);
-  computePositions(root, -halfWidth, halfWidth, 4, 2.5, flat);
+  const total = inorder(root).length;
+  const half = Math.max(total * 1.2, 5);
+  computePositions(root, -half, half, 4, 2.5, flat);
   const posMap = new Map();
-  flat.forEach(({ node, x, y }) => posMap.set(node, [x, y]));
-  flat.forEach(({ node }) => {
-    if (node.left)
-      edges.push({ from: posMap.get(node), to: posMap.get(node.left) });
-    if (node.right)
-      edges.push({ from: posMap.get(node), to: posMap.get(node.right) });
+  flat.forEach(({ node, x, y }) => posMap.set(node.key, [x, y]));
+  flat.forEach(({ node, x, y }) => {
+    if (node.left) {
+      const [lx, ly] = posMap.get(node.left.key);
+      edges.push({ from: [x, y, 0], to: [lx, ly, 0] });
+    }
+    if (node.right) {
+      const [rx, ry] = posMap.get(node.right.key);
+      edges.push({ from: [x, y, 0], to: [rx, ry, 0] });
+    }
   });
 
   return (
     <div className="flex gap-6">
-      <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry w-1/3 space-y-4">
+      <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
         <h4 className="text-lg font-semibold text-mulberry">
-          Priority Queue ({type}-heap)
+          Ordered Set (AVL)
         </h4>
-        <div className="flex items-center gap-2">
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            className="border rounded px-2 py-1"
-          >
-            <option value="min">Min-Heap</option>
-            <option value="max">Max-Heap</option>
-          </select>
+        <div className="flex gap-2">
           <input
             type="text"
             placeholder="Value"
             className="border rounded px-2 py-1 flex-1"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
+            value={valueInput}
+            onChange={(e) => setValueInput(e.target.value)}
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
-            onClick={handlePush}
-            className="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded"
+            onClick={handleInsert}
+            className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
           >
-            push(v)
+            <PlusIcon className="w-5 h-5" />
+            <span className="text-sm">insert(v)</span>
           </button>
           <button
-            onClick={handlePop}
-            className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded"
+            onClick={handleDelete}
+            className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-4 rounded-lg shadow transition"
           >
-            pop()
+            <TrashIcon className="w-5 h-5" />
+            <span className="text-sm">erase(v)</span>
           </button>
           <button
             onClick={handleClear}
-            className="bg-gray-500 hover:bg-gray-600 text-white py-1 px-3 rounded"
+            className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
           >
-            clear()
+            <RefreshIcon className="w-5 h-5" />
+            <span className="text-sm">clear()</span>
           </button>
         </div>
-        {msg && <p className="text-sm text-gray-600">{msg}</p>}
+        {message && <p className="text-sm text-gray-600">{message}</p>}
+        <div className="mt-4 text-sm text-gray-700">
+          In-order: {inorderList.join(", ")}
+        </div>
       </div>
 
       <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry">
         <Canvas camera={{ position: [0, 4, 12], fov: 60 }}>
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 10, 5]} intensity={1} />
-          <ForestBackground4 />
+          <ForestBackground4
+            isRotatingForestBackground={isRotating}
+            isRotatingForestBackgroundSetter={setIsRotating}
+          />
 
           {edges.map((e, i) => (
             <Line
@@ -206,26 +214,23 @@ export default function PriorityQueueDemo() {
             />
           ))}
 
-          {flat.map(({ node }, i) => {
-            const [x, y] = posMap.get(node);
-            return (
-              <group key={i} position={[x, y, 0]}>
-                <mesh>
-                  <sphereGeometry args={[0.5, 16, 16]} />
-                  <meshStandardMaterial color="#4f46e5" />
-                </mesh>
-                <Text
-                  position={[0, 0, 0.75]}
-                  fontSize={0.3}
-                  color="#ffffff"
-                  anchorX="center"
-                  anchorY="middle"
-                >
-                  {node.value}
-                </Text>
-              </group>
-            );
-          })}
+          {flat.map(({ node, x, y }) => (
+            <group key={node.key} position={[x, y, 0]}>
+              <mesh>
+                <sphereGeometry args={[0.5, 16, 16]} />
+                <meshStandardMaterial color="#4f46e5" />
+              </mesh>
+              <Text
+                position={[0, 0, 0.75]}
+                fontSize={0.3}
+                color="#ffffff"
+                anchorX="center"
+                anchorY="middle"
+              >
+                {node.key}
+              </Text>
+            </group>
+          ))}
 
           <OrbitControls />
         </Canvas>

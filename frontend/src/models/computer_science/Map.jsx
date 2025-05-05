@@ -1,7 +1,8 @@
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Line } from "@react-three/drei";
 import ForestBackground4 from "../ForestBackground4";
+import { PlusIcon, TrashIcon, RefreshIcon } from "@heroicons/react/solid";
 
 class AVLNode {
   constructor(key, value) {
@@ -117,7 +118,8 @@ export default function AVLTreeDemo() {
     const newRoot = insertNode(root, k, valueInput);
     setRoot(newRoot);
     setMessage(`Inserted ${k}:${valueInput}`);
-    setInorderList(inorder(newRoot).map((n) => `${n.key}:${n.value}`));
+    setKeyInput("");
+    setValueInput("");
   };
 
   const handleDelete = () => {
@@ -126,13 +128,18 @@ export default function AVLTreeDemo() {
     const newRoot = deleteNode(root, k);
     setRoot(newRoot);
     setMessage(`Deleted ${k}`);
-    setMessage(`Deleted ${k}`);
-    setInorderList(inorder(newRoot).map((n) => `${n.key}:${n.value}`));
+    setKeyInput("");
+    setValueInput("");
+  };
+
+  const handleClear = () => {
+    setRoot(null);
+    setInorderList([]);
+    setMessage("Cleared all");
   };
 
   useEffect(() => {
-    const list = inorder(root).map((n) => `${n.key}:${n.value}`);
-    setInorderList(list);
+    setInorderList(inorder(root).map((n) => `${n.key}:${n.value}`));
   }, [root]);
 
   const flat = [];
@@ -148,6 +155,8 @@ export default function AVLTreeDemo() {
     if (node.right)
       edges.push({ from: [x, y, 0], to: [...posMap.get(node.right), 0] });
   });
+
+  const [isRotating, setIsRotating] = useState(false);
 
   return (
     <div className="flex gap-6">
@@ -171,18 +180,27 @@ export default function AVLTreeDemo() {
             onChange={(e) => setValueInput(e.target.value)}
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={handleInsert}
-            className="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded"
+            className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
           >
-            Insert/Update
+            <PlusIcon className="w-5 h-5" />
+            <span className="text-sm font-medium">Insert/Update</span>
           </button>
           <button
             onClick={handleDelete}
-            className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
+            className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-4 rounded-lg shadow transition"
           >
-            Delete
+            <TrashIcon className="w-5 h-5" />
+            <span className="text-sm font-medium">Delete</span>
+          </button>
+          <button
+            onClick={handleClear}
+            className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
+          >
+            <RefreshIcon className="w-5 h-5" />
+            <span className="text-sm font-medium">Clear</span>
           </button>
         </div>
         {message && <p className="text-sm text-gray-600">{message}</p>}
@@ -195,7 +213,10 @@ export default function AVLTreeDemo() {
         <Canvas camera={{ position: [0, 4, 12], fov: 60 }}>
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 10, 5]} intensity={1} />
-          <ForestBackground4 />
+          <ForestBackground4
+            isRotatingForestBackground={isRotating}
+            isRotatingForestBackgroundSetter={setIsRotating}
+          />
 
           {edges.map((e, i) => (
             <Line

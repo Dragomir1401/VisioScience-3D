@@ -1,10 +1,13 @@
-// src/models/computer_science/PriorityQueueDemo.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Line } from "@react-three/drei";
 import ForestBackground4 from "../ForestBackground4";
+import {
+  PlusIcon,
+  ArrowCircleDownIcon,
+  RefreshIcon,
+} from "@heroicons/react/solid";
 
-// ----- Priority Queue (binary heap tree) -----
 class PriorityQueue {
   constructor(comparator) {
     this.heap = [];
@@ -60,7 +63,6 @@ class PriorityQueue {
   }
 }
 
-// Tree builder from heap array
 class TreeNode {
   constructor(value) {
     this.value = value;
@@ -79,7 +81,6 @@ const buildTree = (arr) => {
   });
   return nodes[0];
 };
-// In-order traversal to list nodes
 const inorder = (node, arr = []) => {
   if (!node) return arr;
   inorder(node.left, arr);
@@ -87,7 +88,6 @@ const inorder = (node, arr = []) => {
   inorder(node.right, arr);
   return arr;
 };
-// Compute positions
 const computePositions = (node, x0, x1, y, gapY, list) => {
   if (!node) return;
   const x = (x0 + x1) / 2;
@@ -105,6 +105,7 @@ export default function PriorityQueueDemo() {
   const [value, setValue] = useState("");
   const [pq, setPq] = useState(new PriorityQueue(comparators[type]));
   const [msg, setMsg] = useState("");
+  const [isRotating, setIsRotating] = useState(false);
 
   useEffect(() => {
     const newPq = new PriorityQueue(comparators[type]);
@@ -137,7 +138,6 @@ export default function PriorityQueueDemo() {
     setMsg(`Cleared`);
   };
 
-  // build tree and compute positions
   const root = buildTree(list);
   const flat = [];
   const edges = [];
@@ -147,19 +147,28 @@ export default function PriorityQueueDemo() {
   const posMap = new Map();
   flat.forEach(({ node, x, y }) => posMap.set(node, [x, y]));
   flat.forEach(({ node }) => {
-    if (node.left)
-      edges.push({ from: posMap.get(node), to: posMap.get(node.left) });
-    if (node.right)
-      edges.push({ from: posMap.get(node), to: posMap.get(node.right) });
+    if (node.left) {
+      edges.push({
+        from: [...posMap.get(node), 0],
+        to: [...posMap.get(node.left), 0],
+      });
+    }
+    if (node.right) {
+      edges.push({
+        from: [...posMap.get(node), 0],
+        to: [...posMap.get(node.right), 0],
+      });
+    }
   });
 
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry max-w-md mx-auto">
         <h4 className="text-lg font-semibold text-mulberry">
-          Priority Queue ({type}-heap)
+          Priority Queue ({type === "min" ? "Min-Heap" : "Max-Heap"})
         </h4>
-        <div className="flex items-center gap-2">
+
+        <div className="flex items-center gap-2 mt-4">
           <select
             value={type}
             onChange={(e) => setType(e.target.value)}
@@ -176,26 +185,31 @@ export default function PriorityQueueDemo() {
             onChange={(e) => setValue(e.target.value)}
           />
         </div>
-        <div className="flex gap-2 mt-2">
+
+        <div className="flex flex-wrap gap-2 mt-4">
           <button
             onClick={handlePush}
-            className="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded"
+            className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
           >
-            push(v)
+            <PlusIcon className="w-5 h-5" />{" "}
+            <span className="text-sm">push()</span>
           </button>
           <button
             onClick={handlePop}
-            className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded"
+            className="flex items-center gap-1 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-indigo-600 hover:to-blue-600 text-white py-2 px-4 rounded-lg shadow transition"
           >
-            pop()
+            <ArrowCircleDownIcon className="w-5 h-5" />{" "}
+            <span className="text-sm">pop()</span>
           </button>
           <button
             onClick={handleClear}
-            className="bg-gray-500 hover:bg-gray-600 text-white py-1 px-3 rounded"
+            className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
           >
-            clear()
+            <RefreshIcon className="w-5 h-5" />{" "}
+            <span className="text-sm">clear()</span>
           </button>
         </div>
+
         {msg && <p className="text-sm text-gray-600 mt-2">{msg}</p>}
       </div>
 
@@ -203,15 +217,15 @@ export default function PriorityQueueDemo() {
         <Canvas camera={{ position: [0, 4, 12], fov: 60 }}>
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 10, 5]} intensity={1} />
-          <ForestBackground4 />
+          <ForestBackground4
+            isRotatingForestBackground={isRotating}
+            isRotatingForestBackgroundSetter={setIsRotating}
+          />
 
           {edges.map((e, i) => (
             <Line
               key={i}
-              points={[
-                [...e.from, 0],
-                [...e.to, 0],
-              ]}
+              points={[e.from, e.to]}
               color="#888888"
               lineWidth={2}
             />
