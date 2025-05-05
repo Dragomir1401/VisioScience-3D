@@ -12,6 +12,7 @@ import { UnorderedSetOperations } from "../components/computer_science/Unordered
 import AVLSetDemo from "../models/computer_science/Set";
 import AVLMultiSetDemo from "../models/computer_science/Multiset";
 import PriorityQueueDemo from "../models/computer_science/PriorityQueue";
+import QueueDemo from "../models/computer_science/Queue";
 
 const csObjects = [
   { id: "vector", label: "Vector", icon: "" },
@@ -23,7 +24,7 @@ const csObjects = [
   { id: "priority_queue", label: "Priority_queue", icon: "" },
   // { id: "deque", label: "Deque", icon: "" },
   // { id: "stack", label: "Stack", icon: "" },
-  // { id: "queue", label: "Queue", icon: "" },
+  { id: "queue", label: "Queue", icon: "" },
   // { id: "list", label: "List", icon: "" },
   // { id: "array", label: "Array", icon: "" },
 ];
@@ -101,12 +102,11 @@ const ComputerScience = () => {
           </div>
         )}
 
-        {/* {selected?.id === "priority_queue" && <PriorityQueueDemo />} */}
-        {/* {selected?.id === "deque" && <DequeDemo />} */}
-        {/* {selected?.id === "stack" && <StackDemo />} */}
-        {/* {selected?.id === "queue" && <QueueDemo />} */}
-        {/* {selected?.id === "list" && <ListDemo />} */}
-        {/* {selected?.id === "array" && <ArrayDemo />} */}
+        {selected?.id === "queue" && (
+          <div className="space-y-6">
+            <QueueDemo root={root} setRoot={setRoot} />
+          </div>
+        )}
 
         {!selected && (
           <p className="text-rosy-brown italic mt-6">
