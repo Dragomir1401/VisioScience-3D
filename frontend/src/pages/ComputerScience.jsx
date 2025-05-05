@@ -6,8 +6,7 @@ import VectorScene from "../models/computer_science/Vector";
 import VectorOperations from "../components/computer_science/VectorOperations";
 import { MapScene } from "../models/computer_science/UnorderedMap";
 import { MapOperations } from "../components/computer_science/UnorderedMapOperations";
-import { AVLTreeScene } from "../models/computer_science/Map";
-import { AVLTreeOperations } from "../components/computer_science/MapOperations";
+import AVLTreeDemo from "../models/computer_science/AVLTreeDemo";
 
 const csObjects = [
   { id: "vector", label: "Vector", icon: "" },
@@ -24,6 +23,7 @@ const ComputerScience = () => {
       .map(() => [])
   );
   const [root, setRoot] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(0);
 
 
   return (
@@ -52,10 +52,9 @@ const ComputerScience = () => {
         )}
 
         {selected?.id === "map" && (
-        <div className="h-[650px] mb-6">
-            <AVLTreeScene root={root} />
-            <AVLTreeOperations root={root} setRoot={setRoot} />
-       </div>
+        <div className="space-y-6">
+          <AVLTreeDemo />
+        </div>
         )}
 
         {!selected && (
