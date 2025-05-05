@@ -9,7 +9,7 @@ export default function QueueDemo() {
   const [message, setMessage] = useState("");
 
   const handlePush = () => {
-    if (input === "") return;
+    if (!input) return;
     setElements((prev) => [...prev, input]);
     setMessage(`pushed ${input}`);
     setInput("");
@@ -27,7 +27,7 @@ export default function QueueDemo() {
 
   const handleTop = () => {
     if (elements.length === 0) {
-      setMessage("top on empty queue");
+      setMessage("front on empty queue");
     } else {
       setMessage(`front is ${elements[0]}`);
     }
@@ -41,8 +41,8 @@ export default function QueueDemo() {
   const spacing = 2;
   const count = elements.length;
   const centerX = count > 0 ? ((count - 1) * spacing) / 2 : 0;
-  const camHeight = 5;
-  const camDist = Math.max(count * spacing, 5);
+  const camY = 0.8;
+  const camDist = Math.max(count * spacing, 10);
 
   return (
     <div className="flex gap-6">
@@ -90,12 +90,7 @@ export default function QueueDemo() {
       </div>
 
       <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry">
-        <Canvas
-          camera={{
-            position: [centerX, camHeight, camDist],
-            fov: 50,
-          }}
-        >
+        <Canvas camera={{ position: [centerX, camY, camDist], fov: 50 }}>
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 5, 5]} intensity={1} />
           <ForestBackground4 />
@@ -121,7 +116,7 @@ export default function QueueDemo() {
             );
           })}
 
-          {elements.length > 0 && (
+          {count > 0 && (
             <>
               <Line
                 points={[
@@ -143,18 +138,18 @@ export default function QueueDemo() {
             </>
           )}
 
-          {elements.length > 0 && (
+          {count > 0 && (
             <>
               <Line
                 points={[
-                  [(elements.length - 1) * spacing, 1.5, 0],
-                  [(elements.length - 1) * spacing, 0.9, 0],
+                  [(count - 1) * spacing, 1.5, 0],
+                  [(count - 1) * spacing, 0.9, 0],
                 ]}
                 color="#ef4444"
                 lineWidth={2}
               />
               <Text
-                position={[(elements.length - 1) * spacing, 1.8, 0]}
+                position={[(count - 1) * spacing, 1.8, 0]}
                 fontSize={0.3}
                 color="#ef4444"
                 anchorX="center"
@@ -165,7 +160,12 @@ export default function QueueDemo() {
             </>
           )}
 
-          <OrbitControls enablePan enableZoom enableRotate />
+          <OrbitControls
+            target={[centerX, 0, 0]}
+            enablePan
+            enableZoom
+            enableRotate
+          />
         </Canvas>
       </div>
     </div>
