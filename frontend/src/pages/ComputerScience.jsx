@@ -15,6 +15,7 @@ import PriorityQueueDemo from "../models/computer_science/PriorityQueue";
 import QueueDemo from "../models/computer_science/Queue";
 import StackDemo from "../models/computer_science/Stack";
 import DequeDemo from "../models/computer_science/Deque";
+import ListDemo from "../models/computer_science/List";
 
 const csObjects = [
   { id: "vector", label: "Vector", icon: "" },
@@ -27,7 +28,7 @@ const csObjects = [
   { id: "deque", label: "Deque", icon: "" },
   { id: "stack", label: "Stack", icon: "" },
   { id: "queue", label: "Queue", icon: "" },
-  // { id: "list", label: "List", icon: "" },
+  { id: "list", label: "List", icon: "" },
   // { id: "array", label: "Array", icon: "" },
 ];
 
@@ -119,6 +120,12 @@ const ComputerScience = () => {
         {selected?.id === "deque" && (
           <div className="space-y-6">
             <DequeDemo root={root} setRoot={setRoot} />
+          </div>
+        )}
+
+        {selected?.id === "list" && (
+          <div className="space-y-6">
+            <ListDemo root={root} setRoot={setRoot} />
           </div>
         )}
 
