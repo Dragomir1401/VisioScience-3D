@@ -18,21 +18,37 @@ import DequeDemo from "../models/computer_science/Deque";
 import ListDemo from "../models/computer_science/List";
 import DoublyLinkedListDemo from "../models/computer_science/DoublyLinkedList";
 import ArrayDemo from "../models/computer_science/Array";
+import {
+  array,
+  vector,
+  map,
+  set,
+  prioq,
+  stack,
+  queue,
+  deque,
+  list,
+  dll,
+} from "../assets/icons";
 
 const csObjects = [
-  { id: "array", label: "Array", icon: "" },
-  { id: "vector", label: "Vector", icon: "" },
-  { id: "unordered_map", label: "Unordered Map", icon: "" },
-  { id: "map", label: "Map", icon: "" },
-  { id: "unordered_set", label: "Unordered Set", icon: "" },
-  { id: "set", label: "Set", icon: "" },
-  { id: "multiset", label: "Multiset", icon: "" },
-  { id: "priority_queue", label: "Priority Queue", icon: "" },
-  { id: "deque", label: "Deque", icon: "" },
-  { id: "stack", label: "Stack", icon: "" },
-  { id: "queue", label: "Queue", icon: "" },
-  { id: "list", label: "List", icon: "" },
-  { id: "doubly_linked_list", label: "Doubly Linked List", icon: "" },
+  { id: "array", label: "Array", icon: array },
+  { id: "vector", label: "Vector", icon: vector },
+  { id: "unordered_map", label: "Unordered Map", icon: map },
+  { id: "map", label: "Map", icon: map },
+  { id: "unordered_set", label: "Unordered Set", icon: set },
+  { id: "set", label: "Set", icon: set },
+  { id: "multiset", label: "Multiset", icon: set },
+  { id: "priority_queue", label: "Priority Queue", icon: prioq },
+  { id: "deque", label: "Deque", icon: deque },
+  { id: "stack", label: "Stack", icon: stack },
+  { id: "queue", label: "Queue", icon: queue },
+  { id: "list", label: "List", icon: list },
+  {
+    id: "doubly_linked_list",
+    label: "Doubly Linked List",
+    icon: dll,
+  },
 ];
 
 const ComputerScience = () => {

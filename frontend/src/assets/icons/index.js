@@ -33,8 +33,28 @@ import cylinder from "./cylinder.svg";
 import sphere from "./sphere.svg";
 import cone from "./cone.svg";
 import pyramid from "./pyramid.svg";
+import array from "./array.svg";
+import vector from "./vector.svg";
+import map from "./map.svg";
+import set from "./set.svg";
+import prioq from "./prioq.svg";
+import stack from "./stack.svg";
+import queue from "./queue.svg";
+import deque from "./deque.svg";
+import list from "./list.svg";
+import dll from "./dll.svg";
 
 export {
+  dll,
+  list,
+  deque,
+  queue,
+  stack,
+  prioq,
+  set,
+  map,
+  vector,
+  array,
   css,
   express,
   git,
