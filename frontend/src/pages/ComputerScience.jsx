@@ -14,6 +14,7 @@ import AVLMultiSetDemo from "../models/computer_science/Multiset";
 import PriorityQueueDemo from "../models/computer_science/PriorityQueue";
 import QueueDemo from "../models/computer_science/Queue";
 import StackDemo from "../models/computer_science/Stack";
+import DequeDemo from "../models/computer_science/Deque";
 
 const csObjects = [
   { id: "vector", label: "Vector", icon: "" },
@@ -23,7 +24,7 @@ const csObjects = [
   { id: "set", label: "Set", icon: "" },
   { id: "multiset", label: "Multiset", icon: "" },
   { id: "priority_queue", label: "Priority_queue", icon: "" },
-  // { id: "deque", label: "Deque", icon: "" },
+  { id: "deque", label: "Deque", icon: "" },
   { id: "stack", label: "Stack", icon: "" },
   { id: "queue", label: "Queue", icon: "" },
   // { id: "list", label: "List", icon: "" },
@@ -112,6 +113,12 @@ const ComputerScience = () => {
         {selected?.id === "stack" && (
           <div className="space-y-6">
             <StackDemo root={root} setRoot={setRoot} />
+          </div>
+        )}
+
+        {selected?.id === "deque" && (
+          <div className="space-y-6">
+            <DequeDemo root={root} setRoot={setRoot} />
           </div>
         )}
 
