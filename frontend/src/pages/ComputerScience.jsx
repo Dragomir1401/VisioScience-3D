@@ -16,19 +16,21 @@ import QueueDemo from "../models/computer_science/Queue";
 import StackDemo from "../models/computer_science/Stack";
 import DequeDemo from "../models/computer_science/Deque";
 import ListDemo from "../models/computer_science/List";
+import DoublyLinkedListDemo from "../models/computer_science/DoublyLinkedList";
 
 const csObjects = [
   { id: "vector", label: "Vector", icon: "" },
-  { id: "unordered_map", label: "Unordered_map", icon: "" },
+  { id: "unordered_map", label: "Unordered Map", icon: "" },
   { id: "map", label: "Map", icon: "" },
-  { id: "unordered_set", label: "Unordered_set", icon: "" },
+  { id: "unordered_set", label: "Unordered Set", icon: "" },
   { id: "set", label: "Set", icon: "" },
   { id: "multiset", label: "Multiset", icon: "" },
-  { id: "priority_queue", label: "Priority_queue", icon: "" },
+  { id: "priority_queue", label: "Priority Queue", icon: "" },
   { id: "deque", label: "Deque", icon: "" },
   { id: "stack", label: "Stack", icon: "" },
   { id: "queue", label: "Queue", icon: "" },
   { id: "list", label: "List", icon: "" },
+  { id: "doubly_linked_list", label: "Doubly Linked List", icon: "" },
   // { id: "array", label: "Array", icon: "" },
 ];
 
@@ -126,6 +128,12 @@ const ComputerScience = () => {
         {selected?.id === "list" && (
           <div className="space-y-6">
             <ListDemo root={root} setRoot={setRoot} />
+          </div>
+        )}
+
+        {selected?.id === "doubly_linked_list" && (
+          <div className="space-y-6">
+            <DoublyLinkedListDemo root={root} setRoot={setRoot} />
           </div>
         )}
 
