@@ -9,7 +9,7 @@ import { MapOperations } from "../components/computer_science/UnorderedMapOperat
 import AVLTreeDemo from "../models/computer_science/AVLTreeDemo";
 import { UnorderedSetScene } from "../models/computer_science/UnorderedSet";
 import { UnorderedSetOperations } from "../components/computer_science/UnorderedSetOperations";
-import { OrderedSetScene } from "../models/computer_science/Set";
+import AVLSetDemo from "../models/computer_science/Set";
 
 const csObjects = [
   { id: "vector", label: "Vector", icon: "" },
@@ -76,8 +76,7 @@ const ComputerScience = () => {
 
         {selected?.id === "set" && (
           <div className="space-y-6">
-            <OrderedSetScene root={root} setRoot={setRoot} />
-            <UnorderedSetOperations buckets={buckets} onChange={setBuckets} />
+            <AVLSetDemo root={root} setRoot={setRoot} />
           </div>
         )}
 
