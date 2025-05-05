@@ -17,8 +17,10 @@ import StackDemo from "../models/computer_science/Stack";
 import DequeDemo from "../models/computer_science/Deque";
 import ListDemo from "../models/computer_science/List";
 import DoublyLinkedListDemo from "../models/computer_science/DoublyLinkedList";
+import ArrayDemo from "../models/computer_science/Array";
 
 const csObjects = [
+  { id: "array", label: "Array", icon: "" },
   { id: "vector", label: "Vector", icon: "" },
   { id: "unordered_map", label: "Unordered Map", icon: "" },
   { id: "map", label: "Map", icon: "" },
@@ -31,7 +33,6 @@ const csObjects = [
   { id: "queue", label: "Queue", icon: "" },
   { id: "list", label: "List", icon: "" },
   { id: "doubly_linked_list", label: "Doubly Linked List", icon: "" },
-  // { id: "array", label: "Array", icon: "" },
 ];
 
 const ComputerScience = () => {
@@ -134,6 +135,12 @@ const ComputerScience = () => {
         {selected?.id === "doubly_linked_list" && (
           <div className="space-y-6">
             <DoublyLinkedListDemo root={root} setRoot={setRoot} />
+          </div>
+        )}
+
+        {selected?.id === "array" && (
+          <div className="space-y-6">
+            <ArrayDemo root={root} setRoot={setRoot} />
           </div>
         )}
 
