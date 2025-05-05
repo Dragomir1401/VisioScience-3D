@@ -7,11 +7,22 @@ import VectorOperations from "../components/computer_science/VectorOperations";
 import { MapScene } from "../models/computer_science/UnorderedMap";
 import { MapOperations } from "../components/computer_science/UnorderedMapOperations";
 import AVLTreeDemo from "../models/computer_science/AVLTreeDemo";
+import { UnorderedSetScene } from "../models/computer_science/UnorderedSet";
+import { UnorderedSetOperations } from "../components/computer_science/UnorderedSetOperations";
+import { OrderedSetScene } from "../models/computer_science/Set";
 
 const csObjects = [
   { id: "vector", label: "Vector", icon: "" },
   { id: "unordered_map", label: "Unordered_map", icon: "" },
   { id: "map", label: "Map", icon: "" },
+  { id: "unordered_set", label: "Unordered_set", icon: "" },
+  { id: "set", label: "Set", icon: "" },
+  // { id: "priority_queue", label: "Priority_queue", icon: "" },
+  // { id: "deque", label: "Deque", icon: "" },
+  // { id: "stack", label: "Stack", icon: "" },
+  // { id: "queue", label: "Queue", icon: "" },
+  // { id: "list", label: "List", icon: "" },
+  // { id: "array", label: "Array", icon: "" },
 ];
 
 const ComputerScience = () => {
@@ -24,7 +35,6 @@ const ComputerScience = () => {
   );
   const [root, setRoot] = useState(null);
   const [visibleCount, setVisibleCount] = useState(0);
-
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-lavender via-[#f8edf7] to-[#fdf6f6] pt-[80px]">
@@ -52,10 +62,31 @@ const ComputerScience = () => {
         )}
 
         {selected?.id === "map" && (
-        <div className="space-y-6">
-          <AVLTreeDemo />
-        </div>
+          <div className="space-y-6">
+            <AVLTreeDemo />
+          </div>
         )}
+
+        {selected?.id === "unordered_set" && (
+          <div className="space-y-6">
+            <UnorderedSetScene buckets={buckets} />
+            <UnorderedSetOperations buckets={buckets} onChange={setBuckets} />
+          </div>
+        )}
+
+        {selected?.id === "set" && (
+          <div className="space-y-6">
+            <OrderedSetScene root={root} setRoot={setRoot} />
+            <UnorderedSetOperations buckets={buckets} onChange={setBuckets} />
+          </div>
+        )}
+
+        {/* {selected?.id === "priority_queue" && <PriorityQueueDemo />} */}
+        {/* {selected?.id === "deque" && <DequeDemo />} */}
+        {/* {selected?.id === "stack" && <StackDemo />} */}
+        {/* {selected?.id === "queue" && <QueueDemo />} */}
+        {/* {selected?.id === "list" && <ListDemo />} */}
+        {/* {selected?.id === "array" && <ArrayDemo />} */}
 
         {!selected && (
           <p className="text-rosy-brown italic mt-6">
