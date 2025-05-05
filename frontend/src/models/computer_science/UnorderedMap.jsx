@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text } from "@react-three/drei";
 import ForestBackground4 from "../ForestBackground4";
-import * as THREE from "three";
 
 export const MapScene = ({ buckets }) => {
   const [isRotating, setIsRotating] = useState(false);

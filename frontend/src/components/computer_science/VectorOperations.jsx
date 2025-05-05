@@ -1,4 +1,10 @@
 import React, { useState } from "react";
+import {
+  PlusIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  TrashIcon,
+} from "@heroicons/react/solid";
 
 const VectorOperations = ({ elements = [], onChange }) => {
   const [value, setValue] = useState("");
@@ -35,7 +41,7 @@ const VectorOperations = ({ elements = [], onChange }) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4">
+    <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-6 max-w-md">
       <h4 className="text-lg font-semibold text-mulberry">
         Operații pe vector
       </h4>
@@ -57,30 +63,34 @@ const VectorOperations = ({ elements = [], onChange }) => {
         />
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-3">
         <button
           onClick={pushBack}
-          className="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded transition"
+          className="flex items-center gap-2 bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white py-2 px-4 rounded-lg shadow transition"
         >
-          push_back()
+          <PlusIcon className="w-5 h-5" />
+          <span className="text-sm font-medium">push_back()</span>
         </button>
         <button
           onClick={popBack}
-          className="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-3 rounded transition"
+          className="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-white py-2 px-4 rounded-lg shadow transition"
         >
-          pop_back()
+          <ArrowLeftIcon className="w-5 h-5" />
+          <span className="text-sm font-medium">pop_back()</span>
         </button>
         <button
           onClick={insertAt}
-          className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded transition"
+          className="flex items-center gap-2 bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white py-2 px-4 rounded-lg shadow transition"
         >
-          insert()
+          <ArrowRightIcon className="w-5 h-5" />
+          <span className="text-sm font-medium">insert()</span>
         </button>
         <button
           onClick={eraseAt}
-          className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded transition"
+          className="flex items-center gap-2 bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white py-2 px-4 rounded-lg shadow transition"
         >
-          erase()
+          <TrashIcon className="w-5 h-5" />
+          <span className="text-sm font-medium">erase()</span>
         </button>
       </div>
 

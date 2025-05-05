@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import {
+  PlusIcon,
+  TrashIcon,
+  ArrowCircleLeftIcon,
+} from "@heroicons/react/solid";
 
 export const MapOperations = ({ buckets, onChange }) => {
   const [hashFunc, setHashFunc] = useState("sum");
@@ -151,20 +156,23 @@ export const MapOperations = ({ buckets, onChange }) => {
       <div className="flex flex-wrap gap-2">
         <button
           onClick={handleInsert}
-          className="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded transition"
+          className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
         >
+          <PlusIcon className="w-5 h-5" />
           insert(key, value)
         </button>
         <button
           onClick={handleErase}
-          className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded transition"
+          className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-4 rounded-lg shadow transition"
         >
+          <TrashIcon className="w-5 h-5" />
           erase(key)
         </button>
         <button
           onClick={handleClear}
-          className="bg-gray-500 hover:bg-gray-600 text-white py-1 px-3 rounded transition"
+          className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
         >
+          <ArrowCircleLeftIcon className="w-5 h-5" />
           clear()
         </button>
       </div>
