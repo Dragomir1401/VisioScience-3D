@@ -13,10 +13,12 @@ class AVLNode {
   }
 }
 
-const height = node => (node ? node.height : 0);
-const updateHeight = node => { node.height = 1 + Math.max(height(node.left), height(node.right)); };
-const balanceFactor = node => height(node.left) - height(node.right);
-const rotateRight = y => {
+const height = (node) => (node ? node.height : 0);
+const updateHeight = (node) => {
+  node.height = 1 + Math.max(height(node.left), height(node.right));
+};
+const balanceFactor = (node) => height(node.left) - height(node.right);
+const rotateRight = (y) => {
   const x = y.left;
   y.left = x.right;
   x.right = y;
@@ -24,7 +26,7 @@ const rotateRight = y => {
   updateHeight(x);
   return x;
 };
-const rotateLeft = x => {
+const rotateLeft = (x) => {
   const y = x.right;
   x.right = y.left;
   y.left = x;
@@ -45,8 +47,14 @@ export function insertNode(node, key, value) {
   const bf = balanceFactor(node);
   if (bf > 1 && key < node.left.key) return rotateRight(node);
   if (bf < -1 && key > node.right.key) return rotateLeft(node);
-  if (bf > 1 && key > node.left.key) { node.left = rotateLeft(node.left); return rotateRight(node); }
-  if (bf < -1 && key < node.right.key) { node.right = rotateRight(node.right); return rotateLeft(node); }
+  if (bf > 1 && key > node.left.key) {
+    node.left = rotateLeft(node.left);
+    return rotateRight(node);
+  }
+  if (bf < -1 && key < node.right.key) {
+    node.right = rotateRight(node.right);
+    return rotateLeft(node);
+  }
   return node;
 }
 
@@ -68,9 +76,15 @@ export function deleteNode(node, key) {
   updateHeight(node);
   const bf = balanceFactor(node);
   if (bf > 1 && balanceFactor(node.left) >= 0) return rotateRight(node);
-  if (bf > 1 && balanceFactor(node.left) < 0) { node.left = rotateLeft(node.left); return rotateRight(node); }
+  if (bf > 1 && balanceFactor(node.left) < 0) {
+    node.left = rotateLeft(node.left);
+    return rotateRight(node);
+  }
   if (bf < -1 && balanceFactor(node.right) <= 0) return rotateLeft(node);
-  if (bf < -1 && balanceFactor(node.right) > 0) { node.right = rotateRight(node.right); return rotateLeft(node); }
+  if (bf < -1 && balanceFactor(node.right) > 0) {
+    node.right = rotateRight(node.right);
+    return rotateLeft(node);
+  }
   return node;
 }
 
@@ -103,7 +117,7 @@ export default function AVLTreeDemo() {
     const newRoot = insertNode(root, k, valueInput);
     setRoot(newRoot);
     setMessage(`Inserted ${k}:${valueInput}`);
-    setInorderList(inorder(newRoot).map(n => `${n.key}:${n.value}`));
+    setInorderList(inorder(newRoot).map((n) => `${n.key}:${n.value}`));
   };
 
   const handleDelete = () => {
@@ -113,11 +127,11 @@ export default function AVLTreeDemo() {
     setRoot(newRoot);
     setMessage(`Deleted ${k}`);
     setMessage(`Deleted ${k}`);
-    setInorderList(inorder(newRoot).map(n => `${n.key}:${n.value}`));
+    setInorderList(inorder(newRoot).map((n) => `${n.key}:${n.value}`));
   };
 
   useEffect(() => {
-    const list = inorder(root).map(n => `${n.key}:${n.value}`);
+    const list = inorder(root).map((n) => `${n.key}:${n.value}`);
     setInorderList(list);
   }, [root]);
 
@@ -129,28 +143,32 @@ export default function AVLTreeDemo() {
   const posMap = new Map();
   flat.forEach(({ node, x, y }) => posMap.set(node, [x, y]));
   flat.forEach(({ node, x, y }) => {
-    if (node.left) edges.push({ from: [x, y, 0], to: [...posMap.get(node.left), 0] });
-    if (node.right) edges.push({ from: [x, y, 0], to: [...posMap.get(node.right), 0] });
+    if (node.left)
+      edges.push({ from: [x, y, 0], to: [...posMap.get(node.left), 0] });
+    if (node.right)
+      edges.push({ from: [x, y, 0], to: [...posMap.get(node.right), 0] });
   });
 
   return (
     <div className="flex gap-6">
       <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
-        <h4 className="text-lg font-semibold text-mulberry">Ordered Map (AVL)</h4>
+        <h4 className="text-lg font-semibold text-mulberry">
+          Ordered Map (AVL)
+        </h4>
         <div className="flex gap-2">
           <input
             type="text"
             placeholder="Key"
             className="border rounded px-2 py-1 flex-1"
             value={keyInput}
-            onChange={e => setKeyInput(e.target.value)}
+            onChange={(e) => setKeyInput(e.target.value)}
           />
           <input
             type="text"
             placeholder="Value"
             className="border rounded px-2 py-1 flex-1"
             value={valueInput}
-            onChange={e => setValueInput(e.target.value)}
+            onChange={(e) => setValueInput(e.target.value)}
           />
         </div>
         <div className="flex gap-2">
@@ -180,7 +198,12 @@ export default function AVLTreeDemo() {
           <ForestBackground4 />
 
           {edges.map((e, i) => (
-            <Line key={i} points={[e.from, e.to]} color="#888888" lineWidth={1} />
+            <Line
+              key={i}
+              points={[e.from, e.to]}
+              color="#888888"
+              lineWidth={1}
+            />
           ))}
 
           {flat.map(({ node, x, y }) => (
@@ -207,4 +230,3 @@ export default function AVLTreeDemo() {
     </div>
   );
 }
-

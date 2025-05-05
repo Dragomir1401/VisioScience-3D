@@ -6,7 +6,7 @@ import VectorScene from "../models/computer_science/Vector";
 import VectorOperations from "../components/computer_science/VectorOperations";
 import { MapScene } from "../models/computer_science/UnorderedMap";
 import { MapOperations } from "../components/computer_science/UnorderedMapOperations";
-import AVLTreeDemo from "../models/computer_science/AVLTreeDemo";
+import AVLTreeDemo from "../models/computer_science/Map";
 import { UnorderedSetScene } from "../models/computer_science/UnorderedSet";
 import { UnorderedSetOperations } from "../components/computer_science/UnorderedSetOperations";
 import AVLSetDemo from "../models/computer_science/Set";
