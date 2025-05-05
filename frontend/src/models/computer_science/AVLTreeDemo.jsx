@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Line } from "@react-three/drei";
-import * as THREE from "three";
 import ForestBackground4 from "../ForestBackground4";
 
 class AVLNode {
