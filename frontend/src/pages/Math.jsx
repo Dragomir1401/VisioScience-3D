@@ -36,14 +36,13 @@ const Math = () => {
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-lavender via-[#f8edf7] to-[#fdf6f6] pt-[80px]">
-      {/* Sidebar */}
       <SideMenu
         items={mathObjects}
         selectedItem={selectedObject}
         onSelect={setSelectedObject}
+        header={"Obiecte geometrice"}
       />
 
-      {/* Main content */}
       <main className="flex-1 p-7 overflow-y-auto text-black-500">
         {!selectedObject && <MathLanding />}
 

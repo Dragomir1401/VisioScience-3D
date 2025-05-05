@@ -1,3 +1,4 @@
+// src/models/computer_science/AVLMultiSetDemo.jsx
 import React, { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Line } from "@react-three/drei";
@@ -6,6 +7,7 @@ import ForestBackground4 from "../ForestBackground4";
 class AVLNode {
   constructor(key) {
     this.key = key;
+    this.count = 1;
     this.left = null;
     this.right = null;
     this.height = 1;
@@ -38,7 +40,10 @@ export function insertNode(node, key) {
   if (!node) return new AVLNode(key);
   if (key < node.key) node.left = insertNode(node.left, key);
   else if (key > node.key) node.right = insertNode(node.right, key);
-  else return node;
+  else {
+    node.count++;
+    return node;
+  }
   updateHeight(node);
   const bf = balanceFactor(node);
   if (bf > 1 && key < node.left.key) return rotateRight(node);
@@ -59,11 +64,17 @@ export function deleteNode(node, key) {
   if (key < node.key) node.left = deleteNode(node.left, key);
   else if (key > node.key) node.right = deleteNode(node.right, key);
   else {
+    if (node.count > 1) {
+      node.count--;
+      return node;
+    }
     if (!node.left || !node.right) node = node.left || node.right;
     else {
       let temp = node.right;
       while (temp.left) temp = temp.left;
       node.key = temp.key;
+      node.count = temp.count;
+      temp.count = 1;
       node.right = deleteNode(node.right, temp.key);
     }
   }
@@ -86,7 +97,7 @@ export function deleteNode(node, key) {
 function inorder(node, arr = []) {
   if (!node) return arr;
   inorder(node.left, arr);
-  arr.push(node.key);
+  for (let i = 0; i < node.count; i++) arr.push(node.key);
   inorder(node.right, arr);
   return arr;
 }
@@ -99,7 +110,7 @@ function computePositions(node, x0, x1, y, gapY, list) {
   computePositions(node.right, x, x1, y - gapY, gapY, list);
 }
 
-export default function AVLSetDemo() {
+export default function AVLMultiSetDemo() {
   const [root, setRoot] = useState(null);
   const [valueInput, setValueInput] = useState("");
   const [message, setMessage] = useState("");
@@ -114,12 +125,12 @@ export default function AVLSetDemo() {
     setValueInput("");
   };
 
-  const handleDelete = () => {
+  const handleErase = () => {
     if (!valueInput) return;
     const v = isNaN(valueInput) ? valueInput : Number(valueInput);
     const newRoot = deleteNode(root, v);
     setRoot(newRoot);
-    setMessage(`Deleted ${v}`);
+    setMessage(`Erased ${v}`);
     setValueInput("");
   };
 
@@ -132,26 +143,29 @@ export default function AVLSetDemo() {
     setInorderList(inorder(root));
   }, [root]);
 
-  // prepare tree layout
   const flat = [];
   const edges = [];
-  const total = inorder(root).length;
-  const half = Math.max(total * 1.2, 5);
+  const list = inorder(root).length;
+  const half = Math.max(list * 1.2, 5);
   computePositions(root, -half, half, 4, 2.5, flat);
   const posMap = new Map();
-  flat.forEach(({ node, x, y }) => posMap.set(node.key, [x, y]));
+  flat.forEach(({ node, x, y }) => posMap.set(node, [x, y]));
   flat.forEach(({ node, x, y }) => {
-    if (node.left)
-      edges.push({ from: [x, y, 0], to: [...posMap.get(node.left.key), 0] });
-    if (node.right)
-      edges.push({ from: [x, y, 0], to: [...posMap.get(node.right.key), 0] });
+    if (node.left) {
+      const [lx, ly] = posMap.get(node.left);
+      edges.push({ from: [x, y, 0], to: [lx, ly, 0] });
+    }
+    if (node.right) {
+      const [rx, ry] = posMap.get(node.right);
+      edges.push({ from: [x, y, 0], to: [rx, ry, 0] });
+    }
   });
 
   return (
     <div className="flex gap-6">
       <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
         <h4 className="text-lg font-semibold text-mulberry">
-          Ordered Set (AVL)
+          Ordered MultiSet (AVL)
         </h4>
         <div className="flex gap-2">
           <input
@@ -170,7 +184,7 @@ export default function AVLSetDemo() {
             insert(v)
           </button>
           <button
-            onClick={handleDelete}
+            onClick={handleErase}
             className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
           >
             erase(v)
@@ -204,7 +218,7 @@ export default function AVLSetDemo() {
           ))}
 
           {flat.map(({ node, x, y }) => (
-            <group key={node.key} position={[x, y, 0]}>
+            <group key={`${node.key}-${y}`} position={[x, y, 0]}>
               <mesh>
                 <sphereGeometry args={[0.5, 16, 16]} />
                 <meshStandardMaterial color="#4f46e5" />
@@ -216,7 +230,7 @@ export default function AVLSetDemo() {
                 anchorX="center"
                 anchorY="middle"
               >
-                {node.key}
+                {`${node.key}${node.count > 1 ? `(${node.count})` : ``}`}
               </Text>
             </group>
           ))}

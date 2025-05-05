@@ -1,6 +1,6 @@
 import React from "react";
 
-const SideMenu = ({ items, onSelect, selectedItem }) => {
+const SideMenu = ({ items, onSelect, selectedItem, header }) => {
   return (
     <aside
       className="w-64 min-h-screen p-5 shadow-md bg-gradient-to-br 
@@ -8,7 +8,7 @@ const SideMenu = ({ items, onSelect, selectedItem }) => {
       border-r border-purple-200"
     >
       <h2 className="text-xl font-bold mb-6 text-purple-700 tracking-wide">
-        Volum obiecte
+        {header || "Objects"}
       </h2>
       <ul className="space-y-3">
         {items.map((item) => (

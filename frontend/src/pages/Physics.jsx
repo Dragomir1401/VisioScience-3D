@@ -39,6 +39,7 @@ const Physics = () => {
           setSelectedObject(item);
           setSliderValue(0);
         }}
+        header={"Probleme de fizică"}
       />
 
       <main className="flex-1 p-8 overflow-y-auto text-black-500">

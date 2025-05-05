@@ -10,6 +10,7 @@ import AVLTreeDemo from "../models/computer_science/Map";
 import { UnorderedSetScene } from "../models/computer_science/UnorderedSet";
 import { UnorderedSetOperations } from "../components/computer_science/UnorderedSetOperations";
 import AVLSetDemo from "../models/computer_science/Set";
+import AVLMultiSetDemo from "../models/computer_science/Multiset";
 
 const csObjects = [
   { id: "vector", label: "Vector", icon: "" },
@@ -17,6 +18,7 @@ const csObjects = [
   { id: "map", label: "Map", icon: "" },
   { id: "unordered_set", label: "Unordered_set", icon: "" },
   { id: "set", label: "Set", icon: "" },
+  { id: "multiset", label: "Multiset", icon: "" },
   // { id: "priority_queue", label: "Priority_queue", icon: "" },
   // { id: "deque", label: "Deque", icon: "" },
   // { id: "stack", label: "Stack", icon: "" },
@@ -42,6 +44,7 @@ const ComputerScience = () => {
         items={csObjects}
         selectedItem={selected}
         onSelect={setSelected}
+        header={"Structuri de date"}
       />
 
       <main className="flex-1 p-7 overflow-y-auto text-black-500">
@@ -79,6 +82,19 @@ const ComputerScience = () => {
             <AVLSetDemo root={root} setRoot={setRoot} />
           </div>
         )}
+
+        {selected?.id === "multiset" && (
+          <div className="space-y-6">
+            <AVLMultiSetDemo
+              root={root}
+              setRoot={setRoot}
+              visibleCount={visibleCount}
+              setVisibleCount={setVisibleCount}
+            />
+          </div>
+        )}
+
+        {/* Uncomment the following lines to add more data structures */}
 
         {/* {selected?.id === "priority_queue" && <PriorityQueueDemo />} */}
         {/* {selected?.id === "deque" && <DequeDemo />} */}
