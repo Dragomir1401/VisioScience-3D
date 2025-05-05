@@ -104,6 +104,7 @@ export default function AVLTreeDemo() {
     const newRoot = insertNode(root, k, valueInput);
     setRoot(newRoot);
     setMessage(`Inserted ${k}:${valueInput}`);
+    setInorderList(inorder(newRoot).map(n => `${n.key}:${n.value}`));
   };
 
   const handleDelete = () => {
@@ -112,6 +113,8 @@ export default function AVLTreeDemo() {
     const newRoot = deleteNode(root, k);
     setRoot(newRoot);
     setMessage(`Deleted ${k}`);
+    setMessage(`Deleted ${k}`);
+    setInorderList(inorder(newRoot).map(n => `${n.key}:${n.value}`));
   };
 
   useEffect(() => {
