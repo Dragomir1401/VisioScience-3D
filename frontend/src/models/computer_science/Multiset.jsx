@@ -1,4 +1,3 @@
-// src/models/computer_science/AVLMultiSetDemo.jsx
 import React, { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Line } from "@react-three/drei";

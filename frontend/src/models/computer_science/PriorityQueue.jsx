@@ -1,8 +1,10 @@
+// src/models/computer_science/PriorityQueueDemo.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Line } from "@react-three/drei";
 import ForestBackground4 from "../ForestBackground4";
 
+// ----- Priority Queue (binary heap tree) -----
 class PriorityQueue {
   constructor(comparator) {
     this.heap = [];
@@ -58,6 +60,7 @@ class PriorityQueue {
   }
 }
 
+// Tree builder from heap array
 class TreeNode {
   constructor(value) {
     this.value = value;
@@ -76,7 +79,7 @@ const buildTree = (arr) => {
   });
   return nodes[0];
 };
-
+// In-order traversal to list nodes
 const inorder = (node, arr = []) => {
   if (!node) return arr;
   inorder(node.left, arr);
@@ -84,6 +87,7 @@ const inorder = (node, arr = []) => {
   inorder(node.right, arr);
   return arr;
 };
+// Compute positions
 const computePositions = (node, x0, x1, y, gapY, list) => {
   if (!node) return;
   const x = (x0 + x1) / 2;
@@ -93,7 +97,10 @@ const computePositions = (node, x0, x1, y, gapY, list) => {
 };
 
 export default function PriorityQueueDemo() {
-  const comparators = { min: (a, b) => a - b, max: (a, b) => b - a };
+  const comparators = {
+    min: (a, b) => a - b,
+    max: (a, b) => b - a,
+  };
   const [type, setType] = useState("min");
   const [value, setValue] = useState("");
   const [pq, setPq] = useState(new PriorityQueue(comparators[type]));
@@ -130,6 +137,7 @@ export default function PriorityQueueDemo() {
     setMsg(`Cleared`);
   };
 
+  // build tree and compute positions
   const root = buildTree(list);
   const flat = [];
   const edges = [];
@@ -146,8 +154,8 @@ export default function PriorityQueueDemo() {
   });
 
   return (
-    <div className="flex gap-6">
-      <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry w-1/3 space-y-4">
+    <div className="space-y-6">
+      <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry max-w-md mx-auto">
         <h4 className="text-lg font-semibold text-mulberry">
           Priority Queue ({type}-heap)
         </h4>
@@ -168,7 +176,7 @@ export default function PriorityQueueDemo() {
             onChange={(e) => setValue(e.target.value)}
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 mt-2">
           <button
             onClick={handlePush}
             className="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded"
@@ -188,10 +196,10 @@ export default function PriorityQueueDemo() {
             clear()
           </button>
         </div>
-        {msg && <p className="text-sm text-gray-600">{msg}</p>}
+        {msg && <p className="text-sm text-gray-600 mt-2">{msg}</p>}
       </div>
 
-      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry">
+      <div className="w-full h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry">
         <Canvas camera={{ position: [0, 4, 12], fov: 60 }}>
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 10, 5]} intensity={1} />
@@ -200,32 +208,32 @@ export default function PriorityQueueDemo() {
           {edges.map((e, i) => (
             <Line
               key={i}
-              points={[e.from, e.to]}
+              points={[
+                [...e.from, 0],
+                [...e.to, 0],
+              ]}
               color="#888888"
-              lineWidth={1}
+              lineWidth={2}
             />
           ))}
 
-          {flat.map(({ node }, i) => {
-            const [x, y] = posMap.get(node);
-            return (
-              <group key={i} position={[x, y, 0]}>
-                <mesh>
-                  <sphereGeometry args={[0.5, 16, 16]} />
-                  <meshStandardMaterial color="#4f46e5" />
-                </mesh>
-                <Text
-                  position={[0, 0, 0.75]}
-                  fontSize={0.3}
-                  color="#ffffff"
-                  anchorX="center"
-                  anchorY="middle"
-                >
-                  {node.value}
-                </Text>
-              </group>
-            );
-          })}
+          {flat.map(({ node, x, y }, i) => (
+            <group key={i} position={[x, y, 0]}>
+              <mesh>
+                <sphereGeometry args={[0.5, 16, 16]} />
+                <meshStandardMaterial color="#4f46e5" />
+              </mesh>
+              <Text
+                position={[0, 0, 0.75]}
+                fontSize={0.3}
+                color="#ffffff"
+                anchorX="center"
+                anchorY="middle"
+              >
+                {node.value}
+              </Text>
+            </group>
+          ))}
 
           <OrbitControls />
         </Canvas>

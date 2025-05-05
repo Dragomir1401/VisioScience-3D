@@ -11,6 +11,7 @@ import { UnorderedSetScene } from "../models/computer_science/UnorderedSet";
 import { UnorderedSetOperations } from "../components/computer_science/UnorderedSetOperations";
 import AVLSetDemo from "../models/computer_science/Set";
 import AVLMultiSetDemo from "../models/computer_science/Multiset";
+import PriorityQueueDemo from "../models/computer_science/PriorityQueue";
 
 const csObjects = [
   { id: "vector", label: "Vector", icon: "" },
@@ -19,7 +20,7 @@ const csObjects = [
   { id: "unordered_set", label: "Unordered_set", icon: "" },
   { id: "set", label: "Set", icon: "" },
   { id: "multiset", label: "Multiset", icon: "" },
-  // { id: "priority_queue", label: "Priority_queue", icon: "" },
+  { id: "priority_queue", label: "Priority_queue", icon: "" },
   // { id: "deque", label: "Deque", icon: "" },
   // { id: "stack", label: "Stack", icon: "" },
   // { id: "queue", label: "Queue", icon: "" },
@@ -83,6 +84,12 @@ const ComputerScience = () => {
           </div>
         )}
 
+        {selected?.id === "priority_queue" && (
+          <div className="space-y-6">
+            <PriorityQueueDemo root={root} setRoot={setRoot} />
+          </div>
+        )}
+
         {selected?.id === "multiset" && (
           <div className="space-y-6">
             <AVLMultiSetDemo
@@ -93,8 +100,6 @@ const ComputerScience = () => {
             />
           </div>
         )}
-
-        {/* Uncomment the following lines to add more data structures */}
 
         {/* {selected?.id === "priority_queue" && <PriorityQueueDemo />} */}
         {/* {selected?.id === "deque" && <DequeDemo />} */}
