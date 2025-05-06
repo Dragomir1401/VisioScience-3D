@@ -92,7 +92,7 @@ function CollisionVisualization({ onInit }) {
           new THREE.Vector3(Math.sign(vel2.current), 0, 0),
           new THREE.Vector3(pos2.current, 0, 0),
           Math.abs(vel2.current) * scale,
-          0x0000ff,
+          0xff6600,
           0.2,
           0.1
         )
