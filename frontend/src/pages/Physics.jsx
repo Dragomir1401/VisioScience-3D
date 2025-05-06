@@ -8,6 +8,7 @@ import PendulumScene from "../models/physics/Pendulum";
 import SpringMassScene from "../models/physics/SpringScene";
 import CircularMotionScene from "../models/physics/CircularMotionScene";
 import ProjectileScene from "../models/physics/ProjectileScene";
+import FreeFallScene from "../models/physics/FreeFallScene";
 
 const physicsObjects = [
   { id: "inclined_plane", label: "Plan înclinat" },
@@ -17,7 +18,7 @@ const physicsObjects = [
   { id: "spring", label: "Resort" },
   { id: "circular_motion", label: "Mișcare circulară" },
   { id: "projectile_motion", label: "Mișcare de proiectil" },
-  // { id: "free_fall", label: "Cădere liberă" },
+  { id: "free_fall", label: "Cădere liberă" },
   // { id: "collision", label: "Coliziune" },
 ];
 
@@ -181,6 +182,26 @@ const Physics = () => {
                 type="range"
                 min={0}
                 max={(2 * 12 * Math.sin((45 * Math.PI) / 180)) / 9.8}
+                step={0.01}
+                value={sliderValue}
+                onChange={(e) => setSliderValue(parseFloat(e.target.value))}
+                className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
+              />
+            </div>
+          </>
+        )}
+
+        {selectedObject?.id === "free_fall" && (
+          <>
+            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
+              <FreeFallScene time={sliderValue} />
+            </div>
+            <div className="flex items-center gap-4 mt-4">
+              <label className="text-mulberry font-semibold">Timp (s):</label>
+              <input
+                type="range"
+                min={0}
+                max={Math.sqrt((2 * 5) / 9.8)}
                 step={0.01}
                 value={sliderValue}
                 onChange={(e) => setSliderValue(parseFloat(e.target.value))}
