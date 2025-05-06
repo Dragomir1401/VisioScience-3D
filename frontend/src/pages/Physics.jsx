@@ -7,6 +7,7 @@ import Pulley3Scene from "../models/physics/PulleyFixedMobile";
 import PendulumScene from "../models/physics/Pendulum";
 import SpringMassScene from "../models/physics/SpringScene";
 import CircularMotionScene from "../models/physics/CircularMotionScene";
+import ProjectileScene from "../models/physics/ProjectileScene";
 
 const physicsObjects = [
   { id: "inclined_plane", label: "Plan înclinat" },
@@ -15,7 +16,7 @@ const physicsObjects = [
   { id: "pendulum", label: "Pendul" },
   { id: "spring", label: "Resort" },
   { id: "circular_motion", label: "Mișcare circulară" },
-  // { id: "projectile_motion", label: "Mișcare de proiectil" },
+  { id: "projectile_motion", label: "Mișcare de proiectil" },
   // { id: "free_fall", label: "Cădere liberă" },
   // { id: "collision", label: "Coliziune" },
 ];
@@ -23,6 +24,9 @@ const physicsObjects = [
 const Physics = () => {
   const [selectedObject, setSelectedObject] = useState(null);
   const [sliderValue, setSliderValue] = useState(0);
+  const g = 9.81;
+  const v0 = 12;
+  const theta = 45;
 
   return (
     <div className="flex bg-gradient-to-b from-[#fdf4ff] via-[#f3e8ff] to-[#fff7ed] min-h-screen pt-[80px]">
@@ -159,6 +163,25 @@ const Physics = () => {
                 min={0}
                 max={10}
                 step={0.1}
+                value={sliderValue}
+                onChange={(e) => setSliderValue(parseFloat(e.target.value))}
+                className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
+              />
+            </div>
+          </>
+        )}
+        {selectedObject?.id === "projectile_motion" && (
+          <>
+            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
+              <ProjectileScene time={sliderValue} />
+            </div>
+            <div className="flex items-center gap-4 mt-4">
+              <label className="text-mulberry font-semibold">Time (s):</label>
+              <input
+                type="range"
+                min={0}
+                max={(2 * 12 * Math.sin((45 * Math.PI) / 180)) / 9.8}
+                step={0.01}
                 value={sliderValue}
                 onChange={(e) => setSliderValue(parseFloat(e.target.value))}
                 className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
