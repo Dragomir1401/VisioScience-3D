@@ -26,7 +26,7 @@ function PlasticCollisionVisualization({ onInit }) {
 
   useEffect(() => {
     scene.add(arrows1.current, arrows2.current);
-    onInit?.({ pos1, pos2, vel1, vel2, collided });
+    onInit?.({ pos1, pos2, vel1, vel2, collided, mesh1, mesh2, setIsPlastic });
     return () => scene.remove(arrows1.current, arrows2.current);
   }, [scene, onInit]);
 
@@ -63,12 +63,16 @@ function PlasticCollisionVisualization({ onInit }) {
     arrows1.current.clear();
     arrows2.current.clear();
     const scale = 1.0;
+    const y1 = mesh1.current.position.y;
+    const origin1 = new THREE.Vector3(pos1.current, y1, 0);
 
     if (!isPlastic) {
+      const y2 = mesh2.current.position.y;
+      const origin2 = new THREE.Vector3(pos2.current, y2, 0);
       arrows1.current.add(
         new THREE.ArrowHelper(
           new THREE.Vector3(Math.sign(vel1.current), 0, 0),
-          new THREE.Vector3(pos1.current, 0, 0),
+          origin1,
           Math.abs(vel1.current) * scale,
           0x0000ff,
           0.2,
@@ -78,7 +82,7 @@ function PlasticCollisionVisualization({ onInit }) {
       arrows2.current.add(
         new THREE.ArrowHelper(
           new THREE.Vector3(Math.sign(vel2.current), 0, 0),
-          new THREE.Vector3(pos2.current, 0, 0),
+          origin2,
           Math.abs(vel2.current) * scale,
           0xff6600,
           0.2,
@@ -89,11 +93,11 @@ function PlasticCollisionVisualization({ onInit }) {
       arrows1.current.add(
         new THREE.ArrowHelper(
           new THREE.Vector3(Math.sign(vel1.current), 0, 0),
-          new THREE.Vector3(pos1.current, 0, 0),
-          Math.abs(vel1.current) * scale,
+          origin1,
+          Math.abs(vel1.current) * scale * 3,
           0x0000ff,
           0.2,
-          0.1
+          0.2
         )
       );
     }
@@ -172,15 +176,18 @@ export default function PlasticCollisionScene() {
     paramsRef.current = refs;
   };
   const handleReset = () => {
-    const { pos1, pos2, vel1, vel2, collided } = paramsRef.current;
+    const { pos1, pos2, vel1, vel2, collided, mesh1, mesh2, setIsPlastic } =
+      paramsRef.current;
     pos1.current = -3;
     pos2.current = 3;
     vel1.current = 2.0;
     vel2.current = -1.0;
     collided.current = false;
-    const mesh = paramsRef.current.mesh1;
-    mesh.current.scale.set(1, 1, 1);
-    mesh.current.position.y = 0;
+    setIsPlastic(false);
+    mesh1.current.scale.set(1, 1, 1);
+    mesh1.current.position.set(pos1.current, 0, 0);
+    mesh2.current.scale.set(1, 1, 1);
+    mesh2.current.position.set(pos2.current, 0, 0);
   };
 
   return (
