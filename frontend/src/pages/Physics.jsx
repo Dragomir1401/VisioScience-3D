@@ -5,13 +5,14 @@ import InclinedPlaneScene from "../models/physics/InclinedPlane";
 import Pulley2Scene from "../models/physics/PulleyFixed";
 import Pulley3Scene from "../models/physics/PulleyFixedMobile";
 import PendulumScene from "../models/physics/Pendulum";
+import SpringMassScene from "../models/physics/SpringScene";
 
 const physicsObjects = [
   { id: "inclined_plane", label: "Plan înclinat" },
   { id: "pulley_system2", label: "Scripeți 2 corpuri" },
   { id: "pulley_system3", label: "Scripteți 3 corpuri" },
   { id: "pendulum", label: "Pendul" },
-  // { id: "spring", label: "Arc" },
+  { id: "spring", label: "Arc elastic" },
   // { id: "circular_motion", label: "Mișcare circulară" },
   // { id: "projectile_motion", label: "Mișcare de proiectil" },
   // { id: "free_fall", label: "Cădere liberă" },
@@ -127,6 +128,28 @@ const Physics = () => {
                 min={-60}
                 max={60}
                 step={1}
+                value={sliderValue}
+                onChange={(e) => setSliderValue(parseFloat(e.target.value))}
+                className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
+              />
+            </div>
+          </>
+        )}
+
+        {selectedObject?.id === "spring" && (
+          <>
+            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
+              <SpringMassScene extension={sliderValue} />
+            </div>
+            <div className="flex items-center gap-4 mt-4">
+              <label className="text-mulberry font-semibold">
+                Deformare arc (m):
+              </label>
+              <input
+                type="range"
+                min={0}
+                max={3}
+                step={0.01}
                 value={sliderValue}
                 onChange={(e) => setSliderValue(parseFloat(e.target.value))}
                 className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
