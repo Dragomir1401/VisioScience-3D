@@ -6,25 +6,18 @@ import Pulley2Scene from "../models/physics/PulleyFixed";
 import Pulley3Scene from "../models/physics/PulleyFixedMobile";
 import PendulumScene from "../models/physics/Pendulum";
 import SpringMassScene from "../models/physics/SpringScene";
+import CircularMotionScene from "../models/physics/CircularMotionScene";
 
 const physicsObjects = [
   { id: "inclined_plane", label: "Plan înclinat" },
   { id: "pulley_system2", label: "Scripeți 2 corpuri" },
   { id: "pulley_system3", label: "Scripteți 3 corpuri" },
   { id: "pendulum", label: "Pendul" },
-  { id: "spring", label: "Arc elastic" },
-  // { id: "circular_motion", label: "Mișcare circulară" },
+  { id: "spring", label: "Resort" },
+  { id: "circular_motion", label: "Mișcare circulară" },
   // { id: "projectile_motion", label: "Mișcare de proiectil" },
   // { id: "free_fall", label: "Cădere liberă" },
   // { id: "collision", label: "Coliziune" },
-  // { id: "torque", label: "Moment de forță" },
-  // { id: "work_energy", label: "Lucru mecanic și energie" },
-  // { id: "fluid_dynamics", label: "Dinamică fluidelor" },
-  // { id: "thermodynamics", label: "Termodinamică" },
-  // { id: "electromagnetism", label: "Electromagnetism" },
-  // { id: "waves", label: "Unde" },
-  // { id: "optics", label: "Optică" },
-  // { id: "relativity", label: "Relativitate" },
 ];
 
 const Physics = () => {
@@ -45,7 +38,6 @@ const Physics = () => {
 
       <main className="flex-1 p-8 overflow-y-auto text-black-500">
         {!selectedObject && <PhysicsLanding />}
-
         {selectedObject && selectedObject.id === "inclined_plane" && (
           <div className="space-y-6">
             <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md relative">
@@ -66,7 +58,6 @@ const Physics = () => {
             </div>
           </div>
         )}
-
         {selectedObject && selectedObject.id === "pulley_system2" && (
           <>
             <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md relative">
@@ -89,7 +80,6 @@ const Physics = () => {
             </div>
           </>
         )}
-
         {selectedObject && selectedObject.id === "pulley_system3" && (
           <>
             <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-rosy-brown bg-white shadow-md relative">
@@ -112,7 +102,6 @@ const Physics = () => {
             </div>
           </>
         )}
-
         {selectedObject && selectedObject.id === "pendulum" && (
           <>
             <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md relative">
@@ -135,7 +124,6 @@ const Physics = () => {
             </div>
           </>
         )}
-
         {selectedObject?.id === "spring" && (
           <>
             <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
@@ -150,6 +138,27 @@ const Physics = () => {
                 min={0}
                 max={3}
                 step={0.01}
+                value={sliderValue}
+                onChange={(e) => setSliderValue(parseFloat(e.target.value))}
+                className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
+              />
+            </div>
+          </>
+        )}
+        {selectedObject?.id === "circular_motion" && (
+          <>
+            <div className="h-[500px] w-full …">
+              <CircularMotionScene speed={sliderValue} />
+            </div>
+            <div className="flex items-center gap-4 mt-4">
+              <label className="text-mulberry font-semibold">
+                Viteză (m/s):
+              </label>
+              <input
+                type="range"
+                min={0}
+                max={10}
+                step={0.1}
                 value={sliderValue}
                 onChange={(e) => setSliderValue(parseFloat(e.target.value))}
                 className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
