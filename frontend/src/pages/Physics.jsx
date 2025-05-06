@@ -9,18 +9,40 @@ import SpringMassScene from "../models/physics/SpringScene";
 import CircularMotionScene from "../models/physics/CircularMotionScene";
 import ProjectileScene from "../models/physics/ProjectileScene";
 import FreeFallScene from "../models/physics/FreeFallScene";
-import CollisionScene from "../models/physics/CollisionScene";
+import ElasticCollisionScene from "../models/physics/ElasticCollisionScene";
+import PlasticCollisionScene from "../models/physics/PlasticCollisionScene";
+import {
+  inclinedPlane,
+  pulley2,
+  pulleys3,
+  pendulum,
+  spring,
+  circularMotion,
+  projectile,
+  freeFall,
+  elasticCollision,
+  plasticCollision,
+} from "../assets/icons";
 
 const physicsObjects = [
-  { id: "inclined_plane", label: "Plan înclinat" },
-  { id: "pulley_system2", label: "Scripeți 2 corpuri" },
-  { id: "pulley_system3", label: "Scripteți 3 corpuri" },
-  { id: "pendulum", label: "Pendul" },
-  { id: "spring", label: "Resort" },
-  { id: "circular_motion", label: "Mișcare circulară" },
-  { id: "projectile_motion", label: "Mișcare de proiectil" },
-  { id: "free_fall", label: "Cădere liberă" },
-  { id: "collision", label: "Coliziune elastică" },
+  { id: "inclined_plane", label: "Plan înclinat", icon: inclinedPlane },
+  { id: "pulley_system2", label: "Scripeți 2 corpuri", icon: pulley2 },
+  { id: "pulley_system3", label: "Scripteți 3 corpuri", icon: pulleys3 },
+  { id: "pendulum", label: "Pendul", icon: pendulum },
+  { id: "spring", label: "Resort", icon: spring },
+  { id: "circular_motion", label: "Mișcare circulară", icon: circularMotion },
+  { id: "projectile_motion", label: "Mișcare de proiectil", icon: projectile },
+  { id: "free_fall", label: "Cădere liberă", icon: freeFall },
+  {
+    id: "elastic_collision",
+    label: "Coliziune elastică",
+    icon: elasticCollision,
+  },
+  {
+    id: "plastic_collision",
+    label: "Coliziune plastică",
+    icon: plasticCollision,
+  },
 ];
 
 const Physics = () => {
@@ -210,12 +232,21 @@ const Physics = () => {
             </div>
           </>
         )}
-        {selectedObject?.id === "collision" && (
+        {selectedObject?.id === "elastic_collision" && (
           <div
             className="h-[500px] w-full rounded-xl overflow-hidden
                   border-2 border-mulberry bg-white shadow-md"
           >
-            <CollisionScene />
+            <ElasticCollisionScene />
+          </div>
+        )}
+
+        {selectedObject?.id === "plastic_collision" && (
+          <div
+            className="h-[500px] w-full rounded-xl overflow-hidden
+                  border-2 border-mulberry bg-white shadow-md"
+          >
+            <PlasticCollisionScene />
           </div>
         )}
       </main>

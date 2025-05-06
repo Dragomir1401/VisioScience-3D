@@ -43,8 +43,28 @@ import queue from "./queue.svg";
 import deque from "./deque.svg";
 import list from "./list.svg";
 import dll from "./dll.svg";
+import inclinedPlane from "./inclinedPlane.svg";
+import pulleys3 from "./pulleys3.svg";
+import pulley2 from "./pulley2.svg";
+import pendulum from "./pendulum.svg";
+import spring from "./spring.svg";
+import circularMotion from "./circularMotion.svg";
+import projectile from "./projectile.svg";
+import freeFall from "./freeFall.svg";
+import elasticCollision from "./elasticCollision.svg";
+import plasticCollision from "./plasticCollision.svg";
 
 export {
+  inclinedPlane,
+  pulleys3,
+  pulley2,
+  pendulum,
+  spring,
+  circularMotion,
+  projectile,
+  freeFall,
+  elasticCollision,
+  plasticCollision,
   dll,
   list,
   deque,

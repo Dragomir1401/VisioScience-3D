@@ -163,7 +163,7 @@ function CollisionVisualization({ onInit }) {
   );
 }
 
-export default function CollisionScene() {
+export default function ElasticCollisionScene() {
   const [isRotating, setIsRotating] = useState(false);
   const paramsRef = useRef();
 
@@ -201,7 +201,7 @@ export default function CollisionScene() {
                    hover:from-pink-600 hover:to-mulberry text-white
                    py-2 px-4 rounded-lg shadow-lg"
       >
-        Reset Animation
+        Reset
       </button>
     </div>
   );
