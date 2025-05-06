@@ -7,9 +7,9 @@ import Pulley3Scene from "../models/physics/PulleyFixedMobile";
 import PendulumScene from "../models/physics/Pendulum";
 
 const physicsObjects = [
-  { id: "inclined_plane", label: "InclinedPlane" },
-  { id: "pulley_system2", label: "Pullies2Bodies" },
-  { id: "pulley_system3", label: "Pullies3Bodies" },
+  { id: "inclined_plane", label: "Plan înclinat" },
+  { id: "pulley_system2", label: "Scripeți 2 corpuri" },
+  { id: "pulley_system3", label: "Scripteți 3 corpuri" },
   { id: "pendulum", label: "Pendul" },
   // { id: "spring", label: "Arc" },
   // { id: "circular_motion", label: "Mișcare circulară" },
