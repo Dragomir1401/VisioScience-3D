@@ -9,6 +9,7 @@ import SpringMassScene from "../models/physics/SpringScene";
 import CircularMotionScene from "../models/physics/CircularMotionScene";
 import ProjectileScene from "../models/physics/ProjectileScene";
 import FreeFallScene from "../models/physics/FreeFallScene";
+import CollisionScene from "../models/physics/CollisionScene";
 
 const physicsObjects = [
   { id: "inclined_plane", label: "Plan înclinat" },
@@ -19,7 +20,7 @@ const physicsObjects = [
   { id: "circular_motion", label: "Mișcare circulară" },
   { id: "projectile_motion", label: "Mișcare de proiectil" },
   { id: "free_fall", label: "Cădere liberă" },
-  // { id: "collision", label: "Coliziune" },
+  { id: "collision", label: "Coliziune elastică" },
 ];
 
 const Physics = () => {
@@ -190,7 +191,6 @@ const Physics = () => {
             </div>
           </>
         )}
-
         {selectedObject?.id === "free_fall" && (
           <>
             <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
@@ -209,6 +209,14 @@ const Physics = () => {
               />
             </div>
           </>
+        )}
+        {selectedObject?.id === "collision" && (
+          <div
+            className="h-[500px] w-full rounded-xl overflow-hidden
+                  border-2 border-mulberry bg-white shadow-md"
+          >
+            <CollisionScene />
+          </div>
         )}
       </main>
     </div>
