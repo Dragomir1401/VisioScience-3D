@@ -74,7 +74,6 @@ export default function Chemistry() {
 
   return (
     <div className="flex mt-12">
-      {/* --- SIDE MENU --- */}
       <aside
         className="w-64 min-h-screen p-5 shadow-md bg-gradient-to-br 
         from-[#f5f3ff] via-[#ede9fe] to-[#fff7ed] text-purple-800 
@@ -123,7 +122,6 @@ export default function Chemistry() {
         </div>
       </aside>
 
-      {/* --- MAIN CONTENT --- */}
       <main className="flex-1 p-8 space-y-4 bg-gradient-to-b from-[#fdf4ff] via-[#f3e8ff] to-[#fff7ed]">
         {message && (
           <div className="text-green-700 border border-green-300 bg-green-100 px-4 py-2 rounded-md">

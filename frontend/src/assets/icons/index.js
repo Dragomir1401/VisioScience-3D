@@ -53,8 +53,10 @@ import projectile from "./projectile.svg";
 import freeFall from "./freeFall.svg";
 import elasticCollision from "./elasticCollision.svg";
 import plasticCollision from "./plasticCollision.svg";
+import molecule from "./molecule.svg";
 
 export {
+  molecule,
   inclinedPlane,
   pulleys3,
   pulley2,

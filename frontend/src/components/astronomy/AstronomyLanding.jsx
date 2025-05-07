@@ -11,11 +11,8 @@ const CSLanding = () => (
       exemplu, vectori dinamici cu inserare, ştergere și parcurgere.
     </p>
     <div className="flex items-center gap-6">
-      <img
-        src={vector}
-        alt="Vector"
-        className="w-8 h-8 object-contain drop-shadow-lg"
-      />
+      <icon className="w-16 h-16" src={vector} alt="Vector icon" />
+
       <p className="text-md">
         Alege „Vectori” din meniul din stânga pentru a începe demo-ul 3D!
       </p>

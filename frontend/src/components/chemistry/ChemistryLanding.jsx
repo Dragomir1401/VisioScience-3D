@@ -1,4 +1,5 @@
 import React from "react";
+import { molecule } from "../../assets/icons";
 
 const ChemistryLanding = () => {
   return (
@@ -12,19 +13,20 @@ const ChemistryLanding = () => {
         <code className="bg-[#f3e8ff] text-purple-800 mx-1 px-1 py-0.5 rounded shadow-sm text-sm">
           .mol
         </code>
-        pentru a vizualiza și studia structura moleculelor într-un mod interactiv și 3D.
+        pentru a vizualiza și studia structura moleculelor într-un mod
+        interactiv și 3D.
       </p>
 
       <div className="flex items-start gap-4 font-worksans text-sm sm:text-base">
-        {/* <img
-          src={moleculeIcon}
+        <img
+          src={molecule}
           alt="Molecule Icon"
-          className="w-16 h-16 object-contain drop-shadow-lg"
-        /> */}
+          className="w-8 h-8 object-contain drop-shadow-lg"
+        />
         <p className="text-black/80">
-          Poți adăuga molecule noi din meniul lateral și vizualiza structura acestora
-          în timp real. Fiecare moleculă conține detalii despre atomi, legături și o
-          reprezentare 3D ușor de înțeles.
+          Poți adăuga molecule noi din meniul lateral și vizualiza structura
+          acestora în timp real. Fiecare moleculă conține detalii despre atomi,
+          legături și o reprezentare 3D ușor de înțeles.
         </p>
       </div>
 
