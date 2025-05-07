@@ -13,7 +13,7 @@ import QuizAttempt from "./components/quiz/QuizAttempt";
 import QuizMeta from "./components/quiz/QuizMeta";
 import QuizResults from "./components/quiz/QuizResults";
 import ComputerScience from "./pages/ComputerScience";
-
+import Astronomy from "./pages/Astronomy";
 
 function App() {
   return (
@@ -21,12 +21,8 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route 
-            path="/login" 
-            element={<Login />} />
-          <Route
-            path="/register"
-            element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
           <Route
             path="/"
@@ -36,12 +32,8 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route
-            path="/despre"
-            element={<Despre />} />
-          <Route
-            path="/contact"
-            element={<Contact />} />
+          <Route path="/despre" element={<Despre />} />
+          <Route path="/contact" element={<Contact />} />
           <Route
             path="/profile"
             element={
@@ -50,25 +42,13 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route 
-            path="/classes/:id"
-            element={<ClassDetails />} />
-          <Route 
-            path="/classes/:id/quiz/create" 
-            element={<QuizCreation />} />
-          <Route 
-            path="/quiz/:quizId" 
-            element={<QuizDetails />} />
-          <Route 
-            path="/quiz/attempt/:quizId" 
-            element={<QuizAttempt />} />
-          <Route 
-            path="/quiz/meta/:quizId" 
-            element={<QuizMeta />} />
+          <Route path="/classes/:id" element={<ClassDetails />} />
+          <Route path="/classes/:id/quiz/create" element={<QuizCreation />} />
+          <Route path="/quiz/:quizId" element={<QuizDetails />} />
+          <Route path="/quiz/attempt/:quizId" element={<QuizAttempt />} />
+          <Route path="/quiz/meta/:quizId" element={<QuizMeta />} />
 
-          <Route 
-            path="/quiz/meta/:quizId"
-            element={<QuizMeta />} />
+          <Route path="/quiz/meta/:quizId" element={<QuizMeta />} />
           <Route
             path="/classes/:classId/quiz/:quizId/results"
             element={<QuizResults />}
@@ -104,6 +84,15 @@ function App() {
             element={
               <PrivateRoute>
                 <ComputerScience />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/astronomy"
+            element={
+              <PrivateRoute>
+                <Astronomy />
               </PrivateRoute>
             }
           />
