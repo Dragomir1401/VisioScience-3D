@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import SideMenu from "../components/SideMenu";
 import AstronomyLanding from "../components/astronomy/AstronomyLanding";
-import MercuryScene from "../models/astronomy/MercuryScene";
-import VenusScene from "../models/astronomy/VenusScene";
+import ThreeMercuryScene from "../models/astronomy/MercuryScene";
+import ThreeVenusScene from "../models/astronomy/VenusScene";
 import ThreeEarthScene from "../models/astronomy/EarthScene";
 import ThreeMarsScene from "../models/astronomy/MarsScene";
-import JupiterScene from "../models/astronomy/JupiterScene.jsx";
+import ThreeJupiterScene from "../models/astronomy/JupiterScene.jsx";
 import SaturnScene from "../models/astronomy/SaturnScene";
 import UranusScene from "../models/astronomy/UranusScene";
 import NeptuneScene from "../models/astronomy/NeptuneScene";
@@ -48,12 +48,12 @@ const Astronomy = () => {
 
         {selected?.id === "mercury" && (
           <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-blue-300">
-            <MercuryScene />
+            <ThreeMercuryScene />
           </div>
         )}
         {selected?.id === "venus" && (
           <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-yellow-300">
-            <VenusScene />
+            <ThreeVenusScene />
           </div>
         )}
         {selected?.id === "earth" && (
@@ -68,7 +68,7 @@ const Astronomy = () => {
         )}
         {selected?.id === "jupiter" && (
           <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-orange-300">
-            <JupiterScene />
+            <ThreeJupiterScene />
           </div>
         )}
         {selected?.id === "saturn" && (

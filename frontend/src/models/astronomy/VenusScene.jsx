@@ -39,7 +39,7 @@ function CameraLight() {
   return <pointLight ref={lightRef} intensity={0.4} />;
 }
 
-export default function VenusScene() {
+export default function ThreeVenusScene() {
   const [isRotatingBG, setIsRotatingBG] = useState(false);
 
   return (
