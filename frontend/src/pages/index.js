@@ -6,5 +6,16 @@ import Physics from "./Physics";
 import Login from "./Login";
 import Register from "./Register";
 import Chemistry from "./Chemistry";
+import RedirectPage from "./Shop";
 
-export { Acasa, About, Contact, Math, Physics, Login, Register, Chemistry };
+export {
+  Acasa,
+  About,
+  Contact,
+  Math,
+  Physics,
+  Login,
+  Register,
+  Chemistry,
+  RedirectPage,
+};

@@ -15,6 +15,7 @@ import QuizResults from "./components/quiz/QuizResults";
 import ComputerScience from "./pages/ComputerScience";
 import Astronomy from "./pages/Astronomy";
 import About from "./pages/About";
+import RedirectPage from "./pages/Shop";
 
 function App() {
   return (
@@ -33,7 +34,8 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/despre" element={<About />} />
+          <Route path="/shop" element={<RedirectPage />} />
+          <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route
             path="/profile"
