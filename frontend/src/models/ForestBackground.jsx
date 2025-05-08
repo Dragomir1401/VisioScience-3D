@@ -113,8 +113,6 @@ const ForestBackground = ({
     <a.group ref={ForestBackgroundRef}>
       <group scale={0.01}>
         <mesh
-          castShadow
-          receiveShadow
           geometry={nodes.Sphere001_2_0.geometry}
           material={materials.material}
           position={[-7500, 0, 0]}
