@@ -7,8 +7,8 @@ import ThreeEarthScene from "../models/astronomy/EarthScene";
 import ThreeMarsScene from "../models/astronomy/MarsScene";
 import ThreeJupiterScene from "../models/astronomy/JupiterScene.jsx";
 import ThreeSaturnScene from "../models/astronomy/SaturnScene";
-import UranusScene from "../models/astronomy/UranusScene";
-import NeptuneScene from "../models/astronomy/NeptuneScene";
+import ThreeUranusScene from "../models/astronomy/UranusScene";
+import ThreeNeptuneScene from "../models/astronomy/NeptuneScene";
 // import {
 //   mercuryIcon,
 //   venusIcon,
@@ -78,12 +78,12 @@ const Astronomy = () => {
         )}
         {selected?.id === "uranus" && (
           <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-teal-300">
-            <UranusScene />
+            <ThreeUranusScene />
           </div>
         )}
         {selected?.id === "neptune" && (
           <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-indigo-400">
-            <NeptuneScene />
+            <ThreeNeptuneScene />
           </div>
         )}
 
