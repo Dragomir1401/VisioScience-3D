@@ -56,16 +56,6 @@ const About = () => {
             simulări 3D interactive. Platforma este ușor de utilizat și oferă o
             experiență de învățare captivantă și informativă.
           </p>
-
-          <form className="w-full space-y-4 font-worksans">
-            <button
-              type="button"
-              className="btn-primary w-full"
-              onClick={() => alert("Platforma va fi disponibilă în curând!")}
-            >
-              Află mai multe
-            </button>
-          </form>
         </div>
       </div>
     </div>
