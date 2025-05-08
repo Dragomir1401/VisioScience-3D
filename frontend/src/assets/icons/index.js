@@ -23,7 +23,6 @@ import snapgram from "./snapgram.svg";
 import summiz from "./summiz.svg";
 import threads from "./threads.svg";
 import arrow from "./arrow.svg";
-import contact from "./contact.svg";
 import soundon from "./soundon.png";
 import soundoff from "./soundoff.png";
 import purple_arrow from "./purple-arrow.svg";
@@ -63,8 +62,15 @@ import saturn from "./saturn.svg";
 import uranus from "./uranus.svg";
 import neptune from "./neptune.svg";
 import solar_system from "./solar_system.svg";
+import shop from "./shop.svg";
+import about from "./about.svg";
+import profile from "./profile.svg";
+import contact from "./contact.svg";
 
 export {
+  shop,
+  about,
+  profile,
   solar_system,
   earth,
   mercury,
