@@ -9,6 +9,8 @@ import ThreeJupiterScene from "../models/astronomy/JupiterScene.jsx";
 import ThreeSaturnScene from "../models/astronomy/SaturnScene";
 import ThreeUranusScene from "../models/astronomy/UranusScene";
 import ThreeNeptuneScene from "../models/astronomy/NeptuneScene";
+import SolarSystemScene from "../models/astronomy/SolarSystemScene";
+
 // import {
 //   mercuryIcon,
 //   venusIcon,
@@ -21,6 +23,7 @@ import ThreeNeptuneScene from "../models/astronomy/NeptuneScene";
 // } from "../assets/icons";
 
 const astroObjects = [
+  { id: "solar-system", label: "Sistem Solar", icon: "" },
   { id: "mercury", label: "Mercur", icon: "" },
   { id: "venus", label: "Venus", icon: "" },
   { id: "earth", label: "Pământ", icon: "" },
@@ -84,6 +87,12 @@ const Astronomy = () => {
         {selected?.id === "neptune" && (
           <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-indigo-400">
             <ThreeNeptuneScene />
+          </div>
+        )}
+
+        {selected?.id === "solar-system" && (
+          <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-gray-300">
+            <SolarSystemScene />
           </div>
         )}
 
