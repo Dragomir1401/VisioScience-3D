@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import { Acasa, Despre, Contact, Math, Physics, Chemistry } from "./pages";
+import { Acasa, Contact, Math, Physics, Chemistry } from "./pages";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PrivateRoute from "./pages/PrivateRoute";
@@ -14,6 +14,7 @@ import QuizMeta from "./components/quiz/QuizMeta";
 import QuizResults from "./components/quiz/QuizResults";
 import ComputerScience from "./pages/ComputerScience";
 import Astronomy from "./pages/Astronomy";
+import About from "./pages/About";
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/despre" element={<Despre />} />
+          <Route path="/despre" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route
             path="/profile"

@@ -41,7 +41,7 @@ const Login = () => {
     setter(e.target.value);
     setIsTyping(true);
 
-    setTimeout(() => setIsTyping(false), 100); // sau 200ms
+    setTimeout(() => setIsTyping(false), 100);
   };
 
   const handleSubmit = async (e) => {
@@ -90,7 +90,6 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#DAA89B] via-[#AE847E] to-[#CB429F]">
-      {/* Balon 3D */}
       <div className="absolute top-0 w-full h-[300px] z-0 pointer-events-none">
         <Canvas camera={{ fov: 40, near: 0.1, far: 1000, position: [0, 0, 5] }}>
           <Suspense fallback={<Loader />}>
@@ -108,7 +107,6 @@ const Login = () => {
         </Canvas>
       </div>
 
-      {/* Formular */}
       <div className="relative z-10 bg-white p-8 rounded-xl shadow-md w-full max-w-md mt-48">
         <h2 className="text-2xl font-bold mb-6 text-[#690375] text-center font-poppins">
           Autentificare
