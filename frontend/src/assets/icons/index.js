@@ -54,8 +54,26 @@ import freeFall from "./freeFall.svg";
 import elasticCollision from "./elasticCollision.svg";
 import plasticCollision from "./plasticCollision.svg";
 import molecule from "./molecule.svg";
+import earth from "./earth.svg";
+import mercury from "./mercury.svg";
+import mars from "./mars.svg";
+import venus from "./venus.svg";
+import jupiter from "./jupiter.svg";
+import saturn from "./saturn.svg";
+import uranus from "./uranus.svg";
+import neptune from "./neptune.svg";
+import solar_system from "./solar_system.svg";
 
 export {
+  solar_system,
+  earth,
+  mercury,
+  mars,
+  venus,
+  jupiter,
+  saturn,
+  uranus,
+  neptune,
   molecule,
   inclinedPlane,
   pulleys3,

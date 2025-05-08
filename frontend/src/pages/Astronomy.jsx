@@ -10,28 +10,28 @@ import ThreeSaturnScene from "../models/astronomy/SaturnScene";
 import ThreeUranusScene from "../models/astronomy/UranusScene";
 import ThreeNeptuneScene from "../models/astronomy/NeptuneScene";
 import SolarSystemScene from "../models/astronomy/SolarSystemScene";
-
-// import {
-//   mercuryIcon,
-//   venusIcon,
-//   earthIcon,
-//   marsIcon,
-//   jupiterIcon,
-//   saturnIcon,
-//   uranusIcon,
-//   neptuneIcon,
-// } from "../assets/icons";
+import {
+  mercury,
+  venus,
+  earth,
+  mars,
+  jupiter,
+  saturn,
+  uranus,
+  neptune,
+  solar_system,
+} from "../assets/icons";
 
 const astroObjects = [
-  { id: "solar-system", label: "Sistem Solar", icon: "" },
-  { id: "mercury", label: "Mercur", icon: "" },
-  { id: "venus", label: "Venus", icon: "" },
-  { id: "earth", label: "Pământ", icon: "" },
-  { id: "mars", label: "Marte", icon: "" },
-  { id: "jupiter", label: "Jupiter", icon: "" },
-  { id: "saturn", label: "Saturn", icon: "" },
-  { id: "uranus", label: "Uranus", icon: "" },
-  { id: "neptune", label: "Neptun", icon: "" },
+  { id: "solar-system", label: "Sistem Solar", icon: solar_system },
+  { id: "mercury", label: "Mercur", icon: mercury },
+  { id: "venus", label: "Venus", icon: venus },
+  { id: "earth", label: "Pământ", icon: earth },
+  { id: "mars", label: "Marte", icon: mars },
+  { id: "jupiter", label: "Jupiter", icon: jupiter },
+  { id: "saturn", label: "Saturn", icon: saturn },
+  { id: "uranus", label: "Uranus", icon: uranus },
+  { id: "neptune", label: "Neptun", icon: neptune },
 ];
 
 const Astronomy = () => {
