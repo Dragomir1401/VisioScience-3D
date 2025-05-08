@@ -6,7 +6,7 @@ import ThreeVenusScene from "../models/astronomy/VenusScene";
 import ThreeEarthScene from "../models/astronomy/EarthScene";
 import ThreeMarsScene from "../models/astronomy/MarsScene";
 import ThreeJupiterScene from "../models/astronomy/JupiterScene.jsx";
-import SaturnScene from "../models/astronomy/SaturnScene";
+import ThreeSaturnScene from "../models/astronomy/SaturnScene";
 import UranusScene from "../models/astronomy/UranusScene";
 import NeptuneScene from "../models/astronomy/NeptuneScene";
 // import {
@@ -73,7 +73,7 @@ const Astronomy = () => {
         )}
         {selected?.id === "saturn" && (
           <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-yellow-500">
-            <SaturnScene />
+            <ThreeSaturnScene />
           </div>
         )}
         {selected?.id === "uranus" && (
