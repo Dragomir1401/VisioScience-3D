@@ -16,6 +16,7 @@ import (
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func CreateClass(w http.ResponseWriter, r *http.Request) {
@@ -366,4 +367,90 @@ func GetClassQuizResults(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(out)
+}
+
+// DELETE /user/classes/{id}
+func DeleteClass(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	claims := r.Context().Value("claims").(*utils.CustomClaims)
+
+	if claims.Role != string(models.RoleTeacher) {
+		w.WriteHeader(http.StatusForbidden)
+		json.NewEncoder(w).Encode(map[string]string{
+			"error": fmt.Sprintf("Forbidden: User role is %s, expected %s", claims.Role, models.RoleTeacher),
+		})
+		return
+	}
+
+	classIDHex := mux.Vars(r)["id"]
+	classID, err := primitive.ObjectIDFromHex(classIDHex)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{
+			"error": fmt.Sprintf("Invalid class ID format: %v", err),
+		})
+		return
+	}
+
+	ownerID, err := primitive.ObjectIDFromHex(claims.UserID)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{
+			"error": fmt.Sprintf("Invalid user ID format: %v", err),
+		})
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	var class models.Class
+	err = db.ClassCollection.FindOne(ctx, bson.M{"_id": classID}).Decode(&class)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			w.WriteHeader(http.StatusNotFound)
+			json.NewEncoder(w).Encode(map[string]string{
+				"error": "Class not found",
+			})
+			return
+		}
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{
+			"error": fmt.Sprintf("Database error: %v", err),
+		})
+		return
+	}
+
+	if class.OwnerID != ownerID {
+		w.WriteHeader(http.StatusForbidden)
+		json.NewEncoder(w).Encode(map[string]string{
+			"error": "You don't have permission to delete this class",
+		})
+		return
+	}
+
+	res, err := db.ClassCollection.DeleteOne(ctx, bson.M{
+		"_id":      classID,
+		"owner_id": ownerID,
+	})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{
+			"error": fmt.Sprintf("Delete failed: %v", err),
+		})
+		return
+	}
+
+	if res.DeletedCount == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{
+			"error": "Class not found or not owned",
+		})
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Class successfully deleted",
+	})
 }

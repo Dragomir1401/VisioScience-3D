@@ -55,6 +55,20 @@ const ClassDetails = () => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm("Ești sigur că vrei să ștergi această clasă?")) return;
+    try {
+      const res = await fetch(`http://localhost:8000/user/classes/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error();
+      navigate("/profile");
+    } catch {
+      alert("Eroare la ștergerea clasei.");
+    }
+  };
+
   const toggleQuizStatus = async (quizId, currentStatus, e) => {
     e.stopPropagation();
     try {
@@ -97,6 +111,21 @@ const ClassDetails = () => {
             className="inline-block bg-mulberry text-white px-4 py-2 rounded-lg hover:bg-purple transition text-sm"
           >
             Creează quiz
+          </button>
+        </div>
+
+        <div className="flex space-x-2">
+          <button
+            onClick={() => navigate(`/classes/${id}/quiz/create`)}
+            className="inline-block bg-mulberry text-white px-4 py-2 rounded-lg hover:bg-purple transition text-sm"
+          >
+            Creează quiz
+          </button>
+          <button
+            onClick={handleDelete}
+            className="inline-block bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition text-sm"
+          >
+            Șterge clasa
           </button>
         </div>
 
