@@ -25,15 +25,15 @@ func main() {
 		gorillaHandlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 	)
 
-	// POST /feeds
+	// POST /feed
 	r.HandleFunc("/feed", handlers.CreateFeed).Methods("POST")
-	// GET /feeds
+	// GET /feed
 	r.HandleFunc("/feed/{id}", handlers.GetFeedByID).Methods("GET")
-	// GET /feeds
+	// GET /feed
 	r.HandleFunc("/feed/{id}", handlers.UpdateFeedByID).Methods("PUT")
-	// GET /feeds
+	// GET /feed
 	r.HandleFunc("/feed/{id}", handlers.DeleteFeedByID).Methods("DELETE")
-	// GET /feeds
+	// GET /feed
 	r.HandleFunc("/feed/shape/{shape}", handlers.GetFeedsByShape).Methods("GET")
 
 	// GET /chem/molecules
