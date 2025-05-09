@@ -72,7 +72,6 @@ const ClassDetails = () => {
     }
   };
 
-  // Normalize data arrays to avoid null
   const studentList = Array.isArray(students) ? students : [];
   const quizList = Array.isArray(quizzes) ? quizzes : [];
 
