@@ -98,15 +98,11 @@ const QuizResults = () => {
                   </span>
                   <div className="flex items-center space-x-2 justify-end">
                     {u.score != null ? (
-                      <>
-                        <span className="text-gray-900">{u.pct}%</span>
-                        <div className="w-24 bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                          <div
-                            className="h-2.5 rounded-full bg-purple-600"
-                            style={{ width: `${u.pct}%` }}
-                          />
-                        </div>
-                      </>
+                      <span
+                        className={`text-lg font-bold ${u.pct >= 90 ? 'text-green-600' : u.pct >= 50 ? 'text-yellow-600' : 'text-red-600'}`}
+                      >
+                        {u.pct}%
+                      </span>
                     ) : (
                       <span className="text-gray-400 italic">—</span>
                     )}

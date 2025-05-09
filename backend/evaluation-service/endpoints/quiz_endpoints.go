@@ -39,13 +39,14 @@ func CreateQuiz(w http.ResponseWriter, r *http.Request) {
 	}
 
 	quiz := models.Quiz{
-		ID:        primitive.NewObjectID(),
-		Title:     input.Title,
-		ClassID:   classID,
-		OwnerID:   ownerID,
-		Questions: input.Questions,
-		IsOpen:    false,
-		CreatedAt: time.Now(),
+		ID:          primitive.NewObjectID(),
+		Title:       input.Title,
+		ClassID:     classID,
+		OwnerID:     ownerID,
+		Questions:   input.Questions,
+		IsOpen:      false,
+		CreatedAt:   time.Now(),
+		QuizResults: []models.QuizResult{},
 	}
 
 	if input.IsOpen != nil {
