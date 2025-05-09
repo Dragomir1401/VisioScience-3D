@@ -1,4 +1,3 @@
-// src/components/teacher/ClassDetails.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import ClassActions from "./ClassActions";
@@ -9,11 +8,11 @@ const ClassDetails = () => {
   const token = localStorage.getItem("token");
 
   const [students, setStudents] = useState([]);
-  const [quizzes, setQuizzes]   = useState([]);
+  const [quizzes, setQuizzes] = useState([]);
   const [loadingStudents, setLoadingStudents] = useState(true);
-  const [loadingQuizzes, setLoadingQuizzes]   = useState(true);
-  const [errorStudents, setErrorStudents]     = useState("");
-  const [errorQuizzes, setErrorQuizzes]       = useState("");
+  const [loadingQuizzes, setLoadingQuizzes] = useState(true);
+  const [errorStudents, setErrorStudents] = useState("");
+  const [errorQuizzes, setErrorQuizzes] = useState("");
 
   useEffect(() => {
     fetchStudents();
@@ -28,7 +27,8 @@ const ClassDetails = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (!res.ok) throw new Error();
-      setStudents(await res.json());
+      const data = await res.json();
+      setStudents(Array.isArray(data) ? data : []);
     } catch {
       setErrorStudents("Eroare la încărcarea elevilor.");
       setStudents([]);
@@ -45,7 +45,8 @@ const ClassDetails = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (!res.ok) throw new Error();
-      setQuizzes(await res.json());
+      const data = await res.json();
+      setQuizzes(Array.isArray(data) ? data : []);
     } catch {
       setErrorQuizzes("Eroare la încărcarea quiz-urilor.");
       setQuizzes([]);
@@ -57,22 +58,23 @@ const ClassDetails = () => {
   const toggleQuizStatus = async (quizId, currentStatus, e) => {
     e.stopPropagation();
     try {
-      await fetch(
-        `http://localhost:8000/evaluation/quiz/${quizId}/status`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ is_open: !currentStatus }),
-        }
-      );
+      await fetch(`http://localhost:8000/evaluation/quiz/${quizId}/status`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ is_open: !currentStatus }),
+      });
       fetchClassQuizzes();
     } catch {
       console.error("Eroare la actualizarea statusului quiz-ului");
     }
   };
+
+  // Normalize data arrays to avoid null
+  const studentList = Array.isArray(students) ? students : [];
+  const quizList = Array.isArray(quizzes) ? quizzes : [];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#fff0f5] via-[#f3e8ff] to-[#fff7ed] px-6 pt-24">
@@ -111,11 +113,11 @@ const ClassDetails = () => {
             <p className="text-gray-500">Se încarcă elevii…</p>
           ) : errorStudents ? (
             <p className="text-red-600">{errorStudents}</p>
-          ) : students.length === 0 ? (
+          ) : studentList.length === 0 ? (
             <p className="italic text-gray-500">Niciun elev înscris.</p>
           ) : (
             <ul className="list-disc list-inside space-y-2 text-sm text-gray-700">
-              {students.map((s) => (
+              {studentList.map((s) => (
                 <li key={s.id}>
                   {s.email} <span className="text-gray-500">(ID: {s.id})</span>
                 </li>
@@ -132,11 +134,11 @@ const ClassDetails = () => {
             <p className="text-gray-500">Se încarcă quiz-urile…</p>
           ) : errorQuizzes ? (
             <p className="text-red-600">{errorQuizzes}</p>
-          ) : quizzes.length === 0 ? (
+          ) : quizList.length === 0 ? (
             <p className="italic text-gray-500">Niciun quiz atribuit.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {quizzes.map((quiz) => (
+              {quizList.map((quiz) => (
                 <div
                   key={quiz.id}
                   onClick={() =>
