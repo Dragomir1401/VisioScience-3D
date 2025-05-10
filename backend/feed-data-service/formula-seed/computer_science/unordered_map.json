@@ -1,0 +1,93 @@
+[
+    {
+      "formula": {
+        "shape": "unordered_map",
+        "name": "Memorie",
+        "expr": "bazat pe table de dispersie (hash buckets); O(n + k) pentru stocare (n elemente + k bucket-uri)"
+      },
+      "metadata": {
+        "name": "unordered_map_memorie"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_map",
+        "name": "Acces / căutare (find / operator[])",
+        "expr": "T₍avg₎ = O(1), T₍worst₎ = O(n) (depinde de coliziuni și faktori de încărcare)"
+      },
+      "metadata": {
+        "name": "unordered_map_search"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_map",
+        "name": "Inserare (insert / operator[])",
+        "expr": "T₍avg₎ = O(1), T₍worst₎ = O(n) (posibil rehash când load_factor depășește pragul)"
+      },
+      "metadata": {
+        "name": "unordered_map_insert"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_map",
+        "name": "Ștergere (erase)",
+        "expr": "T₍avg₎ = O(1), T₍worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "unordered_map_erase"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_map",
+        "name": "Numărare / count",
+        "expr": "T₍avg₎ = O(1), T₍worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "unordered_map_count"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_map",
+        "name": "Traversare (iteration)",
+        "expr": "T₍best,avg,worst₎ = O(n + k) (parcurgere bucket-uri + noduri)"
+      },
+      "metadata": {
+        "name": "unordered_map_traversal"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_map",
+        "name": "Avantaje",
+        "expr": "- acces şi modificare în medie O(1)\n- nu necesită chei ordonate\n- flexibilitate la load factor"
+      },
+      "metadata": {
+        "name": "unordered_map_advantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_map",
+        "name": "Dezavantaje",
+        "expr": "- overhead memorie pentru bucket array\n- performanță degradată la coliziuni\n- iterare neordonată"
+      },
+      "metadata": {
+        "name": "unordered_map_disadvantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_map",
+        "name": "C++ STL",
+        "expr": "std::unordered_map<Key,T,Hash,KeyEq> – parametrizable load_factor, bucket_count, rehash()"
+      },
+      "metadata": {
+        "name": "unordered_map_cpp_notes"
+      }
+    }
+]
+  

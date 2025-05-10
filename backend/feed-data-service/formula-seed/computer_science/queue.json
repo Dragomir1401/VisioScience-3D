@@ -1,0 +1,103 @@
+[
+    {
+      "formula": {
+        "shape": "queue",
+        "name": "Memorie",
+        "expr": "bazat pe std::deque intern; segmentată în blocuri contigue"
+      },
+      "metadata": {
+        "name": "queue_memorie"
+      }
+    },
+    {
+      "formula": {
+        "shape": "queue",
+        "name": "push (enqueue)",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "queue_push"
+      }
+    },
+    {
+      "formula": {
+        "shape": "queue",
+        "name": "pop (dequeue)",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "queue_pop"
+      }
+    },
+    {
+      "formula": {
+        "shape": "queue",
+        "name": "front/back",
+        "expr": "T₍best,avg,worst₎ = O(1) – acces la primul/ultimul element"
+      },
+      "metadata": {
+        "name": "queue_front_back"
+      }
+    },
+    {
+      "formula": {
+        "shape": "queue",
+        "name": "empty()",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "queue_empty"
+      }
+    },
+    {
+      "formula": {
+        "shape": "queue",
+        "name": "size()",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "queue_size"
+      }
+    },
+    {
+      "formula": {
+        "shape": "queue",
+        "name": "Traversare",
+        "expr": "nu suportă iterare directă; se poate copia în container suport pentru parcurgere"
+      },
+      "metadata": {
+        "name": "queue_traversal"
+      }
+    },
+    {
+      "formula": {
+        "shape": "queue",
+        "name": "Avantaje",
+        "expr": "- FIFO garantat\n- operații front/back O(1)\n- simplu de utilizat pentru cozi de mesaje"
+      },
+      "metadata": {
+        "name": "queue_advantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "queue",
+        "name": "Dezavantaje",
+        "expr": "- acces limitat doar la capete\n- overhead intern al deque-ului"
+      },
+      "metadata": {
+        "name": "queue_disadvantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "queue",
+        "name": "C++ STL",
+        "expr": "std::queue<T,Container> – default Container=std::deque<T>; suportă și std::list"
+      },
+      "metadata": {
+        "name": "queue_cpp_notes"
+      }
+    }
+]
+  

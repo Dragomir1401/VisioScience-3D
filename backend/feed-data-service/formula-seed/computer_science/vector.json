@@ -1,0 +1,133 @@
+[
+    {
+      "formula": {
+        "shape": "vector",
+        "name": "Memorie",
+        "expr": "continuu în RAM, similar array, dar capacitate dinamică"
+      },
+      "metadata": {
+        "name": "vector_memorie"
+      }
+    },
+    {
+      "formula": {
+        "shape": "vector",
+        "name": "Access prin index",
+        "expr": "T₍best,avg,worst₎ = O(1); Spațiu auxiliar = O(1)"
+      },
+      "metadata": {
+        "name": "vector_access_index"
+      }
+    },
+    {
+      "formula": {
+        "shape": "vector",
+        "name": "Căutare liniară (nesortat)",
+        "expr": "T₍best₎ = O(1), T₍avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "vector_search_linear"
+      }
+    },
+    {
+      "formula": {
+        "shape": "vector",
+        "name": "Căutare binară (sortat)",
+        "expr": "T₍best₎ = O(1), T₍avg,worst₎ = O(log n); necesită vector sortat"
+      },
+      "metadata": {
+        "name": "vector_search_binary"
+      }
+    },
+    {
+      "formula": {
+        "shape": "vector",
+        "name": "Inserare la sfârșit",
+        "expr": "T₍amort₎ = O(1), T₍worst₎ = O(n) (realloc + copiere când capacitatea este atinsă)"
+      },
+      "metadata": {
+        "name": "vector_push_back"
+      }
+    },
+    {
+      "formula": {
+        "shape": "vector",
+        "name": "Inserare la început/mijloc",
+        "expr": "T₍best,avg,worst₎ = O(n) (mutare elemente)"
+      },
+      "metadata": {
+        "name": "vector_insert_middle"
+      }
+    },
+    {
+      "formula": {
+        "shape": "vector",
+        "name": "Ștergere la sfârșit",
+        "expr": "T₍best,avg,worst₎ = O(1) (pop_back)"
+      },
+      "metadata": {
+        "name": "vector_pop_back"
+      }
+    },
+    {
+      "formula": {
+        "shape": "vector",
+        "name": "Ștergere la început/mijloc",
+        "expr": "T₍best,avg,worst₎ = O(n) (mutare elemente)"
+      },
+      "metadata": {
+        "name": "vector_erase_middle"
+      }
+    },
+    {
+      "formula": {
+        "shape": "vector",
+        "name": "Redimensionare (reserve/shrink_to_fit)",
+        "expr": "reserve(): O(n) worst, amortizat O(1); shrink_to_fit(): O(n)"
+      },
+      "metadata": {
+        "name": "vector_reserve_shrink"
+      }
+    },
+    {
+      "formula": {
+        "shape": "vector",
+        "name": "Traversare",
+        "expr": "T₍best,avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "vector_traversal"
+      }
+    },
+    {
+      "formula": {
+        "shape": "vector",
+        "name": "Avantaje",
+        "expr": "- acces aleatoriu O(1)\n- dimensiune dinamică\n- compatibil cu algoritmi STL"
+      },
+      "metadata": {
+        "name": "vector_advantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "vector",
+        "name": "Dezavantaje",
+        "expr": "- realloc costisitor la redimensionare\n- inserții/ștergeri lente la început/mijloc"
+      },
+      "metadata": {
+        "name": "vector_disadvantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "vector",
+        "name": "C++ Notes",
+        "expr": "std::vector<T> – crește automat de la capacitatea curentă la (2×) când e necesar"
+      },
+      "metadata": {
+        "name": "vector_cpp_notes"
+      }
+    }
+]
+  

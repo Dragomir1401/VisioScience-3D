@@ -1,0 +1,103 @@
+[
+    {
+      "formula": {
+        "shape": "multiset",
+        "name": "Memorie",
+        "expr": "necontiguu în RAM; implementat intern ca arbore roșu-negru"
+      },
+      "metadata": {
+        "name": "multiset_memorie"
+      }
+    },
+    {
+      "formula": {
+        "shape": "multiset",
+        "name": "Căutare (find)",
+        "expr": "T₍best,avg,worst₎ = O(log n)"
+      },
+      "metadata": {
+        "name": "multiset_search"
+      }
+    },
+    {
+      "formula": {
+        "shape": "multiset",
+        "name": "Inserare (insert)",
+        "expr": "T₍best,avg,worst₎ = O(log n)"
+      },
+      "metadata": {
+        "name": "multiset_insert"
+      }
+    },
+    {
+      "formula": {
+        "shape": "multiset",
+        "name": "Ștergere (erase)",
+        "expr": "T₍best,avg,worst₎ = O(log n) per element"
+      },
+      "metadata": {
+        "name": "multiset_erase"
+      }
+    },
+    {
+      "formula": {
+        "shape": "multiset",
+        "name": "Count (numărare duplicate)",
+        "expr": "T₍best,avg,worst₎ = O(log n + k) (k = număr duplicate)"
+      },
+      "metadata": {
+        "name": "multiset_count"
+      }
+    },
+    {
+      "formula": {
+        "shape": "multiset",
+        "name": "Traversare în ordine",
+        "expr": "T₍best,avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "multiset_traversal"
+      }
+    },
+    {
+      "formula": {
+        "shape": "multiset",
+        "name": "Memorie auxiliară",
+        "expr": "O(n) pentru noduri și pointeri"
+      },
+      "metadata": {
+        "name": "multiset_aux_memory"
+      }
+    },
+    {
+      "formula": {
+        "shape": "multiset",
+        "name": "Avantaje",
+        "expr": "- suportă elemente duplicate\n- chei ordonate automat\n- operații O(log n)"
+      },
+      "metadata": {
+        "name": "multiset_advantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "multiset",
+        "name": "Dezavantaje",
+        "expr": "- overhead mare per nod\n- acces aleatoriu prin index inexistent"
+      },
+      "metadata": {
+        "name": "multiset_disadvantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "multiset",
+        "name": "C++ STL",
+        "expr": "std::multiset<T> – permite duplicate, member functions insert, erase, find, count"
+      },
+      "metadata": {
+        "name": "multiset_cpp_notes"
+      }
+    }
+]
+  

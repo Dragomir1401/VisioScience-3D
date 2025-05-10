@@ -1,0 +1,103 @@
+[
+    {
+      "formula": {
+        "shape": "priority_queue",
+        "name": "Memorie",
+        "expr": "continuu în RAM; intern folosește std::vector + heap (make_heap)"
+      },
+      "metadata": {
+        "name": "priority_queue_memorie"
+      }
+    },
+    {
+      "formula": {
+        "shape": "priority_queue",
+        "name": "Acces top()",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "priority_queue_top"
+      }
+    },
+    {
+      "formula": {
+        "shape": "priority_queue",
+        "name": "push()",
+        "expr": "T₍best,avg,worst₎ = O(log n)"
+      },
+      "metadata": {
+        "name": "priority_queue_push"
+      }
+    },
+    {
+      "formula": {
+        "shape": "priority_queue",
+        "name": "pop()",
+        "expr": "T₍best,avg,worst₎ = O(log n)"
+      },
+      "metadata": {
+        "name": "priority_queue_pop"
+      }
+    },
+    {
+      "formula": {
+        "shape": "priority_queue",
+        "name": "build heap (constructor range)",
+        "expr": "T₍best,avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "priority_queue_build"
+      }
+    },
+    {
+      "formula": {
+        "shape": "priority_queue",
+        "name": "empty()",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "priority_queue_empty"
+      }
+    },
+    {
+      "formula": {
+        "shape": "priority_queue",
+        "name": "size()",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "priority_queue_size"
+      }
+    },
+    {
+      "formula": {
+        "shape": "priority_queue",
+        "name": "Avantaje",
+        "expr": "- acces rapid la elementul maxim O(1)\n- push/pop O(log n)\n- implementare simplă cu heap"
+      },
+      "metadata": {
+        "name": "priority_queue_advantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "priority_queue",
+        "name": "Dezavantaje",
+        "expr": "- nu suportă iterație directă ordonată\n- eliminare arbitrară costisitoare\n- overhead pentru menținerea heap-ului"
+      },
+      "metadata": {
+        "name": "priority_queue_disadvantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "priority_queue",
+        "name": "C++ STL",
+        "expr": "std::priority_queue<T,Container,Compare> – default Container=vector, Compare=less<T>"
+      },
+      "metadata": {
+        "name": "priority_queue_cpp_notes"
+      }
+    }
+]
+  

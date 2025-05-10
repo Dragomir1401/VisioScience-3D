@@ -1,0 +1,93 @@
+[
+    {
+      "formula": {
+        "shape": "unordered_set",
+        "name": "Memorie",
+        "expr": "bazat pe table de dispersie (hash buckets); O(n + k) pentru stocare (n elemente + k bucket-uri)"
+      },
+      "metadata": {
+        "name": "unordered_set_memorie"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_set",
+        "name": "Căutare (find / count)",
+        "expr": "T₍avg₎ = O(1), T₍worst₎ = O(n) (depinde de coliziuni și load_factor)"
+      },
+      "metadata": {
+        "name": "unordered_set_search"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_set",
+        "name": "Inserare (insert)",
+        "expr": "T₍avg₎ = O(1), T₍worst₎ = O(n) (posibil rehash când load_factor depășește pragul)"
+      },
+      "metadata": {
+        "name": "unordered_set_insert"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_set",
+        "name": "Ștergere (erase)",
+        "expr": "T₍avg₎ = O(1), T₍worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "unordered_set_erase"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_set",
+        "name": "Count (verificare existență)",
+        "expr": "T₍avg₎ = O(1), T₍worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "unordered_set_count"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_set",
+        "name": "Traversare (iteration)",
+        "expr": "T₍best,avg,worst₎ = O(n + k) (parcurgere bucket-uri + elemente)"
+      },
+      "metadata": {
+        "name": "unordered_set_traversal"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_set",
+        "name": "Avantaje",
+        "expr": "- operații de inserare/ștergere/căutare în medie O(1)\n- nu necesită ordonare a elementelor\n- bun pentru colecții unice"
+      },
+      "metadata": {
+        "name": "unordered_set_advantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_set",
+        "name": "Dezavantaje",
+        "expr": "- overhead memorie pentru bucket array\n- performanță degradată la coliziuni\n- iterație neordonată"
+      },
+      "metadata": {
+        "name": "unordered_set_disadvantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "unordered_set",
+        "name": "C++ STL",
+        "expr": "std::unordered_set<T,Hash,KeyEq> – parametrizable load_factor, bucket_count, rehash()"
+      },
+      "metadata": {
+        "name": "unordered_set_cpp_notes"
+      }
+    }
+]
+  

@@ -1,0 +1,123 @@
+[
+    {
+      "formula": {
+        "shape": "list",
+        "name": "Memorie",
+        "expr": "necontiguu în RAM; fiecare nod stochează valoare + 2 pointeri (next, prev)"
+      },
+      "metadata": {
+        "name": "list_memorie"
+      }
+    },
+    {
+      "formula": {
+        "shape": "list",
+        "name": "Access prin index",
+        "expr": "T₍best,avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "list_access_index"
+      }
+    },
+    {
+      "formula": {
+        "shape": "list",
+        "name": "Căutare liniară",
+        "expr": "T₍best₎ = O(1) (la capăt), T₍avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "list_search_linear"
+      }
+    },
+    {
+      "formula": {
+        "shape": "list",
+        "name": "push_front",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "list_push_front"
+      }
+    },
+    {
+      "formula": {
+        "shape": "list",
+        "name": "push_back",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "list_push_back"
+      }
+    },
+    {
+      "formula": {
+        "shape": "list",
+        "name": "insert (iterator)",
+        "expr": "T₍best,avg,worst₎ = O(1) (legare noduri) + O(n) pentru poziționare"
+      },
+      "metadata": {
+        "name": "list_insert"
+      }
+    },
+    {
+      "formula": {
+        "shape": "list",
+        "name": "erase (iterator)",
+        "expr": "T₍best,avg,worst₎ = O(1) (religare noduri) + O(n) pentru poziționare"
+      },
+      "metadata": {
+        "name": "list_erase"
+      }
+    },
+    {
+      "formula": {
+        "shape": "list",
+        "name": "traversare",
+        "expr": "T₍best,avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "list_traversal"
+      }
+    },
+    {
+      "formula": {
+        "shape": "list",
+        "name": "clear",
+        "expr": "T₍best,avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "list_clear"
+      }
+    },
+    {
+      "formula": {
+        "shape": "list",
+        "name": "Avantaje",
+        "expr": "- inserții/ștergeri O(1) în orice poziție\n- splicing O(1)\n- iteratori stabili"
+      },
+      "metadata": {
+        "name": "list_advantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "list",
+        "name": "Dezavantaje",
+        "expr": "- acces aleatoriu O(n)\n- overhead de memorie mare\n- localitate spațială slabă"
+      },
+      "metadata": {
+        "name": "list_disadvantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "list",
+        "name": "C++ STL",
+        "expr": "std::list<T> – listă dublu-înlanțuită cu splice, merge, remove O(1)"
+      },
+      "metadata": {
+        "name": "list_cpp_notes"
+      }
+    }
+]
+  

@@ -3,13 +3,19 @@ const fs = require('fs');
 const path = require('path');
 
 const FILES = [
-  'physics/pulleys_2.json',
-  'physics/pulleys_3.json',
-  'physics/pendulum.json',
-  'physics/spring.json',
-  'physics/circular_motion.json',
-  'physics/projectile.json',
-  'physics/free_fall.json',
+  'computer_science/array.json',
+  'computer_science/doubly_linked_list.json',
+  'computer_science/deque.json',
+  'computer_science/list.json',
+  'computer_science/map.json',
+  'computer_science/multiset.json',
+  'computer_science/priority_queue.json',
+  'computer_science/queue.json',
+  'computer_science/set.json',
+  'computer_science/stack.json',
+  'computer_science/unordered_map.json',
+  'computer_science/unordered_set.json',
+  'computer_science/vector.json',
 ];
 
 const BASE = path.join(__dirname);

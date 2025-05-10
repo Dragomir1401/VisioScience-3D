@@ -1,0 +1,123 @@
+[
+    {
+      "formula": {
+        "shape": "deque",
+        "name": "Memorie",
+        "expr": "segmentată în blocuri contigue, nu un singur buffer"
+      },
+      "metadata": {
+        "name": "deque_memorie"
+      }
+    },
+    {
+      "formula": {
+        "shape": "deque",
+        "name": "Access prin index",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "deque_access_index"
+      }
+    },
+    {
+      "formula": {
+        "shape": "deque",
+        "name": "Acces la față/spate",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "deque_access_ends"
+      }
+    },
+    {
+      "formula": {
+        "shape": "deque",
+        "name": "Căutare liniară",
+        "expr": "T₍best₎ = O(1), T₍avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "deque_search_linear"
+      }
+    },
+    {
+      "formula": {
+        "shape": "deque",
+        "name": "Inserare la față/spate",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "deque_push_front_back"
+      }
+    },
+    {
+      "formula": {
+        "shape": "deque",
+        "name": "Inserare la început/mijloc/spate",
+        "expr": "T₍worst₎ = O(n) la mijloc, O(1) la capete"
+      },
+      "metadata": {
+        "name": "deque_insert_middle"
+      }
+    },
+    {
+      "formula": {
+        "shape": "deque",
+        "name": "Ștergere la față/spate",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "deque_pop_front_back"
+      }
+    },
+    {
+      "formula": {
+        "shape": "deque",
+        "name": "Ștergere la mijloc",
+        "expr": "T₍best,avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "deque_erase_middle"
+      }
+    },
+    {
+      "formula": {
+        "shape": "deque",
+        "name": "Traversare",
+        "expr": "T₍best,avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "deque_traversal"
+      }
+    },
+    {
+      "formula": {
+        "shape": "deque",
+        "name": "Avantaje",
+        "expr": "- inserții/ștergeri rapide la ambele capete\n- acces O(1) prin index"
+      },
+      "metadata": {
+        "name": "deque_advantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "deque",
+        "name": "Dezavantaje",
+        "expr": "- overhead de blocuri\n- costuri mai mari de memorie decât vectorul"
+      },
+      "metadata": {
+        "name": "deque_disadvantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "deque",
+        "name": "C++ Notes",
+        "expr": "std::deque<T> – implementează buffer-uri multiple, crește automat la capete"
+      },
+      "metadata": {
+        "name": "deque_cpp_notes"
+      }
+    }
+]
+  

@@ -1,0 +1,113 @@
+[
+    {
+      "formula": {
+        "shape": "array",
+        "name": "Memorie",
+        "expr": "continuu în RAM → elementele stocate unul după altul (cache-friendly)"
+      },
+      "metadata": {
+        "name": "array_memorie"
+      }
+    },
+    {
+      "formula": {
+        "shape": "array",
+        "name": "Access prin index",
+        "expr": "T₍best,avg,worst₎ = O(1); Spațiu auxiliar = O(1)"
+      },
+      "metadata": {
+        "name": "array_access_index"
+      }
+    },
+    {
+      "formula": {
+        "shape": "array",
+        "name": "Căutare liniară (nesortat)",
+        "expr": "T₍best₎ = O(1), T₍avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "array_search_linear"
+      }
+    },
+    {
+      "formula": {
+        "shape": "array",
+        "name": "Căutare binară (sortat)",
+        "expr": "T₍best₎ = O(1), T₍avg,worst₎ = O(log n); necesită memorie sortată"
+      },
+      "metadata": {
+        "name": "array_search_binary"
+      }
+    },
+    {
+      "formula": {
+        "shape": "array",
+        "name": "Inserare la sfârșit",
+        "expr": "T₍amort₎ = O(1), T₍worst₎ = O(n) (realloc + copiere)"
+      },
+      "metadata": {
+        "name": "array_insert_end"
+      }
+    },
+    {
+      "formula": {
+        "shape": "array",
+        "name": "Inserare la început/mijloc",
+        "expr": "T₍best,avg,worst₎ = O(n) (mutare elemente)"
+      },
+      "metadata": {
+        "name": "array_insert_middle"
+      }
+    },
+    {
+      "formula": {
+        "shape": "array",
+        "name": "Ștergere la sfârșit",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "array_delete_end"
+      }
+    },
+    {
+      "formula": {
+        "shape": "array",
+        "name": "Ștergere la început/mijloc",
+        "expr": "T₍best,avg,worst₎ = O(n) (mutare elemente)"
+      },
+      "metadata": {
+        "name": "array_delete_middle"
+      }
+    },
+    {
+      "formula": {
+        "shape": "array",
+        "name": "Avantaje",
+        "expr": "- acces aleatoriu O(1)\n- localitate spațială bună\n- simplu de implementat"
+      },
+      "metadata": {
+        "name": "array_advantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "array",
+        "name": "Dezavantaje",
+        "expr": "- redimensionare costisitoare\n- inserții/ștergeri lente la început/mijloc\n- dimensiune fixă în C native"
+      },
+      "metadata": {
+        "name": "array_disadvantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "array",
+        "name": "C++ STL",
+        "expr": "std::array<T,N> (fix)\nstd::vector<T> (dinamic, realloc automat)"
+      },
+      "metadata": {
+        "name": "array_cpp_notes"
+      }
+    }
+]
+  

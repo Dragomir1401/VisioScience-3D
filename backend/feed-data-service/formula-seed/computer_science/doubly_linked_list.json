@@ -1,0 +1,133 @@
+[
+    {
+      "formula": {
+        "shape": "doubly_linked_list",
+        "name": "Memorie",
+        "expr": "necontiguu în RAM; fiecare nod stochează valoare + 2 pointeri (next, prev)"
+      },
+      "metadata": {
+        "name": "dll_memorie"
+      }
+    },
+    {
+      "formula": {
+        "shape": "doubly_linked_list",
+        "name": "Access prin index",
+        "expr": "T₍best,avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "dll_access_index"
+      }
+    },
+    {
+      "formula": {
+        "shape": "doubly_linked_list",
+        "name": "Căutare liniară",
+        "expr": "T₍best₎ = O(1) (la capăt), T₍avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "dll_search_linear"
+      }
+    },
+    {
+      "formula": {
+        "shape": "doubly_linked_list",
+        "name": "Inserare la început",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "dll_insert_front"
+      }
+    },
+    {
+      "formula": {
+        "shape": "doubly_linked_list",
+        "name": "Inserare la sfârșit",
+        "expr": "T₍best,avg,worst₎ = O(1) (dacă se păstrează pointer tail)"
+      },
+      "metadata": {
+        "name": "dll_insert_back"
+      }
+    },
+    {
+      "formula": {
+        "shape": "doubly_linked_list",
+        "name": "Inserare la mijloc",
+        "expr": "T₍best,avg,worst₎ = O(n) (căutare poziție + legare nod)"
+      },
+      "metadata": {
+        "name": "dll_insert_middle"
+      }
+    },
+    {
+      "formula": {
+        "shape": "doubly_linked_list",
+        "name": "Ștergere la început",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "dll_delete_front"
+      }
+    },
+    {
+      "formula": {
+        "shape": "doubly_linked_list",
+        "name": "Ștergere la sfârșit",
+        "expr": "T₍best,avg,worst₎ = O(1) (dacă se păstrează pointer tail)"
+      },
+      "metadata": {
+        "name": "dll_delete_back"
+      }
+    },
+    {
+      "formula": {
+        "shape": "doubly_linked_list",
+        "name": "Ștergere la mijloc",
+        "expr": "T₍best,avg,worst₎ = O(n) (căutare nod + relinkare)"
+      },
+      "metadata": {
+        "name": "dll_delete_middle"
+      }
+    },
+    {
+      "formula": {
+        "shape": "doubly_linked_list",
+        "name": "Traversare",
+        "expr": "T₍best,avg,worst₎ = O(n)"
+      },
+      "metadata": {
+        "name": "dll_traversal"
+      }
+    },
+    {
+      "formula": {
+        "shape": "doubly_linked_list",
+        "name": "Avantaje",
+        "expr": "- inserții/ștergeri O(1) la capete\n- dublă direcție de parcurgere"
+      },
+      "metadata": {
+        "name": "dll_advantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "doubly_linked_list",
+        "name": "Dezavantaje",
+        "expr": "- overhead mare de memorie (2 pointeri)\n- acces lent prin index"
+      },
+      "metadata": {
+        "name": "dll_disadvantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "doubly_linked_list",
+        "name": "C++ STL",
+        "expr": "std::list<T> – listă dublu înlănțuită, iteratori bidirecționali"
+      },
+      "metadata": {
+        "name": "dll_cpp_notes"
+      }
+    }
+]
+  

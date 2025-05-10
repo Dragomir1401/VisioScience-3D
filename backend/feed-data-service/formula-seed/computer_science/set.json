@@ -1,0 +1,103 @@
+[
+    {
+      "formula": {
+        "shape": "set",
+        "name": "Memorie",
+        "expr": "necontiguu în RAM; implementat intern ca arbore roșu-negru"
+      },
+      "metadata": {
+        "name": "set_memorie"
+      }
+    },
+    {
+      "formula": {
+        "shape": "set",
+        "name": "Căutare (find)",
+        "expr": "T₍best,avg,worst₎ = O(log n)"
+      },
+      "metadata": {
+        "name": "set_search"
+      }
+    },
+    {
+      "formula": {
+        "shape": "set",
+        "name": "Inserare (insert)",
+        "expr": "T₍best,avg,worst₎ = O(log n)"
+      },
+      "metadata": {
+        "name": "set_insert"
+      }
+    },
+    {
+      "formula": {
+        "shape": "set",
+        "name": "Ștergere (erase)",
+        "expr": "T₍best,avg,worst₎ = O(log n)"
+      },
+      "metadata": {
+        "name": "set_erase"
+      }
+    },
+    {
+      "formula": {
+        "shape": "set",
+        "name": "Traversare în ordine",
+        "expr": "T₍best,avg,worst₎ = O(n) (in-order traversal)"
+      },
+      "metadata": {
+        "name": "set_traversal"
+      }
+    },
+    {
+      "formula": {
+        "shape": "set",
+        "name": "Count (verificare existență)",
+        "expr": "T₍best,avg,worst₎ = O(log n)"
+      },
+      "metadata": {
+        "name": "set_count"
+      }
+    },
+    {
+      "formula": {
+        "shape": "set",
+        "name": "Memorie auxiliară",
+        "expr": "O(n) pentru stocarea nodurilor și pointerilor"
+      },
+      "metadata": {
+        "name": "set_aux_memory"
+      }
+    },
+    {
+      "formula": {
+        "shape": "set",
+        "name": "Avantaje",
+        "expr": "- chei unice și ordonate\n- căutare, inserare, ștergere în O(log n)\n- iteratori stabili"
+      },
+      "metadata": {
+        "name": "set_advantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "set",
+        "name": "Dezavantaje",
+        "expr": "- nu suportă elemente duplicate\n- overhead ridicat per nod (culori + 2 pointeri)\n- acces aleatoriu prin index inexistent"
+      },
+      "metadata": {
+        "name": "set_disadvantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "set",
+        "name": "C++ STL",
+        "expr": "std::set<T> – implementare RB-tree, member functions insert, erase, find, lower_bound"
+      },
+      "metadata": {
+        "name": "set_cpp_notes"
+      }
+    }
+]
+  

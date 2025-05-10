@@ -1,0 +1,103 @@
+[
+    {
+      "formula": {
+        "shape": "stack",
+        "name": "Memorie",
+        "expr": "bazat pe std::deque intern; segmentată în blocuri contigue"
+      },
+      "metadata": {
+        "name": "stack_memorie"
+      }
+    },
+    {
+      "formula": {
+        "shape": "stack",
+        "name": "push()",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "stack_push"
+      }
+    },
+    {
+      "formula": {
+        "shape": "stack",
+        "name": "pop()",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "stack_pop"
+      }
+    },
+    {
+      "formula": {
+        "shape": "stack",
+        "name": "top()",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "stack_top"
+      }
+    },
+    {
+      "formula": {
+        "shape": "stack",
+        "name": "empty()",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "stack_empty"
+      }
+    },
+    {
+      "formula": {
+        "shape": "stack",
+        "name": "size()",
+        "expr": "T₍best,avg,worst₎ = O(1)"
+      },
+      "metadata": {
+        "name": "stack_size"
+      }
+    },
+    {
+      "formula": {
+        "shape": "stack",
+        "name": "Traversare",
+        "expr": "nu suportă iterare directă; se poate copia pentru parcurgere"
+      },
+      "metadata": {
+        "name": "stack_traversal"
+      }
+    },
+    {
+      "formula": {
+        "shape": "stack",
+        "name": "Avantaje",
+        "expr": "- LIFO garantat\n- operații O(1)\n- simplu de implementat"
+      },
+      "metadata": {
+        "name": "stack_advantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "stack",
+        "name": "Dezavantaje",
+        "expr": "- acces limitat doar la vârf\n- nu suportă căutare sau iterare directă"
+      },
+      "metadata": {
+        "name": "stack_disadvantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "stack",
+        "name": "C++ STL",
+        "expr": "std::stack<T,Container> – default Container=std::deque<T>; suportă și std::vector, std::list"
+      },
+      "metadata": {
+        "name": "stack_cpp_notes"
+      }
+    }
+]
+  

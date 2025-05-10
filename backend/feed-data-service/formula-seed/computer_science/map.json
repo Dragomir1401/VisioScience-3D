@@ -1,0 +1,93 @@
+[
+    {
+      "formula": {
+        "shape": "map",
+        "name": "Memorie",
+        "expr": "necontiguu în RAM; implementat intern ca arbore roșu-negru"
+      },
+      "metadata": {
+        "name": "map_memorie"
+      }
+    },
+    {
+      "formula": {
+        "shape": "map",
+        "name": "Acces / căutare",
+        "expr": "T₍best,avg,worst₎ = O(log n)"
+      },
+      "metadata": {
+        "name": "map_search"
+      }
+    },
+    {
+      "formula": {
+        "shape": "map",
+        "name": "Inserare (insert / operator[])",
+        "expr": "T₍best,avg,worst₎ = O(log n)"
+      },
+      "metadata": {
+        "name": "map_insert"
+      }
+    },
+    {
+      "formula": {
+        "shape": "map",
+        "name": "Ștergere (erase)",
+        "expr": "T₍best,avg,worst₎ = O(log n)"
+      },
+      "metadata": {
+        "name": "map_erase"
+      }
+    },
+    {
+      "formula": {
+        "shape": "map",
+        "name": "Traversare în ordine",
+        "expr": "T₍best,avg,worst₎ = O(n) (in-order traversal)"
+      },
+      "metadata": {
+        "name": "map_traversal"
+      }
+    },
+    {
+      "formula": {
+        "shape": "map",
+        "name": "Memorie auxiliară",
+        "expr": "O(n) pentru stocarea nodurilor și pointerilor"
+      },
+      "metadata": {
+        "name": "map_aux_memory"
+      }
+    },
+    {
+      "formula": {
+        "shape": "map",
+        "name": "Avantaje",
+        "expr": "- chei ordonate automat\n- căutare, inserare, ștergere în O(log n)\n- iteratori stabili"
+      },
+      "metadata": {
+        "name": "map_advantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "map",
+        "name": "Dezavantaje",
+        "expr": "- overhead mare per nod (culori + 2 pointeri)\n- acces aleatoriu prin index inexistent"
+      },
+      "metadata": {
+        "name": "map_disadvantages"
+      }
+    },
+    {
+      "formula": {
+        "shape": "map",
+        "name": "C++ STL",
+        "expr": "std::map<Key,T> – implementare RB-tree, member functions insert, erase, find, lower_bound"
+      },
+      "metadata": {
+        "name": "map_cpp_notes"
+      }
+    }
+]
+  
