@@ -1,6 +1,7 @@
 package prettifier
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -10,155 +11,105 @@ import (
 func ParseMolFile(molFile string) (models.MolParsedData, error) {
 	var molObj models.MolParsedData
 
+	molFile = strings.ReplaceAll(molFile, "\r", "")
 	lines := strings.Split(molFile, "\n")
 
-	var cleanLines []string
-	for _, l := range lines {
-		if strings.TrimSpace(l) != "" {
-			cleanLines = append(cleanLines, l)
-		}
-	}
-	lines = cleanLines
-
-	//----------------------------------------------------------------
-	// HEADER
-	//----------------------------------------------------------------
-	if len(lines) >= 1 {
-		molObj.Header.Title = lines[0]
+	if len(lines) < 4 {
+		return molObj, fmt.Errorf("mol file too short: %d lines", len(lines))
 	}
 
-	if len(lines) >= 2 {
-		line1Parts := strings.SplitN(lines[1], "  ", 3)
-		if len(line1Parts) > 1 {
-			molObj.Header.Program = strings.TrimSpace(line1Parts[1])
-		}
-		if len(line1Parts) > 2 {
-			molObj.Header.TimeStamp = strings.TrimSpace(line1Parts[2])
-		}
+	molObj.Header.Title = lines[0]
+	parts := strings.Fields(lines[1])
+	if len(parts) >= 2 {
+		molObj.Header.Program = parts[1]
+	}
+	if len(parts) >= 3 {
+		molObj.Header.TimeStamp = parts[2]
+	}
+	molObj.Header.Comment = lines[2]
+
+	cnt := padRight(lines[3], 27)
+	atomCount, _ := strconv.Atoi(strings.TrimSpace(cnt[0:3]))
+	bondCount, _ := strconv.Atoi(strings.TrimSpace(cnt[3:6]))
+	listCount, _ := strconv.Atoi(strings.TrimSpace(cnt[6:9]))
+	chiralFlag := strings.TrimSpace(cnt[12:15]) == "1"
+	stext := strings.TrimSpace(cnt[15:27])
+
+	molObj.Counts = models.MolCounts{
+		Atoms:  atomCount,
+		Bonds:  bondCount,
+		Lists:  listCount,
+		Chiral: chiralFlag,
+		Stext:  stext,
 	}
 
-	if len(lines) >= 3 {
-		molObj.Header.Comment = lines[2]
-	}
-
-	var molCounts models.MolCounts
-
-	if len(lines) >= 4 && len(strings.TrimSpace(lines[3])) > 0 {
-		countLine := lines[3]
-		var countChunks []string
-		for i := 0; i < len(countLine); i += 3 {
-			chunk := countLine[i:min(i+3, len(countLine))]
-			countChunks = append(countChunks, chunk)
-			if len(countChunks) >= 6 {
-				break
-			}
-		}
-
-		if len(countChunks) > 0 {
-			molCounts.Molecules, _ = strconv.Atoi(strings.TrimSpace(countChunks[0]))
-		}
-		if len(countChunks) > 1 {
-			molCounts.Bonds, _ = strconv.Atoi(strings.TrimSpace(countChunks[1]))
-		}
-		if len(countChunks) > 2 {
-			molCounts.Lists, _ = strconv.Atoi(strings.TrimSpace(countChunks[2]))
-		}
-		if len(countChunks) > 4 {
-			cVal := strings.TrimSpace(countChunks[4])
-			molCounts.Chiral = (cVal == "1")
-		}
-		if len(countChunks) > 5 {
-			molCounts.Stext = strings.TrimSpace(countChunks[5])
-		}
-	}
-
-	molObj.Counts = molCounts
-
-	//----------------------------------------------------------------
-	// ATOMS
-	//----------------------------------------------------------------
-	numAtoms := molObj.Counts.Molecules
 	startAtoms := 4
-	endAtoms := startAtoms + numAtoms
-
+	endAtoms := startAtoms + atomCount
 	var atoms []models.Atom
-	if startAtoms < len(lines) {
-		for idx := startAtoms; idx < endAtoms && idx < len(lines); idx++ {
-			line := lines[idx]
-			if len(strings.TrimSpace(line)) == 0 {
-				continue
-			}
-
-			xStr := safeSlice(line, 0, 10)
-			yStr := safeSlice(line, 10, 20)
-			zStr := safeSlice(line, 20, 30)
-			typ := safeSlice(line, 31, 34)
-
-			xVal, _ := strconv.ParseFloat(strings.TrimSpace(xStr), 64)
-			yVal, _ := strconv.ParseFloat(strings.TrimSpace(yStr), 64)
-			zVal, _ := strconv.ParseFloat(strings.TrimSpace(zStr), 64)
-			atType := strings.TrimSpace(typ)
-
-			at := models.Atom{
-				X:    xVal,
-				Y:    yVal,
-				Z:    zVal,
-				Type: atType,
-			}
-			atoms = append(atoms, at)
+	for i := startAtoms; i < endAtoms && i < len(lines); i++ {
+		line := lines[i]
+		if strings.TrimSpace(line) == "" {
+			continue
 		}
-	}
+		xStr := safeSlice(line, 0, 10)
+		yStr := safeSlice(line, 10, 20)
+		zStr := safeSlice(line, 20, 30)
+		typeStr := safeSlice(line, 31, 34)
 
+		xVal, _ := strconv.ParseFloat(strings.TrimSpace(xStr), 64)
+		yVal, _ := strconv.ParseFloat(strings.TrimSpace(yStr), 64)
+		zVal, _ := strconv.ParseFloat(strings.TrimSpace(zStr), 64)
+		atomType := strings.TrimSpace(typeStr)
+
+		atoms = append(atoms, models.Atom{
+			X:    xVal,
+			Y:    yVal,
+			Z:    zVal,
+			Type: atomType,
+		})
+	}
 	molObj.Atoms = atoms
 
-	//----------------------------------------------------------------
-	// BONDS
-	//----------------------------------------------------------------
-	numBonds := molObj.Counts.Bonds
 	startBonds := endAtoms
-	endBonds := startBonds + numBonds
-
+	endBonds := startBonds + bondCount
 	var bonds []models.Bond
-	if startBonds < len(lines) {
-		for idx := startBonds; idx < endBonds && idx < len(lines); idx++ {
-			line := lines[idx]
-			if len(strings.TrimSpace(line)) == 0 {
-				continue
-			}
-			a1Str := strings.TrimSpace(safeSlice(line, 0, 3))
-			a2Str := strings.TrimSpace(safeSlice(line, 3, 6))
-			btStr := strings.TrimSpace(safeSlice(line, 6, 9))
-
-			a1, _ := strconv.Atoi(a1Str)
-			a2, _ := strconv.Atoi(a2Str)
-			bType, _ := strconv.Atoi(btStr)
-
-			bond := models.Bond{
-				Atom1:    a1 - 1,
-				Atom2:    a2 - 1,
-				BondType: bType,
-			}
-			bonds = append(bonds, bond)
+	for i := startBonds; i < endBonds && i < len(lines); i++ {
+		line := lines[i]
+		if strings.TrimSpace(line) == "" {
+			continue
 		}
+		a1Str := strings.TrimSpace(safeSlice(line, 0, 3))
+		a2Str := strings.TrimSpace(safeSlice(line, 3, 6))
+		btStr := strings.TrimSpace(safeSlice(line, 6, 9))
+
+		a1, _ := strconv.Atoi(a1Str)
+		a2, _ := strconv.Atoi(a2Str)
+		bType, _ := strconv.Atoi(btStr)
+
+		bonds = append(bonds, models.Bond{
+			Atom1:    a1 - 1,
+			Atom2:    a2 - 1,
+			BondType: bType,
+		})
 	}
 	molObj.Bonds = bonds
 
 	return molObj, nil
 }
 
-func min(a, b int) int {
-	if a < b {
-		return a
+func padRight(s string, n int) string {
+	if len(s) >= n {
+		return s[:n]
 	}
-	return b
+	return s + strings.Repeat(" ", n-len(s))
 }
 
-func safeSlice(line string, start, end int) string {
-	if start >= len(line) {
+func safeSlice(s string, start, end int) string {
+	if start >= len(s) {
 		return ""
 	}
-	if end > len(line) {
-		end = len(line)
+	if end > len(s) {
+		end = len(s)
 	}
-	return line[start:end]
+	return s[start:end]
 }

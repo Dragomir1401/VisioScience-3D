@@ -19,14 +19,6 @@ type MolHeader struct {
 	Comment   string `bson:"comment,omitempty" json:"comment,omitempty"`
 }
 
-type MolCounts struct {
-	Molecules int    `bson:"molecules" json:"molecules"`
-	Bonds     int    `bson:"bonds"     json:"bonds"`
-	Lists     int    `bson:"lists"     json:"lists"`
-	Chiral    bool   `bson:"chiral"    json:"chiral"`
-	Stext     string `bson:"stext,omitempty" json:"stext,omitempty"`
-}
-
 type Atom struct {
 	X    float64 `bson:"x"    json:"x"`
 	Y    float64 `bson:"y"    json:"y"`
@@ -52,4 +44,12 @@ type MoleculeRequest struct {
 	Formula     string `json:"formula"`
 	Description string `json:"description"`
 	MolFile     string `json:"molFile"`
+}
+
+type MolCounts struct {
+	Atoms  int    `bson:"atoms"`
+	Bonds  int    `bson:"bonds"`
+	Lists  int    `bson:"lists"`
+	Chiral bool   `bson:"chiral"`
+	Stext  string `bson:"stext"`
 }

@@ -11,7 +11,6 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
     description: "",
     molFile: "",
   });
-
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -30,7 +29,6 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
         const text = await file.text();
         setFormData({ ...formData, molFile: text });
       } catch (err) {
-        console.error(err);
         setError("Failed to read .mol file");
       }
     }
@@ -41,13 +39,11 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
     setError("");
     setMessage("");
     setUploadSuccess(false);
-
     if (!formData.name || !formData.molFile) {
       setError("Name și MolFile sunt obligatorii!");
       onError && onError("Name și MolFile obligatorii");
       return;
     }
-
     try {
       const res = await fetch("http://localhost:8000/feed/chem/molecules", {
         method: "POST",
@@ -58,18 +54,15 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
         const txt = await res.text();
         throw new Error(txt);
       }
-
       const data = await res.json();
       setMessage(`Molecula a fost creată! ID: ${data.id}`);
       setUploadSuccess(true);
-
       setTimeout(() => {
         setFormData({ name: "", formula: "", description: "", molFile: "" });
         setUploadSuccess(false);
         onCreateSuccess && onCreateSuccess();
       }, 2000);
     } catch (err) {
-      console.error(err);
       setError(err.message);
       onError && onError(err.message);
     }
@@ -79,45 +72,22 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
     "w-full px-4 py-2 text-sm text-black bg-white/90 border border-mulberry rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-mulberry";
 
   return (
-    <div className="relative min-h-screen w-full h-full flex items-center justify-center bg-white">
-      {/* Balon 3D */}
-      <div className="absolute top-0 w-full h-[300px] z-0 pointer-events-none">
-        <Canvas camera={{ fov: 45, near: 0.1, far: 1000, position: [0, 0, 5] }}>
-          <Suspense fallback={<Loader />}>
-            <ambientLight intensity={0.7} />
-            <directionalLight position={[1, 2, 1]} intensity={3} />
-            <ChemistryBaloon
-              isTyping={isTyping}
-              uploadSuccess={uploadSuccess}
-              position={[0, -0.5, 0]}
-              scale={[0.65, 0.65, 0.65]}
-            />
-          </Suspense>
-        </Canvas>
-      </div>
-
-      {/* Formular */}
-      <div className="relative z-10 w-full max-w-md mt-48">
-        <div
-          className="p-8 rounded-xl border-2 border-mulberry shadow-[6px_6px_0px_#DA70D6] 
-                    bg-gradient-to-br from-[#fdf4ff] via-[#fef6fb] to-[#fef2ff]"
-        >
-          <h2 className="text-2xl font-bold mb-6 text-mulberry font-poppins">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#fdf4ff] via-[#f3e8ff] to-[#fff7ed] space-y-10 pt-10">
+      <div className="relative w-full max-w-md mt-12 z-10">
+        <div className="p-8 rounded-2xl border-2 border-mulberry shadow-[6px_6px_0px_#DA70D6] bg-white/90">
+          <h2 className="text-2xl font-bold mb-6 text-mulberry font-poppins text-center">
             Adaugă o moleculă
           </h2>
-
           {error && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
               {error}
             </div>
           )}
-
           {message && (
             <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4">
               {message}
             </div>
           )}
-
           <form onSubmit={handleSubmit} className="space-y-4 font-worksans">
             <div className="flex gap-4 text-sm text-black">
               <label className="flex items-center gap-2">
@@ -141,7 +111,6 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
                 Paste mol text
               </label>
             </div>
-
             <input
               type="text"
               name="name"
@@ -150,7 +119,6 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
               value={formData.name}
               onChange={handleChange}
             />
-
             <input
               type="text"
               name="formula"
@@ -159,7 +127,6 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
               value={formData.formula}
               onChange={handleChange}
             />
-
             <textarea
               name="description"
               placeholder="Descriere"
@@ -168,7 +135,6 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
               value={formData.description}
               onChange={handleChange}
             />
-
             {uploadMode === "file" ? (
               <div>
                 <input
@@ -193,15 +159,29 @@ const ChemistryAddForm = ({ onCreateSuccess, onError }) => {
                 onChange={handleChange}
               />
             )}
-
             <button
               type="submit"
-              className="w-full py-2 mt-4 bg-mulberry text-white font-semibold 
-                        rounded-md hover:bg-[#2C0E37] transition"
+              className="w-full py-2 mt-4 bg-mulberry text-white font-semibold rounded-md hover:bg-[#2C0E37] transition"
             >
               Încarcă molecula
             </button>
           </form>
+        </div>
+      </div>
+      <div className="w-full max-w-md flex justify-center mt-2">
+        <div className="w-full h-[300px]">
+          <Canvas camera={{ fov: 45, near: 0.1, far: 1000, position: [0, 0, 5] }}>
+            <Suspense fallback={<Loader />}>
+              <ambientLight intensity={0.7} />
+              <directionalLight position={[1, 2, 1]} intensity={3} />
+              <ChemistryBaloon
+                isTyping={isTyping}
+                uploadSuccess={uploadSuccess}
+                position={[0, -1.5, 0]}
+                scale={[0.65, 0.65, 0.65]}
+              />
+            </Suspense>
+          </Canvas>
         </div>
       </div>
     </div>

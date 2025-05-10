@@ -72,6 +72,26 @@ export default function Chemistry() {
     setMessage("");
   }
 
+  async function handleDeleteMol(id) {
+    if (!window.confirm("Sigur vrei să ștergi această moleculă?")) return;
+    try {
+      setError("");
+      setMessage("");
+      const res = await fetch(`http://localhost:8000/feed/chem/molecules/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error(await res.text());
+      setMessage("Molecula a fost ștearsă cu succes.");
+      if (selectedMol?.id === id) {
+        setSelectedMol(null);
+        setViewMode("landing");
+      }
+      fetchMolecules();
+    } catch (err) {
+      setError("Eroare la ștergere: " + err.message);
+    }
+  }
+
   return (
     <div className="flex mt-12">
       <aside
@@ -95,17 +115,25 @@ export default function Chemistry() {
 
           <ul className="space-y-3">
             {molecules.map((mol) => (
-              <button
-                key={mol.id}
-                onClick={() => handleSelectMol(mol)}
-                className={`w-full text-left px-4 py-2 rounded-md transition-all flex items-center gap-2 shadow-sm border ${
-                  selectedMol?.id === mol.id && viewMode === "detail"
-                    ? "bg-purple-600 text-white border-purple-700"
-                    : "bg-white border-transparent hover:bg-purple-100 hover:border-purple-300"
-                }`}
-              >
-                <span>{mol.metadata.name}</span>
-              </button>
+              <li key={mol.id} className="flex items-center gap-2">
+                <button
+                  onClick={() => handleSelectMol(mol)}
+                  className={`flex-1 text-left px-4 py-2 rounded-md transition-all flex items-center gap-2 shadow-sm border ${
+                    selectedMol?.id === mol.id && viewMode === "detail"
+                      ? "bg-purple-600 text-white border-purple-700"
+                      : "bg-white border-transparent hover:bg-purple-100 hover:border-purple-300"
+                  }`}
+                >
+                  <span>{mol.metadata.name}</span>
+                </button>
+                <button
+                  onClick={() => handleDeleteMol(mol.id)}
+                  className="text-red-500 hover:text-red-700 px-2 py-1 rounded transition"
+                  title="Șterge molecula"
+                >
+                  🗑
+                </button>
+              </li>
             ))}
           </ul>
         </div>
