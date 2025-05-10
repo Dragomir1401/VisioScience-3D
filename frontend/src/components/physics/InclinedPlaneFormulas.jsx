@@ -9,7 +9,7 @@ const InclinedPlaneFormulas = () => {
     const fetchFormulas = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:8000/feed/shape/inclined_plane");
+        const res = await fetch("http://localhost:8000/feed/shape/plan_inclinat");
         if (!res.ok) throw new Error(await res.text());
         const data = await res.json();
         setFormulas(Array.isArray(data) ? data : []);

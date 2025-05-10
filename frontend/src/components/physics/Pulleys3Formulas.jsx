@@ -9,7 +9,7 @@ const Pulleys3Formulas = () => {
     const fetchFormulas = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:8000/feed/shape/pulley_system3");
+        const res = await fetch("http://localhost:8000/feed/shape/scripeti_compusi");
         if (!res.ok) throw new Error(await res.text());
         const data = await res.json();
         setFormulas(Array.isArray(data) ? data : []);

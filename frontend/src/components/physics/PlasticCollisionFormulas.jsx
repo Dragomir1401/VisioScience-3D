@@ -9,7 +9,7 @@ const PlasticCollisionFormulas = () => {
     const fetchFormulas = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:8000/feed/shape/plastic_collision");
+        const res = await fetch("http://localhost:8000/feed/shape/coliziune_plastica");
         if (!res.ok) throw new Error(await res.text());
         const data = await res.json();
         setFormulas(Array.isArray(data) ? data : []);

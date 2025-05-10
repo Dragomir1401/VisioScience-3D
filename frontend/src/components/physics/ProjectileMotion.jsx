@@ -9,7 +9,7 @@ const ProjectileMotionFormulas = () => {
     const fetchFormulas = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:8000/feed/shape/projectile_motion");
+        const res = await fetch("http://localhost:8000/feed/shape/miscare_proiectil");
         if (!res.ok) throw new Error(await res.text());
         const data = await res.json();
         setFormulas(Array.isArray(data) ? data : []);

@@ -9,7 +9,7 @@ const SpringFormulas = () => {
     const fetchFormulas = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:8000/feed/shape/spring");
+        const res = await fetch("http://localhost:8000/feed/shape/resort");
         if (!res.ok) throw new Error(await res.text());
         const data = await res.json();
         setFormulas(Array.isArray(data) ? data : []);

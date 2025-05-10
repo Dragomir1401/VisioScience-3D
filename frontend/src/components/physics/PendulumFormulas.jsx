@@ -9,7 +9,7 @@ const PendulumFormulas = () => {
     const fetchFormulas = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:8000/feed/shape/pendulum");
+        const res = await fetch("http://localhost:8000/feed/shape/pendul");
         if (!res.ok) throw new Error(await res.text());
         const data = await res.json();
         setFormulas(Array.isArray(data) ? data : []);

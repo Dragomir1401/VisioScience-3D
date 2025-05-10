@@ -11,6 +11,16 @@ import ProjectileScene from "../models/physics/ProjectileScene";
 import FreeFallScene from "../models/physics/FreeFallScene";
 import ElasticCollisionScene from "../models/physics/ElasticCollisionScene";
 import PlasticCollisionScene from "../models/physics/PlasticCollisionScene";
+import InclinedPlaneFormulas from "../components/physics/InclinedPlaneFormulas";
+import Pulleys2Formulas from "../components/physics/Pulleys2Formulas";
+import Pulleys3Formulas from "../components/physics/Pulleys3Formulas";
+import PendulumFormulas from "../components/physics/PendulumFormulas";
+import SpringFormulas from "../components/physics/SpringFormulas";
+import CircularMotionFormulas from "../components/physics/CircularMotionFormulas";
+import ProjectileMotionFormulas from "../components/physics/ProjectileMotion";
+import FreeFallFormulas from "../components/physics/FreeFallFormulas";
+import ElasticCollisionFormulas from "../components/physics/ElasticCollisionFormulas";
+import PlasticCollisionFormulas from "../components/physics/PlasticCollisionFormulas";
 import {
   inclinedPlane,
   pulley2,
@@ -84,6 +94,7 @@ const Physics = () => {
                 className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
               />
             </div>
+            <InclinedPlaneFormulas />
           </div>
         )}
         {selectedObject && selectedObject.id === "pulley_system2" && (
@@ -106,6 +117,7 @@ const Physics = () => {
                 className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
               />
             </div>
+            <Pulleys2Formulas />
           </>
         )}
         {selectedObject && selectedObject.id === "pulley_system3" && (
@@ -128,6 +140,7 @@ const Physics = () => {
                 className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
               />
             </div>
+            <Pulleys3Formulas />
           </>
         )}
         {selectedObject && selectedObject.id === "pendulum" && (
@@ -150,6 +163,7 @@ const Physics = () => {
                 className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
               />
             </div>
+            <PendulumFormulas />
           </>
         )}
         {selectedObject?.id === "spring" && (
@@ -171,11 +185,12 @@ const Physics = () => {
                 className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
               />
             </div>
+            <SpringFormulas />
           </>
         )}
         {selectedObject?.id === "circular_motion" && (
           <>
-            <div className="h-[500px] w-full …">
+            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
               <CircularMotionScene speed={sliderValue} />
             </div>
             <div className="flex items-center gap-4 mt-4">
@@ -192,6 +207,7 @@ const Physics = () => {
                 className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
               />
             </div>
+            <CircularMotionFormulas />
           </>
         )}
         {selectedObject?.id === "projectile_motion" && (
@@ -211,6 +227,7 @@ const Physics = () => {
                 className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
               />
             </div>
+            <ProjectileMotionFormulas />
           </>
         )}
         {selectedObject?.id === "free_fall" && (
@@ -230,24 +247,24 @@ const Physics = () => {
                 className="w-full max-w-lg accent-purple-600 bg-purple-200/40 h-2 rounded appearance-none"
               />
             </div>
+            <FreeFallFormulas />
           </>
         )}
         {selectedObject?.id === "elastic_collision" && (
-          <div
-            className="h-[500px] w-full rounded-xl overflow-hidden
-                  border-2 border-mulberry bg-white shadow-md"
-          >
-            <ElasticCollisionScene />
-          </div>
+          <>
+            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
+              <ElasticCollisionScene />
+            </div>
+            <ElasticCollisionFormulas />
+          </>
         )}
-
         {selectedObject?.id === "plastic_collision" && (
-          <div
-            className="h-[500px] w-full rounded-xl overflow-hidden
-                  border-2 border-mulberry bg-white shadow-md"
-          >
-            <PlasticCollisionScene />
-          </div>
+          <>
+            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
+              <PlasticCollisionScene />
+            </div>
+            <PlasticCollisionFormulas />
+          </>
         )}
       </main>
     </div>

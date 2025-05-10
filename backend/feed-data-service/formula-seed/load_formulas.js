@@ -3,7 +3,13 @@ const fs = require('fs');
 const path = require('path');
 
 const FILES = [
-  'pyramid.json',
+  'physics/pulleys_2.json',
+  'physics/pulleys_3.json',
+  'physics/pendulum.json',
+  'physics/spring.json',
+  'physics/circular_motion.json',
+  'physics/projectile.json',
+  'physics/free_fall.json',
 ];
 
 const BASE = path.join(__dirname);
