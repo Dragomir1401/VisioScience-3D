@@ -1,0 +1,62 @@
+[
+  {
+    "formula": {
+      "shape": "cilinder",
+      "name": "Volum",
+      "expr": "V = π × r² × h"
+    },
+    "metadata": {
+      "name": "volum_cilinder"
+    }
+  },
+  {
+    "formula": {
+      "shape": "cilinder",
+      "name": "Arie totală",
+      "expr": "A = 2 × π × r × (r + h)"
+    },
+    "metadata": {
+      "name": "arie_totala_cilinder"
+    }
+  },
+  {
+    "formula": {
+      "shape": "cilinder",
+      "name": "Arie laterală",
+      "expr": "A_laterală = 2 × π × r × h"
+    },
+    "metadata": {
+      "name": "arie_laterala_cilinder"
+    }
+  },
+  {
+    "formula": {
+      "shape": "cilinder",
+      "name": "Aria bazei",
+      "expr": "A_bază = π × r²"
+    },
+    "metadata": {
+      "name": "arie_baza_cilinder"
+    }
+  },
+  {
+    "formula": {
+      "shape": "cilinder",
+      "name": "Diagonala bazei",
+      "expr": "d = 2 × r"
+    },
+    "metadata": {
+      "name": "diagonala_bazei_cilinder"
+    }
+  },
+  {
+    "formula": {
+      "shape": "cilinder",
+      "name": "Diagonala cilindrului",
+      "expr": "d = √(h² + (2 × r)²)"
+    },
+    "metadata": {
+      "name": "diagonala_cilindrului"
+    }
+  }
+] 

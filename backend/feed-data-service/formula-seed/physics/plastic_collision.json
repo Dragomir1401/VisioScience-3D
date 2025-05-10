@@ -1,0 +1,53 @@
+[
+    {
+      "formula": {
+        "shape": "coliziune_plastica",
+        "name": "Conservarea momentului",
+        "expr": "m₁·v₁ + m₂·v₂ = (m₁ + m₂)·v′"
+      },
+      "metadata": {
+        "name": "conservare_moment_coliziune_plastica"
+      }
+    },
+    {
+      "formula": {
+        "shape": "coliziune_plastica",
+        "name": "Viteza comună finală",
+        "expr": "v′ = (m₁·v₁ + m₂·v₂) / (m₁ + m₂)"
+      },
+      "metadata": {
+        "name": "viteza_finala_comuna_coliziune_plastica"
+      }
+    },
+    {
+      "formula": {
+        "shape": "coliziune_plastica",
+        "name": "Energie cinetică inițială",
+        "expr": "Kᵢ = ½·m₁·v₁² + ½·m₂·v₂²"
+      },
+      "metadata": {
+        "name": "energie_initiala_coliziune_plastica"
+      }
+    },
+    {
+      "formula": {
+        "shape": "coliziune_plastica",
+        "name": "Energie cinetică finală",
+        "expr": "K_f = ½·(m₁ + m₂)·v′²"
+      },
+      "metadata": {
+        "name": "energie_finala_coliziune_plastica"
+      }
+    },
+    {
+      "formula": {
+        "shape": "coliziune_plastica",
+        "name": "Energie disipată",
+        "expr": "ΔK = Kᵢ − K_f"
+      },
+      "metadata": {
+        "name": "energie_disipata_coliziune_plastica"
+      }
+    }
+]
+  

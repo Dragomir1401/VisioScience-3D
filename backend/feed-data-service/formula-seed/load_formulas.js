@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const FILES = [
-  'cone.json',
+  'pyramid.json',
 ];
 
 const BASE = path.join(__dirname);

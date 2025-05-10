@@ -1,0 +1,53 @@
+[
+    {
+      "formula": {
+        "shape": "resort",
+        "name": "Forța elastică (Legea lui Hooke)",
+        "expr": "F = −k · Δx"
+      },
+      "metadata": {
+        "name": "forta_hooke_resort"
+      }
+    },
+    {
+      "formula": {
+        "shape": "resort",
+        "name": "Modulul elastic al forței",
+        "expr": "F = k · Δx"
+      },
+      "metadata": {
+        "name": "modul_elastic_resort"
+      }
+    },
+    {
+      "formula": {
+        "shape": "resort",
+        "name": "Energia potențială elastică",
+        "expr": "U = ½ · k · (Δx)²"
+      },
+      "metadata": {
+        "name": "energia_potentiala_resort"
+      }
+    },
+    {
+      "formula": {
+        "shape": "resort",
+        "name": "Frecvența unghiulară a oscilațiilor",
+        "expr": "ω = √(k / m)"
+      },
+      "metadata": {
+        "name": "frecventa_unghiulara_resort"
+      }
+    },
+    {
+      "formula": {
+        "shape": "resort",
+        "name": "Perioada oscilațiilor mici",
+        "expr": "T = 2·π·√(m / k)"
+      },
+      "metadata": {
+        "name": "perioada_oscilatii_resort"
+      }
+    }
+]
+  

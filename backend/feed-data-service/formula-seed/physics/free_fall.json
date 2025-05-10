@@ -1,0 +1,53 @@
+[
+    {
+      "formula": {
+        "shape": "cadere_libera",
+        "name": "Accelerația corpului",
+        "expr": "a = g"
+      },
+      "metadata": {
+        "name": "acceleratie_cadere_libera"
+      }
+    },
+    {
+      "formula": {
+        "shape": "cadere_libera",
+        "name": "Viteza după un timp t",
+        "expr": "v = g · t"
+      },
+      "metadata": {
+        "name": "viteza_cadere_libera"
+      }
+    },
+    {
+      "formula": {
+        "shape": "cadere_libera",
+        "name": "Distanța parcursă după un timp t",
+        "expr": "s = ½ · g · t²"
+      },
+      "metadata": {
+        "name": "distanta_cadere_libera"
+      }
+    },
+    {
+      "formula": {
+        "shape": "cadere_libera",
+        "name": "Timpul de cădere de la înălțimea h",
+        "expr": "t = √(2 · h / g)"
+      },
+      "metadata": {
+        "name": "timp_cadere_libera"
+      }
+    },
+    {
+      "formula": {
+        "shape": "cadere_libera",
+        "name": "Viteza în funcție de înălțime h",
+        "expr": "v = √(2 · g · h)"
+      },
+      "metadata": {
+        "name": "viteza_din_inaltime_cadere_libera"
+      }
+    }
+]
+  

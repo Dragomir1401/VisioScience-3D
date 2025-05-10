@@ -1,54 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const ParallelepipedFormulas = () => {
+  const [formulas, setFormulas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchFormulas = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch("http://localhost:8000/feed/shape/paralelipiped");
+        if (!res.ok) throw new Error(await res.text());
+        const data = await res.json();
+        setFormulas(Array.isArray(data) ? data : []);
+      } catch (e) {
+        setError("Eroare la încărcarea formulelor pentru paralelipiped.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFormulas();
+  }, []);
+
   return (
     <div className="bg-white border border-purple-300 p-6 rounded-lg shadow-md mt-6 space-y-4 text-purple-800">
       <h2 className="text-xl font-semibold border-b border-purple-300 pb-2">
         Formule pentru <span className="text-purple-700">Paralelipiped</span>
       </h2>
-
-      <ul className="list-disc list-inside space-y-2">
-        <li>
-          <span className="font-bold">Volum:</span> V = L × l × h
-        </li>
-        <li>
-          <span className="font-bold">Arie totală:</span> A = 2 × (L × l + L × h
-          + l × h)
-        </li>
-        <li>
-          <span className="font-bold">Diagonală spațială:</span> d = √(L² + l² +
-          h²)
-        </li>
-        <li>
-          <span className="font-bold">Diagonalele fețelor:</span> d<sub>1</sub>{" "}
-          = √(L² + l²), d<sub>2</sub> = √(L² + h²), d<sub>3</sub> = √(l² + h²)
-        </li>
-        <li>
-          <span className="font-bold">Aria feței laterale:</span> A = L × h
-        </li>
-        <li>
-          <span className="font-bold">Aria feței de jos:</span> A = L × l
-        </li>
-        <li>
-          <span className="font-bold">Aria feței de sus:</span> A = l × h
-        </li>
-        <li>
-          <span className="font-bold">Aria celor 4 fețe laterale:</span> A = 2 ×
-          h × (L + l)
-        </li>
-        <li>
-          <span className="font-bold">Perimetrul bazelor:</span> P = 2 × (L + l)
-        </li>
-        <li>
-          <span className="font-bold">Raza sferei înscrisă:</span> r = V / (2 ×
-          (L + l + h))
-        </li>
-      </ul>
-
+      {loading ? (
+        <p className="text-gray-500">Se încarcă formulele…</p>
+      ) : error ? (
+        <p className="text-red-600">{error}</p>
+      ) : (
+        <ul className="list-disc list-inside space-y-2">
+          {formulas.length === 0 ? (
+            <li className="italic text-gray-500">Nu există formule pentru paralelipiped.</li>
+          ) : (
+            formulas.map((f) => (
+              <li key={f._id}>
+                <span className="font-bold">{f.formula.name}:</span> {f.formula.expr}
+              </li>
+            ))
+          )}
+        </ul>
+      )}
       <p className="text-sm italic text-purple-700">
-        Unde <span className="font-bold">l</span> este lungimea,{" "}
-        <span className="font-bold">L</span> este lățimea și{" "}
-        <span className="font-bold">h</span> este înălțimea paralelipipedului.
+        Unde <span className="font-bold">a</span>, <span className="font-bold">b</span> și <span className="font-bold">c</span> sunt dimensiunile paralelipipedului.
       </p>
     </div>
   );

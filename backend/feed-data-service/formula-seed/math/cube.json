@@ -1,0 +1,32 @@
+[
+  {
+    "formula": {
+      "shape": "cube",
+      "name": "Volum",
+      "expr": "V = a³"
+    },
+    "metadata": {
+      "name": "volum_cube"
+    }
+  },
+  {
+    "formula": {
+      "shape": "cube",
+      "name": "Arie totală",
+      "expr": "A = 6 × a²"
+    },
+    "metadata": {
+      "name": "arie_totala_cube"
+    }
+  },
+  {
+    "formula": {
+      "shape": "cube",
+      "name": "Diagonala spațială",
+      "expr": "d = a × √3"
+    },
+    "metadata": {
+      "name": "diagonala_spatiala_cube"
+    }
+  }
+] 

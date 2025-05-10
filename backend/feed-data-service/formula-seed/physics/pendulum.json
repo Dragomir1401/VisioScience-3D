@@ -1,0 +1,53 @@
+[
+    {
+      "formula": {
+        "shape": "pendul",
+        "name": "Componenta tangentială a forței gravitaționale",
+        "expr": "F_t = -m·g·sin(θ)"
+      },
+      "metadata": {
+        "name": "comp_tangentiala_pendul"
+      }
+    },
+    {
+      "formula": {
+        "shape": "pendul",
+        "name": "Componenta radială a forței gravitaționale",
+        "expr": "F_r = m·g·cos(θ)"
+      },
+      "metadata": {
+        "name": "comp_radiala_pendul"
+      }
+    },
+    {
+      "formula": {
+        "shape": "pendul",
+        "name": "Forța centripetală necesară",
+        "expr": "F_c = m·v² / L"
+      },
+      "metadata": {
+        "name": "forta_centripetala_pendul"
+      }
+    },
+    {
+      "formula": {
+        "shape": "pendul",
+        "name": "Tensiunea în fir",
+        "expr": "T = m·g·cos(θ) + m·v² / L"
+      },
+      "metadata": {
+        "name": "tensiune_pendul"
+      }
+    },
+    {
+      "formula": {
+        "shape": "pendul",
+        "name": "Perioada oscilațiilor mici",
+        "expr": "T = 2·π·√(L / g)"
+      },
+      "metadata": {
+        "name": "perioada_pendul"
+      }
+    }
+]
+  

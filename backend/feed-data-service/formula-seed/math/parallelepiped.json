@@ -1,0 +1,112 @@
+[
+  {
+    "formula": {
+      "shape": "paralelipiped",
+      "name": "Volum",
+      "expr": "V = a × b × c"
+    },
+    "metadata": {
+      "name": "volum_paralelipiped"
+    }
+  },
+  {
+    "formula": {
+      "shape": "paralelipiped",
+      "name": "Arie totală",
+      "expr": "A = 2 × (a × b + a × c + b × c)"
+    },
+    "metadata": {
+      "name": "arie_totala_paralelipiped"
+    }
+  },
+  {
+    "formula": {
+      "shape": "paralelipiped",
+      "name": "Diagonala spațială",
+      "expr": "d = √(L² + l² + h²)"
+    },
+    "metadata": {
+      "name": "diagonala_spatiala_paralelipiped"
+    }
+  },
+  {
+    "formula": {
+      "shape": "paralelipiped",
+      "name": "Diagonalele fețelor",
+      "expr": "d1 = √(L² + l²), d2 = √(L² + h²), d3 = √(l² + h²)"
+    },
+    "metadata": {
+      "name": "diagonalele_fetelor_paralelipiped"
+    }
+  },
+  {
+    "formula": {
+      "shape": "paralelipiped",
+      "name": "Aria feței laterale",
+      "expr": "A = L × h"
+    },
+    "metadata": {
+      "name": "arie_feței_laterale_paralelipiped"
+    }
+  },
+  {
+    "formula": {
+      "shape": "paralelipiped",
+      "name": "Aria feței de jos",
+      "expr": "A = L × l"
+    },
+    "metadata": {
+      "name": "arie_feței_de_jos_paralelipiped"
+    }
+  },
+  {
+    "formula": {
+      "shape": "paralelipiped",
+      "name": "Aria feței de sus",
+      "expr": "A = l × h"
+    },
+    "metadata": {
+      "name": "arie_feței_de_sus_paralelipiped"
+    }
+  },
+  {
+    "formula": {
+      "shape": "paralelipiped",
+      "name": "Aria celor 4 fețe laterale",
+      "expr": "A = 2 × h × (L + l)"
+    },
+    "metadata": {
+      "name": "arie_celor_4_fețe_laterale_paralelipiped"
+    }
+  },
+  {
+    "formula": {
+      "shape": "paralelipiped",
+      "name": "Perimetrul bazelor",
+      "expr": "P = 2 × (L + l)"
+    },
+    "metadata": {
+      "name": "perimetrul_bazelor_paralelipiped"
+    }
+  },
+  {
+    "formula": {
+      "shape": "paralelipiped",
+      "name": "Raza sferei înscrisă",
+      "expr": "r = V / (2 × (L + l + h))"
+    },
+    "metadata": {
+      "name": "raza_sferei_inscrise_paralelipiped"
+    }
+  },
+  {
+    "formula": {
+      "shape": "paralelipiped",
+      "name": "Raza sferei circumscrise",
+      "expr": "R = √((L/2)² + (l/2)² + (h/2)²)"
+    },
+    "metadata": {
+      "name": "raza_sferei_circumscrise_paralelipiped"
+    }
+  }
+] 

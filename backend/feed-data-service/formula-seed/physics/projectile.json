@@ -1,0 +1,73 @@
+[
+    {
+      "formula": {
+        "shape": "miscare_proiectil",
+        "name": "Componenta orizontală a vitezei",
+        "expr": "vₓ = v₀ · cos(θ)"
+      },
+      "metadata": {
+        "name": "viteza_orizontala_proiectil"
+      }
+    },
+    {
+      "formula": {
+        "shape": "miscare_proiectil",
+        "name": "Componenta verticală a vitezei",
+        "expr": "vᵧ = v₀ · sin(θ) − g · t"
+      },
+      "metadata": {
+        "name": "viteza_verticala_proiectil"
+      }
+    },
+    {
+      "formula": {
+        "shape": "miscare_proiectil",
+        "name": "Poziția orizontală",
+        "expr": "x(t) = v₀ · cos(θ) · t"
+      },
+      "metadata": {
+        "name": "pozitie_orizontala_proiectil"
+      }
+    },
+    {
+      "formula": {
+        "shape": "miscare_proiectil",
+        "name": "Poziția verticală",
+        "expr": "y(t) = v₀ · sin(θ) · t − ½ · g · t²"
+      },
+      "metadata": {
+        "name": "pozitie_verticala_proiectil"
+      }
+    },
+    {
+      "formula": {
+        "shape": "miscare_proiectil",
+        "name": "Timpul de zbor",
+        "expr": "T = 2 · v₀ · sin(θ) / g"
+      },
+      "metadata": {
+        "name": "timp_zbor_proiectil"
+      }
+    },
+    {
+      "formula": {
+        "shape": "miscare_proiectil",
+        "name": "Înălțimea maximă",
+        "expr": "H = v₀² · sin²(θ) / (2 · g)"
+      },
+      "metadata": {
+        "name": "inaltime_maxima_proiectil"
+      }
+    },
+    {
+      "formula": {
+        "shape": "miscare_proiectil",
+        "name": "Distanța totală (ranja)",
+        "expr": "R = v₀² · sin(2·θ) / g"
+      },
+      "metadata": {
+        "name": "distanta_proiectil"
+      }
+    }
+]
+  

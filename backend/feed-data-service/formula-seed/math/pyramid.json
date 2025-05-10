@@ -1,0 +1,82 @@
+[
+    {
+        "formula": {
+        "shape": "pyramid",
+        "name": "Volum",
+        "expr": "V = 1/3 × Ab × h"
+        },
+        "metadata": {
+        "name": "volum_pyramid"
+        }
+    },
+    {
+        "formula": {
+        "shape": "pyramid",
+        "name": "Arie totală",
+        "expr": "A = Ab + Al"
+        },
+        "metadata": {
+        "name": "arie_totala_pyramid"
+        }
+    },
+    {
+        "formula": {
+        "shape": "pyramid",
+        "name": "Arie laterală",
+        "expr": "Al = (perimetrul bazei × apotema) / 2"
+        },
+        "metadata": {
+        "name": "arie_laterala_pyramid"
+        }
+    },
+    {
+        "formula": {
+        "shape": "pyramid",
+        "name": "Aria bazei",
+        "expr": "Ab = L × l"
+        },
+        "metadata": {
+        "name": "arie_bazei_pyramid"
+        }
+    },
+    {
+        "formula": {
+        "shape": "pyramid",
+        "name": "Aria laterală",
+        "expr": "Al = (perimetrul bazei × apotema) / 2"
+        },
+        "metadata": {
+        "name": "arie_laterala_pyramid"
+        }
+    },
+    {
+        "formula": {
+        "shape": "pyramid",
+        "name": "Perimetrul bazei",
+        "expr": "P = 2 × (L + l)"
+        },
+        "metadata": {
+        "name": "perimetrul_bazei_pyramid"
+        }
+    },
+    {
+    "formula": {
+        "shape": "pyramid",
+        "name": "Inaltimea piramidei",
+        "expr": "h = √(a² - (L/2)² - (l/2)²)"
+    },
+    "metadata": {
+        "name": "inaltimea_piramidei"
+    }
+    },
+    {
+        "formula": {
+        "shape": "pyramid",
+        "name": "Inaltimea",
+        "expr": "h = √(a² - (L/2)² - (l/2)²)"
+        },
+        "metadata": {
+        "name": "inaltimea_pyramid"
+        }
+    }
+] 

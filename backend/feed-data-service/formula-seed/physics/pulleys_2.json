@@ -1,0 +1,43 @@
+[
+    {
+      "formula": {
+        "shape": "scripeti",
+        "name": "Accelerația sistemului",
+        "expr": "a = (m₂ - m₁) · g / (m₁ + m₂)"
+      },
+      "metadata": {
+        "name": "acceleratie_scripeti"
+      }
+    },
+    {
+      "formula": {
+        "shape": "scripeti",
+        "name": "Tensiunea corzii",
+        "expr": "T = 2 · m₁ · m₂ · g / (m₁ + m₂)"
+      },
+      "metadata": {
+        "name": "tensiune_scripeti"
+      }
+    },
+    {
+      "formula": {
+        "shape": "scripeti",
+        "name": "Forța netă asupra corpului m₁",
+        "expr": "F_net₁ = T - m₁ · g = m₁ · a"
+      },
+      "metadata": {
+        "name": "forta_neta_corp1_scripeti"
+      }
+    },
+    {
+      "formula": {
+        "shape": "scripeti",
+        "name": "Forța netă asupra corpului m₂",
+        "expr": "F_net₂ = m₂ · g - T = m₂ · a"
+      },
+      "metadata": {
+        "name": "forta_neta_corp2_scripeti"
+      }
+    }
+]
+  

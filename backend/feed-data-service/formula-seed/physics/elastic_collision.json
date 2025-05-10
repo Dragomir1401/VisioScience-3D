@@ -1,0 +1,53 @@
+[
+    {
+      "formula": {
+        "shape": "coliziune_elastica",
+        "name": "Conservarea momentului",
+        "expr": "m₁·v₁ + m₂·v₂ = m₁·v₁' + m₂·v₂'"
+      },
+      "metadata": {
+        "name": "conservare_moment_coliziune_elastica"
+      }
+    },
+    {
+      "formula": {
+        "shape": "coliziune_elastica",
+        "name": "Conservarea energiei cinetice",
+        "expr": "½·m₁·v₁² + ½·m₂·v₂² = ½·m₁·v₁'² + ½·m₂·v₂'²"
+      },
+      "metadata": {
+        "name": "conservare_energie_coliziune_elastica"
+      }
+    },
+    {
+      "formula": {
+        "shape": "coliziune_elastica",
+        "name": "Viteza finală a corpului m₁",
+        "expr": "v₁' = ( (m₁ - m₂)/(m₁ + m₂) )·v₁ + ( 2·m₂/(m₁ + m₂) )·v₂"
+      },
+      "metadata": {
+        "name": "viteza_finala_m1_coliziune_elastica"
+      }
+    },
+    {
+      "formula": {
+        "shape": "coliziune_elastica",
+        "name": "Viteza finală a corpului m₂",
+        "expr": "v₂' = ( 2·m₁/(m₁ + m₂) )·v₁ + ( (m₂ - m₁)/(m₁ + m₂) )·v₂"
+      },
+      "metadata": {
+        "name": "viteza_finala_m2_coliziune_elastica"
+      }
+    },
+    {
+      "formula": {
+        "shape": "coliziune_elastica",
+        "name": "Viteză relativă reversată",
+        "expr": "v₂' - v₁' = −(v₂ - v₁)"
+      },
+      "metadata": {
+        "name": "viteza_relativa_reversata_coliziune_elastica"
+      }
+    }
+]
+  

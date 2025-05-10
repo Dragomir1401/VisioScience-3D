@@ -1,0 +1,53 @@
+[
+    {
+        "formula": {
+        "shape": "plan_inclinat",
+        "name": "Componenta paralelă a greutății",
+        "expr": "F_∥ = m · g · sin(θ)"
+        },
+        "metadata": {
+        "name": "componenta_paralela_greutate_plan_inclinat"
+        }
+    },
+    {
+        "formula": {
+        "shape": "plan_inclinat",
+        "name": "Forța normală",
+        "expr": "F_N = m · g · cos(θ)"
+        },
+        "metadata": {
+        "name": "forta_normala_plan_inclinat"
+        }
+    },
+    {
+        "formula": {
+        "shape": "plan_inclinat",
+        "name": "Forța de frecare",
+        "expr": "F_f = μ · F_N = μ · m · g · cos(θ)"
+        },
+        "metadata": {
+        "name": "forta_friciune_plan_inclinat"
+        }
+    },
+    {
+        "formula": {
+        "shape": "plan_inclinat",
+        "name": "Forța netă",
+        "expr": "F_net = m · g · sin(θ) − μ · m · g · cos(θ)"
+        },
+        "metadata": {
+        "name": "forta_neta_plan_inclinat"
+        }
+    },
+    {
+        "formula": {
+        "shape": "plan_inclinat",
+        "name": "Accelerația pe plan",
+        "expr": "a = g · (sin(θ) − μ · cos(θ))"
+        },
+        "metadata": {
+        "name": "acceleratie_plan_inclinat"
+        }
+    }
+]
+   

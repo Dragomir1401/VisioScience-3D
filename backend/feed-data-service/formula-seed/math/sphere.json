@@ -1,0 +1,32 @@
+[
+  {
+    "formula": {
+      "shape": "sphere",
+      "name": "Volum",
+      "expr": "V = 4/3 × π × r³"
+    },
+    "metadata": {
+      "name": "volum_sphere"
+    }
+  },
+  {
+    "formula": {
+      "shape": "sphere",
+      "name": "Arie totală",
+      "expr": "A = 4 × π × r²"
+    },
+    "metadata": {
+      "name": "arie_totala_sphere"
+    }
+  },
+  {
+    "formula": {
+      "shape": "sphere",
+      "name": "Diametru",
+      "expr": "d = 2 × r"
+    },
+    "metadata": {
+      "name": "diametru_sphere"
+    }
+  }
+] 

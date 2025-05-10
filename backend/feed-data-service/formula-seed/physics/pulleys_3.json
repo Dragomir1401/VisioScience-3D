@@ -1,0 +1,53 @@
+[
+    {
+      "formula": {
+        "shape": "scripeti_compusi",
+        "name": "Echilibru al blocului mobil",
+        "expr": "2·T₁ = T₂"
+      },
+      "metadata": {
+        "name": "echilibru_bloc_mobil_scripeti_compusi"
+      }
+    },
+    {
+      "formula": {
+        "shape": "scripeti_compusi",
+        "name": "Tensiunea în segmentele superioare (T₁)",
+        "expr": "T₁ = Fₐ"
+      },
+      "metadata": {
+        "name": "tensiune_superioara_scripeti_compusi"
+      }
+    },
+    {
+      "formula": {
+        "shape": "scripeti_compusi",
+        "name": "Tensiunea în segmentul inferior (T₂)",
+        "expr": "T₂ = m·g"
+      },
+      "metadata": {
+        "name": "tensiune_inferioara_scripeti_compusi"
+      }
+    },
+    {
+      "formula": {
+        "shape": "scripeti_compusi",
+        "name": "Forța aplicată",
+        "expr": "Fₐ = T₁ = m·g / 2"
+      },
+      "metadata": {
+        "name": "forta_aplicata_scripeti_compusi"
+      }
+    },
+    {
+      "formula": {
+        "shape": "scripeti_compusi",
+        "name": "Avantaj mecanic",
+        "expr": "n = 2"
+      },
+      "metadata": {
+        "name": "avantaj_mecanic_scripeti_compusi"
+      }
+    }
+]
+  

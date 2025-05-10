@@ -1,0 +1,53 @@
+[
+    {
+      "formula": {
+        "shape": "miscare_circulara",
+        "name": "Forța centripetă",
+        "expr": "F_c = m · v² / r"
+      },
+      "metadata": {
+        "name": "forta_centripeta"
+      }
+    },
+    {
+      "formula": {
+        "shape": "miscare_circulara",
+        "name": "Accelerația centripetă",
+        "expr": "a_c = v² / r = ω² · r"
+      },
+      "metadata": {
+        "name": "acceleratia_centripeta"
+      }
+    },
+    {
+      "formula": {
+        "shape": "miscare_circulara",
+        "name": "Viteza unghiulară",
+        "expr": "ω = v / r"
+      },
+      "metadata": {
+        "name": "viteza_unghiulara"
+      }
+    },
+    {
+      "formula": {
+        "shape": "miscare_circulara",
+        "name": "Viteza tangentială",
+        "expr": "v = ω · r"
+      },
+      "metadata": {
+        "name": "viteza_tangentiala"
+      }
+    },
+    {
+      "formula": {
+        "shape": "miscare_circulara",
+        "name": "Perioada și frecvența",
+        "expr": "T = 2·π / ω , f = 1 / T = ω / (2·π)"
+      },
+      "metadata": {
+        "name": "perioada_frecventa"
+      }
+    }
+]
+  
