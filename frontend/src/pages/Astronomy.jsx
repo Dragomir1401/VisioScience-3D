@@ -10,6 +10,15 @@ import ThreeSaturnScene from "../models/astronomy/SaturnScene";
 import ThreeUranusScene from "../models/astronomy/UranusScene";
 import ThreeNeptuneScene from "../models/astronomy/NeptuneScene";
 import SolarSystemScene from "../models/astronomy/SolarSystemScene";
+import MercuryFormulas from "../components/astronomy/MercuryFormulas";
+import VenusFormulas from "../components/astronomy/VenusFormulas";
+import EarthFormulas from "../components/astronomy/EarthFormulas";
+import MarsFormulas from "../components/astronomy/MarsFormulas";
+import JupiterFormulas from "../components/astronomy/JupiterFormulas";
+import SaturnFormulas from "../components/astronomy/SaturnFormulas";
+import UranusFormulas from "../components/astronomy/UranusFormulas";
+import NeptuneFormulas from "../components/astronomy/NeptuneFormulas";
+import SolarSystemFormulas from "../components/astronomy/SolarSystemFormulas";
 import {
   mercury,
   venus,
@@ -50,50 +59,77 @@ const Astronomy = () => {
         {!selected && <AstronomyLanding />}
 
         {selected?.id === "mercury" && (
-          <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-blue-300">
-            <ThreeMercuryScene />
-          </div>
+          <>
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-blue-300">
+              <ThreeMercuryScene />
+            </div>
+            <MercuryFormulas />
+          </>
         )}
         {selected?.id === "venus" && (
-          <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-yellow-300">
-            <ThreeVenusScene />
-          </div>
+          <>
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-yellow-300">
+              <ThreeVenusScene />
+            </div>
+            <VenusFormulas />
+          </>
         )}
         {selected?.id === "earth" && (
-          <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-green-300">
-            <ThreeEarthScene />
-          </div>
+          <>
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-green-300">
+              <ThreeEarthScene />
+            </div>
+            <EarthFormulas />
+          </>
         )}
         {selected?.id === "mars" && (
-          <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-red-300">
-            <ThreeMarsScene />
-          </div>
+          <>
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-red-300">
+              <ThreeMarsScene />
+            </div>
+            <MarsFormulas />
+          </>
         )}
         {selected?.id === "jupiter" && (
-          <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-orange-300">
-            <ThreeJupiterScene />
-          </div>
+          <>
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-orange-300">
+              <ThreeJupiterScene />
+            </div>
+            <JupiterFormulas />
+          </>
         )}
         {selected?.id === "saturn" && (
-          <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-yellow-500">
-            <ThreeSaturnScene />
-          </div>
+          <>
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-yellow-500">
+              <ThreeSaturnScene />
+            </div>
+            <SaturnFormulas />
+          </>
         )}
         {selected?.id === "uranus" && (
-          <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-teal-300">
-            <ThreeUranusScene />
-          </div>
+          <>
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-teal-300">
+              <ThreeUranusScene />
+            </div>
+            <UranusFormulas />
+          </>
         )}
         {selected?.id === "neptune" && (
-          <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-indigo-400">
-            <ThreeNeptuneScene />
-          </div>
+          <>
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-indigo-400">
+              <ThreeNeptuneScene />
+            </div>
+            <NeptuneFormulas />
+          </>
         )}
 
         {selected?.id === "solar-system" && (
-          <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-gray-300">
-            <SolarSystemScene />
-          </div>
+          <>
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-gray-300">
+              <SolarSystemScene />
+            </div>
+            <SolarSystemFormulas />
+          </>
         )}
 
         {!selected && (
