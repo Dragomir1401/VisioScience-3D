@@ -1,0 +1,93 @@
+[
+    {
+      "formula": {
+        "shape": "mars",
+        "name": "Rază medie",
+        "expr": "R = 3.3895 × 10^6 m"
+      },
+      "metadata": {
+        "name": "raza_medie_marte"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mars",
+        "name": "Masă",
+        "expr": "M = 6.4171 × 10^23 kg"
+      },
+      "metadata": {
+        "name": "masa_marte"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mars",
+        "name": "Volum",
+        "expr": "V = ⁴⁄₃·π·R³ ≈ 1.6318 × 10^20 m³"
+      },
+      "metadata": {
+        "name": "volum_marte"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mars",
+        "name": "Arie totală",
+        "expr": "A = 4·π·R² ≈ 1.4446 × 10^14 m²"
+      },
+      "metadata": {
+        "name": "arie_totala_marte"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mars",
+        "name": "Densitate medie",
+        "expr": "ρ = M / V ≈ 3.933 g/cm³"
+      },
+      "metadata": {
+        "name": "densitate_medie_marte"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mars",
+        "name": "Accelerație gravitațională la suprafață",
+        "expr": "g = G·M / R² ≈ 3.72076 m/s²"
+      },
+      "metadata": {
+        "name": "acceleratie_gravitationala_marte"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mars",
+        "name": "Viteza de evadare",
+        "expr": "vₑ = √(2·G·M / R) ≈ 5.027 km/s"
+      },
+      "metadata": {
+        "name": "viteza_de_evadare_marte"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mars",
+        "name": "Perioada orbitală în jurul Soarelui",
+        "expr": "T ≈ 687 zile"
+      },
+      "metadata": {
+        "name": "perioada_orbitala_marte"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mars",
+        "name": "Viteza orbitală medie",
+        "expr": "vₒ ≈ 24.07 km/s"
+      },
+      "metadata": {
+        "name": "viteza_orbitala_medie_marte"
+      }
+    }
+]
+  

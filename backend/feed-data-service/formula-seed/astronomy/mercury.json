@@ -1,0 +1,93 @@
+[
+    {
+      "formula": {
+        "shape": "mercury",
+        "name": "Rază medie",
+        "expr": "R = 2.4397 × 10^6 m"
+      },
+      "metadata": {
+        "name": "raza_medie_mercur"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mercury",
+        "name": "Masă",
+        "expr": "M = 3.3011 × 10^23 kg"
+      },
+      "metadata": {
+        "name": "masa_mercur"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mercury",
+        "name": "Volum",
+        "expr": "V = ⁴⁄₃·π·R³ ≈ 6.083 × 10^19 m³"
+      },
+      "metadata": {
+        "name": "volum_mercur"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mercury",
+        "name": "Arie totală",
+        "expr": "A = 4·π·R² ≈ 7.483 × 10^13 m²"
+      },
+      "metadata": {
+        "name": "arie_totala_mercur"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mercury",
+        "name": "Densitate medie",
+        "expr": "ρ = M / V ≈ 5.428 g/cm³"
+      },
+      "metadata": {
+        "name": "densitate_medie_mercur"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mercury",
+        "name": "Accelerație gravitațională la suprafață",
+        "expr": "g = G·M / R² ≈ 3.70 m/s²"
+      },
+      "metadata": {
+        "name": "acceleratie_gravitationala_mercur"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mercury",
+        "name": "Viteza de evadare",
+        "expr": "vₑ = √(2·G·M / R) ≈ 4.25 km/s"
+      },
+      "metadata": {
+        "name": "viteza_de_evadare_mercur"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mercury",
+        "name": "Perioada orbitală în jurul Soarelui",
+        "expr": "T ≈ 88 zile"
+      },
+      "metadata": {
+        "name": "perioada_orbitala_mercur"
+      }
+    },
+    {
+      "formula": {
+        "shape": "mercury",
+        "name": "Viteza orbitală medie",
+        "expr": "vₒ ≈ 47.36 km/s"
+      },
+      "metadata": {
+        "name": "viteza_orbitala_medie_mercur"
+      }
+    }
+]
+  

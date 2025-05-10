@@ -1,0 +1,92 @@
+[
+    {
+      "formula": {
+        "shape": "uranus",
+        "name": "Rază medie",
+        "expr": "R = 2.5362 × 10^7 m"
+      },
+      "metadata": {
+        "name": "raza_medie_uranus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "uranus",
+        "name": "Masă",
+        "expr": "M = 8.6810 × 10^25 kg"
+      },
+      "metadata": {
+        "name": "masa_uranus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "uranus",
+        "name": "Volum",
+        "expr": "V = ⁴⁄₃·π·R³ ≈ 6.833 × 10^22 m³"
+      },
+      "metadata": {
+        "name": "volum_uranus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "uranus",
+        "name": "Arie totală",
+        "expr": "A = 4·π·R² ≈ 8.080 × 10^15 m²"
+      },
+      "metadata": {
+        "name": "arie_totala_uranus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "uranus",
+        "name": "Densitate medie",
+        "expr": "ρ = M / V ≈ 1.270 g/cm³"
+      },
+      "metadata": {
+        "name": "densitate_medie_uranus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "uranus",
+        "name": "Accelerație gravitațională la suprafață",
+        "expr": "g = G·M / R² ≈ 8.69 m/s²"
+      },
+      "metadata": {
+        "name": "acceleratie_gravitationala_uranus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "uranus",
+        "name": "Viteza de evadare",
+        "expr": "vₑ = √(2·G·M / R) ≈ 21.37 km/s"
+      },
+      "metadata": {
+        "name": "viteza_de_evadare_uranus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "uranus",
+        "name": "Perioada orbitală în jurul Soarelui",
+        "expr": "T ≈ 84.02 ani"
+      },
+      "metadata": {
+        "name": "perioada_orbitala_uranus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "uranus",
+        "name": "Viteza orbitală medie",
+        "expr": "vₒ ≈ 6.80 km/s"
+      },
+      "metadata": {
+        "name": "viteza_orbitala_medie_uranus"
+      }
+    }
+]

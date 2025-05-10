@@ -1,0 +1,93 @@
+[
+    {
+      "formula": {
+        "shape": "neptune",
+        "name": "Rază medie",
+        "expr": "R = 2.4622 × 10^7 m"
+      },
+      "metadata": {
+        "name": "raza_medie_neptun"
+      }
+    },
+    {
+      "formula": {
+        "shape": "neptune",
+        "name": "Masă",
+        "expr": "M = 1.0243 × 10^26 kg"
+      },
+      "metadata": {
+        "name": "masa_neptun"
+      }
+    },
+    {
+      "formula": {
+        "shape": "neptune",
+        "name": "Volum",
+        "expr": "V = ⁴⁄₃·π·R³ ≈ 6.254 × 10^23 m³"
+      },
+      "metadata": {
+        "name": "volum_neptun"
+      }
+    },
+    {
+      "formula": {
+        "shape": "neptune",
+        "name": "Arie totală",
+        "expr": "A = 4·π·R² ≈ 7.607 × 10^15 m²"
+      },
+      "metadata": {
+        "name": "arie_totala_neptun"
+      }
+    },
+    {
+      "formula": {
+        "shape": "neptune",
+        "name": "Densitate medie",
+        "expr": "ρ = M / V ≈ 1.638 g/cm³"
+      },
+      "metadata": {
+        "name": "densitate_medie_neptun"
+      }
+    },
+    {
+      "formula": {
+        "shape": "neptune",
+        "name": "Accelerație gravitațională la norii superiori",
+        "expr": "g = G·M / R² ≈ 11.15 m/s²"
+      },
+      "metadata": {
+        "name": "acceleratie_gravitationala_neptun"
+      }
+    },
+    {
+      "formula": {
+        "shape": "neptune",
+        "name": "Viteza de evadare",
+        "expr": "vₑ = √(2·G·M / R) ≈ 23.5 km/s"
+      },
+      "metadata": {
+        "name": "viteza_de_evadare_neptun"
+      }
+    },
+    {
+      "formula": {
+        "shape": "neptune",
+        "name": "Perioada orbitală în jurul Soarelui",
+        "expr": "T ≈ 164.8 ani"
+      },
+      "metadata": {
+        "name": "perioada_orbitala_neptun"
+      }
+    },
+    {
+      "formula": {
+        "shape": "neptune",
+        "name": "Viteza orbitală medie",
+        "expr": "vₒ ≈ 5.43 km/s"
+      },
+      "metadata": {
+        "name": "viteza_orbitala_medie_neptun"
+      }
+    }
+]
+  

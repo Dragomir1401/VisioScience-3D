@@ -1,0 +1,93 @@
+[
+    {
+      "formula": {
+        "shape": "venus",
+        "name": "Rază medie",
+        "expr": "R = 6.0518 × 10^6 m"
+      },
+      "metadata": {
+        "name": "raza_medie_venus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "venus",
+        "name": "Masă",
+        "expr": "M = 4.8675 × 10^24 kg"
+      },
+      "metadata": {
+        "name": "masa_venus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "venus",
+        "name": "Volum",
+        "expr": "V = ⁴⁄₃·π·R³ ≈ 9.2843 × 10^20 m³"
+      },
+      "metadata": {
+        "name": "volum_venus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "venus",
+        "name": "Arie totală",
+        "expr": "A = 4·π·R² ≈ 4.6020 × 10^14 m²"
+      },
+      "metadata": {
+        "name": "arie_totala_venus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "venus",
+        "name": "Densitate medie",
+        "expr": "ρ = M / V ≈ 5.243 g/cm³"
+      },
+      "metadata": {
+        "name": "densitate_medie_venus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "venus",
+        "name": "Accelerație gravitațională la suprafață",
+        "expr": "g = G·M / R² ≈ 8.87 m/s²"
+      },
+      "metadata": {
+        "name": "acceleratie_gravitationala_venus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "venus",
+        "name": "Viteza de evadare",
+        "expr": "vₑ = √(2·G·M / R) ≈ 10.36 km/s"
+      },
+      "metadata": {
+        "name": "viteza_de_evadare_venus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "venus",
+        "name": "Perioada orbitală în jurul Soarelui",
+        "expr": "T ≈ 224.7 zile"
+      },
+      "metadata": {
+        "name": "perioada_orbitala_venus"
+      }
+    },
+    {
+      "formula": {
+        "shape": "venus",
+        "name": "Viteza orbitală medie",
+        "expr": "vₒ ≈ 35.02 km/s"
+      },
+      "metadata": {
+        "name": "viteza_orbitala_medie_venus"
+      }
+    }
+]
+  

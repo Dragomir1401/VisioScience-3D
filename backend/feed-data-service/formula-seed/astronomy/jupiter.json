@@ -1,0 +1,93 @@
+[
+    {
+      "formula": {
+        "shape": "jupiter",
+        "name": "Rază medie",
+        "expr": "R = 6.9911 × 10^7 m"
+      },
+      "metadata": {
+        "name": "raza_medie_jupiter"
+      }
+    },
+    {
+      "formula": {
+        "shape": "jupiter",
+        "name": "Masă",
+        "expr": "M = 1.898 × 10^27 kg"
+      },
+      "metadata": {
+        "name": "masa_jupiter"
+      }
+    },
+    {
+      "formula": {
+        "shape": "jupiter",
+        "name": "Volum",
+        "expr": "V = ⁴⁄₃·π·R³ ≈ 1.4313 × 10^24 m³"
+      },
+      "metadata": {
+        "name": "volum_jupiter"
+      }
+    },
+    {
+      "formula": {
+        "shape": "jupiter",
+        "name": "Arie totală",
+        "expr": "A = 4·π·R² ≈ 6.1419 × 10^16 m²"
+      },
+      "metadata": {
+        "name": "arie_totala_jupiter"
+      }
+    },
+    {
+      "formula": {
+        "shape": "jupiter",
+        "name": "Densitate medie",
+        "expr": "ρ = M / V ≈ 1.326 g/cm³"
+      },
+      "metadata": {
+        "name": "densitate_medie_jupiter"
+      }
+    },
+    {
+      "formula": {
+        "shape": "jupiter",
+        "name": "Accelerație gravitațională la norii superiori",
+        "expr": "g = G·M / R² ≈ 24.79 m/s²"
+      },
+      "metadata": {
+        "name": "acceleratie_gravitationala_jupiter"
+      }
+    },
+    {
+      "formula": {
+        "shape": "jupiter",
+        "name": "Viteza de evadare",
+        "expr": "vₑ = √(2·G·M / R) ≈ 59.5 km/s"
+      },
+      "metadata": {
+        "name": "viteza_de_evadare_jupiter"
+      }
+    },
+    {
+      "formula": {
+        "shape": "jupiter",
+        "name": "Perioada orbitală în jurul Soarelui",
+        "expr": "T ≈ 11.86 ani"
+      },
+      "metadata": {
+        "name": "perioada_orbitala_jupiter"
+      }
+    },
+    {
+      "formula": {
+        "shape": "jupiter",
+        "name": "Viteza orbitală medie",
+        "expr": "vₒ ≈ 13.07 km/s"
+      },
+      "metadata": {
+        "name": "viteza_orbitala_medie_jupiter"
+      }
+    }
+]
+  

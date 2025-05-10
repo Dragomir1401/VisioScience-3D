@@ -1,0 +1,93 @@
+[
+    {
+      "formula": {
+        "shape": "earth",
+        "name": "Rază medie",
+        "expr": "R = 6.371 × 10^6 m"
+      },
+      "metadata": {
+        "name": "raza_medie_pamant"
+      }
+    },
+    {
+      "formula": {
+        "shape": "earth",
+        "name": "Masă",
+        "expr": "M = 5.972 × 10^24 kg"
+      },
+      "metadata": {
+        "name": "masa_pamant"
+      }
+    },
+    {
+      "formula": {
+        "shape": "earth",
+        "name": "Volum",
+        "expr": "V = ⁴⁄₃·π·R³ ≈ 1.08321 × 10^21 m³"
+      },
+      "metadata": {
+        "name": "volum_pamant"
+      }
+    },
+    {
+      "formula": {
+        "shape": "earth",
+        "name": "Arie totală",
+        "expr": "A = 4·π·R² ≈ 5.10072 × 10^14 m²"
+      },
+      "metadata": {
+        "name": "arie_totala_pamant"
+      }
+    },
+    {
+      "formula": {
+        "shape": "earth",
+        "name": "Densitate medie",
+        "expr": "ρ = M / V ≈ 5.514 g/cm³"
+      },
+      "metadata": {
+        "name": "densitate_medie_pamant"
+      }
+    },
+    {
+      "formula": {
+        "shape": "earth",
+        "name": "Accelerație gravitațională la suprafață",
+        "expr": "g = G·M / R² ≈ 9.81 m/s²"
+      },
+      "metadata": {
+        "name": "acceleratie_gravitationala_pamant"
+      }
+    },
+    {
+      "formula": {
+        "shape": "earth",
+        "name": "Viteza de evadare",
+        "expr": "vₑ = √(2·G·M / R) ≈ 11.2 km/s"
+      },
+      "metadata": {
+        "name": "viteza_de_evadare_pamant"
+      }
+    },
+    {
+      "formula": {
+        "shape": "earth",
+        "name": "Perioada orbitală în jurul Soarelui",
+        "expr": "T = 1 an ≈ 365.25 zile"
+      },
+      "metadata": {
+        "name": "perioada_orbitala_pamant"
+      }
+    },
+    {
+      "formula": {
+        "shape": "earth",
+        "name": "Viteza orbitală medie",
+        "expr": "vₒ ≈ 29.78 km/s"
+      },
+      "metadata": {
+        "name": "viteza_orbitala_medie_pamant"
+      }
+    }
+]
+  

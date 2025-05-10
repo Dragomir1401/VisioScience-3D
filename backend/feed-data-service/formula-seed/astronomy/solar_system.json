@@ -1,0 +1,93 @@
+[
+    {
+      "formula": {
+        "shape": "solar_system",
+        "name": "Număr planete",
+        "expr": "N = 8"
+      },
+      "metadata": {
+        "name": "numar_planete_sistem_solar"
+      }
+    },
+    {
+      "formula": {
+        "shape": "solar_system",
+        "name": "Masă Soare",
+        "expr": "M☉ = 1.9885 × 10^30 kg"
+      },
+      "metadata": {
+        "name": "masa_soare"
+      }
+    },
+    {
+      "formula": {
+        "shape": "solar_system",
+        "name": "Masă totală a planetelor",
+        "expr": "M_planete ≈ 2.669 × 10^27 kg"
+      },
+      "metadata": {
+        "name": "masa_totala_planete"
+      }
+    },
+    {
+      "formula": {
+        "shape": "solar_system",
+        "name": "Vârstă sistem solar",
+        "expr": "t = 4.568 × 10^9 ani"
+      },
+      "metadata": {
+        "name": "varsta_sistem_solar"
+      }
+    },
+    {
+      "formula": {
+        "shape": "solar_system",
+        "name": "Luminozitate Soare",
+        "expr": "L☉ = 3.828 × 10^26 W"
+      },
+      "metadata": {
+        "name": "luminozitate_soare"
+      }
+    },
+    {
+      "formula": {
+        "shape": "solar_system",
+        "name": "Constanta solară la 1 AU",
+        "expr": "S = 1361 W/m²"
+      },
+      "metadata": {
+        "name": "constanta_solari_a"
+      }
+    },
+    {
+      "formula": {
+        "shape": "solar_system",
+        "name": "Beltul Kuiper",
+        "expr": "a ≈ 30–50 AU"
+      },
+      "metadata": {
+        "name": "beltul_kuiper_interval"
+      }
+    },
+    {
+      "formula": {
+        "shape": "solar_system",
+        "name": "Norul Oort (rază)",
+        "expr": "R ≈ 5 × 10^4 AU"
+      },
+      "metadata": {
+        "name": "raza_nor_oort"
+      }
+    },
+    {
+      "formula": {
+        "shape": "solar_system",
+        "name": "Zona locuibilă",
+        "expr": "0.75 AU ≤ a ≤ 1.37 AU"
+      },
+      "metadata": {
+        "name": "zona_locuibila_solar"
+      }
+    }
+]
+  
