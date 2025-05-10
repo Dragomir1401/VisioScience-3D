@@ -4,20 +4,16 @@ import { OrbitControls, useTexture, Html } from "@react-three/drei";
 import * as THREE from "three";
 import SpaceBackground from "../SpaceBackground";
 
-import earthAlbedo from "../../assets/textures/earth/earth_albedo.jpg";
-import earthBump from "../../assets/textures/earth/earth_bump.jpg";
-import earthAO from "../../assets/textures/earth/earth_land_ocean_mask.png";
-import earthEmissive from "../../assets/textures/earth/earth_night_lights_modified.png";
-import earthClouds from "../../assets/textures/earth/clouds_earth.png";
+import colorMap   from "../../assets/textures/earth/Color Map - Copy.jpg";
+import emissiveMap from "../../assets/textures/earth/Night Lights - Copy.jpg";
+import cloudsMap   from "../../assets/textures/earth/Clouds - Copy.png";
 
 function Earth({ rotationSpeed = 0.02 }) {
   const meshRef = useRef();
-  const [albedo, bump, ao, emissive, clouds] = useTexture([
-    earthAlbedo,
-    earthBump,
-    earthAO,
-    earthEmissive,
-    earthClouds,
+  const [diffuse, emissive, clouds] = useTexture([
+    colorMap,
+    emissiveMap,
+    cloudsMap,
   ]);
 
   useFrame((_, delta) => {
@@ -27,7 +23,7 @@ function Earth({ rotationSpeed = 0.02 }) {
   return (
     <group>
       <mesh>
-        <sphereGeometry args={[5.05, 32, 32]} />
+        <sphereGeometry args={[5.05, 64, 64]} />
         <meshStandardMaterial
           map={clouds}
           transparent
@@ -36,29 +32,14 @@ function Earth({ rotationSpeed = 0.02 }) {
         />
       </mesh>
 
-      <mesh
-        ref={meshRef}
-        onUpdate={(self) => {
-          const geo = self.geometry;
-          if (!geo.attributes.uv2) {
-            geo.setAttribute(
-              "uv2",
-              new THREE.BufferAttribute(geo.attributes.uv.array, 2)
-            );
-          }
-        }}
-      >
-        <sphereGeometry args={[5, 32, 32]} />
+      <mesh ref={meshRef}>
+        <sphereGeometry args={[5, 64, 64]} />
         <meshStandardMaterial
-          map={albedo}
-          normalMap={bump}
-          aoMap={ao}
-          aoMapIntensity={0.8}
-          emissiveMap={emissive}
-          emissiveIntensity={0.6}
-          metalness={0.15}
-          roughness={0.75}
-          toneMapped={true}
+          map={diffuse}             
+          emissiveMap={emissive}  
+          emissiveIntensity={0.5}
+          metalness={0.1}
+          roughness={0.9}
         />
       </mesh>
     </group>
@@ -87,13 +68,9 @@ export default function ThreeEarthScene() {
       }}
       performance={{ min: 0.5, max: 1 }}
     >
-      <ambientLight intensity={3} />
-      <hemisphereLight
-        skyColor={0xffffff}
-        groundColor={0x444444}
-        intensity={6}
-      />
-      <directionalLight position={[5, 5, 5]} intensity={1} />
+      <ambientLight intensity={8} />
+      <hemisphereLight skyColor={0xffffff} groundColor={0x222222} intensity={1.6}/>
+      <directionalLight position={[5, 5, 5]} intensity={2} />
       <CameraLight />
 
       <OrbitControls enablePan={false} />
@@ -101,7 +78,7 @@ export default function ThreeEarthScene() {
       <Suspense
         fallback={
           <Html center>
-            <div className="text-black">Loading Earth…</div>
+            <div className="text-white">Loading Earth…</div>
           </Html>
         }
       >
