@@ -86,6 +86,21 @@ const ClassDetails = () => {
     }
   };
 
+  const handleDeleteQuiz = async (quizId, e) => {
+    e.stopPropagation();
+    if (!window.confirm("Ești sigur că vrei să ștergi acest quiz?")) return;
+    try {
+      const res = await fetch(`http://localhost:8000/evaluation/quiz/${quizId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error();
+      fetchClassQuizzes();
+    } catch {
+      alert("Eroare la ștergerea quiz-ului.");
+    }
+  };
+
   const studentList = Array.isArray(students) ? students : [];
   const quizList = Array.isArray(quizzes) ? quizzes : [];
 
@@ -196,6 +211,14 @@ const ClassDetails = () => {
                       }`}
                     >
                       {quiz.is_open ? "Închide quiz" : "Deschide quiz"}
+                    </button>
+                    <button
+                      onClick={(e) => handleDeleteQuiz(quiz.id, e)}
+                      className="flex-1 py-2 rounded-lg text-sm bg-rose-500 text-white hover:bg-rose-600 transition flex items-center justify-center gap-2"
+                      title="Șterge quiz"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>
+                      Șterge
                     </button>
                   </div>
                 </div>
