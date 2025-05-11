@@ -75,6 +75,13 @@ const ComputerScience = () => {
   const [root, setRoot] = useState(null);
   const [visibleCount, setVisibleCount] = useState(0);
 
+  React.useEffect(() => {
+    setBuckets(Array(8).fill([]).map(() => []));
+    setElements([1, 2, 3, 4, 5]);
+    setRoot(null);
+    setVisibleCount(0);
+  }, [selected?.id]);
+
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-lavender via-[#f8edf7] to-[#fdf6f6] pt-[80px]">
       <SideMenu
