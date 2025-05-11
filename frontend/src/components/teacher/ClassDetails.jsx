@@ -204,17 +204,28 @@ const ClassDetails = () => {
                       onClick={(e) =>
                         toggleQuizStatus(quiz.id, quiz.is_open, e)
                       }
-                      className={`flex-1 py-2 rounded-lg text-sm transition ${
-                        quiz.is_open
-                          ? "bg-red-500 text-white hover:bg-red-600"
-                          : "bg-green-500 text-white hover:bg-green-600"
-                      }`}
+                      className={`flex-1 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition shadow-md border-2
+                        ${quiz.is_open
+                          ? "bg-gradient-to-r from-rose-500 to-red-500 text-white border-rose-400 hover:from-rose-600 hover:to-red-600"
+                          : "bg-gradient-to-r from-emerald-400 to-green-500 text-white border-emerald-400 hover:from-emerald-500 hover:to-green-600"
+                        }`}
+                      title={quiz.is_open ? "Închide quiz" : "Deschide quiz"}
                     >
-                      {quiz.is_open ? "Închide quiz" : "Deschide quiz"}
+                      {quiz.is_open ? (
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 10-8 0v4M5 11h14a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2z" /></svg>
+                          Închide quiz
+                        </>
+                      ) : (
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 17a2 2 0 002-2v-2a2 2 0 00-2-2 2 2 0 00-2 2v2a2 2 0 002 2zm6-6V7a6 6 0 10-12 0v4M5 11h14a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2z" /></svg>
+                          Deschide quiz
+                        </>
+                      )}
                     </button>
                     <button
                       onClick={(e) => handleDeleteQuiz(quiz.id, e)}
-                      className="flex-1 py-2 rounded-lg text-sm bg-rose-500 text-white hover:bg-rose-600 transition flex items-center justify-center gap-2"
+                      className="flex-1 py-2 rounded-lg text-sm bg-rose-500 text-white hover:bg-rose-600 transition flex items-center justify-center gap-2 shadow-md border-2 border-rose-400"
                       title="Șterge quiz"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>
