@@ -1,0 +1,56 @@
+---
+config:
+  themeVariables:
+    background: '#ffffff'
+---
+flowchart TB
+ subgraph Browser["Browser"]
+        A["React App<br>src/index.jsx, App.jsx"]
+  end
+ subgraph subGraph1["Routing & Pages"]
+        B["React Router v6"]
+        Pages["Pages: Acasa, About, Contact, Shop…"]
+  end
+ subgraph subGraph2["UI Layer"]
+        C["shadcn/ui<br>Buttons, Cards, Inputs"]
+        D["Tailwind CSS<br>@tailwind directives"]
+  end
+ subgraph subGraph3["3D & Animations"]
+        E["React Three Fiber<br>Canvas"]
+        F["@react-three/drei<br>useGLTF, OrbitControls"]
+        G["@react-spring/three<br>useSpring"]
+        H["GLB models, Textures"]
+  end
+ subgraph subGraph4["Data & Network"]
+        J["API calls"]
+        K["Go Backend Services"]
+  end
+ subgraph Utils["Utils"]
+        M["Context API<br>local UI state"]
+  end
+    A -- "path-based" --> B
+    B --> Pages
+    A -- components --> C
+    A -- utility classes --> D
+    A --> E & J & M
+    E --> F & G & H
+    J -- REST calls --> K
+     A:::core
+     B:::routing
+     Pages:::routing
+     C:::ui
+     D:::ui
+     E:::three
+     F:::three
+     G:::three
+     H:::three
+     J:::network
+     K:::network
+     M:::utils
+    classDef core      fill:#FCE7F3,stroke:#DB2777,stroke-width:1px,color:#000
+    classDef routing   fill:#D1FAE5,stroke:#059669,stroke-width:1px,color:#000
+    classDef ui        fill:#FEF3C7,stroke:#D97706,stroke-width:1px,color:#000
+    classDef three     fill:#E0E7FF,stroke:#3730A3,stroke-width:1px,color:#000
+    classDef assets    fill:#F0F9FF,stroke:#0284C7,stroke-width:1px,color:#000
+    classDef network   fill:#E2E8F0,stroke:#475569,stroke-width:1px,color:#000
+    classDef utils     fill:#F3F4F6,stroke:#6B7280,stroke-width:1px,color:#000
