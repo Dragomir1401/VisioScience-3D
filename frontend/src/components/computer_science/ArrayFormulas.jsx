@@ -36,9 +36,9 @@ const ArrayFormulas = () => {
           {formulas.length === 0 ? (
             <div className="italic text-gray-500">Nu există formule pentru Array-uri.</div>
           ) : (
-            formulas.map((f) => (
-              <div
-                key={f._id}
+            formulas.map((f, idx) => (
+            <div
+                key={f._id || f.formula?.name || idx}
                 className="bg-blue-50 border border-blue-200 rounded-lg shadow-sm p-3 flex flex-col gap-1 hover:shadow-md transition-shadow"
               >
                 <div className="text-base font-semibold text-blue-900 font-sans">
