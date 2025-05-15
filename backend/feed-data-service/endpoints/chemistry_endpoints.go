@@ -12,10 +12,33 @@ import (
 	prettifier "feed-data-service/prettifier"
 
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
+
+var (
+	moleculeOperations = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "molecule_operations_total",
+			Help: "Total number of molecule operations",
+		},
+		[]string{"operation", "type"},
+	)
+
+	activeMolecules = prometheus.NewGauge(
+		prometheus.GaugeOpts{
+			Name: "active_molecules",
+			Help: "Number of active molecules",
+		},
+	)
+)
+
+func init() {
+	prometheus.MustRegister(moleculeOperations)
+	prometheus.MustRegister(activeMolecules)
+}
 
 // CreateMolecule - POST /chem/molecules
 func CreateMolecule(w http.ResponseWriter, r *http.Request) {
@@ -60,6 +83,9 @@ func CreateMolecule(w http.ResponseWriter, r *http.Request) {
 	}
 	insertedID := result.InsertedID.(primitive.ObjectID)
 
+	moleculeOperations.WithLabelValues("create", "molecule").Inc()
+	activeMolecules.Inc()
+
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message": "Molecule created (best effort)",
@@ -91,6 +117,8 @@ func GetAllMolecules(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	moleculeOperations.WithLabelValues("list", "molecule").Inc()
+
 	json.NewEncoder(w).Encode(molecules)
 }
 
@@ -120,6 +148,9 @@ func GetMoleculeByID(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "DB error", http.StatusInternalServerError)
 		return
 	}
+
+	moleculeOperations.WithLabelValues("get", mol.Type).Inc()
+
 	json.NewEncoder(w).Encode(mol)
 }
 
@@ -185,6 +216,8 @@ func UpdateMolecule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	moleculeOperations.WithLabelValues("update", updatedMol.Type).Inc()
+
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message":        "Molecule updated (best effort)",
 		"matched_count":  result.MatchedCount,
@@ -217,6 +250,9 @@ func DeleteMolecule(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
+
+	moleculeOperations.WithLabelValues("delete", "molecule").Inc()
+	activeMolecules.Dec()
 
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message":       "Molecule deleted",

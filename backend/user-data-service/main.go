@@ -7,11 +7,62 @@ import (
 	gorillaHandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	handlers "user-data-service/endpoints"
 	middleware "user-data-service/middleware"
 	mongo "user-data-service/mongo"
 )
+
+var (
+	httpRequestsTotal = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "http_requests_total",
+			Help: "Total number of HTTP requests",
+		},
+		[]string{"method", "endpoint", "status"},
+	)
+
+	httpRequestDuration = prometheus.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Name:    "http_request_duration_seconds",
+			Help:    "Duration of HTTP requests",
+			Buckets: prometheus.DefBuckets,
+		},
+		[]string{"method", "endpoint"},
+	)
+
+	activeUsers = prometheus.NewGauge(
+		prometheus.GaugeOpts{
+			Name: "active_users",
+			Help: "Number of active users",
+		},
+	)
+
+	activeClasses = prometheus.NewGauge(
+		prometheus.GaugeOpts{
+			Name: "active_classes",
+			Help: "Number of active classes",
+		},
+	)
+)
+
+func init() {
+	prometheus.MustRegister(httpRequestsTotal)
+	prometheus.MustRegister(httpRequestDuration)
+	prometheus.MustRegister(activeUsers)
+	prometheus.MustRegister(activeClasses)
+}
+
+func prometheusMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := prometheus.NewTimer(httpRequestDuration.WithLabelValues(r.Method, r.URL.Path))
+		next.ServeHTTP(w, r)
+		start.ObserveDuration()
+		httpRequestsTotal.WithLabelValues(r.Method, r.URL.Path, "200").Inc()
+	})
+}
 
 func main() {
 	err := godotenv.Load()
@@ -21,6 +72,12 @@ func main() {
 	mongo.InitDB()
 
 	r := mux.NewRouter()
+
+	// Prometheus metrics endpoint
+	r.Handle("/metrics", promhttp.Handler()).Methods("GET")
+
+	// Apply Prometheus middleware to all routes
+	r.Use(prometheusMiddleware)
 
 	r.HandleFunc("/user/auth/register", handlers.Register).Methods("POST")
 	r.HandleFunc("/user/auth/login", handlers.Login).Methods("POST")

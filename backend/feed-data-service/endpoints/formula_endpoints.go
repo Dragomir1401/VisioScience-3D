@@ -10,10 +10,33 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
+
+var (
+	formulaOperations = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "formula_operations_total",
+			Help: "Total number of formula operations",
+		},
+		[]string{"operation", "shape"},
+	)
+
+	activeFormulas = prometheus.NewGauge(
+		prometheus.GaugeOpts{
+			Name: "active_formulas",
+			Help: "Number of active formulas",
+		},
+	)
+)
+
+func init() {
+	prometheus.MustRegister(formulaOperations)
+	prometheus.MustRegister(activeFormulas)
+}
 
 // CreateFeed - POST /feeds
 func CreateFeed(w http.ResponseWriter, r *http.Request) {
@@ -44,6 +67,9 @@ func CreateFeed(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to cast insertedID to ObjectID", http.StatusInternalServerError)
 		return
 	}
+
+	formulaOperations.WithLabelValues("create", feed.Formula.Shape).Inc()
+	activeFormulas.Inc()
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]interface{}{
@@ -77,6 +103,8 @@ func GetFeedByID(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	formulaOperations.WithLabelValues("get", feed.Formula.Shape).Inc()
 
 	json.NewEncoder(w).Encode(feed)
 }
@@ -119,6 +147,8 @@ func UpdateFeedByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	formulaOperations.WithLabelValues("update", updatedFeed.Formula.Shape).Inc()
+
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message":        "Updated",
 		"matched_count":  result.MatchedCount,
@@ -150,6 +180,9 @@ func DeleteFeedByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	formulaOperations.WithLabelValues("delete", "formula").Inc()
+	activeFormulas.Dec()
+
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message":       "Deleted",
 		"deleted_count": result.DeletedCount,
@@ -179,6 +212,8 @@ func GetFeedsByShape(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	formulaOperations.WithLabelValues("list", shape).Inc()
 
 	json.NewEncoder(w).Encode(feeds)
 }

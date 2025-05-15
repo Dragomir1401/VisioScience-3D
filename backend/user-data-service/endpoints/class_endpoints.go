@@ -10,8 +10,9 @@ import (
 
 	"user-data-service/models"
 	db "user-data-service/mongo"
-
 	"user-data-service/utils"
+
+	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
@@ -19,9 +20,50 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+var (
+	classOperations = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "class_operations_total",
+			Help: "Total number of class operations",
+		},
+		[]string{"operation", "status"},
+	)
+
+	activeClasses = prometheus.NewGauge(
+		prometheus.GaugeOpts{
+			Name: "active_classes",
+			Help: "Number of active classes",
+		},
+	)
+
+	classStudents = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "class_students",
+			Help: "Number of students per class",
+		},
+		[]string{"class_id"},
+	)
+
+	classErrors = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "class_errors_total",
+			Help: "Total number of class operation errors",
+		},
+		[]string{"operation", "error_type"},
+	)
+)
+
+func init() {
+	prometheus.MustRegister(classOperations)
+	prometheus.MustRegister(activeClasses)
+	prometheus.MustRegister(classStudents)
+	prometheus.MustRegister(classErrors)
+}
+
 func CreateClass(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 	if claims.Role != string(models.RoleTeacher) {
+		classErrors.WithLabelValues("create", "forbidden").Inc()
 		http.Error(w, "Forbidden", http.StatusForbidden)
 		return
 	}
@@ -30,6 +72,7 @@ func CreateClass(w http.ResponseWriter, r *http.Request) {
 		Name string `json:"name"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		classErrors.WithLabelValues("create", "invalid_body").Inc()
 		http.Error(w, "Invalid body", http.StatusBadRequest)
 		return
 	}
@@ -38,6 +81,7 @@ func CreateClass(w http.ResponseWriter, r *http.Request) {
 
 	ownerID, err := primitive.ObjectIDFromHex(claims.UserID)
 	if err != nil {
+		classErrors.WithLabelValues("create", "invalid_owner_id").Inc()
 		http.Error(w, "Invalid owner ID", http.StatusBadRequest)
 		return
 	}
@@ -56,9 +100,14 @@ func CreateClass(w http.ResponseWriter, r *http.Request) {
 
 	_, err = db.ClassCollection.InsertOne(ctx, class)
 	if err != nil {
+		classErrors.WithLabelValues("create", "db_error").Inc()
 		http.Error(w, "Insert error", http.StatusInternalServerError)
 		return
 	}
+
+	classOperations.WithLabelValues("create", "success").Inc()
+	activeClasses.Inc()
+	classStudents.WithLabelValues(class.ID.Hex()).Set(0)
 
 	json.NewEncoder(w).Encode(class)
 }
@@ -66,6 +115,7 @@ func CreateClass(w http.ResponseWriter, r *http.Request) {
 func ListMyClasses(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 	if claims.Role != string(models.RoleTeacher) {
+		classErrors.WithLabelValues("list", "forbidden").Inc()
 		http.Error(w, "Forbidden", http.StatusForbidden)
 		return
 	}
@@ -75,21 +125,26 @@ func ListMyClasses(w http.ResponseWriter, r *http.Request) {
 
 	ownerID, err := primitive.ObjectIDFromHex(claims.UserID)
 	if err != nil {
+		classErrors.WithLabelValues("list", "invalid_owner_id").Inc()
 		http.Error(w, "Invalid owner ID", http.StatusBadRequest)
 		return
 	}
 
 	cursor, err := db.ClassCollection.Find(ctx, bson.M{"owner_id": ownerID})
 	if err != nil {
+		classErrors.WithLabelValues("list", "db_error").Inc()
 		http.Error(w, "Find error", http.StatusInternalServerError)
 		return
 	}
 
 	var classes []models.Class
 	if err := cursor.All(ctx, &classes); err != nil {
+		classErrors.WithLabelValues("list", "cursor_error").Inc()
 		http.Error(w, "Cursor error", http.StatusInternalServerError)
 		return
 	}
+
+	classOperations.WithLabelValues("list", "success").Inc()
 
 	json.NewEncoder(w).Encode(classes)
 }
@@ -97,6 +152,7 @@ func ListMyClasses(w http.ResponseWriter, r *http.Request) {
 func JoinClass(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 	if claims.Role != string(models.RoleStudent) {
+		classErrors.WithLabelValues("join", "forbidden").Inc()
 		http.Error(w, "Forbidden", http.StatusForbidden)
 		return
 	}
@@ -105,6 +161,7 @@ func JoinClass(w http.ResponseWriter, r *http.Request) {
 		Code string `json:"code"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		classErrors.WithLabelValues("join", "invalid_body").Inc()
 		http.Error(w, "Invalid body", http.StatusBadRequest)
 		return
 	}
@@ -115,12 +172,14 @@ func JoinClass(w http.ResponseWriter, r *http.Request) {
 	var class models.Class
 	err := db.ClassCollection.FindOne(ctx, bson.M{"code": req.Code}).Decode(&class)
 	if err != nil {
+		classErrors.WithLabelValues("join", "class_not_found").Inc()
 		http.Error(w, "Class not found", http.StatusNotFound)
 		return
 	}
 
 	studentID, err := primitive.ObjectIDFromHex(claims.UserID)
 	if err != nil {
+		classErrors.WithLabelValues("join", "invalid_student_id").Inc()
 		http.Error(w, "Invalid student ID", http.StatusBadRequest)
 		return
 	}
@@ -128,9 +187,13 @@ func JoinClass(w http.ResponseWriter, r *http.Request) {
 
 	_, err = db.ClassCollection.UpdateByID(ctx, class.ID, update)
 	if err != nil {
+		classErrors.WithLabelValues("join", "update_error").Inc()
 		http.Error(w, "Join failed", http.StatusInternalServerError)
 		return
 	}
+
+	classOperations.WithLabelValues("join", "success").Inc()
+	classStudents.WithLabelValues(class.ID.Hex()).Inc()
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Joined class"})
@@ -139,6 +202,7 @@ func JoinClass(w http.ResponseWriter, r *http.Request) {
 func AddStudentToClass(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 	if claims.Role != string(models.RoleTeacher) {
+		classErrors.WithLabelValues("add_student", "forbidden").Inc()
 		http.Error(w, "Forbidden", http.StatusForbidden)
 		return
 	}
@@ -149,6 +213,7 @@ func AddStudentToClass(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		classErrors.WithLabelValues("add_student", "invalid_body").Inc()
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
@@ -158,11 +223,13 @@ func AddStudentToClass(w http.ResponseWriter, r *http.Request) {
 
 	classOID, err := primitive.ObjectIDFromHex(req.ClassID)
 	if err != nil {
+		classErrors.WithLabelValues("add_student", "invalid_class_id").Inc()
 		http.Error(w, "Invalid class ID", http.StatusBadRequest)
 		return
 	}
 	studentOID, err := primitive.ObjectIDFromHex(req.StudentID)
 	if err != nil {
+		classErrors.WithLabelValues("add_student", "invalid_student_id").Inc()
 		http.Error(w, "Invalid student ID", http.StatusBadRequest)
 		return
 	}
@@ -172,6 +239,7 @@ func AddStudentToClass(w http.ResponseWriter, r *http.Request) {
 		"_id":      classOID,
 		"owner_id": claims.UserID,
 	}).Decode(&class); err != nil {
+		classErrors.WithLabelValues("add_student", "class_not_found").Inc()
 		http.Error(w, "Class not found or not owned", http.StatusForbidden)
 		return
 	}
@@ -180,9 +248,13 @@ func AddStudentToClass(w http.ResponseWriter, r *http.Request) {
 		"$addToSet": bson.M{"students": studentOID},
 	})
 	if err != nil {
+		classErrors.WithLabelValues("add_student", "update_error").Inc()
 		http.Error(w, "Failed to add student", http.StatusInternalServerError)
 		return
 	}
+
+	classOperations.WithLabelValues("add_student", "success").Inc()
+	classStudents.WithLabelValues(class.ID.Hex()).Inc()
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{
@@ -193,6 +265,7 @@ func AddStudentToClass(w http.ResponseWriter, r *http.Request) {
 func GetClassStudents(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 	if claims.Role != string(models.RoleTeacher) {
+		classErrors.WithLabelValues("get_students", "forbidden").Inc()
 		http.Error(w, "Forbidden", http.StatusForbidden)
 		return
 	}
@@ -200,6 +273,7 @@ func GetClassStudents(w http.ResponseWriter, r *http.Request) {
 	classIDHex := mux.Vars(r)["id"]
 	classID, err := primitive.ObjectIDFromHex(classIDHex)
 	if err != nil {
+		classErrors.WithLabelValues("get_students", "invalid_class_id").Inc()
 		http.Error(w, "Invalid class ID", http.StatusBadRequest)
 		return
 	}
@@ -209,18 +283,21 @@ func GetClassStudents(w http.ResponseWriter, r *http.Request) {
 
 	var class models.Class
 	if err := db.ClassCollection.FindOne(ctx, bson.M{"_id": classID}).Decode(&class); err != nil {
+		classErrors.WithLabelValues("get_students", "class_not_found").Inc()
 		http.Error(w, "Class not found", http.StatusNotFound)
 		return
 	}
 
 	cursor, err := db.UserCollection.Find(ctx, bson.M{"_id": bson.M{"$in": class.Students}})
 	if err != nil {
+		classErrors.WithLabelValues("get_students", "db_error").Inc()
 		http.Error(w, "Error fetching students", http.StatusInternalServerError)
 		return
 	}
 
 	var students []models.User
 	if err := cursor.All(ctx, &students); err != nil {
+		classErrors.WithLabelValues("get_students", "cursor_error").Inc()
 		http.Error(w, "Cursor error", http.StatusInternalServerError)
 		return
 	}
@@ -229,12 +306,15 @@ func GetClassStudents(w http.ResponseWriter, r *http.Request) {
 		students[i].Password = ""
 	}
 
+	classOperations.WithLabelValues("get_students", "success").Inc()
+
 	json.NewEncoder(w).Encode(students)
 }
 
 func RemoveStudentFromClass(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 	if claims.Role != string(models.RoleTeacher) {
+		classErrors.WithLabelValues("remove_student", "forbidden").Inc()
 		http.Error(w, "Forbidden", http.StatusForbidden)
 		return
 	}
@@ -244,12 +324,14 @@ func RemoveStudentFromClass(w http.ResponseWriter, r *http.Request) {
 
 	classOID, err := primitive.ObjectIDFromHex(classID)
 	if err != nil {
+		classErrors.WithLabelValues("remove_student", "invalid_class_id").Inc()
 		http.Error(w, "Invalid class ID", http.StatusBadRequest)
 		return
 	}
 
 	studentOID, err := primitive.ObjectIDFromHex(studentID)
 	if err != nil {
+		classErrors.WithLabelValues("remove_student", "invalid_student_id").Inc()
 		http.Error(w, "Invalid student ID", http.StatusBadRequest)
 		return
 	}
@@ -261,9 +343,13 @@ func RemoveStudentFromClass(w http.ResponseWriter, r *http.Request) {
 
 	_, err = db.ClassCollection.UpdateByID(ctx, classOID, update)
 	if err != nil {
+		classErrors.WithLabelValues("remove_student", "update_error").Inc()
 		http.Error(w, "Failed to remove student", http.StatusInternalServerError)
 		return
 	}
+
+	classOperations.WithLabelValues("remove_student", "success").Inc()
+	classStudents.WithLabelValues(classID).Dec()
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Student removed"})
@@ -273,6 +359,7 @@ func RemoveStudentFromClass(w http.ResponseWriter, r *http.Request) {
 func GetClassQuizResults(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 	if claims.Role != string(models.RoleTeacher) {
+		classErrors.WithLabelValues("get_quiz_results", "forbidden").Inc()
 		http.Error(w, "Forbidden", http.StatusForbidden)
 		return
 	}
@@ -281,6 +368,7 @@ func GetClassQuizResults(w http.ResponseWriter, r *http.Request) {
 	quizIDHex := mux.Vars(r)["quizId"]
 	classID, err := primitive.ObjectIDFromHex(classIDHex)
 	if err != nil {
+		classErrors.WithLabelValues("get_quiz_results", "invalid_class_id").Inc()
 		http.Error(w, "Invalid class ID", http.StatusBadRequest)
 		return
 	}
@@ -290,17 +378,20 @@ func GetClassQuizResults(w http.ResponseWriter, r *http.Request) {
 
 	var class models.Class
 	if err := db.ClassCollection.FindOne(ctx, bson.M{"_id": classID}).Decode(&class); err != nil {
+		classErrors.WithLabelValues("get_quiz_results", "class_not_found").Inc()
 		http.Error(w, "Class not found", http.StatusNotFound)
 		return
 	}
 
 	cursor, err := db.UserCollection.Find(ctx, bson.M{"_id": bson.M{"$in": class.Students}})
 	if err != nil {
+		classErrors.WithLabelValues("get_quiz_results", "db_error").Inc()
 		http.Error(w, "Error fetching students", http.StatusInternalServerError)
 		return
 	}
 	var users []models.User
 	if err := cursor.All(ctx, &users); err != nil {
+		classErrors.WithLabelValues("get_quiz_results", "cursor_error").Inc()
 		http.Error(w, "Cursor error", http.StatusInternalServerError)
 		return
 	}
@@ -313,6 +404,7 @@ func GetClassQuizResults(w http.ResponseWriter, r *http.Request) {
 	reqEval.Header.Set("Authorization", r.Header.Get("Authorization"))
 	respEval, err := http.DefaultClient.Do(reqEval)
 	if err != nil {
+		classErrors.WithLabelValues("get_quiz_results", "eval_service_error").Inc()
 		http.Error(w, "Error contacting evaluation service", http.StatusInternalServerError)
 		return
 	}
@@ -320,6 +412,7 @@ func GetClassQuizResults(w http.ResponseWriter, r *http.Request) {
 
 	if respEval.StatusCode != http.StatusOK {
 		body, _ := ioutil.ReadAll(respEval.Body)
+		classErrors.WithLabelValues("get_quiz_results", "eval_service_error").Inc()
 		http.Error(w, string(body), respEval.StatusCode)
 		return
 	}
@@ -330,6 +423,7 @@ func GetClassQuizResults(w http.ResponseWriter, r *http.Request) {
 		SubmittedAt time.Time          `json:"submitted_at"`
 	}
 	if err := json.NewDecoder(respEval.Body).Decode(&evalResults); err != nil {
+		classErrors.WithLabelValues("get_quiz_results", "decode_error").Inc()
 		http.Error(w, "Failed to decode results", http.StatusInternalServerError)
 		return
 	}
@@ -365,6 +459,8 @@ func GetClassQuizResults(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	classOperations.WithLabelValues("get_quiz_results", "success").Inc()
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(out)
 }
@@ -375,6 +471,7 @@ func DeleteClass(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 
 	if claims.Role != string(models.RoleTeacher) {
+		classErrors.WithLabelValues("delete", "forbidden").Inc()
 		w.WriteHeader(http.StatusForbidden)
 		json.NewEncoder(w).Encode(map[string]string{
 			"error": fmt.Sprintf("Forbidden: User role is %s, expected %s", claims.Role, models.RoleTeacher),
@@ -385,6 +482,7 @@ func DeleteClass(w http.ResponseWriter, r *http.Request) {
 	classIDHex := mux.Vars(r)["id"]
 	classID, err := primitive.ObjectIDFromHex(classIDHex)
 	if err != nil {
+		classErrors.WithLabelValues("delete", "invalid_class_id").Inc()
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]string{
 			"error": fmt.Sprintf("Invalid class ID format: %v", err),
@@ -394,6 +492,7 @@ func DeleteClass(w http.ResponseWriter, r *http.Request) {
 
 	ownerID, err := primitive.ObjectIDFromHex(claims.UserID)
 	if err != nil {
+		classErrors.WithLabelValues("delete", "invalid_owner_id").Inc()
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]string{
 			"error": fmt.Sprintf("Invalid user ID format: %v", err),
@@ -408,12 +507,14 @@ func DeleteClass(w http.ResponseWriter, r *http.Request) {
 	err = db.ClassCollection.FindOne(ctx, bson.M{"_id": classID}).Decode(&class)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
+			classErrors.WithLabelValues("delete", "class_not_found").Inc()
 			w.WriteHeader(http.StatusNotFound)
 			json.NewEncoder(w).Encode(map[string]string{
 				"error": "Class not found",
 			})
 			return
 		}
+		classErrors.WithLabelValues("delete", "db_error").Inc()
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{
 			"error": fmt.Sprintf("Database error: %v", err),
@@ -422,6 +523,7 @@ func DeleteClass(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if class.OwnerID != ownerID {
+		classErrors.WithLabelValues("delete", "not_owner").Inc()
 		w.WriteHeader(http.StatusForbidden)
 		json.NewEncoder(w).Encode(map[string]string{
 			"error": "You don't have permission to delete this class",
@@ -434,6 +536,7 @@ func DeleteClass(w http.ResponseWriter, r *http.Request) {
 		"owner_id": ownerID,
 	})
 	if err != nil {
+		classErrors.WithLabelValues("delete", "delete_error").Inc()
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{
 			"error": fmt.Sprintf("Delete failed: %v", err),
@@ -442,12 +545,17 @@ func DeleteClass(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if res.DeletedCount == 0 {
+		classErrors.WithLabelValues("delete", "not_deleted").Inc()
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(map[string]string{
 			"error": "Class not found or not owned",
 		})
 		return
 	}
+
+	classOperations.WithLabelValues("delete", "success").Inc()
+	activeClasses.Dec()
+	classStudents.DeleteLabelValues(classIDHex)
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{

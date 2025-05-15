@@ -160,3 +160,22 @@ spec:
           image: dragomir1401/monitoring-service:latest
           ports:
             - containerPort: 8082 
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: monitoring-service-ingress
+  annotations:
+    konghq.com/strip-path: "false"
+spec:
+  ingressClassName: kong
+  rules:
+    - http:
+        paths:
+          - path: /grafana
+            pathType: Prefix
+            backend:
+              service:
+                name: monitoring-service
+                port:
+                  number: 8082 
