@@ -46,6 +46,7 @@ jobs:
           kubectl config view
           kubectl cluster-info
           kubectl get nodes
+          kubectl get pods
           echo "Kubectl access verified successfully"
 
       - name: Check for existing Go installation
@@ -89,7 +90,7 @@ jobs:
       - name: Extract service name
         id: extract
         run: |
-          $SERVICE_NAME = ${{ matrix.service }}.Replace('backend/', '')
+          $SERVICE_NAME = "${{ matrix.service }}".Replace('backend/', '')
           echo "name=$SERVICE_NAME" >> $env:GITHUB_OUTPUT
           echo "Processing service: $SERVICE_NAME"
 
