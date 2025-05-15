@@ -6,12 +6,13 @@ on:
       - "backend/**.go"
       - "backend/**/go.mod"
       - "backend/**/Dockerfile"
+      - "backend/**/k8s/*.yaml"
       - ".github/workflows/go-ci.yml"
   pull_request:
 
 jobs:
   build-test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     strategy:
       matrix:
@@ -27,6 +28,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Verify kubectl access
+        run: |
+          echo "Verifying kubectl access..."
+          kubectl cluster-info
+          kubectl get nodes
+          echo "Kubectl access verified successfully"
 
       - name: Set up Go
         uses: actions/setup-go@v4
@@ -55,6 +63,7 @@ jobs:
         run: |
           SERVICE_NAME=$(echo ${{ matrix.service }} | sed 's/backend\///')
           echo "name=${SERVICE_NAME}" >> $GITHUB_OUTPUT
+          echo "Processing service: ${SERVICE_NAME}"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -62,3 +71,18 @@ jobs:
           context: ${{ matrix.service }}
           push: true
           tags: dragomir1401/${{ steps.extract.outputs.name }}:latest
+
+      - name: Deploy to Kubernetes
+        run: |
+          echo "Starting deployment for ${{ steps.extract.outputs.name }}..."
+          if [ -d "k8s" ]; then
+            echo "Found k8s configuration, applying..."
+            kubectl apply -f k8s/
+            
+            echo "Waiting for deployment to complete..."
+            kubectl rollout status deployment/${{ steps.extract.outputs.name }} -n default
+            
+            echo "Deployment completed successfully for ${{ steps.extract.outputs.name }}"
+          else
+            echo "No k8s configuration found for ${{ steps.extract.outputs.name }}"
+          fi

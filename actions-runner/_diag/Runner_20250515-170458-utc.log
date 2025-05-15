@@ -1,0 +1,561 @@
+[2025-05-15 17:04:58Z INFO HostContext] No proxy settings were found based on environmental variables (http_proxy/https_proxy/HTTP_PROXY/HTTPS_PROXY)
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Bin': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\bin'
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Root': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner'
+[2025-05-15 17:04:58Z INFO HostContext] Well known config file 'Credentials': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials'
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Bin': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\bin'
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Root': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner'
+[2025-05-15 17:04:58Z INFO HostContext] Well known config file 'Runner': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\.runner'
+[2025-05-15 17:04:58Z INFO Listener] Runner is built for Windows (X64) - win-x64.
+[2025-05-15 17:04:58Z INFO Listener] RuntimeInformation: Microsoft Windows 10.0.22631.
+[2025-05-15 17:04:58Z INFO Listener] Version: 2.324.0
+[2025-05-15 17:04:58Z INFO Listener] Commit: da3412efd49b1cf1a0fbdcbcee4e4ac4cc2177c8
+[2025-05-15 17:04:58Z INFO Listener] Culture: en-US
+[2025-05-15 17:04:58Z INFO Listener] UI Culture: en-US
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Bin': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\bin'
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Root': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner'
+[2025-05-15 17:04:58Z INFO Listener] Validating directory permissions for: 'D:\FACULTATE\ANUL4\LICENTA\actions-runner'
+[2025-05-15 17:04:58Z INFO CommandLineParser] Parse
+[2025-05-15 17:04:58Z INFO CommandLineParser] Parsing 1 args
+[2025-05-15 17:04:58Z INFO CommandLineParser] parsing argument
+[2025-05-15 17:04:58Z INFO CommandLineParser] HasArgs: False
+[2025-05-15 17:04:58Z INFO CommandLineParser] Adding Command: run
+[2025-05-15 17:04:58Z INFO Listener] Arguments parsed
+[2025-05-15 17:04:58Z INFO Runner] ExecuteCommand
+[2025-05-15 17:04:58Z INFO ConfigurationStore] currentAssemblyLocation: D:\FACULTATE\ANUL4\LICENTA\actions-runner\bin\Runner.Listener.dll
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Bin': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\bin'
+[2025-05-15 17:04:58Z INFO ConfigurationStore] binPath: D:\FACULTATE\ANUL4\LICENTA\actions-runner\bin
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Bin': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\bin'
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Root': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner'
+[2025-05-15 17:04:58Z INFO ConfigurationStore] RootFolder: D:\FACULTATE\ANUL4\LICENTA\actions-runner
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Bin': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\bin'
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Root': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner'
+[2025-05-15 17:04:58Z INFO HostContext] Well known config file 'Runner': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\.runner'
+[2025-05-15 17:04:58Z INFO ConfigurationStore] ConfigFilePath: D:\FACULTATE\ANUL4\LICENTA\actions-runner\.runner
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Bin': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\bin'
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Root': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner'
+[2025-05-15 17:04:58Z INFO HostContext] Well known config file 'MigratedRunner': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\.runner_migrated'
+[2025-05-15 17:04:58Z INFO ConfigurationStore] MigratedConfigFilePath: D:\FACULTATE\ANUL4\LICENTA\actions-runner\.runner_migrated
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Bin': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\bin'
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Root': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner'
+[2025-05-15 17:04:58Z INFO HostContext] Well known config file 'Credentials': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials'
+[2025-05-15 17:04:58Z INFO ConfigurationStore] CredFilePath: D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Bin': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\bin'
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Root': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner'
+[2025-05-15 17:04:58Z INFO HostContext] Well known config file 'MigratedCredentials': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_migrated'
+[2025-05-15 17:04:58Z INFO ConfigurationStore] MigratedCredFilePath: D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_migrated
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Bin': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\bin'
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Root': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner'
+[2025-05-15 17:04:58Z INFO HostContext] Well known config file 'Service': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\.service'
+[2025-05-15 17:04:58Z INFO ConfigurationStore] ServiceConfigFilePath: D:\FACULTATE\ANUL4\LICENTA\actions-runner\.service
+[2025-05-15 17:04:58Z INFO CommandSettings] Flag 'help': 'False'
+[2025-05-15 17:04:58Z INFO CommandSettings] Flag 'version': 'False'
+[2025-05-15 17:04:58Z INFO CommandSettings] Flag 'commit': 'False'
+[2025-05-15 17:04:58Z INFO CommandSettings] Flag 'check': 'False'
+[2025-05-15 17:04:58Z INFO CommandSettings] Command 'configure': 'False'
+[2025-05-15 17:04:58Z INFO CommandSettings] Command 'remove': 'False'
+[2025-05-15 17:04:58Z INFO CommandSettings] Command 'warmup': 'False'
+[2025-05-15 17:04:58Z INFO ConfigurationManager] LoadSettings
+[2025-05-15 17:04:58Z INFO ConfigurationStore] IsConfigured()
+[2025-05-15 17:04:58Z INFO ConfigurationStore] IsConfigured: True
+[2025-05-15 17:04:58Z INFO ConfigurationManager] Is configured: True
+[2025-05-15 17:04:58Z INFO ConfigurationStore] Read setting file: 318 chars
+[2025-05-15 17:04:58Z INFO ConfigurationManager] Settings Loaded
+[2025-05-15 17:04:58Z INFO ConfigurationStore] IsServiceConfigured()
+[2025-05-15 17:04:58Z INFO ConfigurationStore] IsServiceConfigured: False
+[2025-05-15 17:04:58Z INFO CommandSettings] Command 'run': 'True'
+[2025-05-15 17:04:58Z INFO ConfigurationStore] IsConfigured()
+[2025-05-15 17:04:58Z INFO ConfigurationStore] IsConfigured: True
+[2025-05-15 17:04:58Z INFO ConfigurationManager] Is configured: True
+[2025-05-15 17:04:58Z INFO Runner] Could not parse the argument value '' for StartupType. Defaulting to Manual
+[2025-05-15 17:04:58Z INFO Runner] Set runner startup type - Manual
+[2025-05-15 17:04:58Z INFO CommandSettings] Flag 'once': 'False'
+[2025-05-15 17:04:58Z INFO CommandSettings] Flag 'once': 'False'
+[2025-05-15 17:04:58Z INFO Runner] RunAsync
+[2025-05-15 17:04:58Z INFO ConfigurationManager] LoadMigratedSettings
+[2025-05-15 17:04:58Z INFO ConfigurationStore] IsMigratedConfigured()
+[2025-05-15 17:04:58Z INFO ConfigurationStore] IsMigratedConfigured: False
+[2025-05-15 17:04:58Z INFO Runner] Failed to load migrated settings: No migrated configuration found.
+[2025-05-15 17:04:58Z INFO Runner] Falling back to original .runner settings
+[2025-05-15 17:04:58Z INFO ConfigurationManager] LoadSettings
+[2025-05-15 17:04:58Z INFO ConfigurationStore] IsConfigured()
+[2025-05-15 17:04:58Z INFO ConfigurationStore] IsConfigured: True
+[2025-05-15 17:04:58Z INFO ConfigurationManager] Is configured: True
+[2025-05-15 17:04:58Z INFO ConfigurationManager] Settings Loaded
+[2025-05-15 17:04:58Z INFO MessageListener] {
+  "AgentId": 21,
+  "AgentName": "DESKTOP-TC456FT",
+  "PoolId": 1,
+  "PoolName": "Default",
+  "ServerUrl": "https://pipelinesghubeus8.actions.githubusercontent.com/UxduirxxqodPZfgm2lnps1Wy6809OOo0WEGSHlYDn4wVgAePgC/",
+  "GitHubUrl": "https://github.com/Dragomir1401/VisioScience-3D",
+  "WorkFolder": "_work"
+}
+[2025-05-15 17:04:58Z INFO MessageListener] Loading Credentials
+[2025-05-15 17:04:58Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:04:58Z INFO ConfigurationStore] stored True
+[2025-05-15 17:04:58Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:04:58Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:04:58Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Bin': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\bin'
+[2025-05-15 17:04:58Z INFO HostContext] Well known directory 'Root': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner'
+[2025-05-15 17:04:58Z INFO HostContext] Well known config file 'RSACredentials': 'D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams'
+[2025-05-15 17:04:58Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:04:58Z INFO MessageListener] Attempt to create session.
+[2025-05-15 17:04:58Z INFO MessageListener] Connecting to the Runner Server...
+[2025-05-15 17:04:58Z INFO RunnerServer] EstablishVssConnection
+[2025-05-15 17:04:58Z INFO RunnerServer] Establish connection with 100 seconds timeout.
+[2025-05-15 17:04:58Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-15 17:04:59Z INFO RunnerServer] EstablishVssConnection
+[2025-05-15 17:04:59Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2025-05-15 17:04:59Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-15 17:04:59Z INFO RunnerServer] EstablishVssConnection
+[2025-05-15 17:04:59Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2025-05-15 17:04:59Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-15 17:04:59Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-15 17:04:59Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-15 17:04:59Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-15 17:04:59Z INFO MessageListener] VssConnection created
+[2025-05-15 17:04:59Z INFO Terminal] WRITE LINE: 
+[2025-05-15 17:04:59Z INFO Terminal] WRITE LINE: 
+[2025-05-15 17:04:59Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:04:59Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:05:00Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-05-15 17:05:00Z INFO MessageListener] Session created.
+[2025-05-15 17:05:00Z INFO MessageListener] Registering AuthMigrationChanged event handler.
+[2025-05-15 17:05:00Z INFO Terminal] WRITE LINE: Current runner version: '2.324.0'
+[2025-05-15 17:05:00Z INFO Terminal] WRITE LINE: 2025-05-15 17:05:00Z: Listening for Jobs
+[2025-05-15 17:05:00Z INFO JobDispatcher] Set runner/worker IPC timeout to 30 seconds.
+[2025-05-15 17:05:00Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:05:00Z INFO ConfigurationStore] stored True
+[2025-05-15 17:05:00Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:05:00Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:05:00Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:05:00Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:05:00Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:05:00Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:05:01Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-05-15 17:05:51Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:05:51Z INFO ConfigurationStore] stored True
+[2025-05-15 17:05:51Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:05:51Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:05:51Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:05:51Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:06:42Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:06:42Z INFO ConfigurationStore] stored True
+[2025-05-15 17:06:42Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:06:42Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:06:42Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:06:42Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:07:33Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:07:33Z INFO ConfigurationStore] stored True
+[2025-05-15 17:07:33Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:07:33Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:07:33Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:07:33Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:08:24Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:08:24Z INFO ConfigurationStore] stored True
+[2025-05-15 17:08:24Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:08:24Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:08:24Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:08:24Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:09:14Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:09:14Z INFO ConfigurationStore] stored True
+[2025-05-15 17:09:14Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:09:14Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:09:14Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:09:14Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:10:04Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:10:04Z INFO ConfigurationStore] stored True
+[2025-05-15 17:10:04Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:10:04Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:10:04Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:10:04Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:10:55Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:10:55Z INFO ConfigurationStore] stored True
+[2025-05-15 17:10:55Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:10:55Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:10:55Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:10:55Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:11:45Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:11:45Z INFO ConfigurationStore] stored True
+[2025-05-15 17:11:45Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:11:45Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:11:45Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:11:45Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:12:35Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:12:35Z INFO ConfigurationStore] stored True
+[2025-05-15 17:12:35Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:12:35Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:12:35Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:12:35Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:13:26Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:13:26Z INFO ConfigurationStore] stored True
+[2025-05-15 17:13:26Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:13:26Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:13:26Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:13:26Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:14:16Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:14:16Z INFO ConfigurationStore] stored True
+[2025-05-15 17:14:16Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:14:16Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:14:16Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:14:16Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:15:06Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:15:06Z INFO ConfigurationStore] stored True
+[2025-05-15 17:15:06Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:15:06Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:15:06Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:15:06Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:15:56Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:15:56Z INFO ConfigurationStore] stored True
+[2025-05-15 17:15:56Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:15:56Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:15:56Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:15:56Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:16:47Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:16:47Z INFO ConfigurationStore] stored True
+[2025-05-15 17:16:47Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:16:47Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:16:47Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:16:47Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:17:37Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:17:37Z INFO ConfigurationStore] stored True
+[2025-05-15 17:17:37Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:17:37Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:17:37Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:17:37Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:18:27Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:18:27Z INFO ConfigurationStore] stored True
+[2025-05-15 17:18:27Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:18:27Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:18:27Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:18:27Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:19:18Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:19:18Z INFO ConfigurationStore] stored True
+[2025-05-15 17:19:18Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:19:18Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:19:18Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:19:18Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:20:08Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:20:08Z INFO ConfigurationStore] stored True
+[2025-05-15 17:20:08Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:20:08Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:20:08Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:20:08Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:20:58Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:20:58Z INFO ConfigurationStore] stored True
+[2025-05-15 17:20:58Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:20:58Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:20:58Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:20:58Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:21:48Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:21:48Z INFO ConfigurationStore] stored True
+[2025-05-15 17:21:48Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:21:48Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:21:48Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:21:48Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:22:39Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:22:39Z INFO ConfigurationStore] stored True
+[2025-05-15 17:22:39Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:22:39Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:22:39Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:22:39Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:23:29Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:23:29Z INFO ConfigurationStore] stored True
+[2025-05-15 17:23:29Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:23:29Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:23:29Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:23:29Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:24:19Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:24:19Z INFO ConfigurationStore] stored True
+[2025-05-15 17:24:19Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:24:19Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:24:19Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:24:19Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:25:09Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:25:09Z INFO ConfigurationStore] stored True
+[2025-05-15 17:25:09Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:25:09Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:25:09Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:25:09Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:26:00Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:26:00Z INFO ConfigurationStore] stored True
+[2025-05-15 17:26:00Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:26:00Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:26:00Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:26:00Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:26:50Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:26:50Z INFO ConfigurationStore] stored True
+[2025-05-15 17:26:50Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:26:50Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:26:50Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:26:50Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:27:40Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:27:40Z INFO ConfigurationStore] stored True
+[2025-05-15 17:27:40Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:27:40Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:27:40Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:27:40Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:28:31Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:28:31Z INFO ConfigurationStore] stored True
+[2025-05-15 17:28:31Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:28:31Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:28:31Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:28:31Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:29:21Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:29:21Z INFO ConfigurationStore] stored True
+[2025-05-15 17:29:21Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:29:21Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:29:21Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:29:21Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:30:11Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:30:11Z INFO ConfigurationStore] stored True
+[2025-05-15 17:30:11Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:30:11Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:30:11Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:30:11Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:31:02Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:31:02Z INFO ConfigurationStore] stored True
+[2025-05-15 17:31:02Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:31:02Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:31:02Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:31:02Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:31:52Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:31:52Z INFO ConfigurationStore] stored True
+[2025-05-15 17:31:52Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:31:52Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:31:52Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:31:52Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:32:42Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:32:42Z INFO ConfigurationStore] stored True
+[2025-05-15 17:32:42Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:32:42Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:32:42Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:32:42Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:33:32Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:33:32Z INFO ConfigurationStore] stored True
+[2025-05-15 17:33:32Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:33:32Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:33:32Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:33:32Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:34:23Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:34:23Z INFO ConfigurationStore] stored True
+[2025-05-15 17:34:23Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:34:23Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:34:23Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:34:23Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:35:13Z INFO MessageListener] No message retrieved from session 'fce98e07-5014-4c6b-85dd-dd00cc00047a' within last 30 minutes.
+[2025-05-15 17:35:13Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:35:13Z INFO ConfigurationStore] stored True
+[2025-05-15 17:35:13Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:35:13Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:35:13Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:35:13Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:36:03Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:36:03Z INFO ConfigurationStore] stored True
+[2025-05-15 17:36:03Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:36:03Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:36:03Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:36:03Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:36:53Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:36:53Z INFO ConfigurationStore] stored True
+[2025-05-15 17:36:53Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:36:53Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:36:53Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:36:53Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:37:44Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:37:44Z INFO ConfigurationStore] stored True
+[2025-05-15 17:37:44Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:37:44Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:37:44Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:37:44Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:38:34Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:38:34Z INFO ConfigurationStore] stored True
+[2025-05-15 17:38:34Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:38:34Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:38:34Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:38:34Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:39:24Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:39:24Z INFO ConfigurationStore] stored True
+[2025-05-15 17:39:24Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:39:24Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:39:24Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:39:24Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:40:15Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:40:15Z INFO ConfigurationStore] stored True
+[2025-05-15 17:40:15Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:40:15Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:40:15Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:40:15Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:41:05Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:41:05Z INFO ConfigurationStore] stored True
+[2025-05-15 17:41:05Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:41:05Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:41:05Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:41:05Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:41:55Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:41:55Z INFO ConfigurationStore] stored True
+[2025-05-15 17:41:55Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:41:55Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:41:55Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:41:55Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:42:46Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:42:46Z INFO ConfigurationStore] stored True
+[2025-05-15 17:42:46Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:42:46Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:42:46Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:42:46Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:43:36Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:43:36Z INFO ConfigurationStore] stored True
+[2025-05-15 17:43:36Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:43:36Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:43:36Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:43:36Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:44:26Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:44:26Z INFO ConfigurationStore] stored True
+[2025-05-15 17:44:26Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:44:26Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:44:26Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:44:26Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:45:17Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:45:17Z INFO ConfigurationStore] stored True
+[2025-05-15 17:45:17Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:45:17Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:45:17Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:45:17Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:46:07Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:46:07Z INFO ConfigurationStore] stored True
+[2025-05-15 17:46:07Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:46:07Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:46:07Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:46:07Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:46:57Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:46:57Z INFO ConfigurationStore] stored True
+[2025-05-15 17:46:57Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:46:57Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:46:57Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:46:57Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:47:48Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:47:48Z INFO ConfigurationStore] stored True
+[2025-05-15 17:47:48Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:47:48Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:47:48Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:47:48Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:48:38Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:48:38Z INFO ConfigurationStore] stored True
+[2025-05-15 17:48:38Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:48:38Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:48:38Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:48:38Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:49:28Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:49:28Z INFO ConfigurationStore] stored True
+[2025-05-15 17:49:28Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:49:28Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:49:28Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:49:28Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:50:18Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:50:18Z INFO ConfigurationStore] stored True
+[2025-05-15 17:50:18Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:50:18Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:50:18Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:50:18Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:51:09Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:51:09Z INFO ConfigurationStore] stored True
+[2025-05-15 17:51:09Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:51:09Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:51:09Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:51:09Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:51:59Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:51:59Z INFO ConfigurationStore] stored True
+[2025-05-15 17:51:59Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:51:59Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:51:59Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:51:59Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:52:49Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:52:49Z INFO ConfigurationStore] stored True
+[2025-05-15 17:52:49Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:52:49Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:52:49Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:52:49Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:53:40Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:53:40Z INFO ConfigurationStore] stored True
+[2025-05-15 17:53:40Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:53:40Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:53:40Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:53:40Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:54:30Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:54:30Z INFO ConfigurationStore] stored True
+[2025-05-15 17:54:30Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:54:30Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:54:30Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:54:30Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:55:20Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:55:20Z INFO ConfigurationStore] stored True
+[2025-05-15 17:55:20Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:55:20Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:55:20Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:55:20Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:55:20Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:55:21Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-05-15 17:56:11Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:56:11Z INFO ConfigurationStore] stored True
+[2025-05-15 17:56:11Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:56:11Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:56:11Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:56:11Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:57:02Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:57:02Z INFO ConfigurationStore] stored True
+[2025-05-15 17:57:02Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:57:02Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:57:02Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:57:02Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:57:52Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:57:52Z INFO ConfigurationStore] stored True
+[2025-05-15 17:57:52Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:57:52Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:57:52Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:57:52Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:58:42Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:58:42Z INFO ConfigurationStore] stored True
+[2025-05-15 17:58:42Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:58:42Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:58:42Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:58:42Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 17:59:33Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 17:59:33Z INFO ConfigurationStore] stored True
+[2025-05-15 17:59:33Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 17:59:33Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 17:59:33Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 17:59:33Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 18:00:23Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 18:00:24Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-05-15 18:00:24Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 18:00:24Z INFO ConfigurationStore] stored True
+[2025-05-15 18:00:24Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 18:00:24Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 18:00:24Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 18:00:24Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 18:01:15Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 18:01:15Z INFO ConfigurationStore] stored True
+[2025-05-15 18:01:15Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 18:01:15Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 18:01:15Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 18:01:15Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 18:02:05Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 18:02:05Z INFO ConfigurationStore] stored True
+[2025-05-15 18:02:05Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 18:02:05Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 18:02:05Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 18:02:05Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 18:02:55Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 18:02:55Z INFO ConfigurationStore] stored True
+[2025-05-15 18:02:55Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 18:02:55Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 18:02:55Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 18:02:55Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
+[2025-05-15 18:03:46Z INFO ConfigurationStore] HasCredentials()
+[2025-05-15 18:03:46Z INFO ConfigurationStore] stored True
+[2025-05-15 18:03:46Z INFO CredentialManager] GetCredentialProvider
+[2025-05-15 18:03:46Z INFO CredentialManager] Creating type OAuth
+[2025-05-15 18:03:46Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-15 18:03:46Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\FACULTATE\ANUL4\LICENTA\actions-runner\.credentials_rsaparams
