@@ -29,9 +29,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup kubectl
+        run: |
+          echo "Setting up kubectl configuration..."
+          docker ps | findstr "kindest/node"
+          
+          $env:KUBECONFIG="$HOME\.kube\config"
+          echo "KUBECONFIG set to: $env:KUBECONFIG"
+          
+          kubectl config use-context kind-visioscience
+          echo "Using context: kind-visioscience"
+
       - name: Verify kubectl access
         run: |
           echo "Verifying kubectl access..."
+          kubectl config view
           kubectl cluster-info
           kubectl get nodes
           echo "Kubectl access verified successfully"
