@@ -89,9 +89,9 @@ jobs:
       - name: Extract service name
         id: extract
         run: |
-          SERVICE_NAME=$(echo ${{ matrix.service }} | sed 's/backend\///')
-          echo "name=${SERVICE_NAME}" >> $GITHUB_OUTPUT
-          echo "Processing service: ${SERVICE_NAME}"
+          $SERVICE_NAME = ${{ matrix.service }}.Replace('backend/', '')
+          echo "name=$SERVICE_NAME" >> $env:GITHUB_OUTPUT
+          echo "Processing service: $SERVICE_NAME"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
