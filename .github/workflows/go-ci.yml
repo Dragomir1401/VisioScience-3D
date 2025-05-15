@@ -48,10 +48,26 @@ jobs:
           kubectl get nodes
           echo "Kubectl access verified successfully"
 
+      - name: Check for existing Go installation
+        id: check_go
+        run: |
+          if (Get-Command go -ErrorAction SilentlyContinue) {
+            $goVersion = (go version).Split(" ")[2]
+            echo "Found existing Go installation: $goVersion"
+            echo "GO_VERSION=$goVersion" >> $env:GITHUB_ENV
+            echo "GO_EXISTS=true" >> $env:GITHUB_ENV
+          } else {
+            echo "No existing Go installation found"
+            echo "GO_EXISTS=false" >> $env:GITHUB_ENV
+          }
+
       - name: Set up Go
+        if: env.GO_EXISTS == 'false'
         uses: actions/setup-go@v4
         with:
           go-version: "1.21"
+          cache: true
+          check-latest: true
 
       - name: Verify & tidy modules
         run: |
