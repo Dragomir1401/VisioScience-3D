@@ -104,7 +104,7 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           echo "Starting deployment for ${{ steps.extract.outputs.name }}..."
-          if [ -d "k8s" ]; then
+          if (Test-Path -Path "k8s" -PathType Container) {
             echo "Found k8s configuration, applying..."
             kubectl apply -f k8s/
             
@@ -112,6 +112,6 @@ jobs:
             kubectl rollout status deployment/${{ steps.extract.outputs.name }} -n default
             
             echo "Deployment completed successfully for ${{ steps.extract.outputs.name }}"
-          else
+          } else {
             echo "No k8s configuration found for ${{ steps.extract.outputs.name }}"
-          fi
+          }
