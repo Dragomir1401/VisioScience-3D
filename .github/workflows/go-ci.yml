@@ -91,6 +91,10 @@ jobs:
         id: extract
         run: |
           $SERVICE_NAME = "${{ matrix.service }}".Replace('backend/', '')
+          # Remove -service suffix for feed-data and user-data
+          if ($SERVICE_NAME -eq 'feed-data-service' -or $SERVICE_NAME -eq 'user-data-service') {
+              $SERVICE_NAME = $SERVICE_NAME.Replace('-service', '')
+          }
           echo "name=$SERVICE_NAME" >> $env:GITHUB_OUTPUT
           echo "Processing service: $SERVICE_NAME"
 
