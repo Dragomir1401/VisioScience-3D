@@ -29,7 +29,7 @@ func main() {
 	r := mux.NewRouter()
 
 	// Prometheus metrics endpoint
-	r.Handle("/metrics", metrics.GetHandler()).Methods("GET")
+	r.Handle("/feed/metrics", metrics.GetHandler()).Methods("GET")
 
 	// Apply Prometheus middleware to all routes
 	r.Use(prometheusMiddleware)

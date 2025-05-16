@@ -11,6 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
 
+	"user-data-service/metrics"
 	models "user-data-service/models"
 	db "user-data-service/mongo"
 	"user-data-service/utils"
@@ -20,12 +21,14 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var req models.AuthRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/auth/register", "400").Inc()
 		http.Error(w, "Invalid body", http.StatusBadRequest)
 		return
 	}
 
 	hashed, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/auth/register", "500").Inc()
 		http.Error(w, "Cannot hash password", http.StatusInternalServerError)
 		return
 	}
@@ -43,19 +46,24 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	var existing models.User
 	err = db.UserCollection.FindOne(ctx, bson.M{"email": user.Email}).Decode(&existing)
 	if err == nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/auth/register", "409").Inc()
 		http.Error(w, "User already exists", http.StatusConflict)
 		return
 	} else if err != mongo.ErrNoDocuments && err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/auth/register", "500").Inc()
 		http.Error(w, "DB error: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	_, err = db.UserCollection.InsertOne(ctx, user)
 	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/auth/register", "500").Inc()
 		http.Error(w, "Insertion failed: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	metrics.ActiveUsers.Inc()
+	metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/auth/register", "201").Inc()
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]string{"message": "User created"})
 }
@@ -65,6 +73,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	var req models.AuthRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/auth/login", "400").Inc()
 		http.Error(w, "Invalid body", http.StatusBadRequest)
 		return
 	}
@@ -75,24 +84,29 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	err := db.UserCollection.FindOne(ctx, bson.M{"email": req.Email}).Decode(&user)
 	if err == mongo.ErrNoDocuments {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/auth/login", "401").Inc()
 		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
 		return
 	} else if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/auth/login", "500").Inc()
 		http.Error(w, "DB error: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/auth/login", "401").Inc()
 		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
 		return
 	}
 
 	token, err := utils.GenerateToken(user.ID.Hex(), string(user.Role), user.Email)
 	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/auth/login", "500").Inc()
 		http.Error(w, "Cannot generate token", http.StatusInternalServerError)
 		return
 	}
 
+	metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/auth/login", "200").Inc()
 	json.NewEncoder(w).Encode(models.AuthResponse{
 		Token: token,
 		ID:    user.ID.Hex(),

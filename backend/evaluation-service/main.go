@@ -37,7 +37,7 @@ func main() {
 	helpers.InitMongoClient()
 
 	// Prometheus metrics endpoint
-	r.Handle("/metrics", metrics.GetHandler()).Methods("GET")
+	r.Handle("/evaluation/metrics", metrics.GetHandler()).Methods("GET")
 
 	// Apply Prometheus middleware to all routes
 	r.Use(prometheusMiddleware)

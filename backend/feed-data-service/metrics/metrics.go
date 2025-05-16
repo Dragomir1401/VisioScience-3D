@@ -63,6 +63,13 @@ var (
 		},
 		[]string{"operation"},
 	)
+
+	ActiveInvites = prometheus.NewGauge(
+		prometheus.GaugeOpts{
+			Name: metricPrefix + "active_invites",
+			Help: "Number of active invites",
+		},
+	)
 )
 
 // RegisterMetrics registers all metrics with our custom registry
@@ -74,6 +81,7 @@ func RegisterMetrics() {
 		ActiveMolecules,
 		FeedOperations,
 		MoleculeOperations,
+		ActiveInvites,
 	)
 }
 

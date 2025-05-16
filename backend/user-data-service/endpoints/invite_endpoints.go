@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"user-data-service/metrics"
 	"user-data-service/models"
 	db "user-data-service/mongo"
 	"user-data-service/utils"
@@ -52,6 +53,7 @@ func init() {
 func SendInvite(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 	if claims.Role != string(models.RoleTeacher) {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes/{id}/invite", "403").Inc()
 		inviteErrors.WithLabelValues("create", "forbidden").Inc()
 		http.Error(w, "Forbidden", http.StatusForbidden)
 		return
@@ -60,6 +62,7 @@ func SendInvite(w http.ResponseWriter, r *http.Request) {
 	classIDParam := mux.Vars(r)["id"]
 	classID, err := primitive.ObjectIDFromHex(classIDParam)
 	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes/{id}/invite", "400").Inc()
 		inviteErrors.WithLabelValues("create", "invalid_id").Inc()
 		http.Error(w, "Invalid class ID", http.StatusBadRequest)
 		return
@@ -69,6 +72,7 @@ func SendInvite(w http.ResponseWriter, r *http.Request) {
 		Email string `json:"email"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes/{id}/invite", "400").Inc()
 		inviteErrors.WithLabelValues("create", "invalid_body").Inc()
 		http.Error(w, "Invalid body", http.StatusBadRequest)
 		return
@@ -76,6 +80,7 @@ func SendInvite(w http.ResponseWriter, r *http.Request) {
 
 	ownerID, err := primitive.ObjectIDFromHex(claims.UserID)
 	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes/{id}/invite", "400").Inc()
 		inviteErrors.WithLabelValues("create", "invalid_owner_id").Inc()
 		http.Error(w, "Invalid owner ID", http.StatusBadRequest)
 		return
@@ -95,14 +100,15 @@ func SendInvite(w http.ResponseWriter, r *http.Request) {
 
 	_, err = db.InviteCollection.InsertOne(ctx, invite)
 	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes/{id}/invite", "500").Inc()
 		inviteErrors.WithLabelValues("create", "db_error").Inc()
 		http.Error(w, "DB error: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes/{id}/invite", "201").Inc()
+	metrics.ActiveInvites.Inc()
 	inviteOperations.WithLabelValues("create", "success").Inc()
-	activeInvites.Inc()
-
 	json.NewEncoder(w).Encode(map[string]string{"message": "Invitație trimisă"})
 }
 
@@ -118,6 +124,7 @@ func GetMyInvites(w http.ResponseWriter, r *http.Request) {
 		"status":   models.Pending,
 	})
 	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", "/user/invites", "500").Inc()
 		inviteErrors.WithLabelValues("list", "db_error").Inc()
 		http.Error(w, "DB error: "+err.Error(), http.StatusInternalServerError)
 		return
@@ -125,13 +132,14 @@ func GetMyInvites(w http.ResponseWriter, r *http.Request) {
 
 	var invites []models.Invite
 	if err := cursor.All(ctx, &invites); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", "/user/invites", "500").Inc()
 		inviteErrors.WithLabelValues("list", "cursor_error").Inc()
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	metrics.HTTPRequestsTotal.WithLabelValues("GET", "/user/invites", "200").Inc()
 	inviteOperations.WithLabelValues("list", "success").Inc()
-
 	json.NewEncoder(w).Encode(invites)
 }
 
@@ -153,6 +161,7 @@ func RespondToInvite(w http.ResponseWriter, r *http.Request) {
 		ctx,
 		bson.M{"_id": inviteID, "receiver": claims.Email},
 	).Decode(&invite); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/invites/{id}/respond", "404").Inc()
 		inviteErrors.WithLabelValues("accept", "not_found").Inc()
 		http.Error(w, "Invite not found", http.StatusNotFound)
 		return
@@ -166,6 +175,7 @@ func RespondToInvite(w http.ResponseWriter, r *http.Request) {
 		ctx, inviteID,
 		bson.M{"$set": bson.M{"status": newStatus}},
 	); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/invites/{id}/respond", "500").Inc()
 		inviteErrors.WithLabelValues("accept", "update_error").Inc()
 		http.Error(w, "Update failed", http.StatusInternalServerError)
 		return
@@ -178,6 +188,7 @@ func RespondToInvite(w http.ResponseWriter, r *http.Request) {
 			ctx, invite.ClassID,
 			bson.M{"$addToSet": bson.M{"students": studentID}},
 		); err != nil {
+			metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/invites/{id}/respond", "500").Inc()
 			inviteErrors.WithLabelValues("accept", "class_update_error").Inc()
 			http.Error(w, "Failed to add student to class", http.StatusInternalServerError)
 			return
@@ -187,13 +198,14 @@ func RespondToInvite(w http.ResponseWriter, r *http.Request) {
 			ctx, studentID,
 			bson.M{"$addToSet": bson.M{"classes": invite.ClassID}},
 		); err != nil {
+			metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/invites/{id}/respond", "500").Inc()
 			inviteErrors.WithLabelValues("accept", "user_update_error").Inc()
 			http.Error(w, "Failed to update user", http.StatusInternalServerError)
 			return
 		}
 	}
 
+	metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/invites/{id}/respond", "200").Inc()
 	inviteOperations.WithLabelValues("accept", "success").Inc()
-
 	json.NewEncoder(w).Encode(map[string]string{"message": "Invite processed"})
 }

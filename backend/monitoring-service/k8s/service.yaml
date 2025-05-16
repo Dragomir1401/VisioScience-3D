@@ -114,17 +114,17 @@ data:
       - job_name: 'user-data-service'
         static_configs:
           - targets: ['user-data-service:8081']
-        metrics_path: '/metrics'
+        metrics_path: '/user/metrics'
 
       - job_name: 'feed-data-service'
         static_configs:
           - targets: ['feed-data-service:8080']
-        metrics_path: '/metrics'
+        metrics_path: '/feed/metrics'
 
       - job_name: 'evaluation-service'
         static_configs:
           - targets: ['evaluation-service:8080']
-        metrics_path: '/metrics'
+        metrics_path: '/evaluation/metrics'
 
       - job_name: 'prometheus'
         static_configs:
@@ -207,7 +207,7 @@ data:
     
     [security]
     admin_user = admin
-    admin_password = admin
+    admin_password = password
     
     [auth.anonymous]
     enabled = true

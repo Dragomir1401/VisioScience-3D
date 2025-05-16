@@ -13,6 +13,7 @@ import (
 	"user-data-service/models"
 	db "user-data-service/mongo"
 
+	"user-data-service/metrics"
 	"user-data-service/utils"
 )
 
@@ -21,6 +22,7 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 	userOID, err := primitive.ObjectIDFromHex(claims.UserID)
 	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/quiz/result", "400").Inc()
 		http.Error(w, "Invalid user ID", http.StatusBadRequest)
 		return
 	}
@@ -30,11 +32,13 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		Score  int    `json:"score"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/quiz/result", "400").Inc()
 		http.Error(w, "Bad payload", http.StatusBadRequest)
 		return
 	}
 	quizOID, err := primitive.ObjectIDFromHex(req.QuizID)
 	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/quiz/result", "400").Inc()
 		http.Error(w, "Invalid quiz ID", http.StatusBadRequest)
 		return
 	}
@@ -53,10 +57,12 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		bson.M{"$push": bson.M{"quiz_results": meta}},
 	)
 	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/quiz/result", "500").Inc()
 		http.Error(w, "DB error: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/quiz/result", "201").Inc()
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Result saved"})
 }
@@ -65,6 +71,7 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 func GetUserQuizResult(w http.ResponseWriter, r *http.Request) {
 	quizOID, err := primitive.ObjectIDFromHex(mux.Vars(r)["quizId"])
 	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", "/user/quiz/results/{quizId}", "400").Inc()
 		http.Error(w, "Invalid quiz ID", http.StatusBadRequest)
 		return
 	}
@@ -77,6 +84,7 @@ func GetUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		r.Context(),
 		bson.M{"_id": userOID, "quiz_results.quiz_id": quizOID},
 	).Decode(&user); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", "/user/quiz/results/{quizId}", "404").Inc()
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
@@ -88,6 +96,7 @@ func GetUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	metrics.HTTPRequestsTotal.WithLabelValues("GET", "/user/quiz/results/{quizId}", "200").Inc()
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(last)
 }

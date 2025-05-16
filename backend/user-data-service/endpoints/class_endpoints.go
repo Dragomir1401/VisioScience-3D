@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"time"
 
+	"user-data-service/metrics"
 	"user-data-service/models"
 	db "user-data-service/mongo"
 	"user-data-service/utils"
@@ -17,7 +18,6 @@ import (
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var (
@@ -63,7 +63,7 @@ func init() {
 func CreateClass(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 	if claims.Role != string(models.RoleTeacher) {
-		classErrors.WithLabelValues("create", "forbidden").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes", "403").Inc()
 		http.Error(w, "Forbidden", http.StatusForbidden)
 		return
 	}
@@ -72,7 +72,7 @@ func CreateClass(w http.ResponseWriter, r *http.Request) {
 		Name string `json:"name"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		classErrors.WithLabelValues("create", "invalid_body").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes", "400").Inc()
 		http.Error(w, "Invalid body", http.StatusBadRequest)
 		return
 	}
@@ -81,7 +81,7 @@ func CreateClass(w http.ResponseWriter, r *http.Request) {
 
 	ownerID, err := primitive.ObjectIDFromHex(claims.UserID)
 	if err != nil {
-		classErrors.WithLabelValues("create", "invalid_owner_id").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes", "400").Inc()
 		http.Error(w, "Invalid owner ID", http.StatusBadRequest)
 		return
 	}
@@ -100,15 +100,13 @@ func CreateClass(w http.ResponseWriter, r *http.Request) {
 
 	_, err = db.ClassCollection.InsertOne(ctx, class)
 	if err != nil {
-		classErrors.WithLabelValues("create", "db_error").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes", "500").Inc()
 		http.Error(w, "Insert error", http.StatusInternalServerError)
 		return
 	}
 
-	classOperations.WithLabelValues("create", "success").Inc()
-	activeClasses.Inc()
-	classStudents.WithLabelValues(class.ID.Hex()).Set(0)
-
+	metrics.ActiveClasses.Inc()
+	metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes", "201").Inc()
 	json.NewEncoder(w).Encode(class)
 }
 
@@ -471,10 +469,10 @@ func DeleteClass(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 
 	if claims.Role != string(models.RoleTeacher) {
-		classErrors.WithLabelValues("delete", "forbidden").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("DELETE", "/user/classes/{id}", "403").Inc()
 		w.WriteHeader(http.StatusForbidden)
 		json.NewEncoder(w).Encode(map[string]string{
-			"error": fmt.Sprintf("Forbidden: User role is %s, expected %s", claims.Role, models.RoleTeacher),
+			"error": "Forbidden: User role is not teacher",
 		})
 		return
 	}
@@ -482,20 +480,20 @@ func DeleteClass(w http.ResponseWriter, r *http.Request) {
 	classIDHex := mux.Vars(r)["id"]
 	classID, err := primitive.ObjectIDFromHex(classIDHex)
 	if err != nil {
-		classErrors.WithLabelValues("delete", "invalid_class_id").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("DELETE", "/user/classes/{id}", "400").Inc()
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]string{
-			"error": fmt.Sprintf("Invalid class ID format: %v", err),
+			"error": "Invalid class ID format",
 		})
 		return
 	}
 
 	ownerID, err := primitive.ObjectIDFromHex(claims.UserID)
 	if err != nil {
-		classErrors.WithLabelValues("delete", "invalid_owner_id").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("DELETE", "/user/classes/{id}", "400").Inc()
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]string{
-			"error": fmt.Sprintf("Invalid user ID format: %v", err),
+			"error": "Invalid user ID format",
 		})
 		return
 	}
@@ -506,24 +504,16 @@ func DeleteClass(w http.ResponseWriter, r *http.Request) {
 	var class models.Class
 	err = db.ClassCollection.FindOne(ctx, bson.M{"_id": classID}).Decode(&class)
 	if err != nil {
-		if err == mongo.ErrNoDocuments {
-			classErrors.WithLabelValues("delete", "class_not_found").Inc()
-			w.WriteHeader(http.StatusNotFound)
-			json.NewEncoder(w).Encode(map[string]string{
-				"error": "Class not found",
-			})
-			return
-		}
-		classErrors.WithLabelValues("delete", "db_error").Inc()
-		w.WriteHeader(http.StatusInternalServerError)
+		metrics.HTTPRequestsTotal.WithLabelValues("DELETE", "/user/classes/{id}", "404").Inc()
+		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(map[string]string{
-			"error": fmt.Sprintf("Database error: %v", err),
+			"error": "Class not found",
 		})
 		return
 	}
 
 	if class.OwnerID != ownerID {
-		classErrors.WithLabelValues("delete", "not_owner").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("DELETE", "/user/classes/{id}", "403").Inc()
 		w.WriteHeader(http.StatusForbidden)
 		json.NewEncoder(w).Encode(map[string]string{
 			"error": "You don't have permission to delete this class",
@@ -536,16 +526,16 @@ func DeleteClass(w http.ResponseWriter, r *http.Request) {
 		"owner_id": ownerID,
 	})
 	if err != nil {
-		classErrors.WithLabelValues("delete", "delete_error").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("DELETE", "/user/classes/{id}", "500").Inc()
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{
-			"error": fmt.Sprintf("Delete failed: %v", err),
+			"error": "Delete failed",
 		})
 		return
 	}
 
 	if res.DeletedCount == 0 {
-		classErrors.WithLabelValues("delete", "not_deleted").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("DELETE", "/user/classes/{id}", "404").Inc()
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(map[string]string{
 			"error": "Class not found or not owned",
@@ -553,10 +543,8 @@ func DeleteClass(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	classOperations.WithLabelValues("delete", "success").Inc()
-	activeClasses.Dec()
-	classStudents.DeleteLabelValues(classIDHex)
-
+	metrics.ActiveClasses.Dec()
+	metrics.HTTPRequestsTotal.WithLabelValues("DELETE", "/user/classes/{id}", "200").Inc()
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "Class successfully deleted",
