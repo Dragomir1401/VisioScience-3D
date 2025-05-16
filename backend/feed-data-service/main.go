@@ -6,85 +6,30 @@ import (
 
 	handlers "feed-data-service/endpoints"
 	helpers "feed-data-service/helpers"
+	"feed-data-service/metrics"
 
 	gorillaHandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
-
-var (
-	httpRequestsTotal = prometheus.NewCounterVec(
-		prometheus.CounterOpts{
-			Name: "feed_http_requests_total",
-			Help: "Total number of HTTP requests to feed service",
-		},
-		[]string{"method", "endpoint", "status"},
-	)
-
-	httpRequestDuration = prometheus.NewHistogramVec(
-		prometheus.HistogramOpts{
-			Name:    "feed_http_request_duration_seconds",
-			Help:    "Duration of HTTP requests to feed service",
-			Buckets: prometheus.DefBuckets,
-		},
-		[]string{"method", "endpoint"},
-	)
-
-	activeFeeds = prometheus.NewGauge(
-		prometheus.GaugeOpts{
-			Name: "active_feeds",
-			Help: "Number of active feeds",
-		},
-	)
-
-	activeMolecules = prometheus.NewGauge(
-		prometheus.GaugeOpts{
-			Name: "active_molecules",
-			Help: "Number of active molecules",
-		},
-	)
-
-	feedOperations = prometheus.NewCounterVec(
-		prometheus.CounterOpts{
-			Name: "feed_operations_total",
-			Help: "Total number of feed operations",
-		},
-		[]string{"operation", "shape"},
-	)
-
-	moleculeOperations = prometheus.NewCounterVec(
-		prometheus.CounterOpts{
-			Name: "molecule_operations_total",
-			Help: "Total number of molecule operations",
-		},
-		[]string{"operation"},
-	)
-)
-
-func init() {
-	prometheus.MustRegister(httpRequestsTotal)
-	prometheus.MustRegister(httpRequestDuration)
-	prometheus.MustRegister(activeFeeds)
-	prometheus.MustRegister(activeMolecules)
-	prometheus.MustRegister(feedOperations)
-	prometheus.MustRegister(moleculeOperations)
-}
 
 func prometheusMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		start := prometheus.NewTimer(httpRequestDuration.WithLabelValues(r.Method, r.URL.Path))
+		start := prometheus.NewTimer(metrics.HTTPRequestDuration.WithLabelValues(r.Method, r.URL.Path))
 		next.ServeHTTP(w, r)
 		start.ObserveDuration()
-		httpRequestsTotal.WithLabelValues(r.Method, r.URL.Path, "200").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues(r.Method, r.URL.Path, "200").Inc()
 	})
 }
 
 func main() {
+	// Register metrics
+	metrics.RegisterMetrics()
+
 	r := mux.NewRouter()
 
 	// Prometheus metrics endpoint
-	r.Handle("/metrics", promhttp.Handler()).Methods("GET")
+	r.Handle("/metrics", metrics.GetHandler()).Methods("GET")
 
 	// Apply Prometheus middleware to all routes
 	r.Use(prometheusMiddleware)

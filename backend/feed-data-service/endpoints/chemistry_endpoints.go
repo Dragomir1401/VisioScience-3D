@@ -149,8 +149,6 @@ func GetMoleculeByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	moleculeOperations.WithLabelValues("get", mol.Type).Inc()
-
 	json.NewEncoder(w).Encode(mol)
 }
 
@@ -215,8 +213,6 @@ func UpdateMolecule(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
-
-	moleculeOperations.WithLabelValues("update", updatedMol.Type).Inc()
 
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message":        "Molecule updated (best effort)",
