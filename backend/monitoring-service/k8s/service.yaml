@@ -89,10 +89,16 @@ spec:
           volumeMounts:
             - name: grafana-datasources
               mountPath: /etc/grafana/provisioning/datasources
+            - name: grafana-config
+              mountPath: /etc/grafana/grafana.ini
+              subPath: grafana.ini
       volumes:
         - name: grafana-datasources
           configMap:
             name: grafana-datasources
+        - name: grafana-config
+          configMap:
+            name: grafana-config
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -167,6 +173,8 @@ metadata:
   name: monitoring-service-ingress
   annotations:
     konghq.com/strip-path: "false"
+    konghq.com/preserve-host: "true"
+    konghq.com/protocols: "http,https"
 spec:
   ingressClassName: kong
   rules:
@@ -176,6 +184,32 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: monitoring-service
+                name: grafana
                 port:
-                  number: 8082 
+                  number: 3000
+          - path: /login
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 3000 
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-config
+data:
+  grafana.ini: |
+    [server]
+    root_url = http://localhost:8000/grafana
+    serve_from_sub_path = true
+    
+    [security]
+    admin_user = admin
+    admin_password = admin
+    
+    [auth.anonymous]
+    enabled = true
+    org_name = Main Org.
+    org_role = Viewer 

@@ -3,8 +3,6 @@ package main
 import (
 	"log"
 	"net/http"
-	"net/http/httputil"
-	"net/url"
 
 	gorillaHandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -25,15 +23,6 @@ func main() {
 		gorillaHandlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 	)
 
-	// Proxy requests to Grafana
-	grafanaURL, err := url.Parse("http://grafana:3000")
-	if err != nil {
-		log.Fatal("Error parsing Grafana URL:", err)
-	}
-	grafanaProxy := httputil.NewSingleHostReverseProxy(grafanaURL)
-	r.PathPrefix("/grafana/").Handler(http.StripPrefix("/grafana", grafanaProxy))
-
-	// Health check endpoint
 	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("OK"))
