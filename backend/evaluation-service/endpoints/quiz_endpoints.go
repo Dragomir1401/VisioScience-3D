@@ -1,9 +1,10 @@
-package handlers
+package endpoints
 
 import (
 	"context"
 	"encoding/json"
 	helpers "evaluation-service/helpers"
+	"evaluation-service/metrics"
 	models "evaluation-service/models"
 	"log"
 	"net/http"
@@ -20,20 +21,28 @@ import (
 
 // POST /evaluation/quiz
 func CreateQuiz(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	defer func() {
+		metrics.EvaluationDuration.WithLabelValues("create_quiz").Observe(time.Since(start).Seconds())
+	}()
+
 	var input models.QuizInput
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		metrics.EvaluationOperations.WithLabelValues("create_quiz", "error").Inc()
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	classID, err := primitive.ObjectIDFromHex(input.ClassID)
 	if err != nil {
+		metrics.EvaluationOperations.WithLabelValues("create_quiz", "error").Inc()
 		http.Error(w, "Invalid class_id", http.StatusBadRequest)
 		return
 	}
 
 	ownerID, err := primitive.ObjectIDFromHex(input.OwnerID)
 	if err != nil {
+		metrics.EvaluationOperations.WithLabelValues("create_quiz", "error").Inc()
 		http.Error(w, "Invalid owner_id", http.StatusBadRequest)
 		return
 	}
@@ -55,19 +64,28 @@ func CreateQuiz(w http.ResponseWriter, r *http.Request) {
 
 	collection := helpers.Client.Database("data-feed-db").Collection("quizzes")
 	if _, err := collection.InsertOne(context.Background(), quiz); err != nil {
+		metrics.EvaluationOperations.WithLabelValues("create_quiz", "error").Inc()
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	metrics.EvaluationOperations.WithLabelValues("create_quiz", "success").Inc()
+	metrics.ActiveEvaluations.Inc()
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(quiz)
 }
 
 // GET /evaluation/quiz
 func GetAllQuizzes(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	defer func() {
+		metrics.EvaluationDuration.WithLabelValues("get_all_quizzes").Observe(time.Since(start).Seconds())
+	}()
+
 	collection := helpers.Client.Database("data-feed-db").Collection("quizzes")
 	cursor, err := collection.Find(context.Background(), bson.M{})
 	if err != nil {
+		metrics.EvaluationOperations.WithLabelValues("get_all_quizzes", "error").Inc()
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -75,10 +93,12 @@ func GetAllQuizzes(w http.ResponseWriter, r *http.Request) {
 
 	var quizzes []models.Quiz
 	if err := cursor.All(context.Background(), &quizzes); err != nil {
+		metrics.EvaluationOperations.WithLabelValues("get_all_quizzes", "error").Inc()
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	metrics.EvaluationOperations.WithLabelValues("get_all_quizzes", "success").Inc()
 	json.NewEncoder(w).Encode(quizzes)
 }
 
@@ -155,9 +175,15 @@ func UpdateQuiz(w http.ResponseWriter, r *http.Request) {
 
 // DELETE /evaluation/quiz/{id}
 func DeleteQuiz(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	defer func() {
+		metrics.EvaluationDuration.WithLabelValues("delete_quiz").Observe(time.Since(start).Seconds())
+	}()
+
 	idStr := mux.Vars(r)["id"]
 	quizID, err := primitive.ObjectIDFromHex(idStr)
 	if err != nil {
+		metrics.EvaluationOperations.WithLabelValues("delete_quiz", "error").Inc()
 		http.Error(w, "Invalid quiz ID", http.StatusBadRequest)
 		return
 	}
@@ -165,14 +191,18 @@ func DeleteQuiz(w http.ResponseWriter, r *http.Request) {
 	collection := helpers.Client.Database("data-feed-db").Collection("quizzes")
 	result, err := collection.DeleteOne(context.Background(), bson.M{"_id": quizID})
 	if err != nil {
+		metrics.EvaluationOperations.WithLabelValues("delete_quiz", "error").Inc()
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	if result.DeletedCount == 0 {
+		metrics.EvaluationOperations.WithLabelValues("delete_quiz", "not_found").Inc()
 		http.Error(w, "Quiz not found", http.StatusNotFound)
 		return
 	}
 
+	metrics.EvaluationOperations.WithLabelValues("delete_quiz", "success").Inc()
+	metrics.ActiveEvaluations.Dec()
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message": "Deleted",
 	})
@@ -336,9 +366,15 @@ func GetQuizForAttempt(w http.ResponseWriter, r *http.Request) {
 
 // POST /evaluation/quiz/attempt/{quizId}
 func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	defer func() {
+		metrics.EvaluationDuration.WithLabelValues("submit_attempt").Observe(time.Since(start).Seconds())
+	}()
+
 	quizIDHex := mux.Vars(r)["quizId"]
 	quizID, err := primitive.ObjectIDFromHex(quizIDHex)
 	if err != nil {
+		metrics.EvaluationOperations.WithLabelValues("submit_attempt", "error").Inc()
 		http.Error(w, "invalid quiz id", http.StatusBadRequest)
 		return
 	}
@@ -350,6 +386,7 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		Answers []int `json:"answers"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		metrics.EvaluationOperations.WithLabelValues("submit_attempt", "error").Inc()
 		http.Error(w, "bad body", http.StatusBadRequest)
 		return
 	}
@@ -357,6 +394,7 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 	var quiz models.Quiz
 	coll := helpers.Client.Database("data-feed-db").Collection("quizzes")
 	if err := coll.FindOne(r.Context(), bson.M{"_id": quizID}).Decode(&quiz); err != nil {
+		metrics.EvaluationOperations.WithLabelValues("submit_attempt", "error").Inc()
 		http.Error(w, "quiz not found", http.StatusNotFound)
 		return
 	}
@@ -389,16 +427,19 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		bson.M{"$push": bson.M{"quiz_results": result}},
 	)
 	if err != nil {
+		metrics.EvaluationOperations.WithLabelValues("submit_attempt", "error").Inc()
 		log.Printf("SubmitAttempt ERROR pushing result: %v", err)
 		http.Error(w, "Failed to save result: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 	if upd.ModifiedCount == 0 {
+		metrics.EvaluationOperations.WithLabelValues("submit_attempt", "error").Inc()
 		log.Printf("SubmitAttempt WARNING: no documents modified for quiz %s", quizIDHex)
 		http.Error(w, "Quiz not found or not updated", http.StatusNotFound)
 		return
 	}
 
+	metrics.EvaluationOperations.WithLabelValues("submit_attempt", "success").Inc()
 	log.Printf(
 		"SubmitAttempt OK: quiz=%s user=%s score=%d modified=%d",
 		quizIDHex, claims.UserID, score, upd.ModifiedCount,
