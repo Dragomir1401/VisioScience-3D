@@ -1,4 +1,3 @@
-// src/components/PopupSidebar.jsx
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { purple_arrow } from "../assets/icons";
@@ -29,7 +28,7 @@ const PopupSidebar = ({ text, link, buttonText }) => {
     >
       {/* Tab button */}
       <button
-        onClick={() => setOpen(o => !o)}
+        onClick={() => setOpen((o) => !o)}
         className="
           absolute left-[-2.5rem] top-1/2 -translate-y-1/2
           w-12 h-12
@@ -61,9 +60,7 @@ const PopupSidebar = ({ text, link, buttonText }) => {
             animate-bounce left-[-5.5rem]
           "
         >
-          <span className="text-3xl text-mulberry transform rotate-90">
-          ⬆️ 
-          </span>
+          <span className="text-3xl text-mulberry transform rotate-90">⬆️</span>
           <span className="mt-1 text-xs text-mulberry font-semibold">
             Hover
           </span>

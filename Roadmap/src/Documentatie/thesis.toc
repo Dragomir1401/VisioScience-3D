@@ -2,11 +2,112 @@
 \contentsline {chapter}{Acknowledgements}{i}{table.caption.2}%
 \contentsline {chapter}{Abstract}{ii}{chapter*.3}%
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Project Description}{1}{section.1.1}%
-\contentsline {subsection}{\numberline {1.1.1}Project Scope}{1}{subsection.1.1.1}%
-\contentsline {subsection}{\numberline {1.1.2}Project Objectives}{1}{subsection.1.1.2}%
+\contentsline {section}{\numberline {1.1}Context}{1}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Definirea problemei}{1}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}Obiective}{1}{subsection.1.1.2}%
 \contentsline {subsection}{\numberline {1.1.3}Related Work}{2}{subsection.1.1.3}%
 \contentsline {subsection}{\numberline {1.1.4}Demo listings}{2}{subsection.1.1.4}%
 \contentsline {subsection}{\numberline {1.1.5}Tables}{2}{subsection.1.1.5}%
-\contentsline {chapter}{\numberline {A}Project Build System Makefiles}{4}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Makefile.test}{4}{section.A.1}%
+\contentsline {section}{\numberline {1.2}Soluția propusă}{3}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Rezultate obținute}{3}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Rezultate și concluzii pe scurt}{3}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Analiza problemei / Motivația proiectului}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Plaja de utilizatori}{4}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Categorii}{4}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Profilul utilizatorului}{4}{subsection.2.1.2}%
+\contentsline {section}{\numberline {2.2}Motivația proiectului}{4}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Cerințe funcționale}{4}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Cerințe nefuncționale}{4}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Studiu de piață / Soluții existente}{5}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Alte soluții existente}{5}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Solutia 1}{5}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Solutia 2}{5}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Solutia 3}{5}{subsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.1.4}Solutia 4}{5}{subsection.3.1.4}%
+\contentsline {section}{\numberline {3.2}Raportarea la alte soluții}{5}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Profilul utilizatorului}{5}{section.3.3}%
+\contentsline {chapter}{\numberline {4}Tehnologii utilizate în cadrul soluției propuse}{6}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Analiza tehnologiilor}{7}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Infrastructură și platformă}{7}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Front-end}{7}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Back-end}{7}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.4}Framework 3D}{7}{subsection.4.1.4}%
+\contentsline {subsection}{\numberline {4.1.5}Baze de date}{7}{subsection.4.1.5}%
+\contentsline {subsection}{\numberline {4.1.6}Monitorizare}{7}{subsection.4.1.6}%
+\contentsline {subsection}{\numberline {4.1.7}Deployment și CI/CD}{7}{subsection.4.1.7}%
+\contentsline {section}{\numberline {4.2}Soluția UI/UX}{7}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Paleta de culori}{7}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Designul interfeței utilizatorului}{7}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Experiența utilizatorului}{7}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}Crearea componentelor UI}{7}{subsection.4.2.4}%
+\contentsline {section}{\numberline {4.3}Soluția de back-end}{7}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Descrierea arhitecturii}{7}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Descrierea serviciilor}{7}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Securitate}{7}{subsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.3.4}Descrierea API-urilor}{7}{subsection.4.3.4}%
+\contentsline {subsection}{\numberline {4.3.5}Configurarea clusterului}{7}{subsection.4.3.5}%
+\contentsline {subsection}{\numberline {4.3.6}Rutarea și gestionarea traficului}{7}{subsection.4.3.6}%
+\contentsline {subsection}{\numberline {4.3.7}Deployment}{7}{subsection.4.3.7}%
+\contentsline {subsection}{\numberline {4.3.8}CI/CD}{7}{subsection.4.3.8}%
+\contentsline {subsection}{\numberline {4.3.9}Metrici / Monitorizare}{7}{subsection.4.3.9}%
+\contentsline {section}{\numberline {4.4}Soluția de creare a scenelor 3D}{7}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Utilizarea tehnologiilor WebGL și Three.js}{7}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Crearea și gestionarea scenelor 3D}{7}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Interacțiunea cu obiectele 3D}{7}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.4}Optimizarea performanței graficii 3D}{7}{subsection.4.4.4}%
+\contentsline {subsection}{\numberline {4.4.5}Integrarea cu frontendul}{7}{subsection.4.4.5}%
+\contentsline {section}{\numberline {4.5}Soluția de baze de date}{7}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Tipuri de baze de date utilizate / Motivația alegerii}{7}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Structura bazei de date}{7}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Gestionarea datelor}{7}{subsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.5.4}Securitatea datelor}{7}{subsection.4.5.4}%
+\contentsline {subsection}{\numberline {4.5.5}Backup și restaurare}{7}{subsection.4.5.5}%
+\contentsline {subsection}{\numberline {4.5.6}Performanța și scalabilitatea bazei de date}{7}{subsection.4.5.6}%
+\contentsline {subsection}{\numberline {4.5.7}Integrarea cu back-endul}{7}{subsection.4.5.7}%
+\contentsline {section}{\numberline {4.6}Funcționalitățile platformei}{7}{section.4.6}%
+\contentsline {subsection}{\numberline {4.6.1}Creare cont si autentificare}{7}{subsection.4.6.1}%
+\contentsline {subsection}{\numberline {4.6.2}Sistemul de roluri și permisiuni}{7}{subsection.4.6.2}%
+\contentsline {subsection}{\numberline {4.6.3}Meniu interactiv 3D}{7}{subsection.4.6.3}%
+\contentsline {subsection}{\numberline {4.6.4}Secțiuni educaționale}{7}{subsection.4.6.4}%
+\contentsline {subsection}{\numberline {4.6.5}Interacțiunea cu scenele 3D educaționale}{7}{subsection.4.6.5}%
+\contentsline {subsection}{\numberline {4.6.6}Gestionare profil}{7}{subsection.4.6.6}%
+\contentsline {subsection}{\numberline {4.6.7}Gestionare clase}{7}{subsection.4.6.7}%
+\contentsline {subsection}{\numberline {4.6.8}Gestionare elevi}{7}{subsection.4.6.8}%
+\contentsline {subsection}{\numberline {4.6.9}Gestionare teste}{7}{subsection.4.6.9}%
+\contentsline {subsection}{\numberline {4.6.10}Vizualizare rezultate}{7}{subsection.4.6.10}%
+\contentsline {chapter}{\numberline {5}Detalii de implementare}{8}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Configurare back-end}{8}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Dezvoltare back-end}{8}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Configurare front-end}{8}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Dezvoltare front-end}{8}{subsection.5.2.2}%
+\contentsline {chapter}{\numberline {6}Scenarii de utilizare}{9}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Înregistrare si autentificare utilizator}{9}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Explorarea meniul principal}{9}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Accesarea secțiunilor educaționale}{9}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Interacțiunea cu scenele 3D educaționale}{9}{section.6.4}%
+\contentsline {section}{\numberline {6.5}Gestionarea profilului de profesor}{9}{section.6.5}%
+\contentsline {subsection}{\numberline {6.5.1}Crearea de clase și gestionarea elevilor}{9}{subsection.6.5.1}%
+\contentsline {subsection}{\numberline {6.5.2}Crearea de teste și gestionarea lor}{9}{subsection.6.5.2}%
+\contentsline {subsection}{\numberline {6.5.3}Vizualizarea rezultatelor}{9}{subsection.6.5.3}%
+\contentsline {section}{\numberline {6.6}Gestionarea contului de elev}{9}{section.6.6}%
+\contentsline {subsection}{\numberline {6.6.1}Intrarea în clasele profesorului}{9}{subsection.6.6.1}%
+\contentsline {subsection}{\numberline {6.6.2}Accesarea testelor și vizualizarea rezultatelor}{9}{subsection.6.6.2}%
+\contentsline {subsection}{\numberline {6.6.3}Rezolvarea testelor}{9}{subsection.6.6.3}%
+\contentsline {chapter}{\numberline {7}Evaluarea implementării}{10}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Evaluarea back-endului}{10}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Testarea back-endului}{10}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}Monitorizarea back-endului}{10}{subsection.7.1.2}%
+\contentsline {subsection}{\numberline {7.1.3}Evaluarea performanței back-endului}{10}{subsection.7.1.3}%
+\contentsline {section}{\numberline {7.2}Evaluarea front-endului}{10}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Testarea front-endului}{10}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}Monitorizarea front-endului}{10}{subsection.7.2.2}%
+\contentsline {subsection}{\numberline {7.2.3}Evaluarea performanței front-endului}{10}{subsection.7.2.3}%
+\contentsline {section}{\numberline {7.3}Testarea infrastructurii / Platformei}{10}{section.7.3}%
+\contentsline {chapter}{\numberline {8}Concluzii și perspective}{11}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Concluzii}{11}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Dezvoltare viitoare}{11}{section.8.2}%
+\contentsline {chapter}{\numberline {9}Bibliografie}{12}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Referințe bibliografice}{12}{section.9.1}%
+\contentsline {chapter}{\numberline {10}Anexe}{13}{chapter.10}%
+\contentsline {chapter}{\numberline {A}Project Build System Makefiles}{14}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Makefile.test}{14}{section.A.1}%
