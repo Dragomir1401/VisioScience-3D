@@ -109,6 +109,11 @@ data:
     global:
       scrape_interval: 15s
       evaluation_interval: 15s
+      scrape_timeout: 10s
+      storage:
+        tsdb:
+          retention:
+            time: 4d
 
     scrape_configs:
       - job_name: 'user-data-service'
