@@ -22,7 +22,7 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 	userOID, err := primitive.ObjectIDFromHex(claims.UserID)
 	if err != nil {
-		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/quiz/result", "400").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
 		http.Error(w, "Invalid user ID", http.StatusBadRequest)
 		return
 	}
@@ -32,13 +32,13 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		Score  int    `json:"score"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/quiz/result", "400").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
 		http.Error(w, "Bad payload", http.StatusBadRequest)
 		return
 	}
 	quizOID, err := primitive.ObjectIDFromHex(req.QuizID)
 	if err != nil {
-		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/quiz/result", "400").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
 		http.Error(w, "Invalid quiz ID", http.StatusBadRequest)
 		return
 	}
@@ -57,12 +57,12 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		bson.M{"$push": bson.M{"quiz_results": meta}},
 	)
 	if err != nil {
-		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/quiz/result", "500").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
 		http.Error(w, "DB error: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/quiz/result", "201").Inc()
+	metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "201").Inc()
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Result saved"})
 }

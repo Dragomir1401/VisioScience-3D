@@ -63,7 +63,7 @@ func init() {
 func CreateClass(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 	if claims.Role != string(models.RoleTeacher) {
-		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes", "403").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "403").Inc()
 		http.Error(w, "Forbidden", http.StatusForbidden)
 		return
 	}
@@ -72,7 +72,7 @@ func CreateClass(w http.ResponseWriter, r *http.Request) {
 		Name string `json:"name"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes", "400").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
 		http.Error(w, "Invalid body", http.StatusBadRequest)
 		return
 	}
@@ -81,7 +81,7 @@ func CreateClass(w http.ResponseWriter, r *http.Request) {
 
 	ownerID, err := primitive.ObjectIDFromHex(claims.UserID)
 	if err != nil {
-		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes", "400").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
 		http.Error(w, "Invalid owner ID", http.StatusBadRequest)
 		return
 	}
@@ -100,13 +100,13 @@ func CreateClass(w http.ResponseWriter, r *http.Request) {
 
 	_, err = db.ClassCollection.InsertOne(ctx, class)
 	if err != nil {
-		metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes", "500").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
 		http.Error(w, "Insert error", http.StatusInternalServerError)
 		return
 	}
 
 	metrics.ActiveClasses.Inc()
-	metrics.HTTPRequestsTotal.WithLabelValues("POST", "/user/classes", "201").Inc()
+	metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "201").Inc()
 	json.NewEncoder(w).Encode(class)
 }
 

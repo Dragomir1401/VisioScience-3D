@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"regexp"
 
 	gorillaHandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -13,14 +14,17 @@ import (
 	"user-data-service/metrics"
 	middleware "user-data-service/middleware"
 	mongo "user-data-service/mongo"
+	"user-data-service/utils"
 )
+
+var idPattern = regexp.MustCompile(`/[0-9a-fA-F]{24}`)
 
 func prometheusMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		timer := prometheus.NewTimer(metrics.HTTPRequestDuration.WithLabelValues(r.Method, r.URL.Path))
 		next.ServeHTTP(w, r)
 		timer.ObserveDuration()
-		metrics.HTTPRequestsTotal.WithLabelValues(r.Method, r.URL.Path, "200").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues(r.Method, utils.NormalizePath(r.URL.Path), "200").Inc()
 	})
 }
 
