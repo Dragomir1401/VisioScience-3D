@@ -20,6 +20,12 @@ import (
 
 func prometheusMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Skip metrics collection for the metrics endpoint itself
+		if r.URL.Path == "/evaluation/metrics" {
+			next.ServeHTTP(w, r)
+			return
+		}
+
 		start := prometheus.NewTimer(metrics.HTTPRequestDuration.WithLabelValues(r.Method, helpers.NormalizePath(r.URL.Path)))
 		next.ServeHTTP(w, r)
 		start.ObserveDuration()
