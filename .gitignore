@@ -1,1 +1,4 @@
 actions-runner
+backend/evaluation-service/.env
+backend/user-data-service/.env
+kubeconfig.yaml
