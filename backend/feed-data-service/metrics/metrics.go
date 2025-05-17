@@ -61,7 +61,7 @@ var (
 			Name: metricPrefix + "molecule_operations_total",
 			Help: "Total number of molecule operations",
 		},
-		[]string{"operation"},
+		[]string{"operation", "entity"},
 	)
 
 	ActiveInvites = prometheus.NewGauge(

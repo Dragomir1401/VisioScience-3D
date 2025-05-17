@@ -9,34 +9,13 @@ import (
 	"net/http"
 	"time"
 
+	"feed-data-service/metrics"
+
 	"github.com/gorilla/mux"
-	"github.com/prometheus/client_golang/prometheus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
-
-var (
-	formulaOperations = prometheus.NewCounterVec(
-		prometheus.CounterOpts{
-			Name: "formula_operations_total",
-			Help: "Total number of formula operations",
-		},
-		[]string{"operation", "shape"},
-	)
-
-	activeFormulas = prometheus.NewGauge(
-		prometheus.GaugeOpts{
-			Name: "active_formulas",
-			Help: "Number of active formulas",
-		},
-	)
-)
-
-func init() {
-	prometheus.MustRegister(formulaOperations)
-	prometheus.MustRegister(activeFormulas)
-}
 
 // CreateFeed - POST /feeds
 func CreateFeed(w http.ResponseWriter, r *http.Request) {
@@ -68,8 +47,8 @@ func CreateFeed(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	formulaOperations.WithLabelValues("create", feed.Formula.Shape).Inc()
-	activeFormulas.Inc()
+	metrics.FeedOperations.WithLabelValues("create", feed.Formula.Shape).Inc()
+	metrics.ActiveFeeds.Inc()
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]interface{}{
@@ -104,7 +83,7 @@ func GetFeedByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	formulaOperations.WithLabelValues("get", feed.Formula.Shape).Inc()
+	metrics.FeedOperations.WithLabelValues("get", feed.Formula.Shape).Inc()
 
 	json.NewEncoder(w).Encode(feed)
 }
@@ -147,7 +126,7 @@ func UpdateFeedByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	formulaOperations.WithLabelValues("update", updatedFeed.Formula.Shape).Inc()
+	metrics.FeedOperations.WithLabelValues("update", updatedFeed.Formula.Shape).Inc()
 
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message":        "Updated",
@@ -180,8 +159,8 @@ func DeleteFeedByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	formulaOperations.WithLabelValues("delete", "formula").Inc()
-	activeFormulas.Dec()
+	metrics.FeedOperations.WithLabelValues("delete", "formula").Inc()
+	metrics.ActiveFeeds.Dec()
 
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message":       "Deleted",
@@ -213,7 +192,7 @@ func GetFeedsByShape(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	formulaOperations.WithLabelValues("list", shape).Inc()
+	metrics.FeedOperations.WithLabelValues("list", shape).Inc()
 
 	json.NewEncoder(w).Encode(feeds)
 }

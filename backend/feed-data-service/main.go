@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"context"
 	handlers "feed-data-service/endpoints"
 	helpers "feed-data-service/helpers"
 	"feed-data-service/metrics"
@@ -11,15 +12,32 @@ import (
 	gorillaHandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func prometheusMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		start := prometheus.NewTimer(metrics.HTTPRequestDuration.WithLabelValues(r.Method, r.URL.Path))
+		start := prometheus.NewTimer(metrics.HTTPRequestDuration.WithLabelValues(r.Method, helpers.NormalizePath(r.URL.Path)))
 		next.ServeHTTP(w, r)
 		start.ObserveDuration()
-		metrics.HTTPRequestsTotal.WithLabelValues(r.Method, r.URL.Path, "200").Inc()
+		metrics.HTTPRequestsTotal.WithLabelValues(r.Method, helpers.NormalizePath(r.URL.Path), "200").Inc()
 	})
+}
+
+func initActiveMoleculesGauge() {
+	collection := helpers.Client.Database("data-feed-db").Collection("molecules")
+	count, err := collection.CountDocuments(context.Background(), bson.M{})
+	if err == nil {
+		metrics.ActiveMolecules.Set(float64(count))
+	}
+}
+
+func initActiveFeedsGauge() {
+	collection := helpers.Client.Database("data-feed-db").Collection("formulas")
+	count, err := collection.CountDocuments(context.Background(), bson.M{})
+	if err == nil {
+		metrics.ActiveFeeds.Set(float64(count))
+	}
 }
 
 func main() {
@@ -36,6 +54,8 @@ func main() {
 
 	// init mongo client
 	helpers.InitMongoClient()
+	initActiveMoleculesGauge()
+	initActiveFeedsGauge()
 
 	// CORS middleware to accept all origins for development purposes
 	corsObj := gorillaHandlers.CORS(

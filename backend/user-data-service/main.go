@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"regexp"
@@ -9,6 +10,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/prometheus/client_golang/prometheus"
+	"go.mongodb.org/mongo-driver/bson"
 
 	handlers "user-data-service/endpoints"
 	"user-data-service/metrics"
@@ -21,11 +23,35 @@ var idPattern = regexp.MustCompile(`/[0-9a-fA-F]{24}`)
 
 func prometheusMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		timer := prometheus.NewTimer(metrics.HTTPRequestDuration.WithLabelValues(r.Method, r.URL.Path))
+		timer := prometheus.NewTimer(metrics.HTTPRequestDuration.WithLabelValues(r.Method, utils.NormalizePath(r.URL.Path)))
 		next.ServeHTTP(w, r)
 		timer.ObserveDuration()
 		metrics.HTTPRequestsTotal.WithLabelValues(r.Method, utils.NormalizePath(r.URL.Path), "200").Inc()
 	})
+}
+
+func initActiveUsersGauge() {
+	collection := mongo.UserCollection
+	count, err := collection.CountDocuments(context.Background(), bson.M{})
+	if err == nil {
+		metrics.ActiveUsers.Set(float64(count))
+	}
+}
+
+func initActiveInvitesGauge() {
+	collection := mongo.InviteCollection
+	count, err := collection.CountDocuments(context.Background(), bson.M{})
+	if err == nil {
+		metrics.ActiveInvites.Set(float64(count))
+	}
+}
+
+func initActiveClassesGauge() {
+	collection := mongo.ClassCollection
+	count, err := collection.CountDocuments(context.Background(), bson.M{})
+	if err == nil {
+		metrics.ActiveClasses.Set(float64(count))
+	}
 }
 
 func main() {
@@ -37,6 +63,9 @@ func main() {
 
 	// Register metrics
 	metrics.RegisterMetrics()
+	initActiveUsersGauge()
+	initActiveInvitesGauge()
+	initActiveClassesGauge()
 
 	r := mux.NewRouter()
 

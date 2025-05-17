@@ -8,37 +8,15 @@ import (
 	"time"
 
 	helpers "feed-data-service/helpers"
+	"feed-data-service/metrics"
 	"feed-data-service/models"
 	prettifier "feed-data-service/prettifier"
 
 	"github.com/gorilla/mux"
-	"github.com/prometheus/client_golang/prometheus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
-
-var (
-	moleculeOperations = prometheus.NewCounterVec(
-		prometheus.CounterOpts{
-			Name: "molecule_operations_total",
-			Help: "Total number of molecule operations",
-		},
-		[]string{"operation", "type"},
-	)
-
-	activeMolecules = prometheus.NewGauge(
-		prometheus.GaugeOpts{
-			Name: "active_molecules",
-			Help: "Number of active molecules",
-		},
-	)
-)
-
-func init() {
-	prometheus.MustRegister(moleculeOperations)
-	prometheus.MustRegister(activeMolecules)
-}
 
 // CreateMolecule - POST /chem/molecules
 func CreateMolecule(w http.ResponseWriter, r *http.Request) {
@@ -83,8 +61,8 @@ func CreateMolecule(w http.ResponseWriter, r *http.Request) {
 	}
 	insertedID := result.InsertedID.(primitive.ObjectID)
 
-	moleculeOperations.WithLabelValues("create", "molecule").Inc()
-	activeMolecules.Inc()
+	metrics.MoleculeOperations.WithLabelValues("create", "molecule").Inc()
+	metrics.ActiveMolecules.Inc()
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]interface{}{
@@ -117,7 +95,7 @@ func GetAllMolecules(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	moleculeOperations.WithLabelValues("list", "molecule").Inc()
+	metrics.MoleculeOperations.WithLabelValues("list", "molecule").Inc()
 
 	json.NewEncoder(w).Encode(molecules)
 }
@@ -247,8 +225,8 @@ func DeleteMolecule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	moleculeOperations.WithLabelValues("delete", "molecule").Inc()
-	activeMolecules.Dec()
+	metrics.MoleculeOperations.WithLabelValues("delete", "molecule").Inc()
+	metrics.ActiveMolecules.Dec()
 
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message":       "Molecule deleted",
