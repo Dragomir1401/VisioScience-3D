@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  21 APR 2025 00:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  17 MAY 2025 20:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -533,7 +533,52 @@ Writing index file thesis.idx
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count332
 \l__pdf_internal_box=\box107
-) (thesis.aux (src/chapters/intro.aux))
+) (thesis.aux (src/chapters/intro.aux
+
+LaTeX Warning: Label `sec:proj' multiply defined.
+
+
+LaTeX Warning: Label `sec:proj' multiply defined.
+
+
+LaTeX Warning: Label `sec:proj' multiply defined.
+
+) (src/chapters/analiza.aux
+
+LaTeX Warning: Label `sec:proj' multiply defined.
+
+
+LaTeX Warning: Label `sub-sec:proj-scope' multiply defined.
+
+) (src/chapters/studiuPiata.aux
+
+LaTeX Warning: Label `chapter:intro' multiply defined.
+
+
+LaTeX Warning: Label `sec:proj' multiply defined.
+
+
+LaTeX Warning: Label `sub-sec:proj-scope' multiply defined.
+
+
+LaTeX Warning: Label `sub-sec:proj-user-profile' multiply defined.
+
+) (src/chapters/tehnologii.aux
+
+LaTeX Warning: Label `sec:proj' multiply defined.
+
+) (src/chapters/implementare.aux
+
+LaTeX Warning: Label `sec:implementare-backend' multiply defined.
+
+
+LaTeX Warning: Label `subsec:implementare-frontend' multiply defined.
+
+) (src/chapters/scenariiUtilizare.aux
+
+LaTeX Warning: Label `chapter:implementare' multiply defined.
+
+) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux) (src/chapters/bibliografie.aux) (src/chapters/anexe.aux))
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 3.
@@ -627,12 +672,12 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: End \AtBeginDocument code.
  (src/global.tex) (template/titlepage.ro.tex
-<src/img/branding/upb.png, id=47, 598.235pt x 598.235pt>
+<src/img/branding/upb.png, id=451, 598.235pt x 598.235pt>
 File: src/img/branding/upb.png Graphic file (type png)
 <use src/img/branding/upb.png>
 Package pdftex.def Info: src/img/branding/upb.png  used on input line 7.
 (pdftex.def)             Requested size: 53.63545pt x 53.62888pt.
-<src/img/branding/cs.png, id=48, 695.59875pt x 307.1475pt>
+<src/img/branding/cs.png, id=452, 695.59875pt x 307.1475pt>
 File: src/img/branding/cs.png Graphic file (type png)
 <use src/img/branding/cs.png>
 Package pdftex.def Info: src/img/branding/cs.png  used on input line 7.
@@ -653,7 +698,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has b
 <to be read again> 
                    \relax 
 l.37 \end{titlepage}
-                     [1]) (src/base/acknowledgements.tex)
+                     [1]) (src/base/multumiri.tex)
 pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
@@ -675,23 +720,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 20--19
 
 (template/contents.pages.tex [2
 
-] (thesis.toc)
+] (thesis.toc [3
+
+] [4])
 \tf@toc=\write6
 \openout6 = `thesis.toc'.
 
- [3
-
-] (thesis.lof)
+ [5] (thesis.lof)
 \tf@lof=\write7
 \openout7 = `thesis.lof'.
 
- [4
+ [6
 
 ] (thesis.lot)
 \tf@lot=\write8
 \openout8 = `thesis.lot'.
 
- [5
+ [7
 
 ])
 No file thesis.nls.
@@ -714,7 +759,7 @@ LaTeX Font Info:    Trying to load font information for T1+cmss on input line 15
 (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmss.fd
 File: t1cmss.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-<src/img/reporting-framework.pdf, id=110, 459.7175pt x 312.16624pt>
+<src/img/reporting-framework.pdf, id=624, 459.7175pt x 312.16624pt>
 File: src/img/reporting-framework.pdf Graphic file (type pdf)
 <use src/img/reporting-framework.pdf>
 Package pdftex.def Info: src/img/reporting-framework.pdf  used on input line 32.
@@ -733,40 +778,137 @@ Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on in
 LaTeX Font Info:    Trying to load font information for T1+pcr on input line 58.
  (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-)) [2{C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc} <./src/img/reporting-framework.pdf>] [3]) (src/appendix/index.tex (src/appendix/build.system.makefiles.tex
+)) [2{C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc} <./src/img/reporting-framework.pdf>] [3]
+\openout2 = `src/chapters/analiza.aux'.
+
+ (src/chapters/analiza.tex
+Chapter 2.
+) [4
+
+
+
+
+]
+\openout2 = `src/chapters/studiuPiata.aux'.
+
+ (src/chapters/studiuPiata.tex
+Chapter 3.
+) [5
+
+
+
+
+]
+\openout2 = `src/chapters/tehnologii.aux'.
+
+ (src/chapters/tehnologii.tex
+Chapter 4.
+) [6
+
+
+
+
+]
+Overfull \vbox (597.70837pt too high) has occurred while \output is active []
+
+ [7]
+\openout2 = `src/chapters/implementare.aux'.
+
+ (src/chapters/implementare.tex
+Chapter 5.
+) [8
+
+
+
+
+]
+\openout2 = `src/chapters/scenariiUtilizare.aux'.
+
+ (src/chapters/scenariiUtilizare.tex
+Chapter 6.
+) [9
+
+
+
+
+]
+\openout2 = `src/chapters/evaluare.aux'.
+
+ (src/chapters/evaluare.tex
+Chapter 7.
+) [10
+
+
+
+
+]
+\openout2 = `src/chapters/concluzii.aux'.
+
+ (src/chapters/concluzii.tex
+Chapter 8.
+) [11
+
+
+
+
+]
+\openout2 = `src/chapters/bibliografie.aux'.
+
+ (src/chapters/bibliografie.tex
+Chapter 9.
+) [12
+
+
+
+
+]
+\openout2 = `src/chapters/anexe.aux'.
+
+ (src/chapters/anexe.tex
+Chapter 10.
+) [13
+
+
+
+
+]) (src/appendix/index.tex (src/appendix/build.system.makefiles.tex
 Appendix A.
 (src/code/build/Makefile.test
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 1.
-))) (thesis.bbl [4
+))) (thesis.bbl [14
 
 
 
-]) (thesis.ind [5
+]) (thesis.ind [15
 
-] [6
+] [16
 
 
-]) (thesis.aux (src/chapters/intro.aux))
+]) (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologii.aux) (src/chapters/implementare.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux) (src/chapters/bibliografie.aux) (src/chapters/anexe.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
+
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 794A503B58BF0BAA096D452C6D2FB6C2;1657.
+(rerunfilecheck)             Checksum: 38F193E697C0DEDD649CC945C0175114;23049.
  ) 
 Here is how much of TeX's memory you used:
- 16833 strings out of 474486
- 279857 string characters out of 5743754
+ 17344 strings out of 474486
+ 294220 string characters out of 5743754
  2012542 words of memory out of 5000000
- 38715 multiletter control sequences out of 15000+600000
- 577681 words of font info for 74 fonts, out of 8000000 for 9000
+ 39045 multiletter control sequences out of 15000+600000
+ 584569 words of font info for 93 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 125i,15n,147p,577b,1123s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0800.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss0800.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0600.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb>
-Output written on thesis.pdf (13 pages, 297954 bytes).
+ 125i,18n,147p,577b,1123s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0600.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0800.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss0800.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0600.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb>
+Output written on thesis.pdf (25 pages, 421141 bytes).
 PDF statistics:
- 665 PDF objects out of 1000 (max. 8388607)
- 59 named destinations out of 1000 (max. 500000)
- 104 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1347 PDF objects out of 1440 (max. 8388607)
+ 172 named destinations out of 1000 (max. 500000)
+ 912 words of extra memory for PDF output out of 10000 (max. 10000000)
 
