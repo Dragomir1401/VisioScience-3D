@@ -177,7 +177,7 @@
     \addcontentsline{toc}{chapter}{#1}}
 
 \newenvironment{acknowledgements} {
-    \notitlesection{Acknowledgements}
+    \notitlesection{Mulțumiri}
     \thispagestyle{empty} }
 {\pagestyle{fancy}}
 
