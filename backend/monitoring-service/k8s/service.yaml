@@ -222,8 +222,8 @@ data:
     [auth.anonymous]
     enabled = true
     org_name = Main Org.
-    org_role = Viewer 
-
+    org_role = Viewer
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
