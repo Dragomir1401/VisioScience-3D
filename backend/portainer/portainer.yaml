@@ -49,6 +49,9 @@ metadata:
   name: portainer-ingress
   annotations:
     konghq.com/strip-path: "true"
+    konghq.com/protocols: "http,https"
+    konghq.com/preserve-host: "true"
+    konghq.com/plugins: "portainer-cors"
 spec:
   ingressClassName: kong
   rules:
@@ -61,3 +64,33 @@ spec:
                 name: portainer-service
                 port:
                   number: 9000
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: portainer-cors
+  annotations:
+    kubernetes.io/ingress.class: kong
+plugin: cors
+config:
+  origins:
+    - "*"
+  methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - OPTIONS
+  headers:
+    - Accept
+    - Accept-Version
+    - Content-Length
+    - Content-MD5
+    - Content-Type
+    - Date
+    - Authorization
+  exposed_headers:
+    - Content-Length
+    - Content-Type
+  credentials: true
+  max_age: 3600
