@@ -1,23 +1,142 @@
-\chapter{Analiza problemei / Motivația proiectului}
+\chapter{Analiza cerințelor / Motivația proiectului}
 \label{chapter:analiza}
 
 \section{Plaja de utilizatori}
 \label{sec:proj}
 
+Pulicul țintă al aplicației este destul de general, putând fi accesată de orice
+utilizator care se înregistrează și dorește să învețe sau sa iși amintească noțiuni de matematică, fizică, chimie,
+astronomie sau informatică.
+
 \subsection{Categorii}
 \label{sub-sec:proj-scope}
+
+Categoriile principale de utilizatori suportate de platformă sunt:
+\begin{itemize}
+    \item Utilizatori elevi
+    \item Utilizatori profesori
+\end{itemize}
+
+Aceste categorii indică și publicul țintă al aplicației, care este format din elevi de nivel gimnaziu sau liceu
+și profesori care predau disciplinele menționate la acest nivel de învățământ.
+
+Între aceste două categorii de utilizatori diferă drepturile de acces dar și tipul de interacțiune cu aplicația dar și
+functionalității disponibile.
 
 \subsection{Profilul utilizatorului}
 \label{sub-sec:proj-user-profile}
 
+După cum am menționat anterior, aplicația este destinată elevilor și profesorilor de matematică, fizică, chimie, astronomie și informatică.
+Putem face și o analiză din diverse puncte de vedere demografice și comportamentaleȘ
+\begin{itemize}
+    \item \textbf{Vârstă}: 10-18 ani pentru elevi, 25-60 ani pentru profesori
+
+    Motivat de faptul că aplicația este destinată elevilor de gimnaziu și liceu.
+    \item \textbf{Tip de învațăre}: vizual
+
+    Justificat de faptul că aplicația folosește animații 3D pentru a explica concepte științifice.
+    \item \textbf{Studii}: elevi de gimnaziu și liceu, profesori cu studii superioare în domeniul educației sau al științelor exacte
+    
+    Motivat de scopul și ținta aplicației.
+    \item \textbf{Locație}: România, limba destinată fiind româna
+
+    Justificat de faptul că aplicația este destinată elevilor și profesorilor din România.
+    \item \textbf{Interese}: educație, tehnologie, știință, învățare interactivă
+    
+    Justificat de faptul că are suport pentru materii de știință și tehnologie.
+    \item \textbf{Motivație elevi}: dorința de a învăța și de a-și îmbunătăți cunoștințele în domeniile menționate, dorința de a obține note mai mari la școală
+    
+    Motivat de faptul că aplicația este destinată elevilor care doresc să învețe și să-și îmbunătățească cunoștințele.
+    \item \textbf{Motivație profesori}: dorința de a-și îmbunătăți metodele de predare, dorința de a oferi elevilor o experiență de 
+    învățare mai interactivă și mai captivantă
+
+    Justificat de faptul că aplicația este destinată profesorilor care doresc să-și îmbunătățească metodele de predare.
+    \item \textbf{Tehnologie}: utilizatori cu un nivel cel puțin începător-mediu de competență tehnologică, familiarizați cu utilizarea aplicațiilor web
+    
+    Datorită faptului că aplicația este o aplicație web care necesită cunoștințe de bază în accesare și navigarea pe internet.
+    \item \textbf{Dispozitive}: utilizatori care folosesc computere, laptopuri, tablete sau telefoane mobile pentru accesarea aplicației
+    
+    Motivat de faptul că aplicația este o aplicație web care poate fi accesată de pe orice dispozitiv cu acces la internet.
+\end{itemize}
+
 \section{Motivația proiectului}
 \label{sec:proj-motivation}
+
+Motivația proiectului este de a oferi o platformă educațională interactivă care să ajute elevii, decizia ideii fiind luată după ce s-a studiat
+piața de soluții existente care oferă acest tip de produs destinat României, în limba română și care oferă o experiență modernă, cât și suport pentru 
+testare incorporat. 
 
 \section{Cerințe funcționale}
 \label{sec:proj-requirements}
 
+interfața a fost realizată după două principii de bază:
+\begin{itemize}
+    \item \textbf{Simplitate}: am ales un design simplu, minimalist, care să nu distragă atenția utilizatorului de la conținutul educațional
+    \item \textbf{Interactivitate}: am ales să folosim animații 3D în cât mai multe zone ale aplicației, pentru a face experiența de învățare mai captivantă și mai plăcută
+    \item \textbf{Accesibilitate}: am ales să folosim o paletă de culori care să fie ușor de citit și să nu obosească ochii utilizatorului
+\end{itemize}
+
+Cerințele funcționale sunt împărțite în două mari categorii, în funcție de tipul de utilizator:
+\begin{itemize}
+    \item Cerințe funcționale pentru utilizatorii elevi
+    \item Cerințe funcționale pentru utilizatorii profesori
+    \item Cerințe funcționale pentru sistem
+\end{itemize}
+
+\subsection{Cerințe funcționale pentru utilizatorii elevi}
+\label{sub-sec:proj-requirements-students}
+
+\begin{itemize}
+    \item Utilizatorii elevi trebuie să se poată înregistra în aplicație
+    \item Utilizatorii elevi trebuie să se poată autentifica în aplicație
+    \item Utilizatorii elevi trebuie să aibă acces la un meniu principal 3D de selectare a materiei
+    \item Utilizatorii elevi trebuie să aibă acces la secțiuni educaționale
+    \item Utilizatorii elevi trebuie să aibă acces la scenele 3D și să poată interacționa cu ele
+    \item Utilizatorii elevi trebuie să poată intra în clase create de profesori prin invitație
+    \item Utilizatorii elevi trebuie sa poată răspundă la invitații
+    \item Utilizatorii elevi trebuie să aibă acces să vizualizeze testele deschise
+    \item Utilizatorii elevi trebuie să aibă să rezolve testele deschise
+    \item Utilizatorii elevi trebuie să aibă acces la rezultatele obținute dacă profesorul a ales să le facă publice
+    \item Utilizatorii elevi trebuie să aibă acces profilul de utilizator de gestiune a contului
+\end{itemize}
+
+\subsection{Cerințe funcționale pentru utilizatorii profesori}
+\label{sub-sec:proj-requirements-teachers}
+
+\begin{itemize}
+    \item Utilizatorii profesori trebuie să se poată înregistra în aplicație
+    \item Utilizatorii profesori trebuie să se poată autentifica în aplicație
+    \item Utilizatorii profesori trebuie să aibă acces la un meniu principal 3D de selectare a materiei
+    \item Utilizatorii profesori trebuie să aibă acces la secțiuni educaționale
+    \item Utilizatorii profesori trebuie să aibă acces la scenele 3D și să poată interacționa cu ele
+    \item Utilizatorii profesori trebuie să aibă acces la un meniu de gestionare a elevilor și claselor
+    \item Utilizatorii profesori trebuie să aibă acces la un meniu de gestionare a testelor
+    \item Utilizatorii profesori trebuie să aibă acces la un meniu de vizualizare a rezultatelor obținute de elevi
+    \item Utilizatorii profesori trebuie să aibă acces profilul de utilizator de gestiune a contului
+    \item Utilizatorii profesori trebuie să aibă acces la un meniu de gestionare a invitațiilor
+    \item Utilizatorii profesori trebuie să aibă acces să genereze invitații pentru elevi
+    \item Utilizatorii profesori trebuie să aibă acces să trimită invitații pentru elevi
+    \item Utilizatorii profesori trebuie să poată vedea și gestiona rezultatele elevilor
+    \item Utilizatorii profesori trebuie să poată crea teste și închide/deschide accesul la ele
+\end{itemize}
+
+\subsection{Cerințe funcționale pentru sistem}
+\label{sub-sec:proj-requirements-system}
+
+\begin{itemize}
+    \item Sistemul trebuie să trimită invitațiile aproape instantaneu către utilizatori
+    \item Sistemul trebuie să trimită notificări utilizatorilor atunci când primesc invitații
+    \item Sistemul trebuie să încarce rapid scenele 3D
+    \item Sistemul trebuie să aibă un timp de răspuns rapid la interacțiunile utilizatorilor
+    \item Sistemul trebuie să răspundă instant la interacțiunile utilizatorilor cu scenele 3D
+    \item Sistemul trebuie să ofere rezultatele la teste instant
+    \item Sistemul trebuie să gestioneze eficient sistemul de utilizatori și autentificare
+    \item Sistemul trebuie să gestioneze sistemul de închidere/deschidere a testelor
+\end{itemize}
+
+
 \section{Cerințe nefuncționale}
-\label{sec:proj-non-functional-requirements}
+\label{sec:proj-non-functional-requirements} 
 
 \section{Limitări}
 \label{sec:proj-limitations}

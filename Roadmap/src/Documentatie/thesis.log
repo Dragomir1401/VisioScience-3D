@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  21 MAY 2025 22:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  21 MAY 2025 23:04
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -671,12 +671,12 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: End \AtBeginDocument code.
  (src/global.tex) (template/titlepage.ro.tex
-<src/img/branding/upb.png, id=451, 598.235pt x 598.235pt>
+<src/img/branding/upb.png, id=463, 598.235pt x 598.235pt>
 File: src/img/branding/upb.png Graphic file (type png)
 <use src/img/branding/upb.png>
 Package pdftex.def Info: src/img/branding/upb.png  used on input line 7.
 (pdftex.def)             Requested size: 53.63545pt x 53.62888pt.
-<src/img/branding/cs.png, id=452, 695.59875pt x 307.1475pt>
+<src/img/branding/cs.png, id=464, 695.59875pt x 307.1475pt>
 File: src/img/branding/cs.png Graphic file (type png)
 <use src/img/branding/cs.png>
 Package pdftex.def Info: src/img/branding/cs.png  used on input line 7.
@@ -745,17 +745,22 @@ Overfull \hbox (10.55392pt too wide) in paragraph at lines 173--176
 
  (src/chapters/analiza.tex
 Chapter 2.
-) [6
+[6
 
 
 
 
 ]
+Overfull \hbox (22.30719pt too wide) in paragraph at lines 49--50
+[]\T1/cmr/m/n/10 Motivat de fap-tul c  aplica[]ia este des-ti-nat  elevilor care doresc s  înve[]e []i s -[]i îmbun t []easc 
+ []
+
+[7] [8] [9]) [10]
 \openout2 = `src/chapters/studiuPiata.aux'.
 
  (src/chapters/studiuPiata.tex
 Chapter 3.
-) [7
+) [11
 
 
 
@@ -765,7 +770,7 @@ Chapter 3.
 
  (src/chapters/tehnologii.tex
 Chapter 4.
-) [8
+) [12
 
 
 
@@ -773,12 +778,12 @@ Chapter 4.
 ]
 Overfull \vbox (1095.16998pt too high) has occurred while \output is active []
 
- [9]
+ [13]
 \openout2 = `src/chapters/implementare.aux'.
 
  (src/chapters/implementare.tex
 Chapter 5.
-) [10
+) [14
 
 
 
@@ -788,7 +793,7 @@ Chapter 5.
 
  (src/chapters/scenariiUtilizare.tex
 Chapter 6.
-) [11
+) [15
 
 
 
@@ -798,7 +803,7 @@ Chapter 6.
 
  (src/chapters/evaluare.tex
 Chapter 7.
-) [12
+) [16
 
 
 
@@ -808,14 +813,14 @@ Chapter 7.
 
  (src/chapters/concluzii.tex
 Chapter 8.
-) [13
+) [17
 
 
 
 
 ]) (src/appendix/index.tex (src/appendix/build.system.makefiles.tex
 Appendix A.
-)) [14
+)) [18
 
 
 
@@ -834,14 +839,14 @@ Underfull \hbox (badness 1424) in paragraph at lines 80--81
 \T1/cmr/m/n/10 Ed-u-ca-tion: Czech Ex-per-i-ment,^^Q *Cen-tral Eu-ro-pean Jour-nal of Ed-u-ca-tion*, 2019.
  []
 
-[15
+[19
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 89--90
 []\T1/cmr/m/n/10 Y. Zhang et al., ^^PVR/AR in STEM Learn-ing,^^Q *PubMed*, 2024.
  []
 
-(thesis.ind) [16] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologii.aux) (src/chapters/implementare.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
+(thesis.ind) [20] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologii.aux) (src/chapters/implementare.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
@@ -851,20 +856,20 @@ L3 programming layer <2024-01-04>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 8772CEAAD950F889CFCDBE244525D449;23048.
+(rerunfilecheck)             Checksum: 18D6DCEA738B9B609A83E341FF167485;24030.
  ) 
 Here is how much of TeX's memory you used:
- 16826 strings out of 474486
- 285798 string characters out of 5743754
+ 16839 strings out of 474486
+ 286034 string characters out of 5743754
  1952542 words of memory out of 5000000
- 38596 multiletter control sequences out of 15000+600000
+ 38602 multiletter control sequences out of 15000+600000
  579875 words of font info for 84 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 125i,18n,147p,562b,645s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 125i,18n,147p,562b,668s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0600.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk>
-Output written on thesis.pdf (23 pages, 357258 bytes).
+Output written on thesis.pdf (27 pages, 370695 bytes).
 PDF statistics:
- 1228 PDF objects out of 1440 (max. 8388607)
- 156 named destinations out of 1000 (max. 500000)
- 907 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1265 PDF objects out of 1440 (max. 8388607)
+ 163 named destinations out of 1000 (max. 500000)
+ 931 words of extra memory for PDF output out of 10000 (max. 10000000)
 
