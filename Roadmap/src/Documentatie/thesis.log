@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  21 MAY 2025 23:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  22 MAY 2025 18:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -550,6 +550,9 @@ LaTeX Warning: Label `sec:proj' multiply defined.
 
 LaTeX Warning: Label `sub-sec:proj-scope' multiply defined.
 
+
+LaTeX Warning: Label `fig:distributie_persoane' multiply defined.
+
 ) (src/chapters/studiuPiata.aux
 
 LaTeX Warning: Label `sec:proj' multiply defined.
@@ -755,12 +758,24 @@ Overfull \hbox (22.30719pt too wide) in paragraph at lines 49--50
 []\T1/cmr/m/n/10 Motivat de fap-tul c  aplica[]ia este des-ti-nat  elevilor care doresc s  înve[]e []i s -[]i îmbun t []easc 
  []
 
-[7] [8] [9]) [10]
+[7] [8] [9]
+<imgs/hover.png, id=671, 185.19188pt x 123.46124pt>
+File: imgs/hover.png Graphic file (type png)
+<use imgs/hover.png>
+Package pdftex.def Info: imgs/hover.png  used on input line 164.
+(pdftex.def)             Requested size: 206.28249pt x 137.52396pt.
+ [10]
+<imgs/tutorial.png, id=677, 1027.58907pt x 203.25937pt>
+File: imgs/tutorial.png Graphic file (type png)
+<use imgs/tutorial.png>
+Package pdftex.def Info: imgs/tutorial.png  used on input line 170.
+(pdftex.def)             Requested size: 412.56497pt x 81.60625pt.
+ [11 <./imgs/hover.png> <./imgs/tutorial.png>] [12]) [13]
 \openout2 = `src/chapters/studiuPiata.aux'.
 
  (src/chapters/studiuPiata.tex
 Chapter 3.
-) [11
+) [14
 
 
 
@@ -770,7 +785,7 @@ Chapter 3.
 
  (src/chapters/tehnologii.tex
 Chapter 4.
-) [12
+) [15
 
 
 
@@ -778,12 +793,12 @@ Chapter 4.
 ]
 Overfull \vbox (1095.16998pt too high) has occurred while \output is active []
 
- [13]
+ [16]
 \openout2 = `src/chapters/implementare.aux'.
 
  (src/chapters/implementare.tex
 Chapter 5.
-) [14
+) [17
 
 
 
@@ -793,7 +808,7 @@ Chapter 5.
 
  (src/chapters/scenariiUtilizare.tex
 Chapter 6.
-) [15
+) [18
 
 
 
@@ -803,7 +818,7 @@ Chapter 6.
 
  (src/chapters/evaluare.tex
 Chapter 7.
-) [16
+) [19
 
 
 
@@ -813,14 +828,14 @@ Chapter 7.
 
  (src/chapters/concluzii.tex
 Chapter 8.
-) [17
+) [20
 
 
 
 
 ]) (src/appendix/index.tex (src/appendix/build.system.makefiles.tex
 Appendix A.
-)) [18
+)) [21
 
 
 
@@ -839,14 +854,14 @@ Underfull \hbox (badness 1424) in paragraph at lines 80--81
 \T1/cmr/m/n/10 Ed-u-ca-tion: Czech Ex-per-i-ment,^^Q *Cen-tral Eu-ro-pean Jour-nal of Ed-u-ca-tion*, 2019.
  []
 
-[19
+[22
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 89--90
 []\T1/cmr/m/n/10 Y. Zhang et al., ^^PVR/AR in STEM Learn-ing,^^Q *PubMed*, 2024.
  []
 
-(thesis.ind) [20] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologii.aux) (src/chapters/implementare.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
+(thesis.ind) [23] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologii.aux) (src/chapters/implementare.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
@@ -859,17 +874,17 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 (rerunfilecheck)             Checksum: 18D6DCEA738B9B609A83E341FF167485;24030.
  ) 
 Here is how much of TeX's memory you used:
- 16839 strings out of 474486
- 286034 string characters out of 5743754
+ 16871 strings out of 474486
+ 286620 string characters out of 5743754
  1952542 words of memory out of 5000000
- 38602 multiletter control sequences out of 15000+600000
+ 38623 multiletter control sequences out of 15000+600000
  579875 words of font info for 84 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  125i,18n,147p,562b,668s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0600.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk>
-Output written on thesis.pdf (27 pages, 370695 bytes).
+ <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0600.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on thesis.pdf (30 pages, 458821 bytes).
 PDF statistics:
- 1265 PDF objects out of 1440 (max. 8388607)
- 163 named destinations out of 1000 (max. 500000)
- 931 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1318 PDF objects out of 1440 (max. 8388607)
+ 174 named destinations out of 1000 (max. 500000)
+ 941 words of extra memory for PDF output out of 10000 (max. 10000000)
 

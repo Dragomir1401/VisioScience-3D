@@ -86,6 +86,10 @@ Cerințele funcționale sunt împărțite în două mari categorii, în funcție
 \subsection{Cerințe funcționale pentru utilizatorii elevi}
 \label{sub-sec:proj-requirements-students}
 
+Cerințele funcționale pentru utilizatorii elevi sunt cerințe care țin de utilizatorii aplicației și modul în care
+aceștia pot să interacționeze cu aplicația din poziția de elevi.
+
+Printre cele princpale se numără:
 \begin{itemize}
     \item Utilizatorii elevi trebuie să se poată înregistra în aplicație
     \item Utilizatorii elevi trebuie să se poată autentifica în aplicație
@@ -103,6 +107,10 @@ Cerințele funcționale sunt împărțite în două mari categorii, în funcție
 \subsection{Cerințe funcționale pentru utilizatorii profesori}
 \label{sub-sec:proj-requirements-teachers}
 
+Cerințele funcționale pentru utilizatorii profesori sunt cerințe care țin de utilizatorii din categoria profesorală
+și care sunt necesare pentru a asigura o experiență adecvată lor.
+
+Cele mai importante sunt:
 \begin{itemize}
     \item Utilizatorii profesori trebuie să se poată înregistra în aplicație
     \item Utilizatorii profesori trebuie să se poată autentifica în aplicație
@@ -123,6 +131,8 @@ Cerințele funcționale sunt împărțite în două mari categorii, în funcție
 \subsection{Cerințe funcționale pentru sistem}
 \label{sub-sec:proj-requirements-system}
 
+Cerințele funcționale pentru sistem sunt cerințe care nu țin de utilizatorii aplicației, ci de sistemul în sine și modul în care acesta 
+trebuie să funcționeze. Aceste cerințe sunt esențiale pentru a asigura o experiență de utilizare fluidă și eficientă. 
 \begin{itemize}
     \item Sistemul trebuie să trimită invitațiile aproape instantaneu către utilizatori
     \item Sistemul trebuie să trimită notificări utilizatorilor atunci când primesc invitații
@@ -136,7 +146,85 @@ Cerințele funcționale sunt împărțite în două mari categorii, în funcție
 
 
 \section{Cerințe nefuncționale}
-\label{sec:proj-non-functional-requirements} 
+\label{sec:proj-non-functional-requirements}
+
+Dezvoltarea produsului a fost destinată pentru utilizare pe Web, de pe orice dispozitiv cu acces la internet,
+fără a necesita instalarea de aplicații sau plugin-uri suplimentare. Din natura aplicației, gradul de portabilitate
+de la dispozitiv la dispozitiv este ridicat.
+
+Interfața trebuie sa răspundă rapid la interacțiunile utilizatorilor, iar animațiile 3D să fie fluide și să nu aibă
+întârzieri semnificative. De asemenea, aplicația trebuie să fie disponibilă pe toate browserele moderne,
+inclusiv Chrome, Firefox, Safari și Edge.
+
+
+Pentru o utilizare mai intuitivă sunt adaugate în unele locuri și indicatoari vizuali care arată modul de funcționare.
+Putem observa și un exemplu în figura următoare, unde utilizatorul este îndrumat să pună mouse-ul peste un obiect
+pentru a activa meniul.
+
+\fig[width=0.5\textwidth]{imgs/hover.png}{fig:distributie_persoane}{Animație intuitivă pentru utilizator deschiderea unui meniu lateral}
+
+
+Meniurile conțin informații de prezentare și tutoriale pentru a naviga diferitele simulări 3D, ele fiind primul
+lucru pe care utilizatorul la intrarea în diferitele secțiuni. Putem vedea un exemplu în figura următoare.
+
+\fig[width=1\textwidth]{imgs/tutorial.png}{fig:distributie_persoane}{Meniu de întâmpinare și ghidare pentru utilizator}
+
+Datele afișate în paltformă sunt actualizate constant prin comunicare cu serverul care gestionează acel serviciu
+prin protocolul HTTP.
+
+Ca cerințe nefuncționale necesare pentru încărcarea și gestionarea corectă a scenelor 3D, putem să discutăm pe 
+mai multe planuri, cum ar fi:
+
+\subsection*{1. Browser \& API}
+Aplicaţia trebuie să ruleze pe browsere moderne care suportă WebGL 1.0 (OpenGL ES 2.0) sau, de preferat, WebGL 2.0 (OpenGL ES 3.0).  
+Browsere compatibile: Chrome > 60, Firefox > 52, Safari > 11, Edge > 16.
+
+\subsection*{2. CPU}
+\begin{itemize}
+  \item \textbf{Minim desktop:} Dual-core 1,5 GHz (Intel Core i3 gen.3+, AMD A6+)
+  \item \textbf{Minim mobil/tablet:} Dual-core ARM Cortex-A55 @1,8 GHz
+\end{itemize}
+
+\subsection*{3. Memorie (RAM)}
+\begin{itemize}
+  \item \textbf{Minim:} 2 GB RAM total, din care \(\ge 256\) MB cel puțin liberi pentru heapul JavaScript şi texturi.
+  \item \textbf{Recomandat:} 4 GB+ RAM.
+\end{itemize}
+
+\subsection*{4. GPU \& VRAM}
+\begin{itemize}
+  \item \textbf{Minim placă grafică integrată:} Intel HD 5000 / AMD Radeon R5 (> 128 MB VRAM)
+  \item \textbf{Minim  placă grafică dedicată:} NVIDIA GT 640 / AMD R7 250 (> 256 MB VRAM)
+  \item \textbf{Minim mobil/tablet:} Adreno 306 / Mali-T720 (> 128 MB VRAM)
+\end{itemize}
+
+\subsection*{5. Reţea}
+\begin{itemize}
+  \item \textbf{Lăţime de bandă minimă:} 1 Mbps (cu asset‐uri comprimate şi LOD).
+  \item \textbf{Latency:} < 100 ms RTT pentru încărcarea resurselor.
+\end{itemize}
+
+\subsection*{6. Performanţă în aplicaţie}
+\begin{itemize}
+  \item \textbf{FPS ţintă:} > 30 fps pe desktop, > 24 fps pe mobil.
+  \item \textbf{Timp de încărcare iniţială:} < 2 s, < 5 s (la texturile mari).
+\end{itemize}
+
+Aceste cerințe au fost testate în mediul de dezvoltare și sunt valabile pentru majoritatea, putând să difere
+în mediul de producție în cazul lansării aplicației.
+
 
 \section{Limitări}
 \label{sec:proj-limitations}
+
+Din punct de vedere al specificului platformei, ea oferă limitări clare pe mai multe planuri, cum ar fi:
+
+\begin{itemize}
+    \item \textbf{Compatibilitate browser și platformă}: aplicația este compatibilă cu majoritatea browserelor moderne,
+    dar nu este optimizată pentru browserele mai vechi sau pentru dispozitive mobile cu specificații tehnice reduse.
+    \item \textbf{Performanță hardware}: aplicația necesită un hardware minimal pentru a funcționa corect.
+    \item \textbf{Conexiune la internet}: aplicația necesită o conexiune la internet stabilă pentru a funcționa corect.
+    \item  \textbf{Dispozitive mobile și tabletă}: aplicația necesită un hardware decent pentru rulare, ceea ce e mai greu de obținut pentru dispozitivele mobile.
+    \item \textbf{Practice}: aplicația are limitări în folosire încât este dependentă în cea ce constă eficacitatea învățării de utilizatorul care o folosește.
+    \item \textbf{Conținut}: aplicația nu oferă un conținut educațional complet, ci doar partea modelabilă 3D a acestuia per fiecare materie.
+\end{itemize}
