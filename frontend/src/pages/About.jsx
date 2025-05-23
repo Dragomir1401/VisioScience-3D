@@ -40,11 +40,11 @@ const About = () => {
 
         <div className="flex-1 bg-white p-8 rounded-xl shadow-md max-w-lg space-y-8 flex flex-col justify-center">
           <h2 className="text-3xl font-bold text-[#690375] text-center font-poppins">
-            Despre Platforma VisioScience 3D
+            Despre Platforma VisioScience3D
           </h2>
 
           <p className="text-lg text-gray-700">
-            VisioScience 3D este o platformă educațională inovativă care oferă
+            VisioScience3D este o platformă educațională inovativă care oferă
             simulări interactive 3D pentru subiectele științifice, inclusiv
             matematică, fizică, chimie și astronomie. Permite studenților să
             exploreze concepte complexe într-un mod vizual și intuitiv.

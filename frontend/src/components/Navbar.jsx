@@ -10,7 +10,7 @@ const Navbar = () => {
           to="/"
           className="text-2xl font-bold bg-gradient-to-r from-purple to-mulberry bg-clip-text text-transparent tracking-tight"
         >
-          VisioScience 3D
+          VisioScience3D
         </NavLink>
 
         <nav className="flex gap-6 font-medium text-sm sm:text-base">
