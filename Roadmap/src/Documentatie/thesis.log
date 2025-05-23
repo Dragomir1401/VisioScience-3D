@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  23 MAY 2025 23:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  23 MAY 2025 23:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -533,7 +533,75 @@ Writing index file thesis.idx
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count332
 \l__pdf_internal_box=\box107
-) (thesis.aux)
+) (thesis.aux (src/chapters/intro.aux
+
+LaTeX Warning: Label `sec:proj' multiply defined.
+
+
+LaTeX Warning: Label `sec:proj' multiply defined.
+
+
+LaTeX Warning: Label `sec:proj' multiply defined.
+
+) (src/chapters/analiza.aux
+
+LaTeX Warning: Label `sec:proj' multiply defined.
+
+
+LaTeX Warning: Label `sub-sec:proj-scope' multiply defined.
+
+
+LaTeX Warning: Label `fig:distributie_persoane' multiply defined.
+
+) (src/chapters/studiuPiata.aux
+
+LaTeX Warning: Label `sec:proj' multiply defined.
+
+
+LaTeX Warning: Label `fig:distributie_persoane' multiply defined.
+
+
+LaTeX Warning: Label `fig:mozaweb' multiply defined.
+
+
+LaTeX Warning: Label `sub-sec:proj-scope' multiply defined.
+
+) (src/chapters/tehnologiiFe.aux
+
+LaTeX Warning: Label `sec:proj' multiply defined.
+
+
+LaTeX Warning: Label `fig:fediagram' multiply defined.
+
+
+LaTeX Warning: Label `fig:fediagram' multiply defined.
+
+
+LaTeX Warning: Label `fig:fediagram' multiply defined.
+
+
+LaTeX Warning: Label `fig:fediagram' multiply defined.
+
+
+LaTeX Warning: Label `fig:fediagram' multiply defined.
+
+
+LaTeX Warning: Label `fig:fediagram' multiply defined.
+
+) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux
+
+LaTeX Warning: Label `subsec:implementare-backend' multiply defined.
+
+
+LaTeX Warning: Label `subsec:implementare-backend' multiply defined.
+
+
+LaTeX Warning: Label `subsec:implementare-frontend' multiply defined.
+
+
+LaTeX Warning: Label `subsec:implementare-frontend' multiply defined.
+
+) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 3.
@@ -599,6 +667,7 @@ File: color.cfg 2016/01/02 v1.6 sample color configuration
 Package color Info: Driver file: pdftex.def on input line 149.
  (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx))
 Package hyperref Info: Link coloring ON on input line 3.
+ (thesis.out) (thesis.out)
 \@outlinefile=\write5
 \openout5 = `thesis.out'.
 
@@ -626,12 +695,12 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: End \AtBeginDocument code.
  (src/global.tex) (template/titlepage.ro.tex
-<src/img/branding/upb.png, id=3, 598.235pt x 598.235pt>
+<src/img/branding/upb.png, id=367, 598.235pt x 598.235pt>
 File: src/img/branding/upb.png Graphic file (type png)
 <use src/img/branding/upb.png>
 Package pdftex.def Info: src/img/branding/upb.png  used on input line 7.
 (pdftex.def)             Requested size: 53.63545pt x 53.62888pt.
-<src/img/branding/cs.png, id=4, 695.59875pt x 307.1475pt>
+<src/img/branding/cs.png, id=368, 695.59875pt x 307.1475pt>
 File: src/img/branding/cs.png Graphic file (type png)
 <use src/img/branding/cs.png>
 Package pdftex.def Info: src/img/branding/cs.png  used on input line 7.
@@ -674,14 +743,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 20--19
 
 (template/contents.pages.tex [2
 
-]
-No file thesis.toc.
+] (thesis.toc [3
+
+] [4])
 \tf@toc=\write6
 \openout6 = `thesis.toc'.
 
-[3
-
-])
+ [5])
 No file thesis.nls.
 (src/main.tex
 \openout2 = `src/chapters/intro.aux'.
@@ -692,26 +760,9 @@ Chapter 1.
 
 
 ] [2] [3] [4]
-
-LaTeX Warning: Reference `chapter:analiza' on page 5 undefined on input line 169.
-
-
-LaTeX Warning: Reference `chapter:studiuPiata' on page 5 undefined on input line 173.
-
-
-LaTeX Warning: Reference `chapter:tehnologii' on page 5 undefined on input line 177.
-
-
-LaTeX Warning: Reference `chapter:implementare' on page 5 undefined on input line 182.
-
-
-LaTeX Warning: Reference `chapter:scenariiUtilizare' on page 5 undefined on input line 186.
-
-
-LaTeX Warning: Reference `chapter:evaluare' on page 5 undefined on input line 192.
-
-
-LaTeX Warning: Reference `chapter:concluzii' on page 5 undefined on input line 197.
+Overfull \hbox (10.55392pt too wide) in paragraph at lines 173--176
+[]\T1/cmr/m/n/10 Al treilea capi-tol ([][]3[][]) anal-izeaz  pia[]a []i competi[]ia din punct de vedere al plat-formelor educa[]ionale
+ []
 
 ) [5]
 \openout2 = `src/chapters/analiza.aux'.
@@ -729,13 +780,13 @@ Overfull \hbox (22.30719pt too wide) in paragraph at lines 49--50
  []
 
 [7] [8] [9]
-<imgs/hover.png, id=99, 185.19188pt x 123.46124pt>
+<imgs/hover.png, id=551, 185.19188pt x 123.46124pt>
 File: imgs/hover.png Graphic file (type png)
 <use imgs/hover.png>
 Package pdftex.def Info: imgs/hover.png  used on input line 164.
 (pdftex.def)             Requested size: 206.28249pt x 137.52396pt.
  [10]
-<imgs/tutorial.png, id=107, 1027.58907pt x 203.25937pt>
+<imgs/tutorial.png, id=557, 1027.58907pt x 203.25937pt>
 File: imgs/tutorial.png Graphic file (type png)
 <use imgs/tutorial.png>
 Package pdftex.def Info: imgs/tutorial.png  used on input line 170.
@@ -745,7 +796,7 @@ Package pdftex.def Info: imgs/tutorial.png  used on input line 170.
 
  (src/chapters/studiuPiata.tex
 Chapter 3.
-<imgs/phet.png, id=133, 1431.84938pt x 668.4975pt>
+<imgs/phet.png, id=583, 1431.84938pt x 668.4975pt>
 File: imgs/phet.png Graphic file (type png)
 <use imgs/phet.png>
 Package pdftex.def Info: imgs/phet.png  used on input line 11.
@@ -756,50 +807,40 @@ Package pdftex.def Info: imgs/phet.png  used on input line 11.
 
 
  <./imgs/phet.png>]
-<imgs/invatamate.png, id=144, 1271.5003pt x 721.19438pt>
+<imgs/invatamate.png, id=590, 1271.5003pt x 721.19438pt>
 File: imgs/invatamate.png Graphic file (type png)
 <use imgs/invatamate.png>
 Package pdftex.def Info: imgs/invatamate.png  used on input line 21.
 (pdftex.def)             Requested size: 412.56497pt x 234.01125pt.
  [15 <./imgs/invatamate.png>]
-<imgs/invatamatesimulare.png, id=152, 723.45282pt x 710.655pt>
+<imgs/invatamatesimulare.png, id=597, 723.45282pt x 710.655pt>
 File: imgs/invatamatesimulare.png Graphic file (type png)
 <use imgs/invatamatesimulare.png>
 Package pdftex.def Info: imgs/invatamatesimulare.png  used on input line 40.
 (pdftex.def)             Requested size: 202.15909pt x 198.58083pt.
-<imgs/invatamatejoc.png, id=153, 740.7675pt x 706.13812pt>
+<imgs/invatamatejoc.png, id=598, 740.7675pt x 706.13812pt>
 File: imgs/invatamatejoc.png Graphic file (type png)
 <use imgs/invatamatejoc.png>
 Package pdftex.def Info: imgs/invatamatejoc.png  used on input line 47.
 (pdftex.def)             Requested size: 202.15909pt x 192.70705pt.
-<imgs/mozaweb.png, id=154, 1038.88126pt x 673.01437pt>
+<imgs/mozaweb.png, id=599, 1038.88126pt x 673.01437pt>
 File: imgs/mozaweb.png Graphic file (type png)
 <use imgs/mozaweb.png>
 Package pdftex.def Info: imgs/mozaweb.png  used on input line 59.
 (pdftex.def)             Requested size: 330.05322pt x 213.80804pt.
  [16 <./imgs/invatamatesimulare.png> <./imgs/invatamatejoc.png> <./imgs/mozaweb.png>]
-<imgs/mozawebplugin.png, id=165, 942.52126pt x 472.01344pt>
+<imgs/mozawebplugin.png, id=609, 942.52126pt x 472.01344pt>
 File: imgs/mozawebplugin.png Graphic file (type png)
 <use imgs/mozawebplugin.png>
 Package pdftex.def Info: imgs/mozawebplugin.png  used on input line 66.
 (pdftex.def)             Requested size: 412.56497pt x 206.6134pt.
-
-
-LaTeX Warning: Reference `fig:iqboard' on page 17 undefined on input line 75.
-
-
-LaTeX Warning: Reference `fig:iqboard' on page 17 undefined on input line 77.
-
-
-LaTeX Warning: Reference `fig:iqboardsimulari' on page 17 undefined on input line 79.
-
-[17 <./imgs/mozawebplugin.png>]
-<imgs/iqboard.png, id=173, 922.19531pt x 648.92438pt>
+ [17 <./imgs/mozawebplugin.png>]
+<imgs/iqboard.png, id=620, 922.19531pt x 648.92438pt>
 File: imgs/iqboard.png Graphic file (type png)
 <use imgs/iqboard.png>
 Package pdftex.def Info: imgs/iqboard.png  used on input line 91.
 (pdftex.def)             Requested size: 202.15909pt x 142.2489pt.
-<imgs/iqboardsimulari.jpg, id=174, 818.05624pt x 439.6425pt>
+<imgs/iqboardsimulari.jpg, id=621, 818.05624pt x 439.6425pt>
 File: imgs/iqboardsimulari.jpg Graphic file (type jpg)
 <use imgs/iqboardsimulari.jpg>
 Package pdftex.def Info: imgs/iqboardsimulari.jpg  used on input line 98.
@@ -820,10 +861,7 @@ Chapter 4.
 
 
 ] [21]
-
-LaTeX Warning: Reference `fig:fediagram' on page 22 undefined on input line 95.
-
-<imgs/fediagram.png, id=199, 1083.29718pt x 294.34969pt>
+<imgs/fediagram.png, id=641, 1083.29718pt x 294.34969pt>
 File: imgs/fediagram.png Graphic file (type png)
 <use imgs/fediagram.png>
 Package pdftex.def Info: imgs/fediagram.png  used on input line 98.
@@ -834,47 +872,44 @@ Overfull \hbox (41.259pt too wide) in paragraph at lines 98--98
  []
 
 [22 <./imgs/fediagram.png>]
-<imgs/convertor.png, id=207, 1442.38875pt x 709.90219pt>
+<imgs/convertor.png, id=649, 1442.38875pt x 709.90219pt>
 File: imgs/convertor.png Graphic file (type png)
 <use imgs/convertor.png>
 Package pdftex.def Info: imgs/convertor.png  used on input line 141.
 (pdftex.def)             Requested size: 412.56497pt x 203.04997pt.
-<imgs/Blender.png, id=208, 974.13937pt x 724.95844pt>
+<imgs/Blender.png, id=650, 974.13937pt x 724.95844pt>
 File: imgs/Blender.png Graphic file (type png)
 <use imgs/Blender.png>
 Package pdftex.def Info: imgs/Blender.png  used on input line 151.
 (pdftex.def)             Requested size: 412.56497pt x 307.03578pt.
  [23 <./imgs/convertor.png>]
-<imgs/paleta.png, id=216, 406.1574pt x 146.7081pt>
+<imgs/paleta.png, id=657, 406.1574pt x 146.7081pt>
 File: imgs/paleta.png Graphic file (type png)
 <use imgs/paleta.png>
 Package pdftex.def Info: imgs/paleta.png  used on input line 170.
 (pdftex.def)             Requested size: 412.56497pt x 149.02242pt.
  [24 <./imgs/Blender.png>]
-
-LaTeX Warning: File `imgs/a.png' not found on input line 177.
-
-
-src/chapters/tehnologiiFe.tex:177: Package pdftex.def Error: File `imgs/a.png' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.177 ...a.png}{fig:fediagram}{Logo-ul platformei}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 177.
-(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1pcr.fd
-File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-)) [25{C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc} <./imgs/paleta.png>] [26]
+<imgs/logo.png, id=666, 370.38374pt x 76.03406pt>
+File: imgs/logo.png Graphic file (type png)
+<use imgs/logo.png>
+Package pdftex.def Info: imgs/logo.png  used on input line 177.
+(pdftex.def)             Requested size: 206.28249pt x 42.34673pt.
+<imgs/mascota.png, id=667, 401.24907pt x 569.87906pt>
+File: imgs/mascota.png Graphic file (type png)
+<use imgs/mascota.png>
+Package pdftex.def Info: imgs/mascota.png  used on input line 189.
+(pdftex.def)             Requested size: 144.40025pt x 205.08673pt.
+<imgs/animatieregister.png, id=668, 580.41844pt x 549.55313pt>
+File: imgs/animatieregister.png Graphic file (type png)
+<use imgs/animatieregister.png>
+Package pdftex.def Info: imgs/animatieregister.png  used on input line 193.
+(pdftex.def)             Requested size: 247.54149pt x 234.37457pt.
+) [25 <./imgs/paleta.png> <./imgs/logo.png>] [26 <./imgs/mascota.png>] [27 <./imgs/animatieregister.png>]
 \openout2 = `src/chapters/tehnologiiBe.aux'.
 
  (src/chapters/tehnologiiBe.tex
 Chapter 5.
-) [27
+) [28
 
 
 
@@ -882,12 +917,12 @@ Chapter 5.
 ]
 Overfull \vbox (129.96402pt too high) has occurred while \output is active []
 
- [28]
+ [29]
 \openout2 = `src/chapters/implementare.aux'.
 
  (src/chapters/implementare.tex
 Chapter 6.
-) [29
+) [30
 
 
 
@@ -901,7 +936,7 @@ No file src/chapters/funcionalitati.tex.
 
 (src/chapters/scenariiUtilizare.tex
 Chapter 7.
-) [30
+) [31
 
 
 
@@ -914,7 +949,7 @@ Chapter 7.
 
  (src/chapters/evaluare.tex
 Chapter 8.
-) [31
+) [32
 
 
 
@@ -924,14 +959,14 @@ Chapter 8.
 
  (src/chapters/concluzii.tex
 Chapter 9.
-) [32
+) [33
 
 
 
 
 ]) (src/appendix/index.tex (src/appendix/build.system.makefiles.tex
 Appendix A.
-)) [33
+)) [34
 
 
 
@@ -950,47 +985,37 @@ Underfull \hbox (badness 1424) in paragraph at lines 80--81
 \T1/cmr/m/n/10 Ed-u-ca-tion: Czech Ex-per-i-ment,^^Q *Cen-tral Eu-ro-pean Jour-nal of Ed-u-ca-tion*, 2019.
  []
 
-[34
+[35
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 89--90
 []\T1/cmr/m/n/10 Y. Zhang et al., ^^PVR/AR in STEM Learn-ing,^^Q *PubMed*, 2024.
  []
 
-No file thesis.ind.
-[35] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologiiFe.aux) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
+(thesis.ind) [36] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologiiFe.aux) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
 
 
-LaTeX Warning: There were undefined references.
+LaTeX Warning: There were multiply-defined labels.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `thesis.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `thesis.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  37EB82557192461E6D35D9B6A3D1B78D;18543.
+Package rerunfilecheck Info: File `thesis.out' has not changed.
+(rerunfilecheck)             Checksum: 37EB82557192461E6D35D9B6A3D1B78D;18543.
  ) 
 Here is how much of TeX's memory you used:
- 16911 strings out of 474486
- 288367 string characters out of 5743754
- 1946542 words of memory out of 5000000
- 38664 multiletter control sequences out of 15000+600000
- 580496 words of font info for 86 fonts, out of 8000000 for 9000
+ 17026 strings out of 474486
+ 291341 string characters out of 5743754
+ 1949542 words of memory out of 5000000
+ 38750 multiletter control sequences out of 15000+600000
+ 579875 words of font info for 84 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 125i,18n,147p,562b,573s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0600.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on thesis.pdf (40 pages, 6188722 bytes).
+ 125i,18n,147p,562b,645s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0600.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on thesis.pdf (43 pages, 6347717 bytes).
 PDF statistics:
- 943 PDF objects out of 1000 (max. 8388607)
- 184 named destinations out of 1000 (max. 500000)
- 81 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1335 PDF objects out of 1440 (max. 8388607)
+ 190 named destinations out of 1000 (max. 500000)
+ 824 words of extra memory for PDF output out of 10000 (max. 10000000)
 
