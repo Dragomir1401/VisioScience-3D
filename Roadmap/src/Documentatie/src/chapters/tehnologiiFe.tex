@@ -1,11 +1,73 @@
 \chapter{Tehnologii utilizate pentru front-end}
 \label{chapter:tehnologii}
 
-\section{Analiza tehnologiilor}
 \label{sec:proj}
-\subsection{Soluția de front-end}
-\subsubsection{Framework principal}
-\subsubsection{Framework 3D}
+\section{Soluția de front-end}
+\subsection{Framework principal}
+
+Frameworkul principal pe care l-am folosit a fost React JS, care este o bibliotecă foarte populară
+și răspândită de JavaScript. În evaluarea framework-urilor front-end pentru VisioScience3D,
+ ne-am concentrat pe criterii precum maturitatea ecosistemului, performanță, curba de învățare,
+  flexibilitate în personalizare şi capacitatea de integrare cu biblioteci 3D. Dintre principalele
+   opțiuni (Vue.js, Angular, Svelte), React s-a impus datorită următoarelor avantaje:
+
+Ecosistem matur și susținere largă: React are o comunitate activă de milioane de dezvoltatori,
+ cu un număr impresionant de librării, tutoriale și un suport consistent din partea Meta. 
+ Această resursă ne-a permis să adoptăm rapid bune practici și să găsim soluții la provocări 
+ specifice dezvoltării 3D.
+
+Model declarativ și component-driven: React oferă un mod declarativ de descriere a interfeței,
+ ideal pentru scene 3D complexe, unde starea se propagă predictibil prin componente. Aceasta 
+ ușurează managementul ciclului de viață al obiectelor Three.js, reducând riscul de memory 
+ leaks sau inconsistent updates.
+
+React Router DOM: Pentru navigarea între diferitele secţiuni ale platformei (fizică, chimie,
+ astronomie etc.), React Router DOM a fost ales pentru simplitatea în definirea “routes” şi 
+ suportul pentru lazy loading de module. Alternativele (Vue Router, Angular Router) sunt la 
+ fel de capabile, însă integrarea lor cu React Three Fiber ar fi impus un strat suplimentar
+  de interoperabilitate.
+
+De ce Tailwind CSS vs. alte soluții de stilizare
+
+Pentru sistemul de design al VisioScience3D, am comparat framework-uri clasice de CSS
+ (Bootstrap, Material UI) cu Tailwind CSS:
+
+Utilitare-first și JIT: Tailwind oferă clase utilitare care permit definirea rapidă a 
+layout-urilor şi a stilurilor unice, fără a scrie sutele de linii de CSS personalizat. Motorul 
+JIT (Just-In-Time) generează doar clasele folosite, menținând pachetul final foarte mic.
+
+Consistență și flexibilitate: În loc să ne încărcăm aplicația cu componente predefinite,
+ am putut construi ună interfață coerentă, respectând paleta de culori şi spațierile dorite,
+  fără a rescrie componente UI complexe.
+
+Integrare strânsă cu React: Utilizarea className din JSX se potrivește natural cu Tailwind,
+ iar plugin-urile precum @tailwindcss/forms facilitează stilizarea formularelor şi input-urilor.
+
+Beneficiile integrării cu Three.js prin React Three Fiber și Drei
+
+Pentru vizualizările 3D ale conceptelor fizice și chimice, am ales React Three Fiber (R3F) şi Drei:
+
+Abstracție declarativă: R3F “împachetează” API-ul imperativ Three.js într-un DSL React, 
+permițându-ne să definim scene, obiecte și materiale în JSX, sub formă de componente. 
+Astfel, putem folosi hook-uri (useFrame, useLoader) pentru a sincroniza animațiile și 
+resursele fără boilerplate.
+
+Ecosistem Drei: Biblioteca Drei aduce peste 100 de componente gata făcute (OrbitControls,
+ Text, PositionalAudio etc.), accelerate de comunitate, care ne-au economisit ore de 
+ implementare. De exemplu, Text pentru etichete 3D sau Html pentru overlay-uri de UI.
+
+Optimizări de performanță: Datorită reconciler-ului React, R3F actualizează doar părțile
+ din scenă care se schimbă. Împreună cu dpr configurabil și performance API, am putut regla
+  dinamic calitatea redării pe dispozitive diverse, fără compromisuri semnificative.
+
+În concluzie, combinația React + React Router DOM + Tailwind CSS + React Three Fiber + 
+Drei ne-a oferit un stack unificat, performant și ușor de întreținut, perfect adaptat 
+pentru dezvoltarea rapidă de simulări 3D interactive în browser și pentru extinderea
+platformei VisioScience3D.
+
+\fig[width=1.1\textwidth]{imgs/fediagram.png}{fig:mozaweb}{Diagrama de design primncipală a frontend-ului}
+
+\subsection{Framework 3D}
 
 \section{Soluția UI/UX}
 \label{sub-sec:proj-ui-ux}
