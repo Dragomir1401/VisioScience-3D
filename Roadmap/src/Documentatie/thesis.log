@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  22 MAY 2025 18:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  23 MAY 2025 18:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -196,13 +196,13 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 )
 \Hy@SectionHShift=\skip50
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 54.
+Package hyperref Info: Option `colorlinks' set `true' on input line 56.
 
 
 Package hyperref Warning: Option `bookmarks' has already been used,
-(hyperref)                setting the option has no effect on input line 54.
+(hyperref)                setting the option has no effect on input line 56.
 
-Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 54.
+Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 56.
 (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/underscore\underscore.sty
 Package: underscore 2006/09/13
 LaTeX Info: Redefining \_ on input line 42.
@@ -283,7 +283,7 @@ Package tocbasic Info: setting babel extension for `nls' on input line 188.
 \@nomenclaturefile=\write3
 \openout3 = `thesis.nlo'.
 
-Package nomencl Info: Writing nomenclature file thesis.nlo on input line 92.
+Package nomencl Info: Writing nomenclature file thesis.nlo on input line 94.
  (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/bigfoot\perpage.sty
 Package: perpage 2014/10/25 2.0 Reset/sort counters per page
 \c@abspage=\count289
@@ -558,16 +558,19 @@ LaTeX Warning: Label `fig:distributie_persoane' multiply defined.
 LaTeX Warning: Label `sec:proj' multiply defined.
 
 
+LaTeX Warning: Label `fig:distributie_persoane' multiply defined.
+
+
+LaTeX Warning: Label `fig:mozaweb' multiply defined.
+
+
 LaTeX Warning: Label `sub-sec:proj-scope' multiply defined.
 
-
-LaTeX Warning: Label `sub-sec:proj-user-profile' multiply defined.
-
-) (src/chapters/tehnologii.aux
+) (src/chapters/tehnologiiFe.aux
 
 LaTeX Warning: Label `sec:proj' multiply defined.
 
-) (src/chapters/implementare.aux
+) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux
 
 LaTeX Warning: Label `subsec:implementare-backend' multiply defined.
 
@@ -580,7 +583,7 @@ LaTeX Warning: Label `subsec:implementare-frontend' multiply defined.
 
 LaTeX Warning: Label `subsec:implementare-frontend' multiply defined.
 
-) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
+) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 3.
@@ -674,12 +677,12 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: End \AtBeginDocument code.
  (src/global.tex) (template/titlepage.ro.tex
-<src/img/branding/upb.png, id=463, 598.235pt x 598.235pt>
+<src/img/branding/upb.png, id=359, 598.235pt x 598.235pt>
 File: src/img/branding/upb.png Graphic file (type png)
 <use src/img/branding/upb.png>
 Package pdftex.def Info: src/img/branding/upb.png  used on input line 7.
 (pdftex.def)             Requested size: 53.63545pt x 53.62888pt.
-<src/img/branding/cs.png, id=464, 695.59875pt x 307.1475pt>
+<src/img/branding/cs.png, id=360, 695.59875pt x 307.1475pt>
 File: src/img/branding/cs.png Graphic file (type png)
 <use src/img/branding/cs.png>
 Package pdftex.def Info: src/img/branding/cs.png  used on input line 7.
@@ -759,13 +762,13 @@ Overfull \hbox (22.30719pt too wide) in paragraph at lines 49--50
  []
 
 [7] [8] [9]
-<imgs/hover.png, id=671, 185.19188pt x 123.46124pt>
+<imgs/hover.png, id=541, 185.19188pt x 123.46124pt>
 File: imgs/hover.png Graphic file (type png)
 <use imgs/hover.png>
 Package pdftex.def Info: imgs/hover.png  used on input line 164.
 (pdftex.def)             Requested size: 206.28249pt x 137.52396pt.
  [10]
-<imgs/tutorial.png, id=677, 1027.58907pt x 203.25937pt>
+<imgs/tutorial.png, id=547, 1027.58907pt x 203.25937pt>
 File: imgs/tutorial.png Graphic file (type png)
 <use imgs/tutorial.png>
 Package pdftex.def Info: imgs/tutorial.png  used on input line 170.
@@ -775,40 +778,109 @@ Package pdftex.def Info: imgs/tutorial.png  used on input line 170.
 
  (src/chapters/studiuPiata.tex
 Chapter 3.
-) [14
+<imgs/phet.png, id=573, 1431.84938pt x 668.4975pt>
+File: imgs/phet.png Graphic file (type png)
+<use imgs/phet.png>
+Package pdftex.def Info: imgs/phet.png  used on input line 11.
+(pdftex.def)             Requested size: 412.56497pt x 192.61485pt.
+[14
 
 
 
 
-]
-\openout2 = `src/chapters/tehnologii.aux'.
+ <./imgs/phet.png>]
+<imgs/invatamate.png, id=580, 1271.5003pt x 721.19438pt>
+File: imgs/invatamate.png Graphic file (type png)
+<use imgs/invatamate.png>
+Package pdftex.def Info: imgs/invatamate.png  used on input line 21.
+(pdftex.def)             Requested size: 412.56497pt x 234.01125pt.
+ [15 <./imgs/invatamate.png>]
+<imgs/invatamatesimulare.png, id=587, 723.45282pt x 710.655pt>
+File: imgs/invatamatesimulare.png Graphic file (type png)
+<use imgs/invatamatesimulare.png>
+Package pdftex.def Info: imgs/invatamatesimulare.png  used on input line 40.
+(pdftex.def)             Requested size: 202.15909pt x 198.58083pt.
+<imgs/invatamatejoc.png, id=588, 740.7675pt x 706.13812pt>
+File: imgs/invatamatejoc.png Graphic file (type png)
+<use imgs/invatamatejoc.png>
+Package pdftex.def Info: imgs/invatamatejoc.png  used on input line 47.
+(pdftex.def)             Requested size: 202.15909pt x 192.70705pt.
+<imgs/mozaweb.png, id=589, 1038.88126pt x 673.01437pt>
+File: imgs/mozaweb.png Graphic file (type png)
+<use imgs/mozaweb.png>
+Package pdftex.def Info: imgs/mozaweb.png  used on input line 59.
+(pdftex.def)             Requested size: 330.05322pt x 213.80804pt.
+ [16 <./imgs/invatamatesimulare.png> <./imgs/invatamatejoc.png> <./imgs/mozaweb.png>]
+<imgs/mozawebplugin.png, id=599, 942.52126pt x 472.01344pt>
+File: imgs/mozawebplugin.png Graphic file (type png)
+<use imgs/mozawebplugin.png>
+Package pdftex.def Info: imgs/mozawebplugin.png  used on input line 66.
+(pdftex.def)             Requested size: 412.56497pt x 206.6134pt.
+ [17 <./imgs/mozawebplugin.png>]
+<imgs/iqboard.png, id=610, 922.19531pt x 648.92438pt>
+File: imgs/iqboard.png Graphic file (type png)
+<use imgs/iqboard.png>
+Package pdftex.def Info: imgs/iqboard.png  used on input line 91.
+(pdftex.def)             Requested size: 202.15909pt x 142.2489pt.
+<imgs/iqboardsimulari.jpg, id=611, 818.05624pt x 439.6425pt>
+File: imgs/iqboardsimulari.jpg Graphic file (type jpg)
+<use imgs/iqboardsimulari.jpg>
+Package pdftex.def Info: imgs/iqboardsimulari.jpg  used on input line 98.
+(pdftex.def)             Requested size: 202.15909pt x 108.64246pt.
 
- (src/chapters/tehnologii.tex
+Underfull \hbox (badness 7099) in paragraph at lines 99--99
+[]\T1/cmr/m/n/10 Figure 3.8: |Simul ri de pe plat-forma
+ []
+
+) [18 <./imgs/iqboard.png> <./imgs/iqboardsimulari.jpg>] [19]
+\openout2 = `src/chapters/tehnologiiFe.aux'.
+
+ (src/chapters/tehnologiiFe.tex
 Chapter 4.
-) [15
+) [20
 
 
 
 
 ]
-Overfull \vbox (1095.16998pt too high) has occurred while \output is active []
+Overfull \vbox (87.76321pt too high) has occurred while \output is active []
 
- [16]
+ [21]
+\openout2 = `src/chapters/tehnologiiBe.aux'.
+
+ (src/chapters/tehnologiiBe.tex
+Chapter 5.
+) [22
+
+
+
+
+]
+Overfull \vbox (129.96402pt too high) has occurred while \output is active []
+
+ [23]
 \openout2 = `src/chapters/implementare.aux'.
 
  (src/chapters/implementare.tex
-Chapter 5.
-) [17
+Chapter 6.
+) [24
 
 
 
 
 ]
+\openout2 = `src/chapters/funcionalitati.aux'.
+
+
+No file src/chapters/funcionalitati.tex.
 \openout2 = `src/chapters/scenariiUtilizare.aux'.
 
- (src/chapters/scenariiUtilizare.tex
-Chapter 6.
-) [18
+(src/chapters/scenariiUtilizare.tex
+Chapter 7.
+) [25
+
+
+
 
 
 
@@ -817,8 +889,8 @@ Chapter 6.
 \openout2 = `src/chapters/evaluare.aux'.
 
  (src/chapters/evaluare.tex
-Chapter 7.
-) [19
+Chapter 8.
+) [26
 
 
 
@@ -827,15 +899,15 @@ Chapter 7.
 \openout2 = `src/chapters/concluzii.aux'.
 
  (src/chapters/concluzii.tex
-Chapter 8.
-) [20
+Chapter 9.
+) [27
 
 
 
 
 ]) (src/appendix/index.tex (src/appendix/build.system.makefiles.tex
 Appendix A.
-)) [21
+)) [28
 
 
 
@@ -854,14 +926,14 @@ Underfull \hbox (badness 1424) in paragraph at lines 80--81
 \T1/cmr/m/n/10 Ed-u-ca-tion: Czech Ex-per-i-ment,^^Q *Cen-tral Eu-ro-pean Jour-nal of Ed-u-ca-tion*, 2019.
  []
 
-[22
+[29
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 89--90
 []\T1/cmr/m/n/10 Y. Zhang et al., ^^PVR/AR in STEM Learn-ing,^^Q *PubMed*, 2024.
  []
 
-(thesis.ind) [23] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologii.aux) (src/chapters/implementare.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
+(thesis.ind) [30] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologiiFe.aux) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
@@ -871,20 +943,20 @@ L3 programming layer <2024-01-04>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: DB2365CCB83CA162E856DAD5DAF3E07C;24045.
+(rerunfilecheck)             Checksum: D50B4F5F933F8D01E144594B42DE24E4;18242.
  ) 
 Here is how much of TeX's memory you used:
- 16871 strings out of 474486
- 286620 string characters out of 5743754
- 1952542 words of memory out of 5000000
- 38623 multiletter control sequences out of 15000+600000
+ 16956 strings out of 474486
+ 289865 string characters out of 5743754
+ 1948542 words of memory out of 5000000
+ 38697 multiletter control sequences out of 15000+600000
  579875 words of font info for 84 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  125i,18n,147p,562b,668s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0600.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on thesis.pdf (30 pages, 458859 bytes).
+Output written on thesis.pdf (37 pages, 5391784 bytes).
 PDF statistics:
- 1318 PDF objects out of 1440 (max. 8388607)
- 174 named destinations out of 1000 (max. 500000)
- 941 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1263 PDF objects out of 1440 (max. 8388607)
+ 173 named destinations out of 1000 (max. 500000)
+ 773 words of extra memory for PDF output out of 10000 (max. 10000000)
 

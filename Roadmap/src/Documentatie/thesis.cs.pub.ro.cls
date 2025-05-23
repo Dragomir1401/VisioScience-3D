@@ -15,6 +15,8 @@
 \LoadClassWithOptions{report}
 \let\ExecuteOptions\ExecuteOptions@ltx
 
+\let\cleardoublepage\clearpage
+
 % uncomment the lines bellow for Romanian Language support
 % Use UTF8 file encoding when writing .tex files in Romanian
 % Romanian Language support
