@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  23 MAY 2025 23:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  24 MAY 2025 02:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -894,22 +894,42 @@ File: imgs/logo.png Graphic file (type png)
 <use imgs/logo.png>
 Package pdftex.def Info: imgs/logo.png  used on input line 177.
 (pdftex.def)             Requested size: 206.28249pt x 42.34673pt.
-<imgs/mascota.png, id=667, 401.24907pt x 569.87906pt>
+ [25 <./imgs/paleta.png> <./imgs/logo.png>]
+<imgs/mascota.png, id=676, 401.24907pt x 569.87906pt>
 File: imgs/mascota.png Graphic file (type png)
 <use imgs/mascota.png>
 Package pdftex.def Info: imgs/mascota.png  used on input line 189.
 (pdftex.def)             Requested size: 144.40025pt x 205.08673pt.
-<imgs/animatieregister.png, id=668, 580.41844pt x 549.55313pt>
+<imgs/animatieregister.png, id=677, 580.41844pt x 549.55313pt>
 File: imgs/animatieregister.png Graphic file (type png)
 <use imgs/animatieregister.png>
 Package pdftex.def Info: imgs/animatieregister.png  used on input line 193.
-(pdftex.def)             Requested size: 247.54149pt x 234.37457pt.
-) [25 <./imgs/paleta.png> <./imgs/logo.png>] [26 <./imgs/mascota.png>] [27 <./imgs/animatieregister.png>]
+(pdftex.def)             Requested size: 165.02347pt x 156.24692pt.
+ [26 <./imgs/mascota.png> <./imgs/animatieregister.png>]
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 230.
+ (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)
+Overfull \hbox (44.94162pt too wide) in paragraph at lines 229--232
+[]\T1/cmr/bx/n/10 Reducerea num ru-lui de draw calls: \T1/cmr/m/n/10 Com-bin m mesh-urile sim-i-lare folosind \T1/pcr/m/n/10 BufferGeometry
+ []
+
+[27]
+Overfull \hbox (14.93411pt too wide) in paragraph at lines 243--246
+[]\T1/cmr/m/n/10 Propietatea \T1/pcr/m/n/10 performance={min:0.5, max:1} \T1/cmr/m/n/10 ajusteaz  di-namic rata de reîm-prosp tare
+ []
+
+
+Overfull \hbox (3.27094pt too wide) in paragraph at lines 246--248
+[]\T1/cmr/m/n/10 Hook-ul \T1/pcr/m/n/10 useTexture \T1/cmr/m/n/10 din Drei preîn-carc  []i cache-uie[]te tex-turile, evitând aloc ri repetate
+ []
+
+) [28{C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}]
 \openout2 = `src/chapters/tehnologiiBe.aux'.
 
  (src/chapters/tehnologiiBe.tex
 Chapter 5.
-) [28
+) [29
 
 
 
@@ -917,12 +937,12 @@ Chapter 5.
 ]
 Overfull \vbox (129.96402pt too high) has occurred while \output is active []
 
- [29]
+ [30]
 \openout2 = `src/chapters/implementare.aux'.
 
  (src/chapters/implementare.tex
 Chapter 6.
-) [30
+) [31
 
 
 
@@ -936,7 +956,7 @@ No file src/chapters/funcionalitati.tex.
 
 (src/chapters/scenariiUtilizare.tex
 Chapter 7.
-) [31
+) [32
 
 
 
@@ -949,7 +969,7 @@ Chapter 7.
 
  (src/chapters/evaluare.tex
 Chapter 8.
-) [32
+) [33
 
 
 
@@ -959,14 +979,14 @@ Chapter 8.
 
  (src/chapters/concluzii.tex
 Chapter 9.
-) [33
+) [34
 
 
 
 
 ]) (src/appendix/index.tex (src/appendix/build.system.makefiles.tex
 Appendix A.
-)) [34
+)) [35
 
 
 
@@ -985,14 +1005,14 @@ Underfull \hbox (badness 1424) in paragraph at lines 80--81
 \T1/cmr/m/n/10 Ed-u-ca-tion: Czech Ex-per-i-ment,^^Q *Cen-tral Eu-ro-pean Jour-nal of Ed-u-ca-tion*, 2019.
  []
 
-[35
+[36
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 89--90
 []\T1/cmr/m/n/10 Y. Zhang et al., ^^PVR/AR in STEM Learn-ing,^^Q *PubMed*, 2024.
  []
 
-(thesis.ind) [36] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologiiFe.aux) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
+(thesis.ind) [37] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologiiFe.aux) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
@@ -1005,17 +1025,17 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 (rerunfilecheck)             Checksum: 37EB82557192461E6D35D9B6A3D1B78D;18543.
  ) 
 Here is how much of TeX's memory you used:
- 17026 strings out of 474486
- 291341 string characters out of 5743754
+ 17065 strings out of 474486
+ 291892 string characters out of 5743754
  1949542 words of memory out of 5000000
- 38750 multiletter control sequences out of 15000+600000
- 579875 words of font info for 84 fonts, out of 8000000 for 9000
+ 38780 multiletter control sequences out of 15000+600000
+ 580496 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  125i,18n,147p,562b,645s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0600.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on thesis.pdf (43 pages, 6347717 bytes).
+ <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0600.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb>
+Output written on thesis.pdf (44 pages, 6368401 bytes).
 PDF statistics:
- 1335 PDF objects out of 1440 (max. 8388607)
- 190 named destinations out of 1000 (max. 500000)
+ 1352 PDF objects out of 1440 (max. 8388607)
+ 193 named destinations out of 1000 (max. 500000)
  824 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -176,7 +176,7 @@ mov la mulberry (\#690375).
 
 \fig[width=0.5\textwidth]{imgs/logo.png}{fig:fediagram}{Logo-ul platformei}
 
-
+\newpage
 \subsubsection{Mascota platformei}
 Mascota proiectului este un balon care se apropie de paleta de culori a platformei
 și care simbolizează explorarea și învățarea. Balonul apare în toate paginile importante ale platformei
@@ -190,9 +190,11 @@ insule pentru a ajunge la diferitele materii.
 
 Se poate observa și o captură în timpul animației facută la succesul la înregistrare.
 
-\fig[width=0.6\textwidth]{imgs/animatieregister.png}{fig:fediagram}{Captură de ecran a mascotei la înregistrare}
+\fig[width=0.4\textwidth]{imgs/animatieregister.png}{fig:fediagram}{Captură de ecran a mascotei la înregistrare}
 
 \subsection{Experiența utilizatorului}
+
+TO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 \subsubsection{Navigarea în platformă}
 \subsubsection{Crearea componentelor UI}
 \subsubsection{Designul interfeței utilizatorului}
@@ -201,9 +203,68 @@ Se poate observa și o captură în timpul animației facută la succesul la în
 \label{sec:proj-3d}
 \subsection{Utilizarea tehnologiilor WebGL și Three.js}
 \subsubsection{Crearea și gestionarea scenelor 3D}
+
+Scenele 3D se creaza folosind tagul de tip Canvas din React Three Fiber, care
+ne permite să definim o zonă de desenare 3D în care putem adăuga obiecte, camere și lumini.
+Acestea sunt gestionate printr-o ierarhie de componente React, fiecare reprezentând un obiect 3D
+sau un grup de obiecte.
+
+Se foloseste tagul a din @react-spring/three care ne dă acces la grupuri de meshe-uri și
+materiale, permițându-ne să transformăm obiecte glb în jsx.
+
 \subsubsection{Interacțiunea cu obiectele 3D}
+
+Folosim useFrame pentru a actualiza scena la fiecare cadru, simulând callback-urile clasice
+din loop-uril din jocuri. UseEffect e utilizat să actualizeze starea componentelor în funcție de modificările 
+din props, practic folosind addEventListener pentru a asculta evenimentele de schimbare a stării pe canvas
+sau document. UseRef, UseGLTF și UseThree au rolul de a crea referințe la obiectele din scenă,
+permițându-ne să le manipulăm direct în timpul animațiilor sau interacțiunilor. Folosim callbackuri
+de bază ca și stopPropagation pentru a preveni propagarea evenimentelor mouse-ului de exemplu și 
+preventDefault pentru a preveni comportamentele implicite.
+
 \subsubsection{Optimizarea performanței graficii 3D}
+
+Pentru a optimiza performanța graficii 3D pe framework-ul bazat pe WebGL, se abordează câteva tehnici generale:
+\begin{itemize}
+  \item \textbf{Reducerea numărului de draw calls:}
+    Combinăm mesh-urile similare folosind \texttt{BufferGeometry} 
+    pentru a limita costul fiecărui cadru.
+  \item \textbf{Frustum culling şi occlusion culling:} 
+    WebGL elimină automat obiectele aflate în afara câmpului vizual, 
+    iar React Three Fiber expune aceste mecanisme nativ, astfel încât
+    obiectele invizibile nu sunt trimise GPU–ului.
+\end{itemize}
+
+\paragraph{}  
+React Three Fiber (\texttt{\@react-three/fiber}) și Drei (\texttt{\@react-three/drei}) ne oferă setări și hook-uri dedicate pentru performanță:
+\begin{itemize}
+  \item \texttt{<Canvas dpr={[1,1]} />} limitează \emph{device pixel ratio} la un 
+  interval controlat, prevenind supraîncărcarea GPU-ului pe ecrane cu densitate mare.
+  \item Propietatea \texttt{performance=\{\,min:0.5, max:1\}} ajustează dinamic rata 
+  de reîmprospătare a canvas-ului în funcție de activitate, reducând numărul de 
+  cadre cînd scena este statică.
+  \item Hook-ul \texttt{useTexture} din Drei preîncarcă și cache-uiește texturile,
+    evitând alocări repetate și blocări de I/O în bucla de randare.
+\end{itemize}
+
+\paragraph{}  
+În proiectul \textit{VisioScience3D} am aplicat aceste principii astfel:
+\begin{itemize}
+  \item Texturile sunt decupate şi redimensionate la rezoluții de \emph{1k}–\emph{2k}
+   și convertite în formate comprimate (JPEG/PNG cu bitrate optim), reducând traficul GPU.
+  \item Geometria sferică a planetelor folosește un număr optim de segmente (32–64), 
+    echilibrând netezimea cu numărul de vârfuri procesate.
+  \item Am folosit \texttt{React.memo} și \texttt{useMemo} pentru a nu recrea geometrii
+    şi materiale la fiecare rerender React, iar animațiile rulează exclusiv pe GPU prin \texttt{useFrame}.
+  \item Setările WebGL \texttt{toneMapping} şi \texttt{outputEncoding} sunt ajustate pentru 
+    a profita de hardware-ul mai slab și cel mobil cu \texttt{powerPreference: low-power}, asigurând
+    stabilitate și consum redus de resurse.
+\end{itemize}
+
+Pentru a optimiza performanța graficii 3D, folosim texturi de dimensiuni mici și medii și
 \subsection{Integrarea cu frontendul}
+
+TO DOOOOOOOOOOO
 
 
 

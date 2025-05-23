@@ -485,6 +485,13 @@ INPUT .\imgs\animatieregister.png
 INPUT .\imgs\animatieregister.png
 INPUT .\imgs\animatieregister.png
 INPUT .\imgs\animatieregister.png
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\psnfss\t1pcr.fd
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\psnfss\t1pcr.fd
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\psnfss\t1pcr.fd
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrr8t.tfm
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\courier\pcrr8t.vf
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrr8r.tfm
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\base\8r.enc
 INPUT .\src\chapters\tehnologiiBe.tex
 INPUT .\src\chapters\tehnologiiBe.tex
 OUTPUT src\chapters\tehnologiiBe.aux
@@ -596,3 +603,5 @@ INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\c
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmr10.pfb
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy10.pfb
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy10.pfb
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\urw\courier\ucrr8a.pfb
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\urw\courier\ucrr8a.pfb
