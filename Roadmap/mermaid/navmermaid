@@ -1,0 +1,56 @@
+flowchart TD
+  %% Autentificare
+  A[Login] -->|utilizator nou| B[Înregistrare]
+  B --> A
+  A --> C{Autentificat?}
+  C -- Da --> D[Meniu Principal 3D]
+  C -- Nu --> A
+
+  %% Meniu principal
+  D --- E[Selectare Materie]
+  D --- F[Bara Superioară]
+  F --- G[Profil]
+  F --- H[Magazin]
+  F --- I[Despre]
+  F --- J[Contact]
+
+  %% Profil (rol specific)
+  G --> K{Rol?}
+  K -- Profesor --> L[Listă Clase]
+  K -- Elev     --> M[Clasa Mea]
+
+  %% Flux Profesor
+  L --> N[Detalii Clasă]
+  N --> O[Listă Quiz]
+  O --> P[Detalii Quiz]
+  O --> Q[Creare Quiz]
+  P --> R[Dashboard]
+  R --> N
+
+  %% Flux Elev
+  M --> S[Listă Quiz]
+  S --> T[Detalii Quiz]
+  T --> U[Realizare Quiz]
+
+  %% Întoarcere
+  D -.-> D
+  E -.-> D
+  G -.-> D
+  H -.-> D
+  I -.-> D
+  J -.-> D
+  L -.-> G
+  M -.-> G
+  N -.-> L
+  O -.-> N
+  P -.-> O
+  Q -.-> O
+  R -.-> O
+  S -.-> M
+  T -.-> S
+  U -.-> T
+
+  %% Stilizare săgeți și noduri
+  linkStyle default stroke:#555,stroke-width:2px
+  classDef nod stroke:#333,stroke-width:1px,fill:#f9f9f9,rx:4,ry:4
+  class A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U nod
