@@ -219,9 +219,86 @@ fi testate rapid împotriva serviciilor din cluster fără configurări suplimen
 
 
 \section{Descrierea serviciilor}
+
+
+În continuare sunt listate serviciile care alcătuiesc backend-ul aplicației, fiecare având roluri și responsabilități specifice
+în cadrul arhitecturii microservicii.
+
+\begin{itemize}
+  \item \texttt{evaluation-service} – Serviciul pentru gestionarea logicii de creare, monitorizare, deschide/închidere,
+  ștergere, gestionare de teste și evaluări.
+  \item \texttt{feed-data} – Serviciul care se ocupă de gestionarea datelor de feed-urile educaționale și 
+  accesarea motorului de generare a moleculelor de chimie.
+  \item \texttt{grafana} – Grafana pentru vizualizarea metricilor și a datelor de monitorizare.
+  \item \texttt{kong-kong} – Controller Kong pentru gestionarea rutării și a API-urilor.
+  \item \texttt{mongo-express-feed-data} – Interfață web pentru gestionarea bazei de date a feed-urilor educaționale.
+  \item \texttt{mongo-express-user-data} – Interfață web pentru gestionarea bazei de date a utilizatorilor.
+  \item \texttt{mongo-feed-data-service} – Baza de date MongoDB pentru serviciul de feed-uri educaționale.
+  \item \texttt{mongo-user-data-service} – Baza de date MongoDB pentru serviciul de utilizatori.
+  \item \texttt{monitoring-service} – Serviciul de monitorizare care colectează și expune metrici.
+  \item \texttt{portainer} – Interfață de administrare a clusterului Kubernetes. 
+  \item \texttt{prometheus} – Serviciul de colectare a metricilor și monitorizare prin Prometheus.
+  \item \texttt{user-data} – Serviciul pentru gestionarea datelor utilizatorilor, 
+  inclusiv autentificare și autorizare.
+\end{itemize}
+
 \subsection{Descrierea API-urilor}
 
-\subsection{Baze de date}
+Mai jos sunt principalele grupuri de endpoint-uri fără a le include pe cele de ștergere din 
+rațiuni de dimensiuni.
+\begin{table}[htb]
+  \centering
+  \caption{Endpoint-uri REST ale microserviciilor}
+  \label{table:api-endpoints}
+  \begin{tabular}{@{}p{11cm}p{8cm}@{}}
+    \toprule
+    \textbf{Endpoint} & \textbf{Descriere} \\
+    \midrule
+    \multicolumn{2}{@{}l}{\textbf{Feed Data Service}} \\[-0.5ex]
+    \texttt{POST   /feed}                       & creare feed de formule          \\
+    \texttt{GET    /feed/\{id\}}                & folosire feed de formulă          \\
+    \texttt{PUT    /feed/\{id\}}                & actualizare feed de formulă     \\
+    \texttt{GET    /feed/shape/\{shape\}}       & listare după scenă       \\
+    \texttt{GET    /feed/chem/molecules}        & listare molecule         \\
+    \texttt{POST   /feed/chem/molecules}        & creare moleculă          \\
+    \texttt{GET    /feed/chem/molecules/\{id\}} & citire moleculă          \\
+    \texttt{PUT    /feed/chem/molecules/\{id\}} & actualizare moleculă     \\
+    \texttt{GET    /feed/chem/molecules/\{id\}/3d} & vizualizare 3D moleculă        \\
+    \addlinespace
+    \multicolumn{2}{@{}l}{\textbf{User Data Service}} \\[-0.5ex]
+    \texttt{POST   /user/auth/register}         & înregistrare utilizator            \\
+    \texttt{POST   /user/auth/login}            & autentificare utilizator           \\
+    \texttt{GET    /user/me}                    & detalii profil curent      \\
+    \texttt{POST   /user/classes}               & creare clasă             \\
+    \texttt{GET    /user/classes}               & listare clase proprii    \\
+    \texttt{POST   /user/classes/\{code\}/join} & aderare la clasă         \\
+    \texttt{POST   /user/class/add-student}     & adaugă elev              \\
+    \texttt{GET    /user/classes/\{id\}/students}        & listează elevi \\
+    \texttt{POST   /user/classes/\{id\}/invite} & trimite invitație        \\
+    \texttt{GET    /user/invites}               & listare invitații        \\
+    \texttt{POST   /user/invites/\{id\}/respond} & răspunde invitației      \\
+    \texttt{POST   /user/quiz/result}           & trimite rezultat quiz    \\
+    \texttt{GET    /user/quiz/results/\{quizId\}}           & rezultate individuale    \\
+    \texttt{GET    /user/classes/\{classId\}/quiz/\{quizId\}/results} & rezultate pe clasă \\
+    \addlinespace
+    \multicolumn{2}{@{}l}{\textbf{Evaluation Service}} \\[-0.5ex]
+    \texttt{POST   /evaluation/quiz}            & creare quiz              \\
+    \texttt{GET    /evaluation/quiz}            & listare quiz-uri         \\
+    \texttt{PUT    /evaluation/quiz/\{id\}}     & actualizare quiz         \\
+    \texttt{GET    /evaluation/quiz/class/\{class\_id\}} & listare pe clasă   \\
+    \texttt{GET    /evaluation/quiz/attempt/\{quizId\}} & pregătire quiz  \\
+    \texttt{POST   /evaluation/quiz/attempt/\{quizId\}} & trimitere răspunsuri  \\
+    \texttt{GET    /evaluation/quiz/\{quizId\}/result/\{userId\}} & ultim rezultat  \\
+    \texttt{GET    /evaluation/quiz/\{quizId\}/results} & rezultate multiple \\
+    \texttt{PUT    /evaluation/quiz/\{id\}/status} & schimbă status quiz  \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Fiecare serviciu are un API RESTful care permite interacțiunea cu resursele sale. Aceste API-uri sunt definite
+ăn routerul fiecărui serviciu care este creat prin biblioteca \texttt{Gorrilla Mux} în Go.
+Fiecare serviciu are un set de endpoint-uri care permit operații CRUD (Create, Read, Update, Delete) asupra resurselor sale
+și interacționează cu baza de date corespunzătoare.
 
 \section{Securitate}
 

@@ -57,54 +57,53 @@
 \contentsline {subsection}{\numberline {5.1.3}Gestionarea clusterului}{36}{subsection.5.1.3}%
 \contentsline {subsection}{\numberline {5.1.4}Rutarea și gestionarea traficului}{37}{subsection.5.1.4}%
 \contentsline {section}{\numberline {5.2}Descrierea serviciilor}{38}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Descrierea API-urilor}{38}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}Baze de date}{38}{subsection.5.2.2}%
-\contentsline {section}{\numberline {5.3}Securitate}{38}{section.5.3}%
-\contentsline {section}{\numberline {5.4}CI/CD}{38}{section.5.4}%
-\contentsline {subsection}{\numberline {5.4.1}Port forwarding}{38}{subsection.5.4.1}%
-\contentsline {subsection}{\numberline {5.4.2}Deployment}{38}{subsection.5.4.2}%
-\contentsline {subsection}{\numberline {5.4.3}Metrici / Monitorizare}{38}{subsection.5.4.3}%
-\contentsline {section}{\numberline {5.5}Soluția de baze de date}{38}{section.5.5}%
-\contentsline {subsection}{\numberline {5.5.1}Structura bazei de date}{38}{subsection.5.5.1}%
-\contentsline {subsubsection}{Tipuri de baze de date utilizate / Motivația alegerii}{38}{section*.43}%
-\contentsline {subsubsection}{Gestionarea datelor}{38}{section*.44}%
-\contentsline {subsection}{\numberline {5.5.2}Securitatea datelor}{38}{subsection.5.5.2}%
-\contentsline {subsubsection}{Backup și restaurare}{38}{section*.45}%
-\contentsline {subsubsection}{Performanța și scalabilitatea bazei de date}{38}{section*.46}%
-\contentsline {subsection}{\numberline {5.5.3}Integrarea cu back-endul}{38}{subsection.5.5.3}%
-\contentsline {chapter}{\numberline {6}Detalii de implementare}{39}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Back-end}{39}{section.6.1}%
-\contentsline {subsection}{\numberline {6.1.1}Configurare back-end}{39}{subsection.6.1.1}%
-\contentsline {subsection}{\numberline {6.1.2}Dezvoltare back-end}{39}{subsection.6.1.2}%
-\contentsline {subsection}{\numberline {6.1.3}Conectivitate}{39}{subsection.6.1.3}%
-\contentsline {section}{\numberline {6.2}Front-end}{39}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Configurare front-end}{39}{subsection.6.2.1}%
-\contentsline {subsection}{\numberline {6.2.2}Dezvoltare front-end}{39}{subsection.6.2.2}%
-\contentsline {subsection}{\numberline {6.2.3}Conectivitate}{39}{subsection.6.2.3}%
-\contentsline {chapter}{\numberline {7}Scenarii de utilizare}{40}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Înregistrare si autentificare utilizator}{40}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Explorarea meniul principal}{40}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Accesarea secțiunilor educaționale}{40}{section.7.3}%
-\contentsline {section}{\numberline {7.4}Interacțiunea cu scenele 3D educaționale}{40}{section.7.4}%
-\contentsline {section}{\numberline {7.5}Gestionarea profilului de profesor}{40}{section.7.5}%
-\contentsline {subsection}{\numberline {7.5.1}Crearea de clase și gestionarea elevilor}{40}{subsection.7.5.1}%
-\contentsline {subsection}{\numberline {7.5.2}Crearea de teste și gestionarea lor}{40}{subsection.7.5.2}%
-\contentsline {subsection}{\numberline {7.5.3}Vizualizarea rezultatelor}{40}{subsection.7.5.3}%
-\contentsline {section}{\numberline {7.6}Gestionarea contului de elev}{40}{section.7.6}%
-\contentsline {subsection}{\numberline {7.6.1}Intrarea în clasele profesorului}{40}{subsection.7.6.1}%
-\contentsline {subsection}{\numberline {7.6.2}Accesarea testelor și vizualizarea rezultatelor}{40}{subsection.7.6.2}%
-\contentsline {subsection}{\numberline {7.6.3}Rezolvarea testelor}{40}{subsection.7.6.3}%
-\contentsline {chapter}{\numberline {8}Evaluarea implementării}{41}{chapter.8}%
-\contentsline {section}{\numberline {8.1}Evaluarea back-endului}{41}{section.8.1}%
-\contentsline {subsection}{\numberline {8.1.1}Testarea back-endului}{41}{subsection.8.1.1}%
-\contentsline {subsection}{\numberline {8.1.2}Monitorizarea back-endului}{41}{subsection.8.1.2}%
-\contentsline {subsection}{\numberline {8.1.3}Evaluarea performanței back-endului}{41}{subsection.8.1.3}%
-\contentsline {section}{\numberline {8.2}Evaluarea front-endului}{41}{section.8.2}%
-\contentsline {subsection}{\numberline {8.2.1}Testarea front-endului}{41}{subsection.8.2.1}%
-\contentsline {subsection}{\numberline {8.2.2}Monitorizarea front-endului}{41}{subsection.8.2.2}%
-\contentsline {subsection}{\numberline {8.2.3}Evaluarea performanței front-endului}{41}{subsection.8.2.3}%
-\contentsline {section}{\numberline {8.3}Testarea infrastructurii / Platformei}{41}{section.8.3}%
-\contentsline {chapter}{\numberline {9}Concluzii și perspective}{42}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Concluzii}{42}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Dezvoltare viitoare}{42}{section.9.2}%
-\contentsline {chapter}{\numberline {A}Anexe}{43}{appendix.A}%
+\contentsline {subsection}{\numberline {5.2.1}Descrierea API-urilor}{39}{subsection.5.2.1}%
+\contentsline {section}{\numberline {5.3}Securitate}{40}{section.5.3}%
+\contentsline {section}{\numberline {5.4}CI/CD}{40}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Port forwarding}{40}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Deployment}{40}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}Metrici / Monitorizare}{40}{subsection.5.4.3}%
+\contentsline {section}{\numberline {5.5}Soluția de baze de date}{40}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Structura bazei de date}{40}{subsection.5.5.1}%
+\contentsline {subsubsection}{Tipuri de baze de date utilizate / Motivația alegerii}{40}{section*.44}%
+\contentsline {subsubsection}{Gestionarea datelor}{40}{section*.45}%
+\contentsline {subsection}{\numberline {5.5.2}Securitatea datelor}{40}{subsection.5.5.2}%
+\contentsline {subsubsection}{Backup și restaurare}{40}{section*.46}%
+\contentsline {subsubsection}{Performanța și scalabilitatea bazei de date}{40}{section*.47}%
+\contentsline {subsection}{\numberline {5.5.3}Integrarea cu back-endul}{40}{subsection.5.5.3}%
+\contentsline {chapter}{\numberline {6}Detalii de implementare}{41}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Back-end}{41}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Configurare back-end}{41}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Dezvoltare back-end}{41}{subsection.6.1.2}%
+\contentsline {subsection}{\numberline {6.1.3}Conectivitate}{41}{subsection.6.1.3}%
+\contentsline {section}{\numberline {6.2}Front-end}{41}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Configurare front-end}{41}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Dezvoltare front-end}{41}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Conectivitate}{41}{subsection.6.2.3}%
+\contentsline {chapter}{\numberline {7}Scenarii de utilizare}{42}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Înregistrare si autentificare utilizator}{42}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Explorarea meniul principal}{42}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Accesarea secțiunilor educaționale}{42}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Interacțiunea cu scenele 3D educaționale}{42}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Gestionarea profilului de profesor}{42}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}Crearea de clase și gestionarea elevilor}{42}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}Crearea de teste și gestionarea lor}{42}{subsection.7.5.2}%
+\contentsline {subsection}{\numberline {7.5.3}Vizualizarea rezultatelor}{42}{subsection.7.5.3}%
+\contentsline {section}{\numberline {7.6}Gestionarea contului de elev}{42}{section.7.6}%
+\contentsline {subsection}{\numberline {7.6.1}Intrarea în clasele profesorului}{42}{subsection.7.6.1}%
+\contentsline {subsection}{\numberline {7.6.2}Accesarea testelor și vizualizarea rezultatelor}{42}{subsection.7.6.2}%
+\contentsline {subsection}{\numberline {7.6.3}Rezolvarea testelor}{42}{subsection.7.6.3}%
+\contentsline {chapter}{\numberline {8}Evaluarea implementării}{43}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Evaluarea back-endului}{43}{section.8.1}%
+\contentsline {subsection}{\numberline {8.1.1}Testarea back-endului}{43}{subsection.8.1.1}%
+\contentsline {subsection}{\numberline {8.1.2}Monitorizarea back-endului}{43}{subsection.8.1.2}%
+\contentsline {subsection}{\numberline {8.1.3}Evaluarea performanței back-endului}{43}{subsection.8.1.3}%
+\contentsline {section}{\numberline {8.2}Evaluarea front-endului}{43}{section.8.2}%
+\contentsline {subsection}{\numberline {8.2.1}Testarea front-endului}{43}{subsection.8.2.1}%
+\contentsline {subsection}{\numberline {8.2.2}Monitorizarea front-endului}{43}{subsection.8.2.2}%
+\contentsline {subsection}{\numberline {8.2.3}Evaluarea performanței front-endului}{43}{subsection.8.2.3}%
+\contentsline {section}{\numberline {8.3}Testarea infrastructurii / Platformei}{43}{section.8.3}%
+\contentsline {chapter}{\numberline {9}Concluzii și perspective}{44}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Concluzii}{44}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Dezvoltare viitoare}{44}{section.9.2}%
+\contentsline {chapter}{\numberline {A}Anexe}{45}{appendix.A}%
