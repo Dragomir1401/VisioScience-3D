@@ -297,7 +297,21 @@ React Three Fiber (\texttt{\@react-three/fiber}) și Drei (\texttt{\@react-three
 Pentru a optimiza performanța graficii 3D, folosim texturi de dimensiuni mici și medii și
 \subsection{Integrarea cu frontendul}
 
-TO DOOOOOOOOOOO
+Pentru integrarea modelelor 3D în platformă, fiecare scenă sau obiect (.glb) este 
+încărcat cu declanșatorul \texttt{useGLTF} din \texttt{\@react-three/drei} şi convertit într-o
+componentă React care reacţionează la stările de aplicaţie. De exemplu, componenta 
+\texttt{Baloon} foloseşte un \texttt{useEffect} pentru a schimba periodic \texttt{animationState}
+într-o listă de stări (idle, swayLeft, floatUp etc.), iar declanșatorul \texttt{useSpring}
+din \texttt{\@react-spring/three} transformă această stare într-un set de proprietăţi
+\texttt{position} şi \texttt{rotation} animate, atribuite mai departe unui element 
+\texttt{mesh}.
+
+În plus, componenta de background ataşează direct evenimente DOM (\texttt{mousedown}, \texttt{mousemove},
+\texttt{keydown}) şi gestionate în interiorul declanșatorului \texttt{useFrame} din \texttt{\@react-three/fiber},
+permiţând controlul direct al rotaţiei scenei în funcţie de interacţiunea utilizatorului.
+Starea şi logica aplicației se propagă în lumea 3D, creând o leagătură reactivă între UI-ul
+convenţional şi grafica gestionată prin WebGL.
+
 
 
 
