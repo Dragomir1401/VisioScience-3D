@@ -35,6 +35,7 @@ flowchart TD
   %% Întoarcere
   D -.-> D
   E -.-> D
+  
   G -.-> D
   H -.-> D
   I -.-> D
