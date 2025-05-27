@@ -1,7 +1,199 @@
 \chapter{Tehnologii utilizate pentru back-end}
 \label{sec:proj-backend}
 \section{Descrierea arhitecturii}
+\label{sec:proj-backend-architecture}
+
+Backend-ul este construit folosind o arhitectură cu microservicii, care permite scalabilitate și
+întreținere ușoară a serviciilor care rulează. Avem trei servicii principale pentru logică de 
+produs, un serviciu care funcționează ca router al arhitecturii, doua instanțe de baze de date
+nerelaționale, un serviciu de gestionare a infrastructurii, un serviciu de monitorizare care
+funcționează împreună cu un serviciu de provizionare de metrici și un serviciu de vizualizare
+și utilitarele corespunzătoare pentru gestionarea bazelor de date integrate.
+
 \subsection{Configurarea clusterului}
+Clusterul este configurat folosind Kubernetes, care permite orchestrarea containerelor și
+gestionarea resurselor într-un mod eficient. Fiecare serviciu este containerizat folosind Docker,
+permițându-ne să rulăm aplicațiile într-un mediu izolat și consistent. Kubernetes gestionează
+scalarea automată a serviciilor, distribuția sarcinilor și asigură disponibilitatea acestora.
+
+Clusterul a fost creat utilizând kind (Kubernetes in Docker), care permite rularea
+Kubernetes într-un mediu de dezvoltare local. Acest lucru facilitează testarea și dezvoltarea
+aplicațiilor înainte de a le lansa în mediul de producție.
+
+Dezvoltarea în acest mediu a permis integrarea rapidă a noilor funcționalități și
+testarea acestora într-un mediu controlat. De asemenea, a permis simularea unor scenarii de
+scalabilitate și performanță, asigurându-ne că aplicația poate gestiona un număr mare de
+utilizatori și cereri simultane.
+
+Procesul de implementare și lansare presupune construirea imaginilor Docker pentru fiecare
+serviciu, încărcarea acestora în registrul de imagini gestionat prin Docker Desktop pentru
+testare și apoi reîncărcărea acestora în clusterul Kubernetes. Acest proces este automatizat
+prin intermediul unui pipeline CI/CD în mediul de dezvoltare Github. Pentru asta se folosesc
+GitHub Actions, care permit rularea automată a diferitelor procese de construire, formatare
+și apoi trecerea prin procesul de testare și implementare/lansare a aplicației.
+
+Fiecare serviciu are propriile fișiere \textit{.yaml} de configurare, care definesc care
+definesc după caz modul de rulare, variabilele de mediu, resursele necesare, rutarea, porturile
+expuse și alte setări specifice. Aceste fișiere sunt esențiale pentru a asigura
+funcționarea corectă a serviciilor în cadrul clusterului Kubernetes și pentru a permite
+gestionarea eficientă a acestora.
+
+
+\subsection{Structurarea şi crearea fişierelor YAML}
+
+Pentru fiecare componentă a backend‐ului—\texttt{Deployment}, \texttt{Service}, 
+\texttt{Ingress}, \texttt{ConfigMap}, \texttt{PersistentVolumeClaim} — s-au creat fişiere YAML
+separate în directoarele \file{./k8s/} ale fiecărui serviciu. Denumirea fișierelor corespunde resursei Kubernetes:
+\begin{itemize}
+  \item \file{*-deployment.yaml} pentru \texttt{kind: Deployment}
+  \item \file{*-service.yaml}   pentru \texttt{kind: Service}
+  \item \file{*-ingress.yaml}   pentru \texttt{kind: Ingress}
+  \item \file{*-configmap.yaml} pentru \texttt{kind: ConfigMap}
+  \item \file{*-pvc.yaml}       pentru \texttt{kind: PersistentVolumeClaim}
+\end{itemize}
+Au fost aplicate toate manifesturile cu:
+\begin{lstlisting}[style=yamlstyle]
+kubectl apply -f ./k8s/
+\end{lstlisting}
+
+\newpage
+Un exemplu de \emph{Deployment} pentru serviciul de evaluare:
+\begin{lstlisting}[style=yamlstyle]
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evaluation-service
+  labels:
+    app: evaluation-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: evaluation-service
+  template:
+    metadata:
+      labels:
+        app: evaluation-service
+    spec:
+      containers:
+        - name: evaluation-service
+          image: dragomir1401/evaluation-service:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGO_URI
+              value: "mongodb://mongo-evaluation-service:27017"
+\end{lstlisting}
+
+Acesta defineşte un \texttt{Deployment} pentru serviciul specificat, cu un singur replica pentru rulare
+și specifică imaginea Docker care va fi utilizată. De asemenea, definește variabilele de mediu necesare pentru
+conectarea la baza de date. Este unul dintre exemplele simple de manifest Kubernetes folosit.
+
+\newpage
+\subsubsection*{Tipuri de resurse şi rolurile lor}
+
+\begin{itemize}
+  \item \textbf{Service} (\texttt{kind:Service}): expune pod-urile pe un IP intern al clusterului:
+  \begin{lstlisting}[style=yamlstyle]
+apiVersion: v1
+kind: Service
+metadata:
+  name: evaluation-service
+spec:
+  type: ClusterIP
+  selector:
+    app: evaluation-service
+  ports:
+    - port: 8080
+      targetPort: 8080
+  \end{lstlisting}
+
+  \item \textbf{Ingress} (\texttt{kind: Ingress}): defineşte rutare HTTP/S prin controller folosit (Kong):
+  \begin{lstlisting}[style=yamlstyle]
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: evaluation-service-ingress
+  annotations:
+    konghq.com/strip-path: "false"
+spec:
+  ingressClassName: kong
+  rules:
+    - http:
+        paths:
+          - path: /evaluation
+            backend:
+              service:
+                name: evaluation-service
+                port:
+                  number: 8080
+  \end{lstlisting}
+
+\newpage
+
+  \item \textbf{ConfigMap \& PVC}: ConfigMap pentru configurări (de ex. pentru serviciul de provizionare
+\texttt{prometheus.yml}) şi PVC pentru volumul serviciului de vizualizare a metricilor Grafana:
+  \begin{lstlisting}[style=yamlstyle]
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-pvc
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 1Gi
+  \end{lstlisting}
+\end{itemize}
+
+Fiecărei resurse îi corespunde un singur fişier YAML – conţinând \texttt{apiVersion}, \texttt{kind},
+metadatele şi \texttt{spec} – care poate fi aplicat cu \cmd{kubectl apply -f <fișier>}, sau 
+automatizat printr-un pipeline de integrare continuă / livrare continuă (CI/CD).
+
+\subsection{Gestionarea clusterului}
+
+Clusterul este creat și gestionat în principal cu Kubernetes, folosind manifesturi YAML.
+Pe lângă linia de comandă, am integrat \emph{Portainer CE} pentru o interfață web
+unificată de administrare. Portainer rulează ca un \texttt{Deployment} sub contul de
+serviciu \texttt{portainer-sa}, căruia i s-a atribuit un \texttt{ClusterRole} cu toate
+privilegiile şi un \texttt{ClusterRoleBinding} aferent. Manifestele corespunzătoare (\texttt{portainer-sa,
+portainer-role, portainer-deployment, portainer-rolebinding,
+portainer-service şi portainer-ingress}) sunt folosite pentru configurare științelor
+gestionare accesului Portainer în cluster. Interfața Portainer, expusă printr-un \texttt{Service}
+şi un \texttt{Ingress} pe ruta \texttt{/portainer}, permite vizualizarea nodurilor, pod-urilor, volumelor şi
+gestionarea configurațiilor (scaling, redeploy, logs) fără comenzi complexe, oferind
+în acelaşi timp controale RBAC şi monitorizare centralizată.  
+
+Se poate vedea în imaginea de mai jos cum arată interfața Portainer pe clusterul nostru:
+\fig[width=1\textwidth]{imgs/portainerlanding.png}{fig:portainer-landing}{Interfața Portainer pe clusterul nostru}
+
+Și mai jos se poate observa listarea serviciilor in linie de comandă versus în Portainer:
+
+\begin{figure}[htb]
+  \centering
+  % Imaginea mare - 60% din lăţimea textului
+  \subfloat[Serviciile în Portainer\label{fig:portainer-fullscreen}]{
+    \includegraphics[width=0.5\textwidth]{imgs/servicesportainer.png}
+  }
+  \hfill
+  % Imaginea mică - 35% din lăţimea textului
+  \subfloat[Serviciile în linie de comandă\label{fig:portainer-cli}]{
+    \includegraphics[width=0.45\textwidth]{imgs/servicescli.png}
+  }
+  \caption{Compararea vizualizării serviciilor în Portainer și în linie de comandă}
+  \label{fig:portainer-sidebyside}
+\end{figure}
+
 \subsection{Rutarea și gestionarea traficului}
 
 \section{Descrierea serviciilor}
@@ -12,6 +204,7 @@
 \section{Securitate}
 
 \section{CI/CD}
+\subsection{Port forwarding}
 \subsection{Deployment}
 \subsection{Metrici / Monitorizare}
 

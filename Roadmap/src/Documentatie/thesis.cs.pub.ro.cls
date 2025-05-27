@@ -74,6 +74,13 @@
 	basicstyle=\ttfamily
 }
 
+\lstdefinestyle{yamlstyle}{
+  basicstyle=\ttfamily\small,
+  frame=single,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{black}{$\hookrightarrow$}\space}
+}
+
 % notations and abbreviations
 % http://www-h.eng.cam.ac.uk/help/tpl/textprocessing/nomencl.pdf
 % Sample usage (anywhere in the doc): \abbrev{ABC}{Alpha Beta Gama}
