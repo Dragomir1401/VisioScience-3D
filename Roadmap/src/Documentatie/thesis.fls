@@ -555,6 +555,10 @@ INPUT .\imgs\servicescli.png
 INPUT .\imgs\servicescli.png
 INPUT .\imgs\servicescli.png
 INPUT .\imgs\servicescli.png
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\base\t1cmss.fd
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\base\t1cmss.fd
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\base\t1cmss.fd
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\ecss1000.tfm
 INPUT .\src\chapters\implementare.tex
 INPUT .\src\chapters\implementare.tex
 OUTPUT src\chapters\implementare.aux
@@ -624,6 +628,8 @@ INPUT .\src\chapters\concluzii.aux
 INPUT src\chapters\concluzii.aux
 INPUT .\thesis.out
 INPUT .\thesis.out
+INPUT C:\Users\andre\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1000.pk
+INPUT C:\Users\andre\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1000.pk
 INPUT C:\Users\andre\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0800.pk
 INPUT C:\Users\andre\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0800.pk
 INPUT C:\Users\andre\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1728.pk

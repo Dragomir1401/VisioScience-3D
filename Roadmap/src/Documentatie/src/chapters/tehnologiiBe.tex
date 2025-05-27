@@ -196,6 +196,28 @@ Se poate vedea în imaginea de mai jos cum arată interfața Portainer pe cluste
 
 \subsection{Rutarea și gestionarea traficului}
 
+Pentru a centraliza şi controla traficul HTTP/S, am ales Kong ca API Gateway. În cluster am
+definit o clasă de rutare dedicată, astfel:
+
+\begin{lstlisting}[style=yamlstyle]
+kind: IngressClass
+metadata:
+  name: kong
+spec:
+  controller: konghq.com/ingress-controller
+\end{lstlisting}
+
+Controller-ul Kong va intercepta toate resursele de tip \texttt{Ingress} care 
+specifică \texttt{ingressClassName: kong}. În mediul de dezvoltare, pentru a nu expune un 
+LoadBalancer extern, am folosit port-forwarding local:
+
+\noindent
+\cmd{kubectl port-forward svc/kong-kong-proxy 8000:80}
+
+Astfel, apelurile HTTP către \url{http://localhost:8000} sunt tunelate prin Kong şi pot 
+fi testate rapid împotriva serviciilor din cluster fără configurări suplimentare de reţea.
+
+
 \section{Descrierea serviciilor}
 \subsection{Descrierea API-urilor}
 
