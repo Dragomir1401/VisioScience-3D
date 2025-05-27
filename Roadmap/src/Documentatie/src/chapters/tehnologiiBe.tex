@@ -302,10 +302,82 @@ Fiecare serviciu are un set de endpoint-uri care permit operații CRUD (Create, 
 
 \section{Securitate}
 
+Toate API-urile serviciilor sunt protejate prin JWT, validat de middleware-ul \func{JWTAuth}, care
+respinge cererile fără token sau cu token invalid. Traficul extern este dirijat prin Kong,
+configurat cu HTTPS/TLS şi politici de rate-limiting, CORS şi strip-path pentru a preveni 
+atacurile de tip „path traversal” şi abuzul de resurse. În interiorul clusterului, rolurile
+şi permisiunile sunt gestionate prin RBAC Kubernetes (ClusterRole/ClusterRoleBinding), iar
+Portainer rulează sub un ServiceAccount cu drepturi strict necesare. Conexiunile la bazele
+MongoDB sunt realizate folosind URI-urile securizate (\texttt{MONGO\_URI}) şi, în producţie,
+se va face activarea criptării TLS şi a autentificării la nivel de server de baze de date. 
+
 \section{CI/CD}
+
 \subsection{Port forwarding}
+
+În mediul de dezvoltare, pentru a testa rapid Ingress‐ul Kong fără LoadBalancer extern, se folosește port‐forwarding:
+\begin{lstlisting}[style=yamlstyle]
+kubectl port-forward svc/kong-kong-proxy 8000:80
+\end{lstlisting}
+Apelurile la \url{http://localhost:8000} trec prin Kong şi pot fi rutate către microservicii.
+
 \subsection{Deployment}
+
+Am automatizat build-ul, testarea şi deploy-ul în Kubernetes cu GitHub Actions. Pe scurt:
+\begin{itemize}
+  \item \textbf{Checkout \& Context:} selectăm codul pentru fiecare serviciu şi setăm contextul kubectl 
+  către \texttt{kind-visioscience}, clusterul unde rulează local mediul de dezvoltare.
+  \item \textbf{Build \& Push Docker:} compilăm binarele Go, construim imaginea cu \texttt{build-push-action}
+  şi o încărcăm pe DockerHub sub \texttt{dragomir1401/\$SERVICIU:latest}.
+  \item \textbf{Deploy:} rulăm:
+    \begin{lstlisting}[style=yamlstyle]
+kubectl apply -f k8s/
+kubectl rollout status deployment/${{ steps.extract.outputs.name }}
+    \end{lstlisting}
+  \item Runner-ul GitHub este un self-hosted pe aceeaşi mașină ca și clusterul Kind, astfel că are acces direct la kubeconfig.
+\end{itemize}
+
 \subsection{Metrici / Monitorizare}
+
+\paragraph{Colectare Prometheus}  
+În fiecare serviciu Go am folosit clientul official Prometheus:
+\begin{itemize}
+  \item \texttt{github.com/prometheus/client\_golang/prometheus} pentru definirea contorilor, 
+  histogramei şi gauge-urilor.
+  \item \texttt{github.com/prometheus/client\_golang/prometheus/promhttp} pentru expunerea 
+  endpoint-ului \texttt{/\$SERVICIU/metrics}.
+\end{itemize}
+De exemplu, în \texttt{evaluation-service} în metrics/metrics.go:
+\begin{lstlisting}[style=yamlstyle]
+registry := prometheus.NewRegistry()
+HTTPRequestsTotal := prometheus.NewCounterVec(...)
+registry.MustRegister(HTTPRequestsTotal, HTTPRequestDuration, ActiveEvaluations)
+http.Handle("/evaluation/metrics", promhttp.HandlerFor(registry, promhttp.HandlerOpts{}))
+\end{lstlisting}
+
+\paragraph{Grafana Dashboard}  
+De exemplu după ce Prometheus scrapează \texttt{evaluation\_service\_http\_requests\_total}, se crează un dashboard 
+persistent prin volumele Kubernetes. Dashboard-ul Grafana are în general două tipuri de panouri pentru metrici 
+similare. De exemplu pentru metrica de cereri și evaluări active din serviciul de evaluare:
+\begin{itemize}
+  \item \emph{Timeseries} pentru \texttt{evaluation\_service\_http\_requests\_total}
+  \item \emph{Gauge} pentru \texttt{evaluation\_service\_active\_evaluations}
+\end{itemize}
+Un fragment din JSON-ul dashboard-ului Grafana arată astfel:
+\begin{lstlisting}[style=yamlstyle]
+  "panels":[
+    {
+      "type":"timeseries",
+      "targets":[{"expr":"evaluation_service_http_requests_total"}],
+      "title":"HTTP Requests"
+    },{
+      "type":"gauge",
+      "targets":[{"expr":"evaluation_service_active_evaluations"}],
+      "title":"Active Evaluations"
+    }
+  ]
+\end{lstlisting}
+Aceste panouri sunt importate în Grafana sub \texttt{Evaluation Service Dashboard} şi actualizate la fiecare 5s (configurabil).
 
 
 \section{Soluția de baze de date}
