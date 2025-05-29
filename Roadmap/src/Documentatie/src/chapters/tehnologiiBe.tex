@@ -396,10 +396,18 @@ Așadar există trei panouri principale în Grafana pentru trei servicii cu logi
 \begin{itemize}
   \item \texttt{Evaluation Service Dashboard} pentru \texttt{evaluation-service}
   \fig[width=1\textwidth]{imgs/evaluationdashboard.png}{fig:evaluation-dashboard}{Dashboard-ul pentru evaluări în Grafana}
+  
+  Se poate observa logarea numărului de cereri HTTP din serviciul, latența și durata medie a lor, numărul de evaluări
+  active și rata operațiilor pe evaluări.
   \item \texttt{Feed Data Service Dashboard} pentru \texttt{feed-data}
   \fig[width=1\textwidth]{imgs/feeddashboard.png}{fig:feed-data-dashboard}{Dashboard-ul pentru metrici de feed-uri în Grafana}
+  
+  În panou se pot vedea numărul de cereri HTTP, latența și durata medie a lor, numărul de feed-uri active, numărul de molecule
+  active, rata operațiilor asupra feed-urilor și moleculelor, precum și numărul de molecule generate.
   \item \texttt{User Data Service Dashboard} pentru \texttt{user-data}
   \fig[width=1\textwidth]{imgs/userdashboard.png}{fig:user-data-dashboard}{Dashboard-ul pentru metrici de utilizator în Grafana}
+
+  Apar numărul, latența și durata cererilor HTTP, numărul utilizatorilor și claselor active.
 \end{itemize}
 
 \section{Soluția de baze de date}

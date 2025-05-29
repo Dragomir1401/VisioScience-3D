@@ -66,6 +66,7 @@
 
 % Code listings support
 \usepackage{listings}
+\usepackage{xcolor}
 
 \lstset{
 	numbers=left, numberstyle=\footnotesize,
@@ -80,6 +81,64 @@
   breaklines=true,
   postbreak=\mbox{\textcolor{black}{$\hookrightarrow$}\space}
 }
+
+\lstdefinelanguage{JavaScript}{
+  keywords={break,case,catch,class,const,continue,debugger,default,delete,do,else,export,extends,false,finally,for,function,if,import,in,instanceof,new,null,return,super,switch,this,throw,true,try,typeof,var,void,while,with,yield,async,await},
+  keywordstyle=\color{blue}\bfseries,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{gray}\ttfamily,
+  stringstyle=\color{orange}\ttfamily,
+  morestring=[b]',
+  morestring=[b]",
+  morestring=[b]`
+}
+
+\usepackage{xcolor}
+
+\lstdefinelanguage{Go}{
+  keywords={
+    break, case, chan, const, continue, default, defer, else, fallthrough,
+    for, func, go, goto, if, import, interface, map, package, range, return,
+    select, struct, switch, type, var,
+    bool, byte, complex64, complex128, error, float32, float64,
+    int, int8, int16, int32, int64, rune, string, uint, uint8, uint16, uint32, uint64, uintptr,
+    true, false, iota, nil,
+  },
+  keywordstyle=\color{blue!70!black}\bfseries,
+  ndkeywords={append, cap, close, complex, copy, imag, len, make, new, panic, print, println, real, recover},
+  ndkeywordstyle=\color{violet!70!black}\bfseries,
+  sensitive=true,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{gray!60!green}\ttfamily\itshape,
+  stringstyle=\color{green!60!black}\ttfamily,
+  morestring=[b]',
+  morestring=[b]",
+  morestring=[b]`
+}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={
+    break, case, catch, class, const, continue, debugger, default, delete,
+    do, else, export, extends, false, finally, for, function, if, import,
+    in, instanceof, new, null, return, super, switch, this, throw, true,
+    try, typeof, var, void, while, with, yield, async, await
+  },
+  keywordstyle=\color{blue!70!black}\bfseries,
+  sensitive=true,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{gray!60!green}\ttfamily\itshape,
+  stringstyle=\color{green!60!black}\ttfamily,
+  morestring=[b]',
+  morestring=[b]",
+  morestring=[b]`
+  % Add morekeywords if you want...
+}
+
+
+
 
 % notations and abbreviations
 % http://www-h.eng.cam.ac.uk/help/tpl/textprocessing/nomencl.pdf
