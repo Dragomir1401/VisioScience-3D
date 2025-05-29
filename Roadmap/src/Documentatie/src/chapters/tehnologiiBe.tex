@@ -181,12 +181,10 @@ Se poate vedea în imaginea de mai jos cum arată interfața Portainer pe cluste
 
 \begin{figure}[htb]
   \centering
-  % Imaginea mare - 60% din lăţimea textului
   \subfloat[Serviciile în Portainer\label{fig:portainer-fullscreen}]{
     \includegraphics[width=0.5\textwidth]{imgs/servicesportainer.png}
   }
   \hfill
-  % Imaginea mică - 35% din lăţimea textului
   \subfloat[Serviciile în linie de comandă\label{fig:portainer-cli}]{
     \includegraphics[width=0.45\textwidth]{imgs/servicescli.png}
   }
@@ -339,7 +337,21 @@ kubectl rollout status deployment/${{ steps.extract.outputs.name }}
 
 \subsection{Metrici / Monitorizare}
 
-\paragraph{Colectare Prometheus}  
+\subsection{Avantajele folosirii Prometheus}
+
+Prometheus este un sistem de monitorizare și alertare foarte popular în mediile moderne de dezvoltare și producție
+datorită scalabilității și flexibilității sale. Oferă o arhitectură simplă bazată pe
+colectarea activă a metricilor prin intermediul unor endpoint-uri HTTP expuse de aplicații 
+(format \texttt{exposition format}), facilitând integrarea rapidă cu o varietate largă de
+servicii și microservicii. În plus, arhitectura sa detașată de stare (stateless) și suportul
+pentru stocarea pe termen scurt cu export către sisteme
+externe îl fac ideal pentru arhitecturi dinamice, precum Kubernetes. De asemenea, se integrează
+nativ cu instrumente vizuale precum Grafana, oferind dashboard-uri ușor de configurat
+și interpretat de către echipele tehnice. În cazul platformei dezvoltate Grafana a recunoscut
+sursa de date din parte Prometheus direct fără configurări suplimentare și s-au putut
+crea panourile de vizualizare direct.
+
+\subsection{Colectare Prometheus}  
 În fiecare serviciu Go am folosit clientul official Prometheus:
 \begin{itemize}
   \item \texttt{github.com/prometheus/client\_golang/prometheus} pentru definirea contorilor, 
@@ -355,7 +367,7 @@ registry.MustRegister(HTTPRequestsTotal, HTTPRequestDuration, ActiveEvaluations)
 http.Handle("/evaluation/metrics", promhttp.HandlerFor(registry, promhttp.HandlerOpts{}))
 \end{lstlisting}
 
-\paragraph{Grafana Dashboard}  
+\subsection{Grafana Dashboard}  
 De exemplu după ce Prometheus scrapează \texttt{evaluation\_service\_http\_requests\_total}, se crează un dashboard 
 persistent prin volumele Kubernetes. Dashboard-ul Grafana are în general două tipuri de panouri pentru metrici 
 similare. De exemplu pentru metrica de cereri și evaluări active din serviciul de evaluare:
@@ -377,8 +389,18 @@ Un fragment din JSON-ul dashboard-ului Grafana arată astfel:
     }
   ]
 \end{lstlisting}
-Aceste panouri sunt importate în Grafana sub \texttt{Evaluation Service Dashboard} şi actualizate la fiecare 5s (configurabil).
+Aceste panouri sunt importate în Grafana sub \texttt{Evaluation Service Dashboard} şi actualizate
+la fiecare 5s (configurabil).
 
+Așadar există trei panouri principale în Grafana pentru trei servicii cu logică de produs existente:
+\begin{itemize}
+  \item \texttt{Evaluation Service Dashboard} pentru \texttt{evaluation-service}
+  \fig[width=1\textwidth]{imgs/evaluationdashboard.png}{fig:evaluation-dashboard}{Dashboard-ul pentru evaluări în Grafana}
+  \item \texttt{Feed Data Service Dashboard} pentru \texttt{feed-data}
+  \fig[width=1\textwidth]{imgs/feeddashboard.png}{fig:feed-data-dashboard}{Dashboard-ul pentru metrici de feed-uri în Grafana}
+  \item \texttt{User Data Service Dashboard} pentru \texttt{user-data}
+  \fig[width=1\textwidth]{imgs/userdashboard.png}{fig:user-data-dashboard}{Dashboard-ul pentru metrici de utilizator în Grafana}
+\end{itemize}
 
 \section{Soluția de baze de date}
 \label{sec:proj-database}
