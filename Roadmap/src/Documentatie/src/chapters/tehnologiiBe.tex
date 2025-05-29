@@ -382,10 +382,72 @@ Aceste panouri sunt importate în Grafana sub \texttt{Evaluation Service Dashboa
 
 \section{Soluția de baze de date}
 \label{sec:proj-database}
+
 \subsection{Structura bazei de date}
+
 \subsubsection{Tipuri de baze de date utilizate / Motivația alegerii}
+
+Baza de date folosită este MongoDB, o bază de date nerelațională care oferă flexibilitate și scalabilitate
+și e ușor de folosit și mai ales de integrat în microserviciile gestionate ăn Kubernetes. Am ales o soluție
+nerelațională deoarece datele noastre sunt semi-structurate și nu necesită relații complexe între tabele,
+permițându-ne să stocăm documente JSON care pot fi ușor extinse și modificate fără a necesita migrări
+de baze de date. Structura ar fi putut fi integrată și într-un mediu relațional, dar am considerat că
+MongoDB oferă o flexibilitate mai mare pentru tipurile de date pe care le gestionăm, cum ar fi feed-urile 
+educaționale, datele utilizatorilor, cât și pentru structura testelor și evaluărilor.
+
+Un alt avantaj al folosirii MongoDB este că permite stocarea datelor într-o formă 
+orientată pe documente similare cu JSON. Alegerea s-a bazat și pe flexibilitatea schemelor,
+scalabilitatea orizontală și compatibilitatea nativă cu structurile de date folosite, precum și
+pe posibilitatea de a face agregări complexe și de a gestiona relații parțiale între documente. 
+
+MongoDB permite modificarea ușoară a modelelor de date în timp, fără a impune o schemă fixă,
+aspect important pentru aplicații aflate în dezvoltare continuă și extindere.
+
 \subsubsection{Gestionarea datelor}
+
+Datele sunt organizate în colecții care corespund entităților sistemului:
+quiz-uri, formule, molecule, utilizatori, clase și invitații. Fiecare colecție conține documente ce
+respectă structurile definite în codul backend-ului, folosind driverul oficial MongoDB pentru
+Go (\textit{go.mongodb.org/mongo-driver}).
+
+De exemplu, un document din colecția \texttt{quizzes} conține câmpuri precum \texttt{Title},
+\texttt{ClassID} și \texttt{OwnerID} (reprezentate prin \texttt{ObjectID} MongoDB), un array de
+\texttt{Questions} cu întrebări, răspunsuri și punctaje, și un array \texttt{QuizResults} pentru
+stocarea scorurilor utilizatorilor.
+
+Se folosesc structuri Go care reflectă aceste modele, permițând deserializarea și serializarea 
+automată între BSON și JSON. Astfel se poate realiza interacțiunea cu baza se face prin operații CRUD folosind
+metodele MongoDB standard, iar aplicația transforma și face validarea datelor ușor.
+
 \subsection{Securitatea datelor}
-\subsubsection{Backup și restaurare}
+
+Datele stocate sunt protejate prin controlul accesului la nivel de cluster MongoDB, autentificare
+și autorizare prin roluri definite (de exemplu, utilizator, profesor, administrator).
+Parolele sunt criptate și gestionate prin variabile de mediu la nivelul serviciilor. Pe viitor 
+se poate face integrarea cu un serviciu de autentificare centralizat (ex: OAuth2, OpenID Connect)
+sau folosirea unui serviciu de identitate și secrete (precum HashiCorp Vault sau AWS Secrets Manager) pentru a gestiona
+securitatea și accesul și mai granular la datele sensibile.
+
 \subsubsection{Performanța și scalabilitatea bazei de date}
+
+MongoDB permite scalarea orizontală prin sharding, facilitând distribuția datelor pe mai multe noduri când 
+cantitatea datelor ar ajunge la dimensiuni mari. Indecșii sunt definiți pe câmpuri critice 
+(ex: \texttt{\_id}, \texttt{class\_id}) pentru a optimiza căutările și interogările.
+
+De asemenea, conexiunile sunt gestionate eficient prin pool-uri în clientul Go, iar operațiile
+lungi sunt efectuate cu timeout-uri pentru a evita blocarea serviciilor.
+
 \subsection{Integrarea cu back-endul}
+
+Back-endul este implementat în Go, folosind pachetul oficial MongoDB driver, care oferă suport
+complet pentru operațiile pe colecții și documente, tranzacții și agregări. 
+
+La pornire, fiecare serviciu inițializează o conexiune persistentă la baza de date. Modelele Go
+definite permit maparea clară între structurile din cod și documentele MongoDB.
+De exemplu, în \texttt{evaluation-service}, obiectele \texttt{Quiz} și \texttt{QuizResult}
+sunt manipulate direct în cod, iar metodele HTTP expun API REST care gestionează aceste resurse prin CRUD.
+
+Așsadar arhitectura descrisă permite un flux clar și mai ales scalabil între date și servicii, ușurând
+mentenanța serviciilor și extinderea aplicației.
+
+
