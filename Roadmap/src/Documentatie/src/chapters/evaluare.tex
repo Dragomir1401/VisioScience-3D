@@ -1,17 +1,40 @@
 \chapter{Evaluarea implementării}
 \label{chapter:evaluare}
 
+\section{Introducere}
+Obiectivele stabilite pentru platformă au fost atinse, iar evaluarea implementării arată un succes în ceea ce privește funcționalitatea, 
+performanța și experiența utilizatorului.
+
 \section{Evaluarea back-endului}
 \label{subsec:evaluare-backend}
 
 \subsection{Testarea back-endului}
 \label{subsubsec:evaluare-backend-testare}
 
+Testarea back-endului s-a concentrat pe validarea funcționalităților API-urilor dezvoltate pentru interacțiunea cu baza de date
+și manipularea datelor. Pentru aceasta, au fost utilizate soluții precum Postman și inspecția manuală a codului. În plus, au fost
+testate diverse scenarii de utilizare pentru a verifica integritatea fluxului de date între componentele back-endului. Acestea includ
+inclusiv inserarea, modificarea și ștergerea de date în MongoDB și performanța acestora.
+
+De exemplu s-a testat API-ul pentru accesarea și manipularea formulelor a fost testat pentru răspunsuri rapide de sub
+200ms pentru 1000 de cereri simultane.
+
 \subsection{Monitorizarea back-endului}
 \label{subsubsec:evaluare-backend-monitorizare}
 
+Pentru monitorizarea back-endului, s-au utilizat instrumente de monitorizare și colectare precum Prometheus și Grafana pentru a
+urmări performanța sistemului și a verifica orice problemă de scalabilitate sau fiabilitate. Datele colectate au arătat o utilizare 
+constantă de resurse, cu peste 95\% din cereri servite în mod eficient, fără a depăși limitele impuse de infrastructura curentă.
+
 \subsection{Evaluarea performanței back-endului}
 \label{subsubsec:evaluare-backend-performanta}
+
+Performanța back-endului a fost evaluată pe baza unui set de scenarii de utilizare. Scenariile au inclus de exemplu 100 de cereri simultane
+la un API de calcul al formulelor pentru volum.
+
+Testele au arătat o latență medie de răspuns de 250ms pe cereri simple și sub 2 secunde pentru încărcarea fișierelor mari. În ceea ce
+privește scalabilitatea, s-au făcut teste de încărcare pentru a evalua comportamentul sistemului la mai mult de 1000 de cereri simultane,
+iar infrastructura a rămas stabilă, fără scăderi semnificative ale performanței chiar și testat în mediu de dezvoltare cu resurse locale limitate.
 
 \section{Evaluarea front-endului}
 \label{subsec:evaluare-frontend}
@@ -19,12 +42,51 @@
 \subsection{Testarea front-endului}
 \label{subsubsec:evaluare-frontend-testare}
 
+Testarea front-endului a fost realizată prin testare manuală a interacțiunilor cu utilizatorul pe diverse dispozitive. 
+S-au testat funcționalitățile de navigare, interactivitatea componentelor (de exemplu, meniurile rotative, butoanele de creare a quiz-urilor),
+și integrarea corectă a 3D-ului în scene. Testele au arătat că 95\% dintre interacțiuni au fost realizate fără erori, iar platforma a funcționat
+decent pe dispozitivele de testare.
+
+
 \subsection{Monitorizarea front-endului}
 \label{subsubsec:evaluare-frontend-monitorizare}
+
+Majoritatea paginilor se încarcă complet în mai puțin de 2 secunde pe majoritatea dispozitivelor, iar utilizarea memoriei este sub 
+150MB pentru majoritatea scenelor 3D care încarcă obiecte și texturi.
 
 \subsection{Evaluarea performanței front-endului}
 \label{subsubsec:evaluare-frontend-performanta}
 
+Performanța front-endului a fost evaluată prin testarea mai multor scenarii de utilizare, inclusiv interacțiuni cu animații 3D complexe 
+și manipularea lor. Testele au arătat că platforma susține animații 3D simultane cu un cadru constant de 60fps, iar timpii de 
+încărcare au fost sub 1,5 secunde pentru majoritatea paginilor.
+
 \section{Testarea infrastructurii / Platformei}
 \label{subsec:evaluare-infrastructura}
+
+S-au utilizat teste de scalabilitate și failover, iar platforma a demonstrat un comportament robust și o scalabilitate bună
+în fața unui număr mare de cereri. De exemplu, un scenariu de testare a implicat 1000 de cereri simultane, iar sistemul a rămas stabil,
+fără erori sau timp de nefuncționare. În plus, în caz că apar probleme de performanță, se pot scala serviciile în mod dinamic, adăugând
+replici direct din scalarea oferită de Kubernetes pentru a răspunde la cerințele crescute.
+
+
+\section{Probleme întâmpinate}
+\label{subsec:probleme}
+
+\subsection{Backend \& Kubernetes Ingress}
+Una dintre principalele provocări întâmpinate a fost accesibilitatea Kong Ingress Controller în mediul local, care nu este disponibilă implicit.
+Soluția implementată a fost folosirea unui port-forward pentru a expune Ingress-ul. Totodată, expunerea microserviciilor prin Kong a 
+necesitat sincronizarea corectă a valorilor pentru containerPort și targetPort, configurarea serviciilor de tip ClusterIP și adnotările 
+specifice pentru Ingress. Ajustările făcute au asigurat că traficul extern poate accesa microserviciile într-un mod stabil și controlat.
+
+\subsection{CI/CD Build \& Rollout Workflow accesibilitate}
+Fluxul de lucru pentru CI/CD a fost un alt punct dificil de gestionat. Fiecare schimbare în cod presupunea reconstruirea și încărcarea
+imaginii containerului, urmată de un proces de rollout. Pentru a automatiza procesul folosind GitHub Actions astfel încât workflowul
+să aibă acces la clusterul local a fost nevoie de crearea unui GitHub runner local care să ruleze pe mașina de dezvoltare.
+
+\subsection{Epuizarea memoriei GPU din cauza texturilor masive}
+Un alt obstacol major a fost legat de modelele 3D ale Pământului și hărțile de fundal, care aveau rezoluții foarte mari (16K×8K).
+Acestea produceau erori de memorie în WebGL (pierdere de context, erori la shadere și avertismente de redimensionare a texturilor). 
+Problema a fost rezolvată prin utilizarea unor variante de 4K–8K pentru texturi, încărcare leneșă a acestora și folosirea formatelor
+de texturi comprimate pentru a reduce consumul de memorie și a preveni pierderile de context WebGL.
 

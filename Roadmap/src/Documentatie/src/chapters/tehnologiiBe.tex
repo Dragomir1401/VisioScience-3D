@@ -240,15 +240,23 @@ fi testate rapid împotriva serviciilor din cluster fără configurări suplimen
   inclusiv autentificare și autorizare.
 \end{itemize}
 
+
+\fig[width=1.25\textwidth]{imgs/bearch.png}{fig:arhitectura-backend}{Arhitectura backend-ului aplicației}
+
 \subsection{Descrierea API-urilor}
 
 Mai jos sunt principalele grupuri de endpoint-uri fără a le include pe cele de ștergere din 
-rațiuni de dimensiuni.
+rațiuni de dimensiuni ale tabelului. Fiecare serviciu are un API RESTful care permite interacțiunea cu resursele sale.
+Aceste API-uri sunt definite în routerul fiecărui serviciu care este creat prin biblioteca \texttt{Gorrilla Mux} în Go.
+Fiecare serviciu are un set de endpoint-uri care permit operații CRUD (Create, Read, Update, Delete) asupra resurselor sale
+și interacționează cu baza de date corespunzătoare.
+
+\newpage
 \begin{table}[htb]
   \centering
   \caption{Endpoint-uri REST ale microserviciilor}
   \label{table:api-endpoints}
-  \begin{tabular}{@{}p{11cm}p{8cm}@{}}
+  \begin{tabular}{@{}p{11cm}p{6cm}@{}}
     \toprule
     \textbf{Endpoint} & \textbf{Descriere} \\
     \midrule
@@ -293,10 +301,7 @@ rațiuni de dimensiuni.
   \end{tabular}
 \end{table}
 
-Fiecare serviciu are un API RESTful care permite interacțiunea cu resursele sale. Aceste API-uri sunt definite
-ăn routerul fiecărui serviciu care este creat prin biblioteca \texttt{Gorrilla Mux} în Go.
-Fiecare serviciu are un set de endpoint-uri care permit operații CRUD (Create, Read, Update, Delete) asupra resurselor sale
-și interacționează cu baza de date corespunzătoare.
+
 
 \section{Securitate}
 
@@ -306,7 +311,7 @@ configurat cu HTTPS/TLS şi politici de rate-limiting, CORS şi strip-path pentr
 atacurile de tip „path traversal” şi abuzul de resurse. În interiorul clusterului, rolurile
 şi permisiunile sunt gestionate prin RBAC Kubernetes (ClusterRole/ClusterRoleBinding), iar
 Portainer rulează sub un ServiceAccount cu drepturi strict necesare. Conexiunile la bazele
-MongoDB sunt realizate folosind URI-urile securizate (\texttt{MONGO\_URI}) şi, în producţie,
+MongoDB sunt realizate folosind URL-urile securizate (\texttt{MONGO\_URI}) şi, în producţie,
 se va face activarea criptării TLS şi a autentificării la nivel de server de baze de date. 
 
 \section{CI/CD}
