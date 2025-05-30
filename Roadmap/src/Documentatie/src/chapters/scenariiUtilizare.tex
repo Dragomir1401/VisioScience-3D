@@ -44,6 +44,10 @@ magazinului de cărți, secțiunilor despre și contact.
 \fig[width=0.9\textwidth]{imgs/mainmenu.png}{fig:interfata}{Interfața meniului principal}
 
 
+Magazinul online este o secțiune dedicată unde utilizatorii pot achiziționa cărți educaționale care a fost realizat separat de aplicație
+utilizând tehnologia Shopify și care este disponibil de lansare către producție împreună cu platforma finală.
+Pagina de contact este o secțiune unde utilizatorii pot trimite feedback, sugestii sau întrebări către echipa platformei.
+
 \begin{figure}[htb]
   \centering
   \subfloat[Magazinul online\label{fig:magazin}]{
@@ -105,7 +109,6 @@ animația rotațiilor planetelor.
 
 \fig[width=1\textwidth]{imgs/astronomieex.png}{fig:explorare-astronomie}{Exemplu de scenă de astronomie}
 
-
 \newpage
 Și ultima materie suportată curent este informatica care conține scene educaționale despre structuri de date și algoritmi,
 cum ar fi:
@@ -151,14 +154,34 @@ elementele și se pot anima operațiile de inserare, ștergere sau căutare a el
 \section{Gestionarea profilului de profesor}
 \label{sec:gestionare-profil-utilizator}
 
+Profesorii au panouri complexe de control asupra resurselor și contului lor.
+
+\fig[width=1\textwidth]{imgs/dashboardprof.png}{fig:dashboard-profesor}{Dashboard-ul profesorului}
+
 \subsection{Crearea de clase și gestionarea elevilor}
 \label{subsec:creare-clase-elevi}
+
+Profesorul are acces la crearea de clase și gestionarea elevilor din aceste clase prin panourile de administrare.
+Acesta poate adăuga elevi noi în clasele sale, poate vizualiza lista de elevi și poate edita informațiile acestora.
+
+\fig[width=0.75\textwidth]{imgs/dashboardclasa.png}{fig:dashboard-clasa}{Dashboard-ul unei clase}
+
+
+\newpage
 
 \subsection{Crearea de teste și gestionarea lor}
 \label{subsec:creare-teste}
 
+Profesorul are de asemenea acces la crearea de teste pentru elevii săi. Aceste teste pot fi personalizate cu întrebări și răspunsuri,
+simple sau cu răspuns multiplu, cu sistem de punctaj customizabil.
+
+\fig[width=0.75\textwidth]{imgs/crearequiz.png}{fig:creare-test}{Crearea unui test}
+
 \subsection{Vizualizarea rezultatelor}
 \label{subsec:vizualizare-rezultate}
+
+Profesorul poate vizualiza rezultatele testelor elevilor săi, inclusiv scorurile și răspunsurile la întrebări.
+\fig[width=0.75\textwidth]{imgs/rezultatequiz.png}{fig:vizualizare-rezultate}{Vizualizarea rezultatelor testelor}
 
 \section{Gestionarea contului de elev}
 \label{subsec:gestionare-cont-elev}
@@ -166,8 +189,25 @@ elementele și se pot anima operațiile de inserare, ștergere sau căutare a el
 \subsection{Intrarea în clasele profesorului}
 \label{subsec:intrare-clase-profesor}
 
+Intrarea într-o anumită clasă se face pe bază de invitație de la profesor, direct din platform și care apare în panoul de control
+al elevului. Elevul poate vedea clasele la care este înscris și poate accesa resursele și testele disponibile în acele clase.
+\fig[width=0.75\textwidth]{imgs/dashboardelev.png}{fig:dashboard-elev}{Dashboard-ul elevului}
+
 \subsection{Accesarea testelor și vizualizarea rezultatelor}
 \label{subsec:accesare-teste-elev}
 
-\subsection{Rezolvarea testelor}
-\label{subsec:rezolvare-teste}
+Testele au interfață propie de vizualizare și completare, unde elevul poate răspunde la întrebări și poate vedea scorul 
+obținut după finalizarea testului.
+
+\begin{figure}[htb]
+  \centering
+  \subfloat[Test de completat\label{fig:quiz}]{
+    \includegraphics[width=0.55\textwidth]{imgs/facequiz.png}
+  }
+  \hfill
+  \subfloat[Rezultatele elevului la test\label{fig:quizresults}]{
+    \includegraphics[width=0.4\textwidth]{imgs/vederequiz.png}
+  }
+  \caption{Interacțiunea elevului cu testele}
+  \label{fig:portainer-sidebyside}
+\end{figure}
