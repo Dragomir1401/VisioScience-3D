@@ -84,28 +84,28 @@
 \contentsline {subsection}{\numberline {6.2.3}Conectivitate}{53}{subsection.6.2.3}%
 \contentsline {chapter}{\numberline {7}Scenarii de utilizare}{57}{chapter.7}%
 \contentsline {section}{\numberline {7.1}Înregistrare si autentificare utilizator}{57}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Explorarea meniul principal}{57}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Accesarea secțiunilor educaționale}{57}{section.7.3}%
-\contentsline {section}{\numberline {7.4}Interacțiunea cu scenele 3D educaționale}{57}{section.7.4}%
-\contentsline {section}{\numberline {7.5}Gestionarea profilului de profesor}{57}{section.7.5}%
-\contentsline {subsection}{\numberline {7.5.1}Crearea de clase și gestionarea elevilor}{57}{subsection.7.5.1}%
-\contentsline {subsection}{\numberline {7.5.2}Crearea de teste și gestionarea lor}{57}{subsection.7.5.2}%
-\contentsline {subsection}{\numberline {7.5.3}Vizualizarea rezultatelor}{57}{subsection.7.5.3}%
-\contentsline {section}{\numberline {7.6}Gestionarea contului de elev}{57}{section.7.6}%
-\contentsline {subsection}{\numberline {7.6.1}Intrarea în clasele profesorului}{57}{subsection.7.6.1}%
-\contentsline {subsection}{\numberline {7.6.2}Accesarea testelor și vizualizarea rezultatelor}{57}{subsection.7.6.2}%
-\contentsline {subsection}{\numberline {7.6.3}Rezolvarea testelor}{57}{subsection.7.6.3}%
-\contentsline {chapter}{\numberline {8}Evaluarea implementării}{58}{chapter.8}%
-\contentsline {section}{\numberline {8.1}Evaluarea back-endului}{58}{section.8.1}%
-\contentsline {subsection}{\numberline {8.1.1}Testarea back-endului}{58}{subsection.8.1.1}%
-\contentsline {subsection}{\numberline {8.1.2}Monitorizarea back-endului}{58}{subsection.8.1.2}%
-\contentsline {subsection}{\numberline {8.1.3}Evaluarea performanței back-endului}{58}{subsection.8.1.3}%
-\contentsline {section}{\numberline {8.2}Evaluarea front-endului}{58}{section.8.2}%
-\contentsline {subsection}{\numberline {8.2.1}Testarea front-endului}{58}{subsection.8.2.1}%
-\contentsline {subsection}{\numberline {8.2.2}Monitorizarea front-endului}{58}{subsection.8.2.2}%
-\contentsline {subsection}{\numberline {8.2.3}Evaluarea performanței front-endului}{58}{subsection.8.2.3}%
-\contentsline {section}{\numberline {8.3}Testarea infrastructurii / Platformei}{58}{section.8.3}%
-\contentsline {chapter}{\numberline {9}Concluzii și perspective}{59}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Concluzii}{59}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Dezvoltare viitoare}{59}{section.9.2}%
-\contentsline {chapter}{\numberline {A}Anexe}{60}{appendix.A}%
+\contentsline {section}{\numberline {7.2}Explorarea meniul principal}{58}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Accesarea secțiunilor educaționale}{59}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Interacțiunea cu scenele 3D educaționale}{63}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Gestionarea profilului de profesor}{64}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}Crearea de clase și gestionarea elevilor}{64}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}Crearea de teste și gestionarea lor}{64}{subsection.7.5.2}%
+\contentsline {subsection}{\numberline {7.5.3}Vizualizarea rezultatelor}{64}{subsection.7.5.3}%
+\contentsline {section}{\numberline {7.6}Gestionarea contului de elev}{64}{section.7.6}%
+\contentsline {subsection}{\numberline {7.6.1}Intrarea în clasele profesorului}{64}{subsection.7.6.1}%
+\contentsline {subsection}{\numberline {7.6.2}Accesarea testelor și vizualizarea rezultatelor}{64}{subsection.7.6.2}%
+\contentsline {subsection}{\numberline {7.6.3}Rezolvarea testelor}{64}{subsection.7.6.3}%
+\contentsline {chapter}{\numberline {8}Evaluarea implementării}{65}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Evaluarea back-endului}{65}{section.8.1}%
+\contentsline {subsection}{\numberline {8.1.1}Testarea back-endului}{65}{subsection.8.1.1}%
+\contentsline {subsection}{\numberline {8.1.2}Monitorizarea back-endului}{65}{subsection.8.1.2}%
+\contentsline {subsection}{\numberline {8.1.3}Evaluarea performanței back-endului}{65}{subsection.8.1.3}%
+\contentsline {section}{\numberline {8.2}Evaluarea front-endului}{65}{section.8.2}%
+\contentsline {subsection}{\numberline {8.2.1}Testarea front-endului}{65}{subsection.8.2.1}%
+\contentsline {subsection}{\numberline {8.2.2}Monitorizarea front-endului}{65}{subsection.8.2.2}%
+\contentsline {subsection}{\numberline {8.2.3}Evaluarea performanței front-endului}{65}{subsection.8.2.3}%
+\contentsline {section}{\numberline {8.3}Testarea infrastructurii / Platformei}{65}{section.8.3}%
+\contentsline {chapter}{\numberline {9}Concluzii și perspective}{66}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Concluzii}{66}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Dezvoltare viitoare}{66}{section.9.2}%
+\contentsline {chapter}{\numberline {A}Anexe}{67}{appendix.A}%
