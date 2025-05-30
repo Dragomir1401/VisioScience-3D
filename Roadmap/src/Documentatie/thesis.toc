@@ -109,7 +109,8 @@
 \contentsline {subsection}{\numberline {8.5.1}Backend \& Kubernetes Ingress}{71}{subsection.8.5.1}%
 \contentsline {subsection}{\numberline {8.5.2}CI/CD Build \& Rollout Workflow accesibilitate}{71}{subsection.8.5.2}%
 \contentsline {subsection}{\numberline {8.5.3}Epuizarea memoriei GPU din cauza texturilor masive}{71}{subsection.8.5.3}%
-\contentsline {chapter}{\numberline {9}Concluzii și perspective}{72}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Concluzii}{72}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Dezvoltare viitoare}{72}{section.9.2}%
-\contentsline {chapter}{\numberline {A}Anexe}{73}{appendix.A}%
+\contentsline {subsection}{\numberline {8.5.4}Statistici de dezvoltare}{72}{subsection.8.5.4}%
+\contentsline {chapter}{\numberline {9}Concluzii și perspective}{73}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Concluzii}{73}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Dezvoltare viitoare}{73}{section.9.2}%
+\contentsline {chapter}{\numberline {A}Anexe}{75}{appendix.A}%
