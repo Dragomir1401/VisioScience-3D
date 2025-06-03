@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  30 MAY 2025 20:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  3 JUN 2025 22:29
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -791,16 +791,16 @@ Chapter 1.
 
 
 ] [2] [3] [4]
-Overfull \hbox (10.55392pt too wide) in paragraph at lines 173--176
+Overfull \hbox (10.55392pt too wide) in paragraph at lines 184--187
 []\T1/cmr/m/n/10 Al treilea capi-tol ([][]3[][]) anal-izeaz  pia[]a []i competi[]ia din punct de vedere al plat-formelor educa[]ionale
  []
 
-) [5]
+[5]) [6]
 \openout2 = `src/chapters/analiza.aux'.
 
  (src/chapters/analiza.tex
 Chapter 2.
-[6
+[7
 
 
 
@@ -810,68 +810,68 @@ Overfull \hbox (22.30719pt too wide) in paragraph at lines 49--50
 []\T1/cmr/m/n/10 Motivat de fap-tul c  aplica[]ia este des-ti-nat  elevilor care doresc s  înve[]e []i s -[]i îmbun t []easc 
  []
 
-[7] [8] [9]
-<imgs/hover.png, id=601, 185.19188pt x 123.46124pt>
+[8] [9] [10]
+<imgs/hover.png, id=605, 185.19188pt x 123.46124pt>
 File: imgs/hover.png Graphic file (type png)
 <use imgs/hover.png>
 Package pdftex.def Info: imgs/hover.png  used on input line 164.
 (pdftex.def)             Requested size: 206.28249pt x 137.52396pt.
- [10]
-<imgs/tutorial.png, id=607, 1027.58907pt x 203.25937pt>
+ [11]
+<imgs/tutorial.png, id=611, 1027.58907pt x 203.25937pt>
 File: imgs/tutorial.png Graphic file (type png)
 <use imgs/tutorial.png>
 Package pdftex.def Info: imgs/tutorial.png  used on input line 170.
 (pdftex.def)             Requested size: 412.56497pt x 81.60625pt.
- [11 <./imgs/hover.png> <./imgs/tutorial.png>] [12]) [13]
+ [12 <./imgs/hover.png> <./imgs/tutorial.png>] [13]) [14]
 \openout2 = `src/chapters/studiuPiata.aux'.
 
  (src/chapters/studiuPiata.tex
 Chapter 3.
-<imgs/phet.png, id=633, 1431.84938pt x 668.4975pt>
+<imgs/phet.png, id=637, 1431.84938pt x 668.4975pt>
 File: imgs/phet.png Graphic file (type png)
 <use imgs/phet.png>
 Package pdftex.def Info: imgs/phet.png  used on input line 11.
 (pdftex.def)             Requested size: 412.56497pt x 192.61485pt.
-[14
+[15
 
 
 
 
  <./imgs/phet.png>]
-<imgs/invatamate.png, id=640, 1271.5003pt x 721.19438pt>
+<imgs/invatamate.png, id=644, 1271.5003pt x 721.19438pt>
 File: imgs/invatamate.png Graphic file (type png)
 <use imgs/invatamate.png>
 Package pdftex.def Info: imgs/invatamate.png  used on input line 21.
 (pdftex.def)             Requested size: 412.56497pt x 234.01125pt.
- [15 <./imgs/invatamate.png>]
-<imgs/invatamatesimulare.png, id=647, 723.45282pt x 710.655pt>
+ [16 <./imgs/invatamate.png>]
+<imgs/invatamatesimulare.png, id=651, 723.45282pt x 710.655pt>
 File: imgs/invatamatesimulare.png Graphic file (type png)
 <use imgs/invatamatesimulare.png>
 Package pdftex.def Info: imgs/invatamatesimulare.png  used on input line 40.
 (pdftex.def)             Requested size: 202.15909pt x 198.58083pt.
-<imgs/invatamatejoc.png, id=648, 740.7675pt x 706.13812pt>
+<imgs/invatamatejoc.png, id=652, 740.7675pt x 706.13812pt>
 File: imgs/invatamatejoc.png Graphic file (type png)
 <use imgs/invatamatejoc.png>
 Package pdftex.def Info: imgs/invatamatejoc.png  used on input line 47.
 (pdftex.def)             Requested size: 202.15909pt x 192.70705pt.
-<imgs/mozaweb.png, id=649, 1038.88126pt x 673.01437pt>
+<imgs/mozaweb.png, id=653, 1038.88126pt x 673.01437pt>
 File: imgs/mozaweb.png Graphic file (type png)
 <use imgs/mozaweb.png>
 Package pdftex.def Info: imgs/mozaweb.png  used on input line 59.
 (pdftex.def)             Requested size: 330.05322pt x 213.80804pt.
- [16 <./imgs/invatamatesimulare.png> <./imgs/invatamatejoc.png> <./imgs/mozaweb.png>]
-<imgs/mozawebplugin.png, id=659, 942.52126pt x 472.01344pt>
+ [17 <./imgs/invatamatesimulare.png> <./imgs/invatamatejoc.png> <./imgs/mozaweb.png>]
+<imgs/mozawebplugin.png, id=663, 942.52126pt x 472.01344pt>
 File: imgs/mozawebplugin.png Graphic file (type png)
 <use imgs/mozawebplugin.png>
 Package pdftex.def Info: imgs/mozawebplugin.png  used on input line 66.
 (pdftex.def)             Requested size: 412.56497pt x 206.6134pt.
- [17 <./imgs/mozawebplugin.png>]
-<imgs/iqboard.png, id=670, 922.19531pt x 648.92438pt>
+ [18 <./imgs/mozawebplugin.png>]
+<imgs/iqboard.png, id=675, 922.19531pt x 648.92438pt>
 File: imgs/iqboard.png Graphic file (type png)
 <use imgs/iqboard.png>
 Package pdftex.def Info: imgs/iqboard.png  used on input line 91.
 (pdftex.def)             Requested size: 202.15909pt x 142.2489pt.
-<imgs/iqboardsimulari.jpg, id=671, 818.05624pt x 439.6425pt>
+<imgs/iqboardsimulari.jpg, id=676, 818.05624pt x 439.6425pt>
 File: imgs/iqboardsimulari.jpg Graphic file (type jpg)
 <use imgs/iqboardsimulari.jpg>
 Package pdftex.def Info: imgs/iqboardsimulari.jpg  used on input line 98.
@@ -881,18 +881,18 @@ Underfull \hbox (badness 7099) in paragraph at lines 99--99
 []\T1/cmr/m/n/10 Figure 3.8: |Simul ri de pe plat-forma
  []
 
-) [18 <./imgs/iqboard.png> <./imgs/iqboardsimulari.jpg>] [19]
+) [19 <./imgs/iqboard.png> <./imgs/iqboardsimulari.jpg>] [20]
 \openout2 = `src/chapters/tehnologiiFe.aux'.
 
  (src/chapters/tehnologiiFe.tex
 Chapter 4.
-[20
+[21
 
 
 
 
-] [21]
-<imgs/fediagram.png, id=691, 1083.29718pt x 294.34969pt>
+] [22]
+<imgs/fediagram.png, id=695, 1083.29718pt x 294.34969pt>
 File: imgs/fediagram.png Graphic file (type png)
 <use imgs/fediagram.png>
 Package pdftex.def Info: imgs/fediagram.png  used on input line 98.
@@ -902,62 +902,62 @@ Overfull \hbox (41.259pt too wide) in paragraph at lines 98--98
  [] 
  []
 
-[22 <./imgs/fediagram.png>]
-<imgs/convertor.png, id=699, 1442.38875pt x 709.90219pt>
+[23 <./imgs/fediagram.png>]
+<imgs/convertor.png, id=703, 1442.38875pt x 709.90219pt>
 File: imgs/convertor.png Graphic file (type png)
 <use imgs/convertor.png>
 Package pdftex.def Info: imgs/convertor.png  used on input line 141.
 (pdftex.def)             Requested size: 412.56497pt x 203.04997pt.
-<imgs/Blender.png, id=700, 974.13937pt x 724.95844pt>
+<imgs/Blender.png, id=704, 974.13937pt x 724.95844pt>
 File: imgs/Blender.png Graphic file (type png)
 <use imgs/Blender.png>
 Package pdftex.def Info: imgs/Blender.png  used on input line 151.
 (pdftex.def)             Requested size: 412.56497pt x 307.03578pt.
- [23 <./imgs/convertor.png>]
-<imgs/paleta.png, id=707, 406.1574pt x 146.7081pt>
+ [24 <./imgs/convertor.png>]
+<imgs/paleta.png, id=712, 406.1574pt x 146.7081pt>
 File: imgs/paleta.png Graphic file (type png)
 <use imgs/paleta.png>
 Package pdftex.def Info: imgs/paleta.png  used on input line 170.
 (pdftex.def)             Requested size: 412.56497pt x 149.02242pt.
- [24 <./imgs/Blender.png>]
-<imgs/logo.png, id=716, 370.38374pt x 76.03406pt>
+ [25 <./imgs/Blender.png>]
+<imgs/logo.png, id=720, 370.38374pt x 76.03406pt>
 File: imgs/logo.png Graphic file (type png)
 <use imgs/logo.png>
 Package pdftex.def Info: imgs/logo.png  used on input line 177.
 (pdftex.def)             Requested size: 206.28249pt x 42.34673pt.
- [25 <./imgs/paleta.png> <./imgs/logo.png>]
-<imgs/mascota.png, id=726, 401.24907pt x 569.87906pt>
+ [26 <./imgs/paleta.png> <./imgs/logo.png>]
+<imgs/mascota.png, id=730, 401.24907pt x 569.87906pt>
 File: imgs/mascota.png Graphic file (type png)
 <use imgs/mascota.png>
 Package pdftex.def Info: imgs/mascota.png  used on input line 189.
 (pdftex.def)             Requested size: 144.40025pt x 205.08673pt.
-<imgs/animatieregister.png, id=727, 580.41844pt x 549.55313pt>
+<imgs/animatieregister.png, id=731, 580.41844pt x 549.55313pt>
 File: imgs/animatieregister.png Graphic file (type png)
 <use imgs/animatieregister.png>
 Package pdftex.def Info: imgs/animatieregister.png  used on input line 193.
 (pdftex.def)             Requested size: 165.02347pt x 156.24692pt.
-<imgs/navdiagram (2).png, id=728, 642.4pt x 1204.5pt>
+<imgs/navdiagram (2).png, id=732, 642.4pt x 1204.5pt>
 File: imgs/navdiagram (2).png Graphic file (type png)
 <use imgs/navdiagram (2).png>
 Package pdftex.def Info: imgs/navdiagram (2).png  used on input line 201.
 (pdftex.def)             Requested size: 247.54149pt x 464.12909pt.
- [26 <./imgs/mascota.png> <./imgs/animatieregister.png>]
+ [27 <./imgs/mascota.png> <./imgs/animatieregister.png>]
 LaTeX Font Info:    Trying to load font information for T1+pcr on input line 205.
  (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-) [27 <./imgs/navdiagram (2).png>]
-<imgs/interfata.png, id=744, 342.5297pt x 703.12688pt>
+) [28 <./imgs/navdiagram (2).png>]
+<imgs/interfata.png, id=748, 342.5297pt x 703.12688pt>
 File: imgs/interfata.png Graphic file (type png)
 <use imgs/interfata.png>
 Package pdftex.def Info: imgs/interfata.png  used on input line 226.
 (pdftex.def)             Requested size: 123.77074pt x 254.06961pt.
- [28{C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc} <./imgs/interfata.png>]
-<imgs/profile.png, id=754, 965.85844pt x 417.05812pt>
+ [29{C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc} <./imgs/interfata.png>]
+<imgs/profile.png, id=758, 965.85844pt x 417.05812pt>
 File: imgs/profile.png Graphic file (type png)
 <use imgs/profile.png>
 Package pdftex.def Info: imgs/profile.png  used on input line 232.
 (pdftex.def)             Requested size: 412.56497pt x 178.14783pt.
- [29 <./imgs/profile.png>]
+ [30 <./imgs/profile.png>]
 Overfull \hbox (44.94162pt too wide) in paragraph at lines 262--265
 []\T1/cmr/bx/n/10 Reducerea num ru-lui de draw calls: \T1/cmr/m/n/10 Com-bin m mesh-urile sim-i-lare folosind \T1/pcr/m/n/10 BufferGeometry
  []
@@ -972,22 +972,22 @@ Overfull \hbox (3.27094pt too wide) in paragraph at lines 279--281
 []\T1/cmr/m/n/10 Hook-ul \T1/pcr/m/n/10 useTexture \T1/cmr/m/n/10 din Drei preîn-carc  []i cache-uie[]te tex-turile, evitând aloc ri repetate
  []
 
-[30]
+[31]
 Overfull \hbox (5.55264pt too wide) in paragraph at lines 309--314
 []\T1/cmr/m/n/10 În plus, com-po-nenta de back-ground ata³eaz  di-rect eveni-mente DOM (\T1/pcr/m/n/10 mousedown\T1/cmr/m/n/10 , \T1/pcr/m/n/10 mousemove\T1/cmr/m/n/10 ,
  []
 
-) [31]
+) [32]
 \openout2 = `src/chapters/tehnologiiBe.aux'.
 
  (src/chapters/tehnologiiBe.tex
 Chapter 5.
-[32
+[33
 
 
 
 
-] [33] [34] [35]
+] [34] [35] [36]
 Overfull \hbox (9.34972pt too wide) in paragraph at lines 134--136
 []\T1/cmr/bx/n/10 ConfigMap & PVC\T1/cmr/m/n/10 : Con-figMap pen-tru con-fig-ur ri (de ex. pen-tru ser-vi-ciul de provizionare
  []
@@ -1002,18 +1002,18 @@ Overfull \hbox (11.30978pt too wide) in paragraph at lines 165--176
 \T1/pcr/m/n/10 portainer-rolebinding, portainer-service ³i portainer-ingress\T1/cmr/m/n/10 ) sunt folosite
  []
 
-[36]
-<imgs/portainerlanding.png, id=876, 1431.09656pt x 690.32906pt>
+[37]
+<imgs/portainerlanding.png, id=880, 1431.09656pt x 690.32906pt>
 File: imgs/portainerlanding.png Graphic file (type png)
 <use imgs/portainerlanding.png>
 Package pdftex.def Info: imgs/portainerlanding.png  used on input line 178.
 (pdftex.def)             Requested size: 412.56497pt x 199.01054pt.
-<imgs/servicesportainer.png, id=877, 1184.92688pt x 484.81125pt>
+<imgs/servicesportainer.png, id=881, 1184.92688pt x 484.81125pt>
 File: imgs/servicesportainer.png Graphic file (type png)
 <use imgs/servicesportainer.png>
 Package pdftex.def Info: imgs/servicesportainer.png  used on input line 186.
 (pdftex.def)             Requested size: 206.28249pt x 84.39937pt.
-<imgs/servicescli.png, id=878, 561.59813pt x 201.75375pt>
+<imgs/servicescli.png, id=882, 561.59813pt x 201.75375pt>
 File: imgs/servicescli.png Graphic file (type png)
 <use imgs/servicescli.png>
 Package pdftex.def Info: imgs/servicescli.png  used on input line 190.
@@ -1023,12 +1023,12 @@ Overfull \hbox (24.19687pt too wide) in paragraph at lines 208--211
 []\T1/cmr/m/n/10 Controller-ul Kong va in-ter-cepta toate resursele de tip \T1/pcr/m/n/10 Ingress \T1/cmr/m/n/10 care speci-fic  \T1/pcr/m/n/10 ingressClassName:
  []
 
-[37 <./imgs/portainerlanding.png> <./imgs/servicesportainer.png> <./imgs/servicescli.png>]
+[38 <./imgs/portainerlanding.png> <./imgs/servicesportainer.png> <./imgs/servicescli.png>]
 LaTeX Font Info:    Trying to load font information for T1+cmss on input line 215.
  (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmss.fd
 File: t1cmss.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-<imgs/bearch.png, id=897, 800.23969pt x 464.4853pt>
+<imgs/bearch.png, id=901, 800.23969pt x 464.4853pt>
 File: imgs/bearch.png Graphic file (type png)
 <use imgs/bearch.png>
 Package pdftex.def Info: imgs/bearch.png  used on input line 244.
@@ -1038,7 +1038,7 @@ Overfull \hbox (103.14124pt too wide) in paragraph at lines 244--244
  [] 
  []
 
-[38] [39 <./imgs/bearch.png>]
+[39] [40 <./imgs/bearch.png>]
 Overfull \hbox (83.13185pt too wide) in paragraph at lines 259--302
  [][] 
  []
@@ -1047,12 +1047,12 @@ Overfull \hbox (83.13185pt too wide) in paragraph at lines 259--302
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 ) (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
-) [40]
+) [41]
 Overfull \hbox (24.19414pt too wide) in paragraph at lines 333--335
 []\T1/cmr/bx/n/10 Build & Push Docker: \T1/cmr/m/n/10 com-pil m bina-rele Go, con-struim imag-inea cu \T1/pcr/m/n/10 build-push-action
  []
 
-[41]
+[42]
 Overfull \hbox (6.01746pt too wide) in paragraph at lines 362--364
 []\T1/pcr/m/n/10 github.com/prometheus/client_-golang/prometheus \T1/cmr/m/n/10 pen-tru definirea con-to-rilor,
  []
@@ -1067,34 +1067,34 @@ Overfull \hbox (4.44443pt too wide) in paragraph at lines 376--379
 \T1/cmr/m/n/10 De ex-em-plu dup  ce Prometheus scra-peaz  \T1/pcr/m/n/10 evaluation_-service_-http_-requests_-total\T1/cmr/m/n/10 ,
  []
 
-[42]
-<imgs/evaluationdashboard.png, id=940, 1214.28656pt x 557.83406pt>
+[43]
+<imgs/evaluationdashboard.png, id=944, 1214.28656pt x 557.83406pt>
 File: imgs/evaluationdashboard.png Graphic file (type png)
 <use imgs/evaluationdashboard.png>
 Package pdftex.def Info: imgs/evaluationdashboard.png  used on input line 403.
 (pdftex.def)             Requested size: 412.56497pt x 189.52487pt.
-<imgs/feeddashboard.png, id=941, 1227.83719pt x 710.655pt>
+<imgs/feeddashboard.png, id=945, 1227.83719pt x 710.655pt>
 File: imgs/feeddashboard.png Graphic file (type png)
 <use imgs/feeddashboard.png>
 Package pdftex.def Info: imgs/feeddashboard.png  used on input line 408.
 (pdftex.def)             Requested size: 412.56497pt x 238.78929pt.
-<imgs/userdashboard.png, id=942, 1231.60126pt x 502.87875pt>
+<imgs/userdashboard.png, id=946, 1231.60126pt x 502.87875pt>
 File: imgs/userdashboard.png Graphic file (type png)
 <use imgs/userdashboard.png>
 Package pdftex.def Info: imgs/userdashboard.png  used on input line 413.
 (pdftex.def)             Requested size: 412.56497pt x 168.452pt.
- [43 <./imgs/evaluationdashboard.png>] [44 <./imgs/feeddashboard.png> <./imgs/userdashboard.png>]
+ [44 <./imgs/evaluationdashboard.png>] [45 <./imgs/feeddashboard.png> <./imgs/userdashboard.png>]
 Overfull \hbox (19.65327pt too wide) in paragraph at lines 443--447
 \T1/cmr/m/n/10 def-i-nite în co-dul backend-ului, folosind driverul ofi-cial Mon-goDB pen-tru Go (\T1/cmr/m/it/10 go.mongodb.org/mongo-
  []
 
-[45]
-<imgs/mongoexpress.png, id=971, 690.32906pt x 448.67625pt>
+[46]
+<imgs/mongoexpress.png, id=975, 690.32906pt x 448.67625pt>
 File: imgs/mongoexpress.png Graphic file (type png)
 <use imgs/mongoexpress.png>
 Package pdftex.def Info: imgs/mongoexpress.png  used on input line 460.
 (pdftex.def)             Requested size: 412.56497pt x 268.14665pt.
- [46 <./imgs/mongoexpress.png>]) [47]
+ [47 <./imgs/mongoexpress.png>]) [48]
 \openout2 = `src/chapters/implementare.aux'.
 
  (src/chapters/implementare.tex
@@ -1189,25 +1189,25 @@ Overfull \hbox (47.99997pt too wide) in paragraph at lines 14--32
  [][] 
  []
 
-[48
+[49
 
 
 
 
 ]
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 53.
- [49] [50] [51]
+ [50] [51] [52]
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 158.
- [52]
+ [53]
 Overfull \hbox (4.74118pt too wide) in paragraph at lines 180--185
 \T1/pcr/m/n/10 react-router-dom\T1/cmr/m/n/10 , \T1/pcr/m/n/10 @react-three/fiber\T1/cmr/m/n/10 , \T1/pcr/m/n/10 @react-three/drei []\T1/cmr/m/n/10 i alte dependen[]e utile
  []
 
-[53] [54] [55] [56]
+[54] [55] [56] [57]
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 338.
- [57]) [58]
+ [58]) [59]
 \openout2 = `src/chapters/funcionalitati.aux'.
 
 
@@ -1216,17 +1216,17 @@ No file src/chapters/funcionalitati.tex.
 
 (src/chapters/scenariiUtilizare.tex
 Chapter 7.
-<imgs/register.png, id=1236, 492.33937pt x 499.11469pt>
+<imgs/register.png, id=1240, 492.33937pt x 499.11469pt>
 File: imgs/register.png Graphic file (type png)
 <use imgs/register.png>
 Package pdftex.def Info: imgs/register.png  used on input line 26.
 (pdftex.def)             Requested size: 218.65892pt x 221.66742pt.
-<imgs/login.png, id=1237, 383.93437pt x 494.59781pt>
+<imgs/login.png, id=1241, 383.93437pt x 494.59781pt>
 File: imgs/login.png Graphic file (type png)
 <use imgs/login.png>
 Package pdftex.def Info: imgs/login.png  used on input line 30.
 (pdftex.def)             Requested size: 173.27652pt x 223.22353pt.
-[59
+[60
 
 
 
@@ -1235,52 +1235,52 @@ Package pdftex.def Info: imgs/login.png  used on input line 30.
 
 
 ]
-<imgs/mainmenu.png, id=1242, 1440.13031pt x 699.36281pt>
+<imgs/mainmenu.png, id=1247, 1440.13031pt x 699.36281pt>
 File: imgs/mainmenu.png Graphic file (type png)
 <use imgs/mainmenu.png>
 Package pdftex.def Info: imgs/mainmenu.png  used on input line 44.
 (pdftex.def)             Requested size: 371.30595pt x 180.3147pt.
- [60 <./imgs/register.png> <./imgs/login.png> <./imgs/mainmenu.png>]
-<imgs/magazin.png, id=1255, 641.39626pt x 677.53125pt>
+ [61 <./imgs/register.png> <./imgs/login.png> <./imgs/mainmenu.png>]
+<imgs/magazin.png, id=1259, 641.39626pt x 677.53125pt>
 File: imgs/magazin.png Graphic file (type png)
 <use imgs/magazin.png>
 Package pdftex.def Info: imgs/magazin.png  used on input line 55.
 (pdftex.def)             Requested size: 226.91199pt x 239.69304pt.
-<imgs/contact.png, id=1256, 485.56406pt x 674.52pt>
+<imgs/contact.png, id=1260, 485.56406pt x 674.52pt>
 File: imgs/contact.png Graphic file (type png)
 <use imgs/contact.png>
 Package pdftex.def Info: imgs/contact.png  used on input line 59.
 (pdftex.def)             Requested size: 165.02347pt x 229.24113pt.
-<imgs/mathex.png, id=1257, 1427.3325pt x 615.0478pt>
+<imgs/mathex.png, id=1261, 1427.3325pt x 615.0478pt>
 File: imgs/mathex.png Graphic file (type png)
 <use imgs/mathex.png>
 Package pdftex.def Info: imgs/mathex.png  used on input line 80.
 (pdftex.def)             Requested size: 412.56497pt x 177.77744pt.
- [61 <./imgs/magazin.png> <./imgs/contact.png>]
-<imgs/fizicaex.png, id=1267, 1427.3325pt x 547.2947pt>
+ [62 <./imgs/magazin.png> <./imgs/contact.png>]
+<imgs/fizicaex.png, id=1271, 1427.3325pt x 547.2947pt>
 File: imgs/fizicaex.png Graphic file (type png)
 <use imgs/fizicaex.png>
 Package pdftex.def Info: imgs/fizicaex.png  used on input line 98.
 (pdftex.def)             Requested size: 412.56497pt x 158.19362pt.
- [62 <./imgs/mathex.png>]
-<imgs/chimieex.png, id=1274, 1428.08531pt x 520.19344pt>
+ [63 <./imgs/mathex.png>]
+<imgs/chimieex.png, id=1278, 1428.08531pt x 520.19344pt>
 File: imgs/chimieex.png Graphic file (type png)
 <use imgs/chimieex.png>
 Package pdftex.def Info: imgs/chimieex.png  used on input line 105.
 (pdftex.def)             Requested size: 412.56497pt x 150.28073pt.
-<imgs/astronomieex.png, id=1275, 1426.57968pt x 633.86812pt>
+<imgs/astronomieex.png, id=1279, 1426.57968pt x 633.86812pt>
 File: imgs/astronomieex.png Graphic file (type png)
 <use imgs/astronomieex.png>
 Package pdftex.def Info: imgs/astronomieex.png  used on input line 110.
 (pdftex.def)             Requested size: 412.56497pt x 183.3141pt.
- [63 <./imgs/fizicaex.png> <./imgs/chimieex.png>]
-<imgs/infoex.png, id=1284, 1428.83812pt x 706.89093pt>
+ [64 <./imgs/fizicaex.png> <./imgs/chimieex.png>]
+<imgs/infoex.png, id=1288, 1428.83812pt x 706.89093pt>
 File: imgs/infoex.png Graphic file (type png)
 <use imgs/infoex.png>
 Package pdftex.def Info: imgs/infoex.png  used on input line 131.
 (pdftex.def)             Requested size: 412.56497pt x 204.10864pt.
- [64 <./imgs/astronomieex.png>]
-<imgs/molform.png, id=1291, 287.57437pt x 464.4853pt>
+ [65 <./imgs/astronomieex.png>]
+<imgs/molform.png, id=1295, 287.57437pt x 464.4853pt>
 File: imgs/molform.png Graphic file (type png)
 <use imgs/molform.png>
 Package pdftex.def Info: imgs/molform.png  used on input line 145.
@@ -1290,65 +1290,65 @@ Underfull \hbox (badness 3989) in paragraph at lines 145--145
 []\T1/cmr/m/n/8 (a) |For-mu-lar de înc r-care
  []
 
-<imgs/infoops.png, id=1292, 405.76593pt x 219.06844pt>
+<imgs/infoops.png, id=1296, 405.76593pt x 219.06844pt>
 File: imgs/infoops.png Graphic file (type png)
 <use imgs/infoops.png>
 Package pdftex.def Info: imgs/infoops.png  used on input line 149.
 (pdftex.def)             Requested size: 226.91199pt x 122.51035pt.
-<imgs/dashboardprof.png, id=1293, 736.25063pt x 637.63219pt>
+<imgs/dashboardprof.png, id=1297, 736.25063pt x 637.63219pt>
 File: imgs/dashboardprof.png Graphic file (type png)
 <use imgs/dashboardprof.png>
 Package pdftex.def Info: imgs/dashboardprof.png  used on input line 159.
 (pdftex.def)             Requested size: 412.56497pt x 357.31482pt.
-[65 <./imgs/infoex.png> <./imgs/molform.png> <./imgs/infoops.png>]
-<imgs/dashboardclasa.png, id=1305, 709.90219pt x 630.10406pt>
+[66 <./imgs/infoex.png> <./imgs/molform.png> <./imgs/infoops.png>]
+<imgs/dashboardclasa.png, id=1310, 709.90219pt x 630.10406pt>
 File: imgs/dashboardclasa.png Graphic file (type png)
 <use imgs/dashboardclasa.png>
 Package pdftex.def Info: imgs/dashboardclasa.png  used on input line 167.
 (pdftex.def)             Requested size: 309.42372pt x 274.6507pt.
- [66 <./imgs/dashboardprof.png>]
-<imgs/crearequiz.png, id=1313, 1427.3325pt x 710.655pt>
+ [67 <./imgs/dashboardprof.png>]
+<imgs/crearequiz.png, id=1317, 1427.3325pt x 710.655pt>
 File: imgs/crearequiz.png Graphic file (type png)
 <use imgs/crearequiz.png>
 Package pdftex.def Info: imgs/crearequiz.png  used on input line 178.
 (pdftex.def)             Requested size: 309.42372pt x 154.05655pt.
-<imgs/rezultatequiz.png, id=1314, 562.35094pt x 300.3722pt>
+<imgs/rezultatequiz.png, id=1318, 562.35094pt x 300.3722pt>
 File: imgs/rezultatequiz.png Graphic file (type png)
 <use imgs/rezultatequiz.png>
 Package pdftex.def Info: imgs/rezultatequiz.png  used on input line 184.
 (pdftex.def)             Requested size: 309.42372pt x 165.27396pt.
- [67 <./imgs/dashboardclasa.png> <./imgs/crearequiz.png>]
-<imgs/dashboardelev.png, id=1323, 733.99219pt x 316.18124pt>
+ [68 <./imgs/dashboardclasa.png> <./imgs/crearequiz.png>]
+<imgs/dashboardelev.png, id=1327, 733.99219pt x 316.18124pt>
 File: imgs/dashboardelev.png Graphic file (type png)
 <use imgs/dashboardelev.png>
 Package pdftex.def Info: imgs/dashboardelev.png  used on input line 194.
 (pdftex.def)             Requested size: 309.42372pt x 133.29213pt.
-<imgs/facequiz.png, id=1324, 547.2947pt x 657.95813pt>
+<imgs/facequiz.png, id=1328, 547.2947pt x 657.95813pt>
 File: imgs/facequiz.png Graphic file (type png)
 <use imgs/facequiz.png>
 Package pdftex.def Info: imgs/facequiz.png  used on input line 206.
 (pdftex.def)             Requested size: 226.91199pt x 272.79654pt.
-<imgs/vederequiz.png, id=1325, 337.26pt x 238.64156pt>
+<imgs/vederequiz.png, id=1329, 337.26pt x 238.64156pt>
 File: imgs/vederequiz.png Graphic file (type png)
 <use imgs/vederequiz.png>
 Package pdftex.def Info: imgs/vederequiz.png  used on input line 210.
 (pdftex.def)             Requested size: 165.02347pt x 116.77151pt.
- [68 <./imgs/rezultatequiz.png> <./imgs/dashboardelev.png>]) [69 <./imgs/facequiz.png> <./imgs/vederequiz.png>]
+ [69 <./imgs/rezultatequiz.png> <./imgs/dashboardelev.png>]) [70 <./imgs/facequiz.png> <./imgs/vederequiz.png>]
 \openout2 = `src/chapters/evaluare.aux'.
 
  (src/chapters/evaluare.tex
 Chapter 8.
-[70
+[71
 
 
 
 
-] [71] [72]) [73]
+] [72] [73]) [74]
 \openout2 = `src/chapters/concluzii.aux'.
 
  (src/chapters/concluzii.tex
 Chapter 9.
-[74
+[75
 
 
 
@@ -1358,9 +1358,9 @@ Overfull \hbox (21.55124pt too wide) in paragraph at lines 35--12
 []\T1/cmr/m/n/10 Prin ur-mare, vi-itorul aplica[]iei se ax-eaz  pe ex-tin-derea func[]ionalit []ilor, îmbun t []irea performan[]ei
  []
 
-[75]) (src/appendix/index.tex (src/appendix/build.system.makefiles.tex
+[76]) (src/appendix/index.tex (src/appendix/build.system.makefiles.tex
 Appendix A.
-)) [76
+)) [77
 
 
 
@@ -1379,14 +1379,14 @@ Underfull \hbox (badness 1424) in paragraph at lines 80--81
 \T1/cmr/m/n/10 Ed-u-ca-tion: Czech Ex-per-i-ment,^^Q *Cen-tral Eu-ro-pean Jour-nal of Ed-u-ca-tion*, 2019.
  []
 
-[77
+[78
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 89--90
 []\T1/cmr/m/n/10 Y. Zhang et al., ^^PVR/AR in STEM Learn-ing,^^Q *PubMed*, 2024.
  []
 
-(thesis.ind) [78] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologiiFe.aux) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
+(thesis.ind) [79] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologiiFe.aux) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
@@ -1399,17 +1399,17 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 (rerunfilecheck)             Checksum: 23E18388EB75565A176FE71D4A0A80AF;21011.
  ) 
 Here is how much of TeX's memory you used:
- 19260 strings out of 474486
- 323416 string characters out of 5743754
+ 19261 strings out of 474486
+ 323423 string characters out of 5743754
  2177542 words of memory out of 5000000
  40548 multiletter control sequences out of 15000+600000
  587881 words of font info for 105 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  125i,18n,147p,584b,2113s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0800.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0600.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb>
-Output written on thesis.pdf (85 pages, 18474873 bytes).
+Output written on thesis.pdf (86 pages, 18477462 bytes).
 PDF statistics:
- 2166 PDF objects out of 2487 (max. 8388607)
- 591 named destinations out of 1000 (max. 500000)
+ 2170 PDF objects out of 2487 (max. 8388607)
+ 592 named destinations out of 1000 (max. 500000)
  1054 words of extra memory for PDF output out of 10000 (max. 10000000)
 
