@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  5 JUN 2025 16:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  6 JUN 2025 01:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -903,18 +903,18 @@ File: imgs/convertor.png Graphic file (type png)
 <use imgs/convertor.png>
 Package pdftex.def Info: imgs/convertor.png  used on input line 141.
 (pdftex.def)             Requested size: 412.56497pt x 203.04997pt.
-<imgs/Blender.png, id=704, 974.13937pt x 724.95844pt>
+ [24 <./imgs/convertor.png>]
+<imgs/Blender.png, id=711, 974.13937pt x 724.95844pt>
 File: imgs/Blender.png Graphic file (type png)
 <use imgs/Blender.png>
 Package pdftex.def Info: imgs/Blender.png  used on input line 151.
 (pdftex.def)             Requested size: 412.56497pt x 307.03578pt.
- [24 <./imgs/convertor.png>]
-<imgs/paleta.png, id=712, 406.1574pt x 146.7081pt>
+ [25 <./imgs/Blender.png>]
+<imgs/paleta.png, id=719, 406.1574pt x 146.7081pt>
 File: imgs/paleta.png Graphic file (type png)
 <use imgs/paleta.png>
 Package pdftex.def Info: imgs/paleta.png  used on input line 170.
 (pdftex.def)             Requested size: 412.56497pt x 149.02242pt.
- [25 <./imgs/Blender.png>]
 <imgs/logo.png, id=720, 370.38374pt x 76.03406pt>
 File: imgs/logo.png Graphic file (type png)
 <use imgs/logo.png>
@@ -1079,7 +1079,7 @@ File: imgs/userdashboard.png Graphic file (type png)
 Package pdftex.def Info: imgs/userdashboard.png  used on input line 413.
 (pdftex.def)             Requested size: 412.56497pt x 168.452pt.
  [44 <./imgs/evaluationdashboard.png>] [45 <./imgs/feeddashboard.png> <./imgs/userdashboard.png>]
-Overfull \hbox (19.65327pt too wide) in paragraph at lines 443--447
+Overfull \hbox (19.65327pt too wide) in paragraph at lines 444--448
 \T1/cmr/m/n/10 def-i-nite în co-dul backend-ului, folosind driverul ofi-cial Mon-goDB pen-tru Go (\T1/cmr/m/it/10 go.mongodb.org/mongo-
  []
 
@@ -1087,7 +1087,7 @@ Overfull \hbox (19.65327pt too wide) in paragraph at lines 443--447
 <imgs/mongoexpress.png, id=975, 690.32906pt x 448.67625pt>
 File: imgs/mongoexpress.png Graphic file (type png)
 <use imgs/mongoexpress.png>
-Package pdftex.def Info: imgs/mongoexpress.png  used on input line 460.
+Package pdftex.def Info: imgs/mongoexpress.png  used on input line 461.
 (pdftex.def)             Requested size: 412.56497pt x 268.14665pt.
  [47 <./imgs/mongoexpress.png>]) [48]
 \openout2 = `src/chapters/implementare.aux'.
@@ -1145,23 +1145,8 @@ Underfull \hbox (badness 6825) in paragraph at lines 22--22
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 22--22
-[]\T1/cmr/m/n/10 Sintax  sim-pl , ti-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 24--24
-[]\T1/cmr/m/n/10 Ecosistem în cre[]tere,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 24--24
-\T1/cmr/m/n/10 multe li-br rii pen-tru
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 24--24
-\T1/cmr/m/n/10 back-end, su-port bun
+[]\T1/cmr/m/n/10 Ecosistem în cre[]tere
  []
 
 
@@ -1193,15 +1178,15 @@ Overfull \hbox (47.99997pt too wide) in paragraph at lines 14--32
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 53.
  [50] [51] [52]
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 158.
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 159.
  [53]
-Overfull \hbox (4.74118pt too wide) in paragraph at lines 180--185
+Overfull \hbox (4.74118pt too wide) in paragraph at lines 181--186
 \T1/pcr/m/n/10 react-router-dom\T1/cmr/m/n/10 , \T1/pcr/m/n/10 @react-three/fiber\T1/cmr/m/n/10 , \T1/pcr/m/n/10 @react-three/drei []\T1/cmr/m/n/10 i alte dependen[]e utile
  []
 
 [54] [55] [56] [57]
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 338.
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 339.
  [58]) [59]
 \openout2 = `src/chapters/funcionalitati.aux'.
 
@@ -1349,7 +1334,7 @@ Chapter 9.
 
 
 ])
-Overfull \hbox (21.55124pt too wide) in paragraph at lines 35--12
+Overfull \hbox (21.55124pt too wide) in paragraph at lines 43--12
 []\T1/cmr/m/n/10 Prin ur-mare, vi-itorul aplica[]iei se ax-eaz  pe ex-tin-derea func[]ionalit []ilor, îmbun t []irea performan[]ei
  []
 
@@ -1396,13 +1381,13 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 Here is how much of TeX's memory you used:
  19261 strings out of 474486
  323423 string characters out of 5743754
- 2177542 words of memory out of 5000000
+ 2156542 words of memory out of 5000000
  40548 multiletter control sequences out of 15000+600000
  587881 words of font info for 105 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 125i,17n,147p,584b,2113s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 125i,17n,147p,601b,2113s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0800.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0600.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0500.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0700.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb>
-Output written on thesis.pdf (86 pages, 18477920 bytes).
+Output written on thesis.pdf (86 pages, 18478730 bytes).
 PDF statistics:
  2170 PDF objects out of 2487 (max. 8388607)
  592 named destinations out of 1000 (max. 500000)

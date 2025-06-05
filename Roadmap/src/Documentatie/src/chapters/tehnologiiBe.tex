@@ -305,7 +305,7 @@ Fiecare serviciu are un set de endpoint-uri care permit operații CRUD (Create, 
 
 \section{Securitate}
 
-Toate API-urile serviciilor sunt protejate prin JWT, validat de middleware-ul \func{JWTAuth}, care
+Toate API-urile serviciilor sunt protejate prin JWT (JSON Web Token), validat de middleware-ul \func{JWTAuth}, care
 respinge cererile fără token sau cu token invalid. Traficul extern este dirijat prin Kong,
 configurat cu HTTPS/TLS şi politici de rate-limiting, CORS şi strip-path pentru a preveni 
 atacurile de tip „path traversal” şi abuzul de resurse. În interiorul clusterului, rolurile
@@ -412,7 +412,8 @@ Așadar există trei panouri principale în Grafana pentru trei servicii cu logi
   \item \texttt{User Data Service Dashboard} pentru \texttt{user-data}
   \fig[width=1\textwidth]{imgs/userdashboard.png}{fig:user-data-dashboard}{Dashboard-ul pentru metrici de utilizator în Grafana}
 
-  Apar numărul, latența și durata cererilor HTTP, numărul utilizatorilor și claselor active.
+  În panoul pentru metricile din serviciul de utilizatori apar numărul, latența și durata cererilor HTTP
+  numărul utilizatorilor și claselor active.
 \end{itemize}
 
 \section{Soluția de baze de date}

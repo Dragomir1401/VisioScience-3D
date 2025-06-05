@@ -5,7 +5,7 @@
 \section{Soluția de front-end}
 \subsection{Framework principal}
 
-Frameworkul principal pe care l-am folosit este React JS, care este o tehnologie foarte populară
+Frameworkul principal care s-a folosit este React JS, care este o tehnologie foarte populară
 și răspândită bazată pe JavaScript. În alegerii de tehnologie pentru front-endul platformei VisioScience3D,
 am concentrat atenția pe criterii precum maturitatea ecosistemului, performanță, curba de învățare,
 flexibilitate în personalizare şi capacitatea de integrare cu biblioteci 3D. Dintre principalele
@@ -40,29 +40,29 @@ care ne-a permis să creăm un design personalizat. Am comparat framework-uri cl
 (Bootstrap, Material UI) cu Tailwind CSS și am observat următoarele avantaje:
 \begin{itemize}
 \item
-  \textbf{Utilitare-întâi și JIT}:
+  \textbf{Prioritatea pe utilitare și JIT}:
     Tailwind oferă clase utilitare care permit definirea rapidă a
     layout-urilor şi a stilurilor unice, fără a scrie sutele de linii de CSS personalizat. Motorul
-    JIT (Just-In-Time) generează doar clasele folosite, menținând pachetul final mai mic.
+    JIT (Just-In-Time) generează doar clasele folosite, menținând pachetul final mai mic ca dimensiune.
 \item
   \textbf{Consistență și flexibilitate}:
-    În loc să ne încărcăm aplicația cu componente predefinite,
-    am putut construi ună interfață coerentă, respectând paleta de culori şi spațierile dorite,
-    fără a rescrie componente UI complexe.
+    În loc să se încărce aplicația cu componente predefinite,
+    s-a putut construi o interfață în mod granular respectând paleta de culori şi spațierile dorite,
+    dar fără a rescrie componente UI complexe.
 \item
-  \textbf{Integrare strânsă cu React}:
-    Utilizarea className din JSX se potrivește natural cu Tailwind,
-    iar plugin-urile precum @tailwindcss/forms facilitează stilizarea
-    formularelor şi input-urilor.
+  \textbf{Integrare bună cu React}:
+    Utilizarea className din JSX se potrivește în mod natural cu framework-ul Tailwind.
+    Mai ales plugin-urile pe care le oferă precum @tailwindcss/forms facilitează configurarea unui stil constant pentru
+    toate formularele.
 \item
   \textbf{Extensibilitate}:
-    Tailwind permite personalizarea ușoară a temelor, adăugarea de plugin-uri și crearea de 
-    componente reutilizabile, fără a sacrifica viteza de dezvoltare.
+    Tailwind permite personalizarea simplă a temelor, adăugarea ușoară de plugin-uri externe și crearea de 
+    componente reutilizabile în UI, fără a sacrifica viteza de dezvoltare.
 \end{itemize}
 
 Bibliotecile de creare și gestionare a graficii 3D sunt esențiale pentru platforma noastră,
 iar pentru a crea simulări interactive, am ales Three.js, o bibliotecă JavaScript populară.
-Three.js oferă un API puternic pentru crearea de scene 3D, animații și interacțiuni și Împreună
+Three.js oferă un API bine gândit pentru crearea de scene 3D, animații și interacțiuni și împreună
 cu React Three Fiber (R3F), o bibliotecă care integrează Three.js cu React, am putut să ne concentrăm
 pe dezvoltarea rapidă a aplicațiilor 3D fără a ne preocupa de detaliile de implementare ale Three.js.
 Utilizarea peste a Drei, ce conține o suită de componente și utilitare pentru R3F, a permis accelerarea
@@ -171,7 +171,7 @@ energică, încurajând explorarea și învățarea.
 
 \subsubsection{Logo-ul}
 Logo-ul VisioScience3D este relativ simplu și în temă cu paleta de culori, fiind reprezentat
-de cuvantul "VisioScience3D" scris cu un font prezentativ și colorat cu un gradient de la
+de cuvântul "VisioScience3D" scris cu un font reprezentativ și colorat cu un gradient de la
 mov la mulberry (\#690375).
 
 \fig[width=0.5\textwidth]{imgs/logo.png}{fig:fediagram}{Logo-ul platformei}
