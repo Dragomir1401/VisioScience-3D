@@ -1,72 +1,174 @@
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Html } from "@react-three/drei";
-import * as THREE from "three";
+import { Vector3 } from "three";
+import TWEEN from "@tweenjs/tween.js";
 
-/* -------------------- date minime (poţi extinde) -------------------- */
-const ELEMENTS = [
-  { Z: 1,  simbol: "H",  nume: "Hidrogen", masa: 1.01, grup: 1,  perioada: 1 },
-  { Z: 2,  simbol: "He", nume: "Heliu",    masa: 4.00, grup: 18, perioada: 1 },
-  { Z: 3,  simbol: "Li", nume: "Litiu",    masa: 6.94, grup: 1,  perioada: 2 },
-  { Z: 4,  simbol: "Be", nume: "Beriliu",  masa: 9.01, grup: 2,  perioada: 2 },
-  { Z: 5,  simbol: "B",  nume: "Bor",      masa: 10.81, grup: 13, perioada: 2 },
-  { Z: 6,  simbol: "C",  nume: "Carbon",   masa: 12.01, grup: 14, perioada: 2 },
-  { Z: 7,  simbol: "N",  nume: "Azot",     masa: 14.01, grup: 15, perioada: 2 },
-  { Z: 8,  simbol: "O",  nume: "Oxigen",   masa: 16.00, grup: 16, perioada: 2 },
-  { Z: 9,  simbol: "F",  nume: "Fluor",    masa: 19.00, grup: 17, perioada: 2 },
-  { Z: 10, simbol: "Ne", nume: "Neon",     masa: 20.18, grup: 18, perioada: 2 },
-  // … continuă cu restul elementelor
-];
+import TABLE_DATA from "./periodic-data-full.json";
 
-/* -------------------- cub cu tooltip -------------------- */
-function ElementBox({ el }) {
+/* ---------- layout-uri exact ca gist ---------- */
+const layouts = {
+  table: {
+    label: "TABLE",
+    // ‹d› este chiar elementul (arrayul cu 5 câmpuri)
+    getPos: (d, i) => {
+    const group  = Number(d[3]);
+    const period = Number(d[4]);
+    console.log(i, group, period);   //  ← trebuie să vezi 1…18 și 1…7/10
+
+    return new Vector3(
+        group  * 140 - 1260,
+        -(period * 180) + 990,
+        0
+    );
+    },
+  },
+  sphere: {
+    label: "SPHERE",
+    getPos: (_, i, l = TABLE_DATA.length) => {
+      const phi = Math.acos(-1 + 2 * i / l);
+      const theta = Math.sqrt(l * Math.PI) * phi;
+      return new Vector3(
+        800 * Math.cos(theta) * Math.sin(phi),
+        800 * Math.sin(theta) * Math.sin(phi),
+        800 * Math.cos(phi)
+      );
+    },
+  },
+  helix: {
+    label: "HELIX",
+    getPos: (_, i) => {
+      const phi = i * 0.175 + Math.PI;
+      return new Vector3(
+        900 * Math.sin(phi),
+        -(i * 8) + 450,
+        900 * Math.cos(phi)
+      );
+    },
+  },
+  grid: {
+    label: "GRID",
+    getPos: (_, i) =>
+      new Vector3(
+        ((i % 5) * 400) - 800,
+        (-(Math.floor(i / 5) % 5) * 400) + 800,
+        (Math.floor(i / 25) * 1000) - 2000
+      ),
+  },
+};
+
+/* ---------- card cyan pâlpâitor ---------- */
+const cardStyle = {
+  width: 120,
+  height: 160,
+  background: "rgba(0,127,127,0.4)",
+  border: "1px solid rgba(127,255,255,0.25)",
+  boxShadow: "0 0 12px rgba(0,255,255,0.5)",
+  cursor: "default",
+  position: "relative",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  fontFamily: "Helvetica, sans-serif",
+  color: "rgba(255,255,255,0.85)",
+  userSelect: "none",
+};
+
+function Element({ data, index, layout }) {
   const ref = useRef();
-  const color = useMemo(() => {
-    // colorăm pe grupe
-    const palette = [
-      "#ef4444", "#f97316", "#f59e0b", "#84cc16", "#22c55e", "#14b8a6",
-      "#0ea5e9", "#8b5cf6", "#d946ef", "#ec4899", "#f43f5e", "#737373"
-    ];
-    return palette[(el.grup - 1) % palette.length];
-  }, [el.grup]);
 
-  // uşoară animaţie de rotaţie
-  useFrame((_s, dt) => {
-    ref.current.rotation.y += dt * 0.3;
-  });
+  useEffect(() => {
+    const obj = ref.current;
+    if (!obj) return;
+
+    /* 1️⃣ – poziţie random doar la prima montare */
+    if (obj.position.lengthSq() === 0) {
+      obj.position.set(
+        Math.random() * 4000 - 2000,
+        Math.random() * 4000 - 2000,
+        Math.random() * 4000 - 2000
+      );
+    }
+
+    /* 2️⃣ – calculează ţinta şi porneşte tween-ul */
+    const target = layouts[layout].getPos(data, index);
+
+    const tween = new TWEEN.Tween(obj.position)
+      .to(target, Math.random() * 2000 + 2000)
+      .easing(TWEEN.Easing.Exponential.InOut)
+      .onUpdate(() => obj.updateMatrix())   // ţine world-matrix la zi
+      .start();
+
+    /* cleanup când componenta sau layout-ul se schimbă */
+    return () => tween.stop();
+  }, [layout, data, index]);
 
   return (
-    <group position={[
-      (el.grup - 9.5) * 2,      // centrează pe axa X
-      -(el.perioada - 3.5) * 2, // inversează Y pentru a avea Per.1 sus
-      0,
-    ]}>
-      <mesh ref={ref}>
-        <boxGeometry args={[1.8, 1.8, 0.3]} />
-        <meshStandardMaterial color={color} />
-      </mesh>
-
-      <Html distanceFactor={8}>
-        <div className="text-center text-xs leading-tight select-none pointer-events-none">
-          <p className="font-bold">{el.symbol ?? el.simbol}</p>
-          <p>{el.Z}</p>
-        </div>
-      </Html>
+    <group ref={ref}>
+      <Html distanceFactor={50} transform> … </Html>
     </group>
   );
 }
 
-/* -------------------- scena completă -------------------- */
-export default function PeriodicTable3D() {
-  return (
-    <Canvas camera={{ position: [0, 0, 30], fov: 45 }}>
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[3, 5, 5]} intensity={0.5} />
-      <OrbitControls enablePan={false} />
 
-      {ELEMENTS.map((el) => (
-        <ElementBox key={el.Z} el={el} />
+/* ---------- scenă: tween update + orbit ---------- */
+function Scene({ layout }) {
+  useFrame(() => TWEEN.update());
+
+  return (
+    <>
+      <ambientLight intensity={0.8} />
+      <OrbitControls
+        enablePan={false}
+        minDistance={500}
+        maxDistance={6000}
+        rotateSpeed={0.5}
+      />
+      {TABLE_DATA.map((el, i) => (
+        <Element key={i} data={el} index={i} layout={layout} />
       ))}
-    </Canvas>
+    </>
+  );
+}
+
+/* ---------- wrapper cu butoane & Canvas ---------- */
+export default function PeriodicTable3D() {
+  const [layout, setLayout] = useState("table");
+
+  return (
+    <div className="w-full h-full relative">
+      {/* butoane */}
+      <div className="absolute bottom-6 w-full text-center space-x-2 z-10">
+        {Object.entries(layouts).map(([key, cfg]) => (
+          <button
+            key={key}
+            onClick={() => setLayout(key)}
+            style={{
+              padding: "4px 12px",
+              fontSize: 22,
+              letterSpacing: 1,
+              border: "1px solid rgba(127,255,255,0.75)",
+              background:
+                layout === key
+                  ? "rgba(0,255,255,0.75)"
+                  : "transparent",
+              color: layout === key ? "#000" : "rgba(127,255,255,0.75)",
+              cursor: "pointer",
+            }}
+          >
+            {cfg.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Canvas */}
+        <Canvas
+        style={{ background: "#000" }}
+        camera={{ position: [0, 0, 300], fov: 40, near: 1, far: 10000 }}
+        >
+        <Scene layout={layout} />
+        </Canvas>
+    </div>
   );
 }
