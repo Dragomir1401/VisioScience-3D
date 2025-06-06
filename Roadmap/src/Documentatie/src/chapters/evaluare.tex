@@ -90,6 +90,45 @@ Acestea produceau erori de memorie în WebGL (pierdere de context, erori la shad
 Problema a fost rezolvată prin utilizarea unor variante de 4K–8K pentru texturi, încărcare leneșă a acestora și folosirea formatelor
 de texturi comprimate pentru a reduce consumul de memorie și a preveni pierderile de context WebGL.
 
+\subsection{Analiză comparativă pe metrici}
+\label{subsec:analiza-metrici}
+
+Justificarea cuantificativă a avantajelor platformei \textit{VisioScience3D} se poate observa în 
+tabelul~\ref{tab:metrics}. Acesta prezintă cei mai reprezentativi indicatori de exploatare.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Indicator} &
+\textbf{VisioScience3D} &
+\textbf{PhET} &
+\textbf{Mozaweb} &
+\textbf{IQBoard} \\ \midrule
+Timp răspuns API (ms) & \textbf{250} & >300 & >300 & >300 \\
+FPS scenă 3D (desktop) & \textbf{60} & 40-60 & 40-60 & 40-60 \\
+Cost licenţă anual (EUR) & \textbf{0} & 0 & 299 & \(\approx\)450 \\
+Consum RAM mediu (MB) & \textbf{150} & >200 & >200 & >200 \\ \bottomrule
+\end{tabular}
+\caption{Comparaţie pe principalii indicatori de performanţă şi cost.}
+\label{tab:metrics}
+\end{table}
+
+
+\newpage
+Metricile au fost obținute prin utilizarea browserului Chrome pentru accesarea siteurilor și folosind informațiile
+de latență la nivel de cerere, resursele utilizate raportate de browser și rata de cadre resimțită în scenele 3D
+la utilizare (sub 60 de cadre pe secundă se resimt mici sacadări în animații și interacțiuni).
+
+VisioScience3D răspunde în medie mai repede cel puțin în mediul de dezvoltare decât platforme gratuite 
+şi depăşeşte nivelul minim de 60 cadre pe secundă, prag important pentru
+experienţa vizuală fluidă. În testele de stres pe arhitectura backend-ului, aplicaţia a susţinut
+până la sute de cereri concurente fără să rescalaze pod-urile folosite pentru servicii.
+Din punct de vedere monetar, lipsa taxei de licenţiere o poziţionează peste Mozaweb şi IQBoard,
+care introduc un cost de utilizare semnificativ.
+Tehnicile adăugate ca optimizarea texturilor şi încărcarea leneșă ajută și mai mult la menţinerea
+consumului de memorie sub 150 MB.
+
 \subsection{Statistici de dezvoltare}
 Din punct de vedere al dezvoltării software proiectul a conținut:
 \begin{itemize}

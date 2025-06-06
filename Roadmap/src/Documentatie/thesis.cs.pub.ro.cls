@@ -10,7 +10,7 @@
 
 \let\ExecuteOptions@ltx\ExecuteOptions
 \def\ExecuteOptions#1{%
- \ExecuteOptions@ltx{a4paper,10pt,oneside,onecolumn,final}%
+ \ExecuteOptions@ltx{a4paper,12pt,oneside,onecolumn,final}%
 }%
 \LoadClassWithOptions{report}
 \let\ExecuteOptions\ExecuteOptions@ltx
@@ -22,8 +22,8 @@
 % Romanian Language support
 \usepackage{ucs}
 % \usepackage[utf8x]{inputenc}
-%\usepackage[english,romanian]{babel}
-\usepackage[english]{babel}
+\usepackage[english,romanian]{babel}
+% \usepackage[english]{babel}
 
 \usepackage{makeidx}
 
@@ -261,7 +261,12 @@
 % (more info: http://www.tug.dk/FontCatalogue/)
 
 % TT font: Courier
-\usepackage{courier}
+\usepackage[T1]{fontenc}
+% \usepackage[default]{opensans}
+\usepackage{newtxtext,newtxmath}
+% \usepackage[default]{carlito}   % text – Calibri-like
+% \usepackage{courier}
+
 
 % SF font: Helvetica (default document font)
 %\usepackage[scaled]{helvet}

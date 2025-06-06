@@ -67,6 +67,33 @@ Motivația proiectului este de a oferi o platformă educațională interactivă 
 piața de soluții existente care oferă acest tip de produs destinat României, în limba română și care oferă o experiență modernă, cât și suport pentru 
 testare incorporat. 
 
+Motivația princpală este legată direct de necesitatea științifică dezvoltată în capitolul anterior, supimentând
+nevoia de o asemenea platformă deschisă publicului de elevi și profesori din România, incorporând și o dezvoltare 
+tehnică modernă, cu tehnologiile din ziua de azi, deci cu mult potențial de dezvoltare și menținere ușoară
+în viitor. 
+
+\section{Dezvoltarea produsului}
+\label{sec:proj-development}
+
+Dezvoltarea produsului s-a realizat în manieră iterativă, bazat pe testarea progresivă a funcționalităților 
+implementate și feedback-ul primit de la utilizatorii pe care i-am avut la dispoziție în timpul dezvoltării.
+De fiecare dată s-au reevaluat cerințele și reprioritizat implementarea lor până la realizarea unui MVP
+(produs minim valabil) satisfacător care poate fi menținut și dezvoltat cu alte funcționalități în ultima
+parte a proiectului. 
+
+Cerințele și dorințele clasei țintă de utilizatori au fost colectate prin discuții directe și cu elevii din clasele
+unde este profesor unul dintre părinții mei. Elevii au prezentat un entuziasm crescut pentru existența unei
+astfel de platforme gratuite și au dat sugestii după folosirea prototipului minim funcțional. Printre feedback-ul
+principal primit s-au numărat:
+\begin{itemize}
+    \item Animațiile 3D sunt ușor de folosit și interesante.
+    \item S-ar dori mai multă interactivitate cu ele.
+    \item Testele funcționează bine și rezultatele sunt ușor de vizualizat.
+    \item Ar fi interesant să existe un sistem de recompense prin obiecte sau insigne 3D pentru rezultatele obținute.
+    \item Pe partea de algoritmică, ar fi interesant chiar un motor de vizualizare a structurii de date cum se modifică
+    în timp real pe un cod scris de utilizator.
+\end{itemize}
+
 \section{Cerințe funcționale}
 \label{sec:proj-requirements}
 
@@ -92,17 +119,15 @@ aceștia pot să interacționeze cu aplicația din poziția de elevi.
 
 Printre cele princpale se numără:
 \begin{itemize}
-    \item Utilizatorii elevi trebuie să se poată înregistra în aplicație
-    \item Utilizatorii elevi trebuie să se poată autentifica în aplicație
-    \item Utilizatorii elevi trebuie să aibă acces la un meniu principal 3D de selectare a materiei
-    \item Utilizatorii elevi trebuie să aibă acces la secțiuni educaționale
-    \item Utilizatorii elevi trebuie să aibă acces la scenele 3D și să poată interacționa cu ele
-    \item Utilizatorii elevi trebuie să poată intra în clase create de profesori prin invitație
-    \item Utilizatorii elevi trebuie sa poată răspundă la invitații
-    \item Utilizatorii elevi trebuie să aibă acces să vizualizeze testele deschise
-    \item Utilizatorii elevi trebuie să aibă să rezolve testele deschise
-    \item Utilizatorii elevi trebuie să aibă acces la rezultatele obținute dacă profesorul a ales să le facă publice
-    \item Utilizatorii elevi trebuie să aibă acces profilul de utilizator de gestiune a contului
+  \item \textbf{Înregistrare şi autentificare} – crearea rapidă a unui cont propriu şi acces securizat ulterior prin parolă.
+  \item \textbf{Navigare în meniul 3D principal} – alegerea materiei dintr-un meniu virtual.
+  \item \textbf{Acces la module educaţionale} – vizualizare modulelor structurare prin vizualizări 3D.
+  \item \textbf{Interacţiune cu scenele 3D} – interacțiune şi observarea în timp real a efectului asupra modelelor.
+  \item \textbf{Aderare la clase prin invitaţie} – acceptarea invitațiilor direct din profil pentru acces la clase.
+  \item \textbf{Gestionarea invitaţiilor} – notificări pentru invitaţii noi şi posibilitatea de a accepta sau refuza direct din panoul profilului.
+  \item \textbf{Vizualizare şi rezolvare teste} – lista testelor active afişată, cu vizualizarea rezultatelor şi acces la cele deschise.
+  \item \textbf{Consultare rezultate} – panouri cu scoruri proprii și ale colegilor dacă sunt publice.
+  \item \textbf{Administrare profil} – gestionare conectării sau a datelor personale.
 \end{itemize}
 
 \subsection{Cerințe funcționale pentru utilizatorii profesori}
@@ -112,38 +137,41 @@ Cerințele funcționale pentru utilizatorii profesori sunt cerințe care țin de
 și care sunt necesare pentru a asigura o experiență adecvată lor.
 
 Cele mai importante sunt:
+\paragraph{Funcţionalităţi esenţiale pentru profesori}
 \begin{itemize}
-    \item Utilizatorii profesori trebuie să se poată înregistra în aplicație
-    \item Utilizatorii profesori trebuie să se poată autentifica în aplicație
-    \item Utilizatorii profesori trebuie să aibă acces la un meniu principal 3D de selectare a materiei
-    \item Utilizatorii profesori trebuie să aibă acces la secțiuni educaționale
-    \item Utilizatorii profesori trebuie să aibă acces la scenele 3D și să poată interacționa cu ele
-    \item Utilizatorii profesori trebuie să aibă acces la un meniu de gestionare a elevilor și claselor
-    \item Utilizatorii profesori trebuie să aibă acces la un meniu de gestionare a testelor
-    \item Utilizatorii profesori trebuie să aibă acces la un meniu de vizualizare a rezultatelor obținute de elevi
-    \item Utilizatorii profesori trebuie să aibă acces profilul de utilizator de gestiune a contului
-    \item Utilizatorii profesori trebuie să aibă acces la un meniu de gestionare a invitațiilor
-    \item Utilizatorii profesori trebuie să aibă acces să genereze invitații pentru elevi
-    \item Utilizatorii profesori trebuie să aibă acces să trimită invitații pentru elevi
-    \item Utilizatorii profesori trebuie să poată vedea și gestiona rezultatele elevilor
-    \item Utilizatorii profesori trebuie să poată crea teste și închide/deschide accesul la ele
+  \item \textbf{Înregistrare cont} – crearea rapidă a unui profil de profesor.
+  \item \textbf{Autentificare securizată} – acces pe bază de email și parolă.
+  \item \textbf{Meniu 3D principal} – alegerea materiei din interfaţa virtuală.
+  \item \textbf{Acces la resurse educaţionale} – consultarea materialelor şi a modulelor.
+  \item \textbf{Scene 3D interactive} – explorare şi manipulare de vizualizări tridimensionale.
+  \item \textbf{Gestionare elevi şi clase} – creare, editare şi organizare grupuri de elevi denumite clase.
+  \item \textbf{Gestionare teste} – configurare structură şi parametri de evaluare.
+  \item \textbf{Deschidere/închidere teste} – controlul perioadelor de acces la evaluări.
+  \item \textbf{Vizualizare rezultate} – panouri dedicate cu scorurile elevilor.
+  \item \textbf{Analiză şi administrare rezultate} – filtrare, export şi ajustare note.
+  \item \textbf{Meniu invitaţii} – listarea şi urmărirea statusului invitaţiilor trimise.
+  \item \textbf{Trimitere invitaţii} – distribuirea directă către elevi din profilul de pe platformă.
+  \item \textbf{Administrare profil profesor} – actualizarea datelor şi a conexiunii la platformă.
 \end{itemize}
+
 
 \subsection{Cerințe funcționale pentru sistem}
 \label{sub-sec:proj-requirements-system}
 
 Cerințele funcționale pentru sistem sunt cerințe care nu țin de utilizatorii aplicației, ci de sistemul în sine și modul în care acesta 
 trebuie să funcționeze. Aceste cerințe sunt esențiale pentru a asigura o experiență de utilizare fluidă și eficientă. 
+\paragraph{Cerinţe pentru sistem}
 \begin{itemize}
-    \item Sistemul trebuie să trimită invitațiile aproape instantaneu către utilizatori
-    \item Sistemul trebuie să trimită notificări utilizatorilor atunci când primesc invitații
-    \item Sistemul trebuie să încarce rapid scenele 3D
-    \item Sistemul trebuie să aibă un timp de răspuns rapid la interacțiunile utilizatorilor
-    \item Sistemul trebuie să răspundă instant la interacțiunile utilizatorilor cu scenele 3D
-    \item Sistemul trebuie să ofere rezultatele la teste instant
-    \item Sistemul trebuie să gestioneze eficient sistemul de utilizatori și autentificare
-    \item Sistemul trebuie să gestioneze sistemul de închidere/deschidere a testelor
+  \item \textbf{Invitaţii în timp real} – livrare aproape instant către destinatari.  
+  \item \textbf{Notificări automate} – alertare imediată la primirea unei invitaţii.  
+  \item \textbf{Încărcare scene 3D} – randare completă în sub câteva secunde.  
+  \item \textbf{Latenţă redusă UI} – răspuns rapid la orice acţiune a utilizatorului.  
+  \item \textbf{Feedback instant în 3D} – aplicarea imediată a comenzilor de interacţiune.  
+  \item \textbf{Rezultate pe loc} – afişarea scorului imediat după trimiterea testului.  
+  \item \textbf{Management utilizatori} – autentificare sigură şi administrare eficientă a conturilor.  
+  \item \textbf{Control starea testelor} – deschidere sau blocare al accesului la evaluări cu efect imediat.  
 \end{itemize}
+
 
 
 \section{Cerințe nefuncționale}

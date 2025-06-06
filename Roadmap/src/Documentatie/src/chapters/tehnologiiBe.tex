@@ -108,7 +108,7 @@ spec:
       targetPort: 8080
   \end{lstlisting}
 
-  \item \textbf{Ingress} (\texttt{kind: Ingress}): defineşte rutare HTTP/S prin controller folosit (Kong):
+  \item \textbf{Ingress} (\texttt{kind:Ingress}): defineşte rutare HTTP/S prin controller-ul folosit (Kong):
   \begin{lstlisting}[style=yamlstyle]
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -242,6 +242,9 @@ fi testate rapid împotriva serviciilor din cluster fără configurări suplimen
 
 
 \fig[width=1.25\textwidth]{imgs/bearch.png}{fig:arhitectura-backend}{Arhitectura backend-ului aplicației}
+
+
+\newpage
 
 \subsection{Descrierea API-urilor}
 
