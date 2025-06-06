@@ -1,7 +1,10 @@
 import React from "react";
 import { molecule } from "../../assets/icons";
 
-const ChemistryLanding = () => {
+/**
+ * @param {{ onShowTable: () => void }} props
+ */
+export default function ChemistryLanding({ onShowTable }) {
   return (
     <div className="bg-[#fef6ff] p-8 rounded-xl shadow-xl text-black-500 space-y-6 border border-mulberry">
       <h2 className="text-3xl font-bold bg-gradient-to-r from-mulberry to-rosy-brown bg-clip-text text-transparent">
@@ -14,7 +17,7 @@ const ChemistryLanding = () => {
           .mol
         </code>
         pentru a vizualiza și studia structura moleculelor într-un mod
-        interactiv și 3D.
+        interactiv și 3-D.
       </p>
 
       <div className="flex items-start gap-4 font-worksans text-sm sm:text-base">
@@ -26,7 +29,7 @@ const ChemistryLanding = () => {
         <p className="text-black/80">
           Poți adăuga molecule noi din meniul lateral și vizualiza structura
           acestora în timp real. Fiecare moleculă conține detalii despre atomi,
-          legături și o reprezentare 3D ușor de înțeles.
+          legături și o reprezentare 3-D ușor de înțeles.
         </p>
       </div>
 
@@ -37,8 +40,16 @@ const ChemistryLanding = () => {
         </code>
         îl vei putea selecta pentru a vizualiza toate datele moleculei.
       </p>
+
+      <button
+        onClick={onShowTable}
+        className="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-md
+                   bg-gradient-to-r from-blue-400 to-mulberry text-white
+                   hover:from-purple-700 hover:to-mulberry-600 transition
+                   shadow-lg"
+      >
+        🧪 Deschide tabelul periodic
+      </button>
     </div>
   );
-};
-
-export default ChemistryLanding;
+}
