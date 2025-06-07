@@ -28,6 +28,7 @@ import PriorityQueue from '../models/computer_science/PriorityQueue';
 import UnorderedMap from '../models/computer_science/UnorderedMap';
 import UnorderedSet from '../models/computer_science/UnorderedSet';
 import Multiset from '../models/computer_science/Multiset';
+import Array from '../models/computer_science/Array';
 
 const PageContainer = styled('div')(({ theme }) => ({
   minHeight: '100vh',
@@ -257,6 +258,7 @@ const CppEditorPage = () => {
     'unordered_map': UnorderedMap,
     'unordered_set': UnorderedSet,
     'multiset': Multiset,
+    'array': Array,
   };
 
   useEffect(() => {
@@ -742,17 +744,133 @@ const CppEditorPage = () => {
                   </IconButton>
                 </SceneHeader>
                 <DialogContent sx={{ p: 0, flex: 1, display: 'flex', flexDirection: 'column' }}>
-                  {selectedStructure.name === 'vector' && <Box height="350px" width="100%"><Vector elements={[]} showControls={false} height="100%" width="100%" canvasHeight="350px" /></Box>}
-                  {selectedStructure.name === 'unordered_map' && <Box height="350px" width="100%"><UnorderedMap buckets={[]} showControls={false} height="100%" width="100%" canvasHeight="350px" /></Box>}
-                  {selectedStructure.name === 'map' && <Box height="350px" width="100%"><Map root={null} showControls={false} height="100%" width="100%" canvasHeight="350px" /></Box>}
-                  {selectedStructure.name === 'set' && <Box height="350px" width="100%"><Set root={null} showControls={false} height="100%" width="100%" canvasHeight="350px" /></Box>}
-                  {selectedStructure.name === 'multiset' && <Box height="350px" width="100%"><Multiset root={null} showControls={false} height="100%" width="100%" canvasHeight="350px" /></Box>}
-                  {selectedStructure.name === 'priority_queue' && <Box height="350px" width="100%"><PriorityQueue elements={[]} onElementsChange={() => {}} type="min" onTypeChange={() => {}} showControls={false} height="100%" width="100%" canvasHeight="350px" /></Box>}
-                  {selectedStructure.name === 'queue' && <Box height="350px" width="100%"><Queue elements={[]} onElementsChange={() => {}} showControls={false} height="100%" width="100%" canvasHeight="350px" /></Box>}
-                  {selectedStructure.name === 'stack' && <Box height="350px" width="100%"><Stack elements={[]} onElementsChange={() => {}} showControls={false} height="100%" width="100%" canvasHeight="350px" /></Box>}
-                  {selectedStructure.name === 'deque' && <Box height="350px" width="100%"><Deque elements={[]} showControls={false} height="100%" width="100%" canvasHeight="350px" /></Box>}
-                  {selectedStructure.name === 'list' && <Box height="350px" width="100%"><CppList elements={[]} showControls={false} height="100%" width="100%" canvasHeight="350px" /></Box>}
-                  {selectedStructure.name === 'unordered_set' && <Box height="350px" width="100%"><UnorderedSet buckets={[]} showControls={false} height="100%" width="100%" canvasHeight="350px" /></Box>}
+                  {selectedStructure.name === 'vector' && (
+                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                      <Vector 
+                        elements={[]} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="450px" 
+                      />
+                    </Box>
+                  )}
+                  {selectedStructure.name === 'unordered_map' && (
+                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                      <UnorderedMap 
+                        buckets={[]} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="450px" 
+                      />
+                    </Box>
+                  )}
+                  {selectedStructure.name === 'map' && (
+                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                      <Map 
+                        root={null} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="450px" 
+                      />
+                    </Box>
+                  )}
+                  {selectedStructure.name === 'set' && (
+                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                      <Set 
+                        root={null} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="450px" 
+                      />
+                    </Box>
+                  )}
+                  {selectedStructure.name === 'multiset' && (
+                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                      <Multiset 
+                        root={null} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="450px" 
+                      />
+                    </Box>
+                  )}
+                  {selectedStructure.name === 'deque' && (
+                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                      <Deque 
+                        elements={[]} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="450px" 
+                      />
+                    </Box>
+                  )}
+                  {selectedStructure.name === 'array' && (
+                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                      <Array 
+                        elements={[]} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="450px" 
+                      />
+                    </Box>
+                  )}
+                  {selectedStructure.name === 'priority_queue' && (
+                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                      <PriorityQueue 
+                        elements={[]} 
+                        onElementsChange={() => {}} 
+                        type="min" 
+                        onTypeChange={() => {}} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="450px" 
+                      />
+                    </Box>
+                  )}
+                  {selectedStructure.name === 'queue' && (
+                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                      <Queue 
+                        elements={[]} 
+                        onElementsChange={() => {}} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="450px" 
+                      />
+                    </Box>
+                  )}
+                  {selectedStructure.name === 'stack' && (
+                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                      <Stack 
+                        elements={[]} 
+                        onElementsChange={() => {}} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="450px" 
+                      />
+                    </Box>
+                  )}
+                  {selectedStructure.name === 'list' && (
+                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                      <CppList 
+                        elements={[]} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="450px" 
+                      />
+                    </Box>
+                  )}
+                  {selectedStructure.name === 'unordered_set' && <Box height="450px" width="100%"><UnorderedSet buckets={[]} showControls={false} height="100%" width="100%" canvasHeight="450px" /></Box>}
                 </DialogContent>
               </SceneDialog>
             )}

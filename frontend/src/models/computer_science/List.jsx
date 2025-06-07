@@ -157,58 +157,60 @@ export default function ListDemo({
       )}
 
       <div className={showControls ? "w-2/3" : "w-full"}>
-        <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }}>
-          <color attach="background" args={[backgroundColor]} />
-          <ambientLight intensity={0.4} />
-          <directionalLight position={[5, 5, 5]} intensity={1} />
-          <ForestBackground4
-            isRotatingForestBackground={isRotating}
-            isRotatingForestBackgroundSetter={setIsRotating}
-          />
+        <div style={{ width: "100%", height: "100%" }}>
+          <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }}>
+            <color attach="background" args={[backgroundColor]} />
+            <ambientLight intensity={0.4} />
+            <directionalLight position={[5, 5, 5]} intensity={1} />
+            <ForestBackground4
+              isRotatingForestBackground={isRotating}
+              isRotatingForestBackgroundSetter={setIsRotating}
+            />
 
-          {elements.map((val, i) => {
-            const pos = positions[i];
-            return (
-              <group key={i} position={pos.toArray()}>
-                <mesh>
-                  <boxGeometry args={[2, 1, 1]} />
-                  <meshStandardMaterial color={nodeColor} />
-                </mesh>
-                <Text
-                  position={[0, 0, 0.75]}
-                  fontSize={0.3}
-                  color={textColor}
-                  anchorX="center"
-                  anchorY="middle"
-                >
-                  {val}
-                </Text>
-              </group>
-            );
-          })}
+            {elements.map((val, i) => {
+              const pos = positions[i];
+              return (
+                <group key={i} position={pos.toArray()}>
+                  <mesh>
+                    <boxGeometry args={[2, 1, 1]} />
+                    <meshStandardMaterial color={nodeColor} />
+                  </mesh>
+                  <Text
+                    position={[0, 0, 0.75]}
+                    fontSize={0.3}
+                    color={textColor}
+                    anchorX="center"
+                    anchorY="middle"
+                  >
+                    {val}
+                  </Text>
+                </group>
+              );
+            })}
 
-          {arrows.map((arrow, idx) => (
-            <primitive key={idx} object={arrow} />
-          ))}
+            {arrows.map((arrow, idx) => (
+              <primitive key={idx} object={arrow} />
+            ))}
 
-          {positions.length > 0 && (
-            <Text
-              position={[
-                positions[positions.length - 1].x + spacing * 1.2 + 0.5,
-                0,
-                0,
-              ]}
-              fontSize={0.3}
-              color={nullColor}
-              anchorX="left"
-              anchorY="middle"
-            >
-              null
-            </Text>
-          )}
+            {positions.length > 0 && (
+              <Text
+                position={[
+                  positions[positions.length - 1].x + spacing * 1.2 + 0.5,
+                  0,
+                  0,
+                ]}
+                fontSize={0.3}
+                color={nullColor}
+                anchorX="left"
+                anchorY="middle"
+              >
+                null
+              </Text>
+            )}
 
-          <OrbitControls enablePan enableZoom enableRotate />
-        </Canvas>
+            <OrbitControls enablePan enableZoom enableRotate />
+          </Canvas>
+        </div>
       </div>
     </div>
   );
