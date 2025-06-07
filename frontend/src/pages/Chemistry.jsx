@@ -135,7 +135,7 @@ export default function Chemistry() {
         )}
 
         {viewMode === "ptable" && (
-          <div className="p-6 bg-white border-2 border-mulberry rounded-lg shadow-xl h-[80vh]">
+          <div className="p-16 bg-white border-2 border-mulberry rounded-lg shadow-xl h-[80vh]">
             <h2 className="text-xl font-bold text-mulberry mb-4">
               Tabelul periodic interactiv
             </h2>

@@ -189,7 +189,7 @@ export default function PeriodicTable3D() {
   const [layout, setLayout] = useState("table");
 
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full  h-full relative">
       {/* butoane de schimbare layout */}
       <div className="absolute bottom-6 w-full text-center space-x-2 z-10">
         {Object.entries(layouts).map(([k, cfg]) => (
