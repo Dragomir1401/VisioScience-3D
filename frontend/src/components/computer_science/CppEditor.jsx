@@ -1,18 +1,92 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import Editor from '@monaco-editor/react';
+import {
+  Button, Box, Typography, Paper, TextField,
+  Alert, CircularProgress
+} from '@mui/material';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { styled } from '@mui/material/styles';
 
-function CppEditor() {
-  const [code, setCode] = useState('#include <iostream>\n\nint main() {\n    std::cout << "Hello from C++!" << std::endl;\n    return 0;\n}\n'); 
+
+// Styled components
+const EditorContainer = styled(Paper)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+  backgroundColor: theme.palette.background.default,
+  borderRadius: '8px',
+  overflow: 'hidden',
+}));
+
+const EditorHeader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: theme.spacing(1, 2),
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
+}));
+
+const EditorContent = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flex: 1,
+  overflow: 'hidden',
+}));
+
+const CodeSection = styled(Box)(({ theme }) => ({
+  flex: 2,
+  display: 'flex',
+  flexDirection: 'column',
+  borderRight: `1px solid ${theme.palette.divider}`,
+}));
+
+const IOSection = styled(Box)(({ theme }) => ({
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  padding: theme.spacing(2),
+  backgroundColor: theme.palette.background.paper,
+}));
+
+const defaultCode = `#include <iostream>
+using namespace std;
+
+int main() {
+    // Write your code here
+    cout << "Hello, World!" << endl;
+    return 0;
+}`;
+
+const CppEditor = () => {
+  const [code, setCode] = useState(defaultCode);
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [executionData, setExecutionData] = useState([]); 
+  const editorRef = useRef(null);
 
-  const handleRunCode = async () => {
+  const handleEditorDidMount = (editor, monaco) => {
+    editorRef.current = editor;
+    
+    // Configure editor options
+    editor.updateOptions({
+      fontSize: 14,
+      fontFamily: 'Fira Code, monospace',
+      minimap: { enabled: false },
+      scrollBeyondLastLine: false,
+      automaticLayout: true,
+      tabSize: 4,
+      insertSpaces: true,
+      wordWrap: 'on',
+    });
+  };
+
+  const handleRun = async () => {
     setIsLoading(true);
-    setError(null);
+    setError('');
     setOutput('');
-    setExecutionData([]);
 
     try {
       const response = await fetch('http://localhost:8000/cpp-compiler/compile-run', {
@@ -21,93 +95,129 @@ function CppEditor() {
         body: JSON.stringify({ code, input }),
       });
 
-      const result = await response.json();
+      const data = await response.json();
 
-      if (!response.ok || !result.success) {
-        throw new Error(result.error || 'Eroare la rularea codului C++');
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to compile and run code');
       }
 
-      setOutput(result.output);
-      setExecutionData(result.execution_data || []);
-
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setOutput(data.output);
+      }
     } catch (err) {
-      setError(err.message || 'A apărut o eroare necunoscută.');
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleReset = () => {
+    setCode(defaultCode);
+    setInput('');
+    setOutput('');
+    setError('');
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code);
+  };
+
   return (
-    <div className="flex flex-col h-full bg-gray-900 rounded-lg shadow-xl p-6">
-      <h2 className="text-2xl font-bold text-white mb-4">Editor C++ și Vizualizare 3D</h2>
-      
-      {error && (
-        <div className="bg-red-700 text-white p-3 rounded-md mb-4">
-          Eroare: {error}
-        </div>
-      )}
+    <EditorContainer elevation={3}>
+      <EditorHeader>
+        <Typography variant="h6">C++ Editor</Typography>
+        <Box>
+          <Button
+            startIcon={<ContentCopyIcon />}
+            onClick={handleCopy}
+            sx={{ mr: 1 }}
+            size="small"
+          >
+            Copy
+          </Button>
+          <Button
+            startIcon={<RestartAltIcon />}
+            onClick={handleReset}
+            sx={{ mr: 1 }}
+            size="small"
+          >
+            Reset
+          </Button>
+          <Button
+            startIcon={<PlayArrowIcon />}
+            onClick={handleRun}
+            variant="contained"
+            color="secondary"
+            disabled={isLoading}
+            size="small"
+          >
+            {isLoading ? <CircularProgress size={24} /> : 'Run'}
+          </Button>
+        </Box>
+      </EditorHeader>
 
-      <div className="flex flex-1 gap-6 mb-6">
-        <div className="flex-1 flex flex-col">
-          <label htmlFor="cpp-code" className="text-gray-300 mb-2">Cod C++:</label>
-          <textarea
-            id="cpp-code"
-            className="flex-1 bg-gray-800 text-gray-100 p-4 rounded-md font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+      <EditorContent>
+        <CodeSection>
+          <Editor
+            height="100%"
+            defaultLanguage="cpp"
             value={code}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="Scrie codul C++ aici..."
-            rows="15"
-          ></textarea>
-        </div>
+            onChange={setCode}
+            onMount={handleEditorDidMount}
+            theme="vs-dark"
+            options={{
+              fontSize: 14,
+              fontFamily: 'Fira Code, monospace',
+              minimap: { enabled: false },
+              scrollBeyondLastLine: false,
+              automaticLayout: true,
+              tabSize: 4,
+              insertSpaces: true,
+              wordWrap: 'on',
+            }}
+          />
+        </CodeSection>
 
-        <div className="flex-1 flex flex-col">
-          <label htmlFor="cpp-input" className="text-gray-300 mb-2">Input (opțional):</label>
-          <textarea
-            id="cpp-input"
-            className="flex-1 bg-gray-800 text-gray-100 p-4 rounded-md font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+        <IOSection>
+          <Typography variant="subtitle1" gutterBottom>
+            Input
+          </Typography>
+          <TextField
+            multiline
+            rows={4}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Introdu input-ul pentru program (dacă este cazul)..."
-            rows="5"
-          ></textarea>
-          <button
-            onClick={handleRunCode}
-            disabled={isLoading}
-            className="mt-4 px-6 py-3 rounded-lg transition-all 
-                       bg-blue-600 hover:bg-blue-700 text-white font-semibold
-                       shadow-lg hover:shadow-xl flex items-center justify-center gap-2
-                       border-2 border-blue-500 hover:border-blue-600
-                       transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+            variant="outlined"
+            fullWidth
+            sx={{ mb: 2 }}
+          />
+
+          <Typography variant="subtitle1" gutterBottom>
+            Output
+          </Typography>
+          <Paper
+            variant="outlined"
+            sx={{
+              p: 2,
+              minHeight: '100px',
+              backgroundColor: 'background.default',
+              fontFamily: 'monospace',
+              whiteSpace: 'pre-wrap',
+            }}
           >
-            {isLoading ? 'Se compilează și rulează...' : 'Compilează și Rulează C++'}
-          </button>
-        </div>
-      </div>
-
-      <div className="flex flex-col mb-6">
-        <label htmlFor="cpp-output" className="text-gray-300 mb-2">Output:</label>
-        <textarea
-          id="cpp-output"
-          className="bg-gray-800 text-gray-100 p-4 rounded-md font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-green-500"
-          value={output}
-          readOnly
-          rows="8"
-        ></textarea>
-      </div>
-
-      <div className="flex-1 bg-gray-800 rounded-lg flex items-center justify-center p-6">
-        {executionData.length > 0 ? (
-          <p className="text-gray-400 text-lg">
-            Vizualizarea 3D a datelor va apărea aici.
-          </p>
-        ) : (
-          <p className="text-gray-400 text-lg">
-            Așteaptă rularea codului pentru a vedea vizualizarea 3D.
-          </p>
-        )}
-      </div>
-    </div>
+            {error ? (
+              <Alert severity="error" sx={{ mb: 1 }}>
+                {error}
+              </Alert>
+            ) : null}
+            {output}
+          </Paper>
+        </IOSection>
+      </EditorContent>
+    </EditorContainer>
   );
-}
+};
 
 export default CppEditor; 

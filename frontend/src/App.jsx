@@ -20,6 +20,7 @@ import Math from "./pages/Math";
 import Physics from "./pages/Physics";
 import Chemistry from "./pages/Chemistry";
 import ComputerScience from "./pages/ComputerScience";
+import CppEditorPage from "./pages/CppEditorPage";
 import Astronomy from "./pages/Astronomy";
 import RedirectPage from "./pages/Shop";
 import ClassDetails from "./components/teacher/ClassDetails";
@@ -65,6 +66,7 @@ function App() {
           <Route path="physics" element={<Physics />} />
           <Route path="chemistry" element={<Chemistry />} />
           <Route path="computer-science" element={<ComputerScience />} />
+          <Route path="computer-science/editor" element={<CppEditorPage />} />
           <Route path="astronomy" element={<Astronomy />} />
         </Route>
 

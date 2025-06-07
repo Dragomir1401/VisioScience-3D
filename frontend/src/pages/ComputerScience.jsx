@@ -1,5 +1,6 @@
 // src/pages/ComputerScience.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SideMenu from "../components/SideMenu";
 import CSLanding from "../components/computer_science/ComputerScienceLanding";
 import VectorScene from "../models/computer_science/Vector";
@@ -66,6 +67,7 @@ const csObjects = [
 ];
 
 const ComputerScience = () => {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState(null);
   const [elements, setElements] = useState([1, 2, 3, 4, 5]);
   const [buckets, setBuckets] = useState(
@@ -85,7 +87,9 @@ const ComputerScience = () => {
     setViewMode("landing");
   }, [selected?.id]);
 
-  const handleShowCppEditor = () => { setViewMode("cpp_editor"); setSelected(null); };
+  const handleShowCppEditor = () => {
+    navigate('/computer-science/editor');
+  };
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-lavender via-[#f8edf7] to-[#fdf6f6] pt-[80px]">
@@ -199,7 +203,7 @@ const ComputerScience = () => {
         )}
 
         {viewMode === "cpp_editor" && (
-          <div className="p-6 bg-white border-2 border-mulberry rounded-lg shadow-xl h-[80vh]">
+          <div className="p-12 bg-white border-2 border-mulberry rounded-lg shadow-xl h-[80vh]">
             <h2 className="text-xl font-bold text-mulberry mb-4">
               Editor C++ și Vizualizare Structuri de Date 3D
             </h2>
