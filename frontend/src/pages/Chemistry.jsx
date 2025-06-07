@@ -101,6 +101,20 @@ export default function Chemistry() {
       </aside>
 
       <main className="flex-1 p-8 space-y-4 bg-gradient-to-b from-[#fdf4ff] via-[#f3e8ff] to-[#fff7ed]">
+        <div className="flex justify-between items-center mb-6">
+          <button
+            onClick={handleGoLanding}
+            className="px-6 py-3 rounded-lg transition-all 
+                     bg-[#690375] hover:bg-[#3f36d5] text-white font-semibold
+                     shadow-lg hover:shadow-xl flex items-center gap-2
+                     border-2 border-[#4138d0] hover:border-[#3128c0]
+                     transform hover:-translate-y-0.5"
+          >
+            <span className="text-2xl">←</span>
+            Înapoi la introducere
+          </button>
+        </div>
+
         {message && (
           <div className="text-green-700 border border-green-300 bg-green-100 px-4 py-2 rounded-md">
             {message}
