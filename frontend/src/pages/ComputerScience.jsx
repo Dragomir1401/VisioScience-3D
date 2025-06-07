@@ -342,8 +342,8 @@ const ComputerScience = () => {
         )}
 
         {viewMode === "cpp_editor" && (
-          <div className="p-12 bg-white border-2 border-mulberry rounded-lg shadow-xl h-[80vh]">
-            <h2 className="text-xl font-bold text-mulberry mb-4">
+          <div className="bg-white border-2 border-mulberry rounded-lg shadow-xl h-full flex-1">
+            <h2 className="text-xl font-bold text-mulberry mb-4 p-4">
               Editor C++ și Vizualizare Structuri de Date 3D
             </h2>
             <CppEditor />

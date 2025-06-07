@@ -28,6 +28,7 @@ const EditorContainer = styled(Paper)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
+  width: '100%',
   backgroundColor: theme.palette.background.default,
   borderRadius: '8px',
   overflow: 'hidden',
@@ -45,18 +46,19 @@ const EditorHeader = styled(Box)(({ theme }) => ({
 const EditorContent = styled(Box)(({ theme }) => ({
   display: 'flex',
   flex: 1,
+  width: '100%',
   overflow: 'hidden',
 }));
 
 const CodeSection = styled(Box)(({ theme }) => ({
-  flex: 2,
+  flex: 0.5,
   display: 'flex',
   flexDirection: 'column',
   borderRight: `1px solid ${theme.palette.divider}`,
 }));
 
 const IOSection = styled(Box)(({ theme }) => ({
-  flex: 1,
+  flex: 0.1,
   display: 'flex',
   flexDirection: 'column',
   padding: theme.spacing(2),
@@ -64,12 +66,31 @@ const IOSection = styled(Box)(({ theme }) => ({
 }));
 
 const VisualizationSection = styled(Box)(({ theme }) => ({
-  flex: 1,
+  flex: 10,
   display: 'flex',
   flexDirection: 'column',
   padding: theme.spacing(2),
   backgroundColor: theme.palette.background.paper,
   borderLeft: `1px solid ${theme.palette.divider}`,
+  overflowY: 'auto',
+  height: '100%',
+  overflow: 'auto',
+}));
+
+const ContainerGroup = styled(Box)(({ theme }) => ({
+  marginBottom: theme.spacing(4),
+  '&:last-child': {
+    marginBottom: 0,
+  },
+}));
+
+const GroupTitle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.primary.main,
+  fontWeight: 'bold',
+  marginBottom: theme.spacing(2),
+  padding: theme.spacing(1),
+  backgroundColor: theme.palette.background.default,
+  borderRadius: theme.shape.borderRadius,
 }));
 
 const defaultCode = `#include <iostream>
@@ -245,160 +266,182 @@ const CppEditor = () => {
         </IOSection>
 
         <VisualizationSection>
-          <Typography variant="subtitle1" gutterBottom>
+          <Typography variant="h6" gutterBottom sx={{ color: 'primary.main', fontWeight: 'bold' }}>
             Data Structure Visualization
           </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <ArrayDemo 
-                elements={elements}
-                onElementsChange={setElements}
-                backgroundColor="#2D2D2D"
-                textColor="#D4D4D4"
-                nodeColor="#9B6B9E"
-                highlightGetColor="#D4A5A5"
-                highlightSetColor="#9B6B9E"
-                width="100%"
-                height="300px"
-              />
+
+          <ContainerGroup>
+            <GroupTitle variant="subtitle1">
+              Unordered Containers
+            </GroupTitle>
+            <Grid container spacing={3}>
+              <Grid item xs={12} style={{ height: '600px' }}>
+                <MapScene 
+                  buckets={buckets}
+                  backgroundColor="#2D2D2D"
+                  textColor="#D4D4D4"
+                  nodeColor="#9B6B9E"
+                  edgeColor="#D4A5A5"
+                  width="100%"
+                  height="100%"
+                />
+              </Grid>
+              <Grid item xs={12} style={{ height: '600px' }}>
+                <UnorderedSetScene 
+                  buckets={buckets}
+                  backgroundColor="#2D2D2D"
+                  textColor="#D4D4D4"
+                  nodeColor="#9B6B9E"
+                  edgeColor="#D4A5A5"
+                  width="100%"
+                  height="100%"
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <DequeDemo 
-                elements={elements}
-                onElementsChange={setElements}
-                backgroundColor="#2D2D2D"
-                textColor="#D4D4D4"
-                nodeColor="#9B6B9E"
-                frontIndicatorColor="#D4A5A5"
-                backIndicatorColor="#9B6B9E"
-                width="100%"
-                height="300px"
-              />
+          </ContainerGroup>
+
+          <ContainerGroup>
+            <GroupTitle variant="subtitle1">
+              Ordered Containers
+            </GroupTitle>
+            <Grid container spacing={3}>
+              <Grid item xs={12} style={{ height: '600px' }}>
+                <AVLTreeDemo 
+                  root={root}
+                  onRootChange={setRoot}
+                  backgroundColor="#2D2D2D"
+                  textColor="#D4D4D4"
+                  nodeColor="#9B6B9E"
+                  edgeColor="#D4A5A5"
+                  width="100%"
+                  height="100%"
+                />
+              </Grid>
+              <Grid item xs={12} style={{ height: '600px' }}>
+                <AVLSetDemo 
+                  root={root}
+                  onRootChange={setRoot}
+                  backgroundColor="#2D2D2D"
+                  textColor="#D4D4D4"
+                  nodeColor="#9B6B9E"
+                  edgeColor="#D4A5A5"
+                  width="100%"
+                  height="100%"
+                />
+              </Grid>
+              <Grid item xs={12} style={{ height: '600px' }}>
+                <AVLMultiSetDemo 
+                  root={root}
+                  onRootChange={setRoot}
+                  backgroundColor="#2D2D2D"
+                  textColor="#D4D4D4"
+                  nodeColor="#9B6B9E"
+                  edgeColor="#D4A5A5"
+                  width="100%"
+                  height="100%"
+                />
+              </Grid>
+              <Grid item xs={12} style={{ height: '600px' }}>
+                <PriorityQueueDemo 
+                  elements={elements}
+                  onElementsChange={setElements}
+                  type={type}
+                  onTypeChange={setType}
+                  backgroundColor="#2D2D2D"
+                  textColor="#D4D4D4"
+                  nodeColor="#9B6B9E"
+                  edgeColor="#D4A5A5"
+                  width="100%"
+                  height="100%"
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <ListDemo 
-                elements={elements}
-                onElementsChange={setElements}
-                backgroundColor="#2D2D2D"
-                textColor="#D4D4D4"
-                nodeColor="#9B6B9E"
-                arrowColor="#D4A5A5"
-                nullColor="#9B6B9E"
-                width="100%"
-                height="300px"
-              />
+          </ContainerGroup>
+
+          <ContainerGroup>
+            <GroupTitle variant="subtitle1">
+              Linear Containers
+            </GroupTitle>
+            <Grid container spacing={3}>
+              <Grid item xs={12} style={{ height: '600px' }}>
+                <ArrayDemo 
+                  elements={elements}
+                  onElementsChange={setElements}
+                  backgroundColor="#2D2D2D"
+                  textColor="#D4D4D4"
+                  nodeColor="#9B6B9E"
+                  highlightGetColor="#D4A5A5"
+                  highlightSetColor="#9B6B9E"
+                  width="100%"
+                  height="100%"
+                />
+              </Grid>
+              <Grid item xs={12} style={{ height: '600px' }}>
+                <DequeDemo 
+                  elements={elements}
+                  onElementsChange={setElements}
+                  backgroundColor="#2D2D2D"
+                  textColor="#D4D4D4"
+                  nodeColor="#9B6B9E"
+                  frontIndicatorColor="#D4A5A5"
+                  backIndicatorColor="#9B6B9E"
+                  width="100%"
+                  height="100%"
+                />
+              </Grid>
+              <Grid item xs={12} style={{ height: '600px' }}>
+                <ListDemo 
+                  elements={elements}
+                  onElementsChange={setElements}
+                  backgroundColor="#2D2D2D"
+                  textColor="#D4D4D4"
+                  nodeColor="#9B6B9E"
+                  arrowColor="#D4A5A5"
+                  nullColor="#9B6B9E"
+                  width="100%"
+                  height="100%"
+                />
+              </Grid>
+              <Grid item xs={12} style={{ height: '600px' }}>
+                <DoublyLinkedListDemo 
+                  elements={elements}
+                  onElementsChange={setElements}
+                  backgroundColor="#2D2D2D"
+                  textColor="#D4D4D4"
+                  nodeColor="#9B6B9E"
+                  arrowColor="#D4A5A5"
+                  nullColor="#9B6B9E"
+                  width="100%"
+                  height="100%"
+                />
+              </Grid>
+              <Grid item xs={12} style={{ height: '600px' }}>
+                <QueueDemo 
+                  elements={elements}
+                  onElementsChange={setElements}
+                  backgroundColor="#2D2D2D"
+                  textColor="#D4D4D4"
+                  nodeColor="#9B6B9E"
+                  frontIndicatorColor="#D4A5A5"
+                  backIndicatorColor="#9B6B9E"
+                  width="100%"
+                  height="100%"
+                />
+              </Grid>
+              <Grid item xs={12} style={{ height: '600px' }}>
+                <StackDemo 
+                  elements={elements}
+                  onElementsChange={setElements}
+                  backgroundColor="#2D2D2D"
+                  textColor="#D4D4D4"
+                  nodeColor="#9B6B9E"
+                  topIndicatorColor="#D4A5A5"
+                  width="100%"
+                  height="100%"
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <DoublyLinkedListDemo 
-                elements={elements}
-                onElementsChange={setElements}
-                backgroundColor="#2D2D2D"
-                textColor="#D4D4D4"
-                nodeColor="#9B6B9E"
-                arrowColor="#D4A5A5"
-                nullColor="#9B6B9E"
-                width="100%"
-                height="300px"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <MapScene 
-                buckets={buckets}
-                backgroundColor="#2D2D2D"
-                textColor="#D4D4D4"
-                nodeColor="#9B6B9E"
-                edgeColor="#D4A5A5"
-                width="100%"
-                height="300px"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <AVLTreeDemo 
-                root={root}
-                onRootChange={setRoot}
-                backgroundColor="#2D2D2D"
-                textColor="#D4D4D4"
-                nodeColor="#9B6B9E"
-                edgeColor="#D4A5A5"
-                width="100%"
-                height="300px"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <UnorderedSetScene 
-                buckets={buckets}
-                backgroundColor="#2D2D2D"
-                textColor="#D4D4D4"
-                nodeColor="#9B6B9E"
-                edgeColor="#D4A5A5"
-                width="100%"
-                height="300px"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <AVLSetDemo 
-                root={root}
-                onRootChange={setRoot}
-                backgroundColor="#2D2D2D"
-                textColor="#D4D4D4"
-                nodeColor="#9B6B9E"
-                edgeColor="#D4A5A5"
-                width="100%"
-                height="300px"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <AVLMultiSetDemo 
-                root={root}
-                onRootChange={setRoot}
-                backgroundColor="#2D2D2D"
-                textColor="#D4D4D4"
-                nodeColor="#9B6B9E"
-                edgeColor="#D4A5A5"
-                width="100%"
-                height="300px"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <PriorityQueueDemo 
-                elements={elements}
-                onElementsChange={setElements}
-                type={type}
-                onTypeChange={setType}
-                backgroundColor="#2D2D2D"
-                textColor="#D4D4D4"
-                nodeColor="#9B6B9E"
-                edgeColor="#D4A5A5"
-                width="100%"
-                height="300px"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <QueueDemo 
-                elements={elements}
-                onElementsChange={setElements}
-                backgroundColor="#2D2D2D"
-                textColor="#D4D4D4"
-                nodeColor="#9B6B9E"
-                frontIndicatorColor="#D4A5A5"
-                backIndicatorColor="#9B6B9E"
-                width="100%"
-                height="300px"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <StackDemo 
-                elements={elements}
-                onElementsChange={setElements}
-                backgroundColor="#2D2D2D"
-                textColor="#D4D4D4"
-                nodeColor="#9B6B9E"
-                topIndicatorColor="#D4A5A5"
-                width="100%"
-                height="300px"
-              />
-            </Grid>
-          </Grid>
+          </ContainerGroup>
         </VisualizationSection>
       </EditorContent>
     </EditorContainer>

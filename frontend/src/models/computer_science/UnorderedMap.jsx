@@ -14,7 +14,8 @@ export const MapScene = ({
   nodeColor = "#9B6B9E",
   edgeColor = "#D4A5A5",
   width = "100%",
-  height = "100%"
+  height = "100%",
+  canvasHeight = "100%"
 }) => {
   const [isRotating, setIsRotating] = useState(false);
   const spacing = 2;
@@ -24,8 +25,8 @@ export const MapScene = ({
   const camDist = count * spacing - 3;
 
   return (
-    <div style={{ width, height, position: 'relative', borderRadius: '8px', overflow: 'hidden' }}>
-      <Canvas camera={{ position: [centerX, camHeight, camDist], fov: 60 }}>
+    <div style={{ width, height, position: 'relative', borderRadius: '8px', overflow: 'hidden', border: '2px solid #9B6B9E' }}>
+      <Canvas camera={{ position: [centerX, camHeight, camDist], fov: 60 }} style={{ height: canvasHeight, width: width }}>
         <color attach="background" args={[backgroundColor]} />
         <ambientLight intensity={0.4} />
         <directionalLight position={[5, 5, 5]} intensity={1} />

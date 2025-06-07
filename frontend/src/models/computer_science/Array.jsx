@@ -18,7 +18,8 @@ export default function ArrayDemo({
   highlightGetColor = "#10b981",
   highlightSetColor = "#f472b6",
   width = "100%",
-  height = "650px"
+  height = "650px",
+  canvasHeight = "100%"
 }) {
   const [internalElements, setInternalElements] = useState([]);
   const elements = externalElements.length > 0 ? externalElements : internalElements;
@@ -154,7 +155,7 @@ export default function ArrayDemo({
       </div>
 
       <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry" style={{ width, height }}>
-        <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }}>
+        <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }} style={{ height: canvasHeight, width: width }}>
           <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 5, 5]} intensity={1} />
