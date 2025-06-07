@@ -122,6 +122,7 @@ const QueueScene = ({
 const QueueDemo = ({ 
   elements = [],
   onElementsChange,
+  showControls = false,
   backgroundColor = "#2D2D2D",
   textColor = "#ffffff",
   nodeColor = "#4f46e5",
@@ -167,61 +168,63 @@ const QueueDemo = ({
 
   return (
     <div className="flex gap-6">
-      <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry w-1/3 space-y-4">
-        <h4 className="text-lg font-semibold text-mulberry">FIFO Queue</h4>
+      {showControls && (
+        <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry w-1/3 space-y-4">
+          <h4 className="text-lg font-semibold text-mulberry">FIFO Queue</h4>
 
-        <div className="flex gap-2 mt-2">
-          <input
-            type="text"
-            placeholder="Value"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className="flex-1 border rounded px-2 py-1"
-          />
+          <div className="flex gap-2 mt-2">
+            <input
+              type="text"
+              placeholder="Value"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="flex-1 border rounded px-2 py-1"
+            />
+          </div>
+
+          <div className="flex flex-wrap gap-2 mt-2">
+            <button
+              onClick={handlePush}
+              className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <PlusIcon className="w-5 h-5" />
+              <span className="text-sm">push(v)</span>
+            </button>
+
+            <button
+              onClick={handlePop}
+              className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <ArrowCircleLeftIcon className="w-5 h-5" />
+              <span className="text-sm">pop()</span>
+            </button>
+
+            <button
+              onClick={handleTop}
+              className="flex items-center gap-1 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-indigo-600 hover:to-blue-600 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <EyeIcon className="w-5 h-5" />
+              <span className="text-sm">top()</span>
+            </button>
+
+            <button
+              onClick={handleClear}
+              className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <RefreshIcon className="w-5 h-5" />
+              <span className="text-sm">clear()</span>
+            </button>
+          </div>
+
+          {message && <div className="text-sm text-gray-700 mt-2">{message}</div>}
+
+          <div className="text-sm text-gray-700">
+            Contents: [{elements.join(", ")}]
+          </div>
         </div>
+      )}
 
-        <div className="flex flex-wrap gap-2 mt-2">
-          <button
-            onClick={handlePush}
-            className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <PlusIcon className="w-5 h-5" />
-            <span className="text-sm">push(v)</span>
-          </button>
-
-          <button
-            onClick={handlePop}
-            className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <ArrowCircleLeftIcon className="w-5 h-5" />
-            <span className="text-sm">pop()</span>
-          </button>
-
-          <button
-            onClick={handleTop}
-            className="flex items-center gap-1 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-indigo-600 hover:to-blue-600 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <EyeIcon className="w-5 h-5" />
-            <span className="text-sm">top()</span>
-          </button>
-
-          <button
-            onClick={handleClear}
-            className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <RefreshIcon className="w-5 h-5" />
-            <span className="text-sm">clear()</span>
-          </button>
-        </div>
-
-        {message && <div className="text-sm text-gray-700 mt-2">{message}</div>}
-
-        <div className="text-sm text-gray-700">
-          Contents: [{elements.join(", ")}]
-        </div>
-      </div>
-
-      <div className="w-2/3">
+      <div className={showControls ? "w-2/3" : "w-full"}>
         <QueueScene 
           elements={elements}
           backgroundColor={backgroundColor}

@@ -14,6 +14,7 @@ import {
 export default function ListDemo({ 
   elements: externalElements = [],
   onElementsChange,
+  showControls = false,
   backgroundColor = "#2D2D2D",
   textColor = "#ffffff",
   nodeColor = "#4f46e5",
@@ -97,63 +98,65 @@ export default function ListDemo({
 
   return (
     <div className="flex gap-6">
-      <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry w-1/3 space-y-4">
-        <h4 className="text-lg font-semibold text-mulberry">
-          Singly Linked List
-        </h4>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Value"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className="flex-1 border rounded px-2 py-1"
-          />
+      {showControls && (
+        <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
+          <h4 className="text-lg font-semibold text-mulberry">
+            Singly Linked List
+          </h4>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Value"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="flex-1 border rounded px-2 py-1"
+            />
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={handlePushFront}
+              className="flex items-center gap-1 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-blue-600 hover:to-indigo-600 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <ArrowLeftIcon className="w-5 h-5" />
+              <span className="text-sm">push_front()</span>
+            </button>
+            <button
+              onClick={handlePushBack}
+              className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <PlusIcon className="w-5 h-5" />
+              <span className="text-sm">push_back()</span>
+            </button>
+            <button
+              onClick={handlePopFront}
+              className="flex items-center gap-1 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-orange-600 hover:to-yellow-600 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <ArrowCircleRightIcon className="w-5 h-5 transform rotate-180" />
+              <span className="text-sm">pop_front()</span>
+            </button>
+            <button
+              onClick={handlePopBack}
+              className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <TrashIcon className="w-5 h-5" />
+              <span className="text-sm">pop_back()</span>
+            </button>
+            <button
+              onClick={handleClear}
+              className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <RefreshIcon className="w-5 h-5" />
+              <span className="text-sm">clear()</span>
+            </button>
+          </div>
+          {message && <p className="text-sm text-gray-600">{message}</p>}
+          <div className="text-sm text-gray-700">
+            Contents: [{elements.join(", ")}]
+          </div>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={handlePushFront}
-            className="flex items-center gap-1 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-blue-600 hover:to-indigo-600 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <ArrowLeftIcon className="w-5 h-5" />
-            <span className="text-sm">push_front()</span>
-          </button>
-          <button
-            onClick={handlePushBack}
-            className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <PlusIcon className="w-5 h-5" />
-            <span className="text-sm">push_back()</span>
-          </button>
-          <button
-            onClick={handlePopFront}
-            className="flex items-center gap-1 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-orange-600 hover:to-yellow-600 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <ArrowCircleRightIcon className="w-5 h-5 transform rotate-180" />
-            <span className="text-sm">pop_front()</span>
-          </button>
-          <button
-            onClick={handlePopBack}
-            className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <TrashIcon className="w-5 h-5" />
-            <span className="text-sm">pop_back()</span>
-          </button>
-          <button
-            onClick={handleClear}
-            className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <RefreshIcon className="w-5 h-5" />
-            <span className="text-sm">clear()</span>
-          </button>
-        </div>
-        {message && <p className="text-sm text-gray-600">{message}</p>}
-        <div className="text-sm text-gray-700">
-          Contents: [{elements.join(", ")}]
-        </div>
-      </div>
+      )}
 
-      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry" style={{ width, height }}>
+      <div className={showControls ? "w-2/3" : "w-full"}>
         <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }}>
           <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />

@@ -108,6 +108,7 @@ function computePositions(node, x0, x1, y, gapY, list) {
 export default function AVLTreeDemo({ 
   root: externalRoot = null,
   onRootChange,
+  showControls = false,
   backgroundColor = "#2D2D2D",
   textColor = "#ffffff",
   nodeColor = "#4f46e5",
@@ -177,56 +178,58 @@ export default function AVLTreeDemo({
 
   return (
     <div className="flex gap-6">
-      <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
-        <h4 className="text-lg font-semibold text-mulberry">
-          Ordered Map (AVL)
-        </h4>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Key"
-            className="border rounded px-2 py-1 flex-1"
-            value={keyInput}
-            onChange={(e) => setKeyInput(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Value"
-            className="border rounded px-2 py-1 flex-1"
-            value={valueInput}
-            onChange={(e) => setValueInput(e.target.value)}
-          />
+      {showControls && (
+        <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
+          <h4 className="text-lg font-semibold text-mulberry">
+            Ordered Map (AVL)
+          </h4>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Key"
+              className="border rounded px-2 py-1 flex-1"
+              value={keyInput}
+              onChange={(e) => setKeyInput(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Value"
+              className="border rounded px-2 py-1 flex-1"
+              value={valueInput}
+              onChange={(e) => setValueInput(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={handleInsert}
+              className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <PlusIcon className="w-5 h-5" />
+              <span className="text-sm font-medium">Insert/Update</span>
+            </button>
+            <button
+              onClick={handleDelete}
+              className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <TrashIcon className="w-5 h-5" />
+              <span className="text-sm font-medium">Delete</span>
+            </button>
+            <button
+              onClick={handleClear}
+              className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <RefreshIcon className="w-5 h-5" />
+              <span className="text-sm font-medium">Clear</span>
+            </button>
+          </div>
+          {message && <p className="text-sm text-gray-600">{message}</p>}
+          <div className="mt-4 text-sm text-gray-700">
+            In-order: {inorderList.join(", ")}
+          </div>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={handleInsert}
-            className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <PlusIcon className="w-5 h-5" />
-            <span className="text-sm font-medium">Insert/Update</span>
-          </button>
-          <button
-            onClick={handleDelete}
-            className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <TrashIcon className="w-5 h-5" />
-            <span className="text-sm font-medium">Delete</span>
-          </button>
-          <button
-            onClick={handleClear}
-            className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <RefreshIcon className="w-5 h-5" />
-            <span className="text-sm font-medium">Clear</span>
-          </button>
-        </div>
-        {message && <p className="text-sm text-gray-600">{message}</p>}
-        <div className="mt-4 text-sm text-gray-700">
-          In-order: {inorderList.join(", ")}
-        </div>
-      </div>
+      )}
 
-      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry" style={{ width, height }}>
+      <div className={showControls ? "w-2/3" : "w-full"} style={{ height }}>
         <Canvas camera={{ position: [0, 4, 12], fov: 60 }}>
           <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />

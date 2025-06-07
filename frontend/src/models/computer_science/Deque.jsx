@@ -14,11 +14,13 @@ import ForestBackground4 from "../ForestBackground4";
 export default function DequeDemo({ 
   elements: externalElements = [],
   onElementsChange,
+  showControls = false,
   backgroundColor = "#2D2D2D",
   textColor = "#ffffff",
   nodeColor = "#4f46e5",
   frontIndicatorColor = "#10b981",
   backIndicatorColor = "#ef4444",
+  edgeColor = "#7b3fe4",
   width = "100%",
   height = "650px"
 }) {
@@ -80,73 +82,75 @@ export default function DequeDemo({
 
   return (
     <div className="flex gap-6">
-      <div className="w-1/3 bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4">
-        <h4 className="text-xl font-bold text-mulberry">
-          Deque &lt;T&gt; Demo
-        </h4>
-        <input
-          type="text"
-          placeholder="Valoare"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-mulberry"
-        />
-        <div className="grid grid-cols-2 gap-2">
-          <button
-            onClick={pushFront}
-            className="flex items-center justify-center gap-1 bg-gradient-to-r from-blue-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white py-2 rounded-lg shadow"
-          >
-            <ChevronLeftIcon className="w-5 h-5" />
-            push_front
-          </button>
-          <button
-            onClick={pushBack}
-            className="flex items-center justify-center gap-1 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white py-2 rounded-lg shadow"
-          >
-            push_back
-            <ChevronRightIcon className="w-5 h-5" />
-          </button>
-          <button
-            onClick={popFront}
-            className="flex items-center justify-center gap-1 bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white py-2 rounded-lg shadow"
-          >
-            <ArrowLeftIcon className="w-5 h-5" />
-            pop_front
-          </button>
-          <button
-            onClick={popBack}
-            className="flex items-center justify-center gap-1 bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white py-2 rounded-lg shadow"
-          >
-            pop_back
-            <ArrowRightIcon className="w-5 h-5" />
-          </button>
-          <button
-            onClick={showFront}
-            className="flex items-center justify-center gap-1 bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-white py-2 rounded-lg shadow"
-          >
-            front()
-          </button>
-          <button
-            onClick={showBack}
-            className="flex items-center justify-center gap-1 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700 text-white py-2 rounded-lg shadow"
-          >
-            back()
-          </button>
-          <button
-            onClick={clearAll}
-            className="flex items-center justify-center gap-1 bg-gray-400 hover:bg-gray-500 text-white py-2 rounded-lg shadow"
-          >
-            <TrashIcon className="w-5 h-5" />
-            clear()
-          </button>
+      {showControls && (
+        <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
+          <h4 className="text-xl font-bold text-mulberry">
+            Deque &lt;T&gt; Demo
+          </h4>
+          <input
+            type="text"
+            placeholder="Valoare"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-mulberry"
+          />
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={pushFront}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-blue-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white py-2 rounded-lg shadow"
+            >
+              <ChevronLeftIcon className="w-5 h-5" />
+              push_front
+            </button>
+            <button
+              onClick={pushBack}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white py-2 rounded-lg shadow"
+            >
+              push_back
+              <ChevronRightIcon className="w-5 h-5" />
+            </button>
+            <button
+              onClick={popFront}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white py-2 rounded-lg shadow"
+            >
+              <ArrowLeftIcon className="w-5 h-5" />
+              pop_front
+            </button>
+            <button
+              onClick={popBack}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white py-2 rounded-lg shadow"
+            >
+              pop_back
+              <ArrowRightIcon className="w-5 h-5" />
+            </button>
+            <button
+              onClick={showFront}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-white py-2 rounded-lg shadow"
+            >
+              front()
+            </button>
+            <button
+              onClick={showBack}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700 text-white py-2 rounded-lg shadow"
+            >
+              back()
+            </button>
+            <button
+              onClick={clearAll}
+              className="flex items-center justify-center gap-1 bg-gray-400 hover:bg-gray-500 text-white py-2 rounded-lg shadow"
+            >
+              <TrashIcon className="w-5 h-5" />
+              clear()
+            </button>
+          </div>
+          {message && <p className="text-gray-700 mt-2">{message}</p>}
+          <p className="text-sm text-gray-600">
+            Conținut: [{elements.join(", ")}]
+          </p>
         </div>
-        {message && <p className="text-gray-700 mt-2">{message}</p>}
-        <p className="text-sm text-gray-600">
-          Conținut: [{elements.join(", ")}]
-        </p>
-      </div>
+      )}
 
-      <div className="w-2/3 h-[650px] rounded-xl overflow-hidden border-2 border-mulberry relative" style={{ width, height }}>
+      <div className={showControls ? "w-2/3" : "w-full"}>
         <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }}>
           <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />

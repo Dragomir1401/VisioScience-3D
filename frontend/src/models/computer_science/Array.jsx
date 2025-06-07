@@ -12,6 +12,7 @@ import {
 export default function ArrayDemo({ 
   elements: externalElements = [],
   onElementsChange,
+  showControls = false,
   backgroundColor = "#2D2D2D",
   textColor = "#ffffff",
   nodeColor = "#4f46e5",
@@ -90,71 +91,73 @@ export default function ArrayDemo({
 
   return (
     <div className="flex gap-6">
-      <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry w-1/3 space-y-4">
-        <h4 className="text-lg font-semibold text-mulberry">Static Array</h4>
-        <div className="flex items-center gap-2">
-          <input
-            type="number"
-            min="0"
-            placeholder="Size"
-            value={sizeInput}
-            onChange={(e) => setSizeInput(e.target.value)}
-            className="flex-1 border rounded px-2 py-1"
-          />
-          <button
-            onClick={handleCreate}
-            className="flex items-center gap-1 bg-gradient-to-r from-green-500 to-teal-400 hover:from-teal-500 hover:to-green-600 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <PlusIcon className="w-5 h-5" />
-            <span className="text-sm">create()</span>
-          </button>
-        </div>
+      {showControls && (
+        <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
+          <h4 className="text-lg font-semibold text-mulberry">Static Array</h4>
+          <div className="flex items-center gap-2">
+            <input
+              type="number"
+              min="0"
+              placeholder="Size"
+              value={sizeInput}
+              onChange={(e) => setSizeInput(e.target.value)}
+              className="flex-1 border rounded px-2 py-1"
+            />
+            <button
+              onClick={handleCreate}
+              className="flex items-center gap-1 bg-gradient-to-r from-green-500 to-teal-400 hover:from-teal-500 hover:to-green-600 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <PlusIcon className="w-5 h-5" />
+              <span className="text-sm">create()</span>
+            </button>
+          </div>
 
-        <div className="flex gap-2">
-          <input
-            type="number"
-            placeholder="Index"
-            value={idxInput}
-            onChange={(e) => setIdxInput(e.target.value)}
-            className="w-20 border rounded px-2 py-1"
-          />
-          <input
-            type="text"
-            placeholder="Value"
-            value={valInput}
-            onChange={(e) => setValInput(e.target.value)}
-            className="flex-1 border rounded px-2 py-1"
-          />
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={handleGet}
-            className="flex items-center gap-1 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-indigo-600 hover:to-blue-600 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <EyeIcon className="w-5 h-5" />
-            <span className="text-sm">get()</span>
-          </button>
-          <button
-            onClick={handleSet}
-            className="flex items-center gap-1 bg-gradient-to-r from-orange-500 to-pink-500 hover:from-pink-600 hover:to-purple-600 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <PencilIcon className="w-5 h-5" />
-            <span className="text-sm">set()</span>
-          </button>
-          <button
-            onClick={handleClear}
-            className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <RefreshIcon className="w-5 h-5" />
-            <span className="text-sm">clear()</span>
-          </button>
-        </div>
+          <div className="flex gap-2">
+            <input
+              type="number"
+              placeholder="Index"
+              value={idxInput}
+              onChange={(e) => setIdxInput(e.target.value)}
+              className="w-20 border rounded px-2 py-1"
+            />
+            <input
+              type="text"
+              placeholder="Value"
+              value={valInput}
+              onChange={(e) => setValInput(e.target.value)}
+              className="flex-1 border rounded px-2 py-1"
+            />
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={handleGet}
+              className="flex items-center gap-1 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-indigo-600 hover:to-blue-600 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <EyeIcon className="w-5 h-5" />
+              <span className="text-sm">get()</span>
+            </button>
+            <button
+              onClick={handleSet}
+              className="flex items-center gap-1 bg-gradient-to-r from-orange-500 to-pink-500 hover:from-pink-600 hover:to-purple-600 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <PencilIcon className="w-5 h-5" />
+              <span className="text-sm">set()</span>
+            </button>
+            <button
+              onClick={handleClear}
+              className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <RefreshIcon className="w-5 h-5" />
+              <span className="text-sm">clear()</span>
+            </button>
+          </div>
 
-        {message && <p className="text-sm text-gray-600">{message}</p>}
-        <div className="text-sm text-gray-700">Length: {elements.length}</div>
-      </div>
+          {message && <p className="text-sm text-gray-600">{message}</p>}
+          <div className="text-sm text-gray-700">Length: {elements.length}</div>
+        </div>
+      )}
 
-      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry" style={{ width, height }}>
+      <div className={showControls ? "w-2/3" : "w-full"}>
         <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }} style={{ height: canvasHeight, width: width }}>
           <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />

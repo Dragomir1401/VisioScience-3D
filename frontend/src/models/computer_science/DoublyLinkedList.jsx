@@ -11,9 +11,8 @@ import {
   RefreshIcon,
 } from "@heroicons/react/solid";
 
-export default function DoublyLinkedListDemo({ 
-  elements: externalElements = [],
-  onElementsChange,
+const DoublyLinkedListScene = ({ 
+  elements,
   backgroundColor = "#2D2D2D",
   textColor = "#ffffff",
   nodeColor = "#4f46e5",
@@ -21,50 +20,7 @@ export default function DoublyLinkedListDemo({
   nullColor = "#555555",
   width = "100%",
   height = "650px"
-}) {
-  const [internalElements, setInternalElements] = useState([]);
-  const elements = externalElements.length > 0 ? externalElements : internalElements;
-  const setElements = (newElements) => {
-    if (onElementsChange) {
-      onElementsChange(newElements);
-    } else {
-      setInternalElements(newElements);
-    }
-  };
-
-  const [input, setInput] = useState("");
-  const [message, setMessage] = useState("");
-  const [isRotating, setIsRotating] = useState(false);
-
-  const handlePushFront = () => {
-    if (!input) return;
-    setElements((prev) => [input, ...prev]);
-    setMessage(`pushed_front ${input}`);
-    setInput("");
-  };
-  const handlePushBack = () => {
-    if (!input) return;
-    setElements((prev) => [...prev, input]);
-    setMessage(`pushed_back ${input}`);
-    setInput("");
-  };
-  const handlePopFront = () => {
-    if (!elements.length) return setMessage("pop_front on empty list");
-    const removed = elements[0];
-    setElements((prev) => prev.slice(1));
-    setMessage(`popped_front ${removed}`);
-  };
-  const handlePopBack = () => {
-    if (!elements.length) return setMessage("pop_back on empty list");
-    const removed = elements[elements.length - 1];
-    setElements((prev) => prev.slice(0, -1));
-    setMessage(`popped_back ${removed}`);
-  };
-  const handleClear = () => {
-    setElements([]);
-    setMessage("cleared");
-  };
-
+}) => {
   const spacing = 3;
   const boxHalf = 1;
   const count = elements.length;
@@ -145,75 +101,17 @@ export default function DoublyLinkedListDemo({
   }, [positions, spacing, arrowColor, nullColor]);
 
   return (
-    <div className="flex gap-6">
-      <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry w-1/3 space-y-4">
-        <h4 className="text-lg font-semibold text-mulberry">
-          Doubly Linked List
-        </h4>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Value"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className="flex-1 border rounded px-2 py-1"
-          />
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={handlePushFront}
-            className="flex items-center gap-1 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-blue-600 hover:to-indigo-600 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <ArrowLeftIcon className="w-5 h-5" />
-            <span className="text-sm">push_front()</span>
-          </button>
-          <button
-            onClick={handlePushBack}
-            className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <PlusIcon className="w-5 h-5" />
-            <span className="text-sm">push_back()</span>
-          </button>
-          <button
-            onClick={handlePopFront}
-            className="flex items-center gap-1 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-orange-600 hover:to-yellow-600 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <ArrowCircleRightIcon className="w-5 h-5 transform rotate-180" />
-            <span className="text-sm">pop_front()</span>
-          </button>
-          <button
-            onClick={handlePopBack}
-            className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <TrashIcon className="w-5 h-5" />
-            <span className="text-sm">pop_back()</span>
-          </button>
-          <button
-            onClick={handleClear}
-            className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <RefreshIcon className="w-5 h-5" />
-            <span className="text-sm">clear()</span>
-          </button>
-        </div>
-        {message && <p className="text-sm text-gray-600">{message}</p>}
-        <div className="text-sm text-gray-700">
-          Contents: [{elements.join(", ")}]
-        </div>
-      </div>
+    <div style={{ width, height }}>
+      <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }}>
+        <color attach="background" args={[backgroundColor]} />
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[5, 5, 5]} intensity={1} />
+        <ForestBackground4 />
 
-      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry" style={{ width, height }}>
-        <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }}>
-          <color attach="background" args={[backgroundColor]} />
-          <ambientLight intensity={0.4} />
-          <directionalLight position={[5, 5, 5]} intensity={1} />
-          <ForestBackground4
-            isRotatingForestBackground={isRotating}
-            isRotatingForestBackgroundSetter={setIsRotating}
-          />
-
-          {elements.map((val, i) => (
-            <group key={i} position={positions[i].toArray()}>
+        {elements.map((val, i) => {
+          const pos = positions[i];
+          return (
+            <group key={i} position={pos.toArray()}>
               <mesh>
                 <boxGeometry args={[2, 1, 1]} />
                 <meshStandardMaterial color={nodeColor} />
@@ -228,32 +126,162 @@ export default function DoublyLinkedListDemo({
                 {val}
               </Text>
             </group>
-          ))}
+          );
+        })}
 
-          {forwardArrows.map((arr, i) => (
-            <primitive key={`fwd${i}`} object={arr} />
-          ))}
-          {backwardArrows.map((arr, i) => (
-            <primitive key={`bwd${i}`} object={arr} />
-          ))}
+        {forwardArrows.map((arrow, idx) => (
+          <primitive key={`f-${idx}`} object={arrow} />
+        ))}
+        {backwardArrows.map((arrow, idx) => (
+          <primitive key={`b-${idx}`} object={arrow} />
+        ))}
+        {nullArrows.map(({ arrow, tip }, idx) => (
+          <group key={`n-${idx}`}>
+            <primitive object={arrow} />
+            <Text
+              position={[tip.x, tip.y, tip.z]}
+              fontSize={0.3}
+              color={nullColor}
+              anchorX="center"
+              anchorY="middle"
+            >
+              null
+            </Text>
+          </group>
+        ))}
 
-          {nullArrows.map(({ arrow, tip }, i) => (
-            <React.Fragment key={`n${i}`}>
-              <primitive object={arrow} />
-              <Text
-                position={tip.toArray()}
-                fontSize={0.65}
-                color={nullColor}
-                anchorX="center"
-                anchorY="middle"
-              >
-                null
-              </Text>
-            </React.Fragment>
-          ))}
+        <OrbitControls enablePan enableZoom enableRotate />
+      </Canvas>
+    </div>
+  );
+};
 
-          <OrbitControls enablePan enableZoom enableRotate />
-        </Canvas>
+export default function DoublyLinkedListDemo({ 
+  elements: externalElements = [],
+  onElementsChange,
+  showControls = false,
+  backgroundColor = "#2D2D2D",
+  textColor = "#ffffff",
+  nodeColor = "#4f46e5",
+  arrowColor = "#888888",
+  nullColor = "#555555",
+  width = "100%",
+  height = "650px"
+}) {
+  const [internalElements, setInternalElements] = useState([]);
+  const elements = externalElements.length > 0 ? externalElements : internalElements;
+  const setElements = (newElements) => {
+    if (onElementsChange) {
+      onElementsChange(newElements);
+    } else {
+      setInternalElements(newElements);
+    }
+  };
+
+  const [input, setInput] = useState("");
+  const [message, setMessage] = useState("");
+  const [isRotating, setIsRotating] = useState(false);
+
+  const handlePushFront = () => {
+    if (!input) return;
+    setElements((prev) => [input, ...prev]);
+    setMessage(`pushed_front ${input}`);
+    setInput("");
+  };
+  const handlePushBack = () => {
+    if (!input) return;
+    setElements((prev) => [...prev, input]);
+    setMessage(`pushed_back ${input}`);
+    setInput("");
+  };
+  const handlePopFront = () => {
+    if (!elements.length) return setMessage("pop_front on empty list");
+    const removed = elements[0];
+    setElements((prev) => prev.slice(1));
+    setMessage(`popped_front ${removed}`);
+  };
+  const handlePopBack = () => {
+    if (!elements.length) return setMessage("pop_back on empty list");
+    const removed = elements[elements.length - 1];
+    setElements((prev) => prev.slice(0, -1));
+    setMessage(`popped_back ${removed}`);
+  };
+  const handleClear = () => {
+    setElements([]);
+    setMessage("cleared");
+  };
+
+  return (
+    <div className="flex gap-6">
+      {showControls && (
+        <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
+          <h4 className="text-lg font-semibold text-mulberry">
+            Doubly Linked List
+          </h4>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Value"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="flex-1 border rounded px-2 py-1"
+            />
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={handlePushFront}
+              className="flex items-center gap-1 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-blue-600 hover:to-indigo-600 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <ArrowLeftIcon className="w-5 h-5" />
+              <span className="text-sm">push_front()</span>
+            </button>
+            <button
+              onClick={handlePushBack}
+              className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <PlusIcon className="w-5 h-5" />
+              <span className="text-sm">push_back()</span>
+            </button>
+            <button
+              onClick={handlePopFront}
+              className="flex items-center gap-1 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-orange-600 hover:to-yellow-600 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <ArrowCircleRightIcon className="w-5 h-5 transform rotate-180" />
+              <span className="text-sm">pop_front()</span>
+            </button>
+            <button
+              onClick={handlePopBack}
+              className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <TrashIcon className="w-5 h-5" />
+              <span className="text-sm">pop_back()</span>
+            </button>
+            <button
+              onClick={handleClear}
+              className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <RefreshIcon className="w-5 h-5" />
+              <span className="text-sm">clear()</span>
+            </button>
+          </div>
+          {message && <p className="text-sm text-gray-600">{message}</p>}
+          <div className="text-sm text-gray-700">
+            Contents: [{elements.join(", ")}]
+          </div>
+        </div>
+      )}
+
+      <div className={showControls ? "w-2/3" : "w-full"}>
+        <DoublyLinkedListScene 
+          elements={elements}
+          backgroundColor={backgroundColor}
+          textColor={textColor}
+          nodeColor={nodeColor}
+          arrowColor={arrowColor}
+          nullColor={nullColor}
+          width={width}
+          height={height}
+        />
       </div>
     </div>
   );

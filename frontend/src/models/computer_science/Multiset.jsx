@@ -203,13 +203,14 @@ const MultisetScene = ({
   );
 };
 
-const MultisetDemo = ({ 
+const AVLMultisetDemo = ({ 
   root = null,
   onRootChange,
+  showControls = false,
   backgroundColor = "#2D2D2D",
   textColor = "#ffffff",
   nodeColor = "#4f46e5",
-  edgeColor = "#10b981",
+  edgeColor = "#7b3fe4",
   width = "100%",
   height = "650px"
 }) => {
@@ -246,55 +247,57 @@ const MultisetDemo = ({
 
   return (
     <div className="flex gap-6">
-      <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry w-1/3 space-y-4">
-        <h4 className="text-lg font-semibold text-mulberry">
-          Ordered MultiSet (AVL)
-        </h4>
+      {showControls && (
+        <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
+          <h4 className="text-lg font-semibold text-mulberry">
+            Ordered MultiSet (AVL)
+          </h4>
 
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Value"
-            className="border rounded px-2 py-1 flex-1"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Value"
+              className="border rounded px-2 py-1 flex-1"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={handleInsert}
+              className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <PlusIcon className="w-5 h-5" />
+              <span className="text-sm font-medium">insert(v)</span>
+            </button>
+
+            <button
+              onClick={handleErase}
+              className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <TrashIcon className="w-5 h-5" />
+              <span className="text-sm font-medium">erase(v)</span>
+            </button>
+
+            <button
+              onClick={handleClear}
+              className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <RefreshIcon className="w-5 h-5" />
+              <span className="text-sm font-medium">clear()</span>
+            </button>
+          </div>
+
+          {message && <div className="text-sm text-gray-700 mt-2">{message}</div>}
+
+          <div className="text-sm text-gray-700">
+            Contents: [{inorderList.join(", ")}]
+          </div>
         </div>
+      )}
 
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={handleInsert}
-            className="flex items-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <PlusIcon className="w-5 h-5" />
-            <span className="text-sm font-medium">insert(v)</span>
-          </button>
-
-          <button
-            onClick={handleErase}
-            className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <TrashIcon className="w-5 h-5" />
-            <span className="text-sm font-medium">erase(v)</span>
-          </button>
-
-          <button
-            onClick={handleClear}
-            className="flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-4 rounded-lg shadow transition"
-          >
-            <RefreshIcon className="w-5 h-5" />
-            <span className="text-sm font-medium">clear()</span>
-          </button>
-        </div>
-
-        {message && <div className="text-sm text-gray-700 mt-2">{message}</div>}
-
-        <div className="text-sm text-gray-700">
-          Contents: [{inorderList.join(", ")}]
-        </div>
-      </div>
-
-      <div className="w-2/3">
+      <div className={showControls ? "w-2/3" : "w-full"}>
         <MultisetScene 
           root={root}
           backgroundColor={backgroundColor}
@@ -309,4 +312,4 @@ const MultisetDemo = ({
   );
 };
 
-export default MultisetDemo;
+export default AVLMultisetDemo;

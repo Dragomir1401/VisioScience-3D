@@ -131,6 +131,7 @@ const ComputerScience = () => {
           <div className="space-y-6">
             <VectorScene 
               elements={elements}
+              showControls={true}
               backgroundColor="#2D2D2D"
               textColor="#D4D4D4"
               nodeColor="#9B6B9E"
@@ -146,6 +147,7 @@ const ComputerScience = () => {
           <div className="space-y-6">
             <MapScene 
               buckets={buckets}
+              showControls={true}
               backgroundColor="#2D2D2D"
               textColor="#D4D4D4"
               nodeColor="#9B6B9E"
@@ -163,6 +165,7 @@ const ComputerScience = () => {
             <AVLTreeDemo 
               root={root}
               onRootChange={setRoot}
+              showControls={true}
               backgroundColor="#2D2D2D"
               textColor="#D4D4D4"
               nodeColor="#9B6B9E"
@@ -178,6 +181,7 @@ const ComputerScience = () => {
           <div className="space-y-6">
             <UnorderedSetScene 
               buckets={buckets}
+              showControls={true}
               backgroundColor="#2D2D2D"
               textColor="#D4D4D4"
               nodeColor="#9B6B9E"
@@ -195,6 +199,7 @@ const ComputerScience = () => {
             <AVLSetDemo 
               root={root}
               onRootChange={setRoot}
+              showControls={true}
               backgroundColor="#2D2D2D"
               textColor="#D4D4D4"
               nodeColor="#9B6B9E"
@@ -213,6 +218,7 @@ const ComputerScience = () => {
               onElementsChange={setElements}
               type={type}
               onTypeChange={setType}
+              showControls={true}
               backgroundColor="#2D2D2D"
               textColor="#D4D4D4"
               nodeColor="#9B6B9E"
@@ -229,6 +235,7 @@ const ComputerScience = () => {
             <AVLMultiSetDemo
               root={root}
               onRootChange={setRoot}
+              showControls={true}
               backgroundColor="#2D2D2D"
               textColor="#D4D4D4"
               nodeColor="#9B6B9E"
@@ -245,6 +252,7 @@ const ComputerScience = () => {
             <QueueDemo 
               elements={elements}
               onElementsChange={setElements}
+              showControls={true}
               backgroundColor="#2D2D2D"
               textColor="#D4D4D4"
               nodeColor="#9B6B9E"
@@ -262,6 +270,7 @@ const ComputerScience = () => {
             <StackDemo 
               elements={elements}
               onElementsChange={setElements}
+              showControls={true}
               backgroundColor="#2D2D2D"
               textColor="#D4D4D4"
               nodeColor="#9B6B9E"
@@ -278,6 +287,7 @@ const ComputerScience = () => {
             <DequeDemo 
               elements={elements}
               onElementsChange={setElements}
+              showControls={true}
               backgroundColor="#2D2D2D"
               textColor="#D4D4D4"
               nodeColor="#9B6B9E"
@@ -295,6 +305,7 @@ const ComputerScience = () => {
             <ListDemo 
               elements={elements}
               onElementsChange={setElements}
+              showControls={true}
               backgroundColor="#2D2D2D"
               textColor="#D4D4D4"
               nodeColor="#9B6B9E"
@@ -312,6 +323,7 @@ const ComputerScience = () => {
             <DoublyLinkedListDemo 
               elements={elements}
               onElementsChange={setElements}
+              showControls={true}
               backgroundColor="#2D2D2D"
               textColor="#D4D4D4"
               nodeColor="#9B6B9E"
@@ -329,6 +341,7 @@ const ComputerScience = () => {
             <ArrayDemo 
               elements={elements}
               onElementsChange={setElements}
+              showControls={true}
               backgroundColor="#2D2D2D"
               textColor="#D4D4D4"
               nodeColor="#9B6B9E"
