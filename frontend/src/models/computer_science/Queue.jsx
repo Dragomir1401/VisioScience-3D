@@ -9,15 +9,134 @@ import {
   RefreshIcon,
 } from "@heroicons/react/solid";
 
-export default function QueueDemo() {
-  const [elements, setElements] = useState([]);
+const QueueScene = ({ 
+  elements = [],
+  backgroundColor = "#2D2D2D",
+  textColor = "#ffffff",
+  nodeColor = "#4f46e5",
+  frontIndicatorColor = "#10b981",
+  backIndicatorColor = "#ef4444",
+  width = "100%",
+  height = "100%"
+}) => {
+  const spacing = 2;
+  const count = elements.length;
+  const centerX = count > 0 ? ((count - 1) * spacing) / 2 : 0;
+  const camY = 0.8;
+  const camDist = Math.max(count * spacing, 10);
+
+  return (
+    <div style={{ 
+      width, 
+      height, 
+      position: 'relative', 
+      borderRadius: '8px', 
+      overflow: 'hidden',
+      border: '2px solid #9B6B9E'
+    }}>
+      <Canvas camera={{ position: [centerX, camY, camDist], fov: 50 }}>
+        <color attach="background" args={[backgroundColor]} />
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[5, 5, 5]} intensity={1} />
+        <ForestBackground4
+          isRotatingForestBackground={false}
+          isRotatingForestBackgroundSetter={() => {}}
+        />
+
+        {elements.map((val, i) => {
+          const x = i * spacing;
+          return (
+            <group key={i} position={[x, 0, 0]}>
+              <mesh>
+                <boxGeometry args={[1.8, 1, 1.8]} />
+                <meshStandardMaterial color={nodeColor} />
+              </mesh>
+              <Text
+                position={[0, 0, 1]}
+                fontSize={0.4}
+                color={textColor}
+                anchorX="center"
+                anchorY="middle"
+              >
+                {val}
+              </Text>
+            </group>
+          );
+        })}
+
+        {count > 0 && (
+          <>
+            <Line
+              points={[
+                [0 * spacing, 1.5, 0],
+                [0 * spacing, 0.9, 0],
+              ]}
+              color={frontIndicatorColor}
+              lineWidth={2}
+            />
+            <Text
+              position={[0 * spacing, 1.8, 0]}
+              fontSize={0.3}
+              color={frontIndicatorColor}
+              anchorX="center"
+              anchorY="middle"
+            >
+              front
+            </Text>
+          </>
+        )}
+
+        {count > 0 && (
+          <>
+            <Line
+              points={[
+                [(count - 1) * spacing, 1.5, 0],
+                [(count - 1) * spacing, 0.9, 0],
+              ]}
+              color={backIndicatorColor}
+              lineWidth={2}
+            />
+            <Text
+              position={[(count - 1) * spacing, 1.8, 0]}
+              fontSize={0.3}
+              color={backIndicatorColor}
+              anchorX="center"
+              anchorY="middle"
+            >
+              back
+            </Text>
+          </>
+        )}
+
+        <OrbitControls
+          target={[centerX, 0, 0]}
+          enablePan
+          enableZoom
+          enableRotate
+        />
+      </Canvas>
+    </div>
+  );
+};
+
+const QueueDemo = ({ 
+  elements = [],
+  onElementsChange,
+  backgroundColor = "#2D2D2D",
+  textColor = "#ffffff",
+  nodeColor = "#4f46e5",
+  frontIndicatorColor = "#10b981",
+  backIndicatorColor = "#ef4444",
+  width = "100%",
+  height = "650px"
+}) => {
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
-  const [isRotating, setIsRotating] = useState(false);
 
   const handlePush = () => {
     if (!input) return;
-    setElements((prev) => [...prev, input]);
+    const newElements = [...elements, input];
+    onElementsChange?.(newElements);
     setMessage(`pushed ${input}`);
     setInput("");
   };
@@ -28,7 +147,8 @@ export default function QueueDemo() {
       return;
     }
     const popped = elements[0];
-    setElements((prev) => prev.slice(1));
+    const newElements = elements.slice(1);
+    onElementsChange?.(newElements);
     setMessage(`popped ${popped}`);
   };
 
@@ -41,15 +161,9 @@ export default function QueueDemo() {
   };
 
   const handleClear = () => {
-    setElements([]);
+    onElementsChange?.([]);
     setMessage("cleared");
   };
-
-  const spacing = 2;
-  const count = elements.length;
-  const centerX = count > 0 ? ((count - 1) * spacing) / 2 : 0;
-  const camY = 0.8;
-  const camDist = Math.max(count * spacing, 10);
 
   return (
     <div className="flex gap-6">
@@ -107,88 +221,20 @@ export default function QueueDemo() {
         </div>
       </div>
 
-      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry">
-        <Canvas camera={{ position: [centerX, camY, camDist], fov: 50 }}>
-          <ambientLight intensity={0.4} />
-          <directionalLight position={[5, 5, 5]} intensity={1} />
-          <ForestBackground4
-            isRotatingForestBackground={isRotating}
-            isRotatingForestBackgroundSetter={setIsRotating}
-          />
-
-          {elements.map((val, i) => {
-            const x = i * spacing;
-            return (
-              <group key={i} position={[x, 0, 0]}>
-                <mesh>
-                  <boxGeometry args={[1.8, 1, 1.8]} />
-                  <meshStandardMaterial color="#4f46e5" />
-                </mesh>
-                <Text
-                  position={[0, 0, 1]}
-                  fontSize={0.4}
-                  color="#ffffff"
-                  anchorX="center"
-                  anchorY="middle"
-                >
-                  {val}
-                </Text>
-              </group>
-            );
-          })}
-
-          {count > 0 && (
-            <>
-              <Line
-                points={[
-                  [0 * spacing, 1.5, 0],
-                  [0 * spacing, 0.9, 0],
-                ]}
-                color="#10b981"
-                lineWidth={2}
-              />
-              <Text
-                position={[0 * spacing, 1.8, 0]}
-                fontSize={0.3}
-                color="#10b981"
-                anchorX="center"
-                anchorY="middle"
-              >
-                front
-              </Text>
-            </>
-          )}
-
-          {count > 0 && (
-            <>
-              <Line
-                points={[
-                  [(count - 1) * spacing, 1.5, 0],
-                  [(count - 1) * spacing, 0.9, 0],
-                ]}
-                color="#ef4444"
-                lineWidth={2}
-              />
-              <Text
-                position={[(count - 1) * spacing, 1.8, 0]}
-                fontSize={0.3}
-                color="#ef4444"
-                anchorX="center"
-                anchorY="middle"
-              >
-                back
-              </Text>
-            </>
-          )}
-
-          <OrbitControls
-            target={[centerX, 0, 0]}
-            enablePan
-            enableZoom
-            enableRotate
-          />
-        </Canvas>
+      <div className="w-2/3">
+        <QueueScene 
+          elements={elements}
+          backgroundColor={backgroundColor}
+          textColor={textColor}
+          nodeColor={nodeColor}
+          frontIndicatorColor={frontIndicatorColor}
+          backIndicatorColor={backIndicatorColor}
+          width={width}
+          height={height}
+        />
       </div>
     </div>
   );
-}
+};
+
+export default QueueDemo;

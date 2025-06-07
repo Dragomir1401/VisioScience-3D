@@ -11,8 +11,27 @@ import {
 } from "@heroicons/react/solid";
 import ForestBackground4 from "../ForestBackground4";
 
-export default function DequeDemo() {
-  const [elements, setElements] = useState([]);
+export default function DequeDemo({ 
+  elements: externalElements = [],
+  onElementsChange,
+  backgroundColor = "#2D2D2D",
+  textColor = "#ffffff",
+  nodeColor = "#4f46e5",
+  frontIndicatorColor = "#10b981",
+  backIndicatorColor = "#ef4444",
+  width = "100%",
+  height = "650px"
+}) {
+  const [internalElements, setInternalElements] = useState([]);
+  const elements = externalElements.length > 0 ? externalElements : internalElements;
+  const setElements = (newElements) => {
+    if (onElementsChange) {
+      onElementsChange(newElements);
+    } else {
+      setInternalElements(newElements);
+    }
+  };
+
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
 
@@ -127,8 +146,9 @@ export default function DequeDemo() {
         </p>
       </div>
 
-      <div className="w-2/3 h-[650px] rounded-xl overflow-hidden border-2 border-mulberry relative">
+      <div className="w-2/3 h-[650px] rounded-xl overflow-hidden border-2 border-mulberry relative" style={{ width, height }}>
         <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }}>
+          <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 5, 5]} intensity={1} />
           <ForestBackground4 />
@@ -138,12 +158,12 @@ export default function DequeDemo() {
               <group key={i} position={[x, 0, 0]}>
                 <mesh>
                   <boxGeometry args={[1.8, 1, 1.8]} />
-                  <meshStandardMaterial color="#4f46e5" />
+                  <meshStandardMaterial color={nodeColor} />
                 </mesh>
                 <Text
                   position={[0, 0, 1]}
                   fontSize={0.4}
-                  color="#fff"
+                  color={textColor}
                   anchorX="center"
                   anchorY="middle"
                 >
@@ -159,13 +179,13 @@ export default function DequeDemo() {
                   [0 * spacing, 1.5, 0],
                   [0 * spacing, 0.9, 0],
                 ]}
-                color="#10b981"
+                color={frontIndicatorColor}
                 lineWidth={2}
               />
               <Text
                 position={[0 * spacing, 1.8, 0]}
                 fontSize={0.3}
-                color="#10b981"
+                color={frontIndicatorColor}
                 anchorX="center"
                 anchorY="middle"
               >
@@ -176,13 +196,13 @@ export default function DequeDemo() {
                   [(count - 1) * spacing, 1.5, 0],
                   [(count - 1) * spacing, 0.9, 0],
                 ]}
-                color="#ef4444"
+                color={backIndicatorColor}
                 lineWidth={2}
               />
               <Text
                 position={[(count - 1) * spacing, 1.8, 0]}
                 fontSize={0.3}
-                color="#ef4444"
+                color={backIndicatorColor}
                 anchorX="center"
                 anchorY="middle"
               >

@@ -2,13 +2,26 @@ import React, { useState, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import {
   Button, Box, Typography, Paper, TextField,
-  Alert, CircularProgress
+  Alert, CircularProgress, Grid
 } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { styled } from '@mui/material/styles';
 
+// Import data structure components
+import ArrayDemo from '../../models/computer_science/Array';
+import DequeDemo from '../../models/computer_science/Deque';
+import ListDemo from '../../models/computer_science/List';
+import DoublyLinkedListDemo from '../../models/computer_science/DoublyLinkedList';
+import { MapScene } from '../../models/computer_science/UnorderedMap';
+import AVLTreeDemo from '../../models/computer_science/Map';
+import { UnorderedSetScene } from '../../models/computer_science/UnorderedSet';
+import AVLSetDemo from '../../models/computer_science/Set';
+import AVLMultiSetDemo from '../../models/computer_science/Multiset';
+import PriorityQueueDemo from '../../models/computer_science/PriorityQueue';
+import QueueDemo from '../../models/computer_science/Queue';
+import StackDemo from '../../models/computer_science/Stack';
 
 // Styled components
 const EditorContainer = styled(Paper)(({ theme }) => ({
@@ -50,6 +63,15 @@ const IOSection = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
+const VisualizationSection = styled(Box)(({ theme }) => ({
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  padding: theme.spacing(2),
+  backgroundColor: theme.palette.background.paper,
+  borderLeft: `1px solid ${theme.palette.divider}`,
+}));
+
 const defaultCode = `#include <iostream>
 using namespace std;
 
@@ -66,6 +88,12 @@ const CppEditor = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const editorRef = useRef(null);
+
+  // State for data structures
+  const [elements, setElements] = useState([1, 2, 3, 4, 5]);
+  const [buckets, setBuckets] = useState(Array(8).fill([]).map(() => []));
+  const [root, setRoot] = useState(null);
+  const [type, setType] = useState("max");
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
@@ -215,6 +243,163 @@ const CppEditor = () => {
             {output}
           </Paper>
         </IOSection>
+
+        <VisualizationSection>
+          <Typography variant="subtitle1" gutterBottom>
+            Data Structure Visualization
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <ArrayDemo 
+                elements={elements}
+                onElementsChange={setElements}
+                backgroundColor="#2D2D2D"
+                textColor="#D4D4D4"
+                nodeColor="#9B6B9E"
+                highlightGetColor="#D4A5A5"
+                highlightSetColor="#9B6B9E"
+                width="100%"
+                height="300px"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <DequeDemo 
+                elements={elements}
+                onElementsChange={setElements}
+                backgroundColor="#2D2D2D"
+                textColor="#D4D4D4"
+                nodeColor="#9B6B9E"
+                frontIndicatorColor="#D4A5A5"
+                backIndicatorColor="#9B6B9E"
+                width="100%"
+                height="300px"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <ListDemo 
+                elements={elements}
+                onElementsChange={setElements}
+                backgroundColor="#2D2D2D"
+                textColor="#D4D4D4"
+                nodeColor="#9B6B9E"
+                arrowColor="#D4A5A5"
+                nullColor="#9B6B9E"
+                width="100%"
+                height="300px"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <DoublyLinkedListDemo 
+                elements={elements}
+                onElementsChange={setElements}
+                backgroundColor="#2D2D2D"
+                textColor="#D4D4D4"
+                nodeColor="#9B6B9E"
+                arrowColor="#D4A5A5"
+                nullColor="#9B6B9E"
+                width="100%"
+                height="300px"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <MapScene 
+                buckets={buckets}
+                backgroundColor="#2D2D2D"
+                textColor="#D4D4D4"
+                nodeColor="#9B6B9E"
+                edgeColor="#D4A5A5"
+                width="100%"
+                height="300px"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <AVLTreeDemo 
+                root={root}
+                onRootChange={setRoot}
+                backgroundColor="#2D2D2D"
+                textColor="#D4D4D4"
+                nodeColor="#9B6B9E"
+                edgeColor="#D4A5A5"
+                width="100%"
+                height="300px"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <UnorderedSetScene 
+                buckets={buckets}
+                backgroundColor="#2D2D2D"
+                textColor="#D4D4D4"
+                nodeColor="#9B6B9E"
+                edgeColor="#D4A5A5"
+                width="100%"
+                height="300px"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <AVLSetDemo 
+                root={root}
+                onRootChange={setRoot}
+                backgroundColor="#2D2D2D"
+                textColor="#D4D4D4"
+                nodeColor="#9B6B9E"
+                edgeColor="#D4A5A5"
+                width="100%"
+                height="300px"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <AVLMultiSetDemo 
+                root={root}
+                onRootChange={setRoot}
+                backgroundColor="#2D2D2D"
+                textColor="#D4D4D4"
+                nodeColor="#9B6B9E"
+                edgeColor="#D4A5A5"
+                width="100%"
+                height="300px"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <PriorityQueueDemo 
+                elements={elements}
+                onElementsChange={setElements}
+                type={type}
+                onTypeChange={setType}
+                backgroundColor="#2D2D2D"
+                textColor="#D4D4D4"
+                nodeColor="#9B6B9E"
+                edgeColor="#D4A5A5"
+                width="100%"
+                height="300px"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <QueueDemo 
+                elements={elements}
+                onElementsChange={setElements}
+                backgroundColor="#2D2D2D"
+                textColor="#D4D4D4"
+                nodeColor="#9B6B9E"
+                frontIndicatorColor="#D4A5A5"
+                backIndicatorColor="#9B6B9E"
+                width="100%"
+                height="300px"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <StackDemo 
+                elements={elements}
+                onElementsChange={setElements}
+                backgroundColor="#2D2D2D"
+                textColor="#D4D4D4"
+                nodeColor="#9B6B9E"
+                topIndicatorColor="#D4A5A5"
+                width="100%"
+                height="300px"
+              />
+            </Grid>
+          </Grid>
+        </VisualizationSection>
       </EditorContent>
     </EditorContainer>
   );

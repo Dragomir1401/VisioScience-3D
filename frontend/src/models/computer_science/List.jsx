@@ -11,8 +11,27 @@ import {
   RefreshIcon,
 } from "@heroicons/react/solid";
 
-export default function ListDemo() {
-  const [elements, setElements] = useState([]);
+export default function ListDemo({ 
+  elements: externalElements = [],
+  onElementsChange,
+  backgroundColor = "#2D2D2D",
+  textColor = "#ffffff",
+  nodeColor = "#4f46e5",
+  arrowColor = "#888888",
+  nullColor = "#888888",
+  width = "100%",
+  height = "650px"
+}) {
+  const [internalElements, setInternalElements] = useState([]);
+  const elements = externalElements.length > 0 ? externalElements : internalElements;
+  const setElements = (newElements) => {
+    if (onElementsChange) {
+      onElementsChange(newElements);
+    } else {
+      setInternalElements(newElements);
+    }
+  };
+
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
   const [isRotating, setIsRotating] = useState(false);
@@ -64,17 +83,17 @@ export default function ListDemo() {
       const to = positions[i + 1];
       const dir = new THREE.Vector3().subVectors(to, from).normalize();
       const len = from.distanceTo(to) * 0.9;
-      arr.push(new THREE.ArrowHelper(dir, from, len, 0x888888, 0.4, 0.2));
+      arr.push(new THREE.ArrowHelper(dir, from, len, arrowColor, 0.4, 0.2));
     }
     if (positions.length) {
       const last = positions[positions.length - 1];
       const dir = new THREE.Vector3(1, 0, 0);
       arr.push(
-        new THREE.ArrowHelper(dir, last, spacing * 1.2, 0x888888, 0.4, 0.2)
+        new THREE.ArrowHelper(dir, last, spacing * 1.2, arrowColor, 0.4, 0.2)
       );
     }
     return arr;
-  }, [positions, spacing]);
+  }, [positions, spacing, arrowColor]);
 
   return (
     <div className="flex gap-6">
@@ -134,8 +153,9 @@ export default function ListDemo() {
         </div>
       </div>
 
-      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry">
+      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry" style={{ width, height }}>
         <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }}>
+          <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 5, 5]} intensity={1} />
           <ForestBackground4
@@ -149,12 +169,12 @@ export default function ListDemo() {
               <group key={i} position={pos.toArray()}>
                 <mesh>
                   <boxGeometry args={[2, 1, 1]} />
-                  <meshStandardMaterial color="#4f46e5" />
+                  <meshStandardMaterial color={nodeColor} />
                 </mesh>
                 <Text
                   position={[0, 0, 0.75]}
                   fontSize={0.3}
-                  color="#ffffff"
+                  color={textColor}
                   anchorX="center"
                   anchorY="middle"
                 >
@@ -176,7 +196,7 @@ export default function ListDemo() {
                 0,
               ]}
               fontSize={0.3}
-              color="#888888"
+              color={nullColor}
               anchorX="left"
               anchorY="middle"
             >

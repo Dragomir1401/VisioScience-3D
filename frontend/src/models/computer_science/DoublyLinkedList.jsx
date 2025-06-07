@@ -11,8 +11,27 @@ import {
   RefreshIcon,
 } from "@heroicons/react/solid";
 
-export default function DoublyLinkedListDemo() {
-  const [elements, setElements] = useState([]);
+export default function DoublyLinkedListDemo({ 
+  elements: externalElements = [],
+  onElementsChange,
+  backgroundColor = "#2D2D2D",
+  textColor = "#ffffff",
+  nodeColor = "#4f46e5",
+  arrowColor = "#888888",
+  nullColor = "#555555",
+  width = "100%",
+  height = "650px"
+}) {
+  const [internalElements, setInternalElements] = useState([]);
+  const elements = externalElements.length > 0 ? externalElements : internalElements;
+  const setElements = (newElements) => {
+    if (onElementsChange) {
+      onElementsChange(newElements);
+    } else {
+      setInternalElements(newElements);
+    }
+  };
+
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
   const [isRotating, setIsRotating] = useState(false);
@@ -75,7 +94,7 @@ export default function DoublyLinkedListDemo() {
           dirF,
           fromF,
           fromF.distanceTo(toF),
-          0x888888,
+          arrowColor,
           0.4,
           0.2
         )
@@ -91,7 +110,7 @@ export default function DoublyLinkedListDemo() {
           dirB,
           fromB,
           fromB.distanceTo(toB),
-          0x888888,
+          arrowColor,
           0.4,
           0.2
         )
@@ -104,7 +123,7 @@ export default function DoublyLinkedListDemo() {
           .clone()
           .add(new THREE.Vector3(-boxHalf, 0, 0));
         const dir = new THREE.Vector3(-1, 0, 0);
-        const arrow = new THREE.ArrowHelper(dir, from, len, 0x555555, 0.4, 0.2);
+        const arrow = new THREE.ArrowHelper(dir, from, len, nullColor, 0.4, 0.2);
         na.push({
           arrow,
           tip: from.clone().add(dir.clone().multiplyScalar(len)),
@@ -115,7 +134,7 @@ export default function DoublyLinkedListDemo() {
           .clone()
           .add(new THREE.Vector3(boxHalf, 0, 0));
         const dir = new THREE.Vector3(1, 0, 0);
-        const arrow = new THREE.ArrowHelper(dir, from, len, 0x555555, 0.4, 0.2);
+        const arrow = new THREE.ArrowHelper(dir, from, len, nullColor, 0.4, 0.2);
         na.push({
           arrow,
           tip: from.clone().add(dir.clone().multiplyScalar(len)),
@@ -123,7 +142,7 @@ export default function DoublyLinkedListDemo() {
       }
     }
     return { forwardArrows: fa, backwardArrows: ba, nullArrows: na };
-  }, [positions, spacing]);
+  }, [positions, spacing, arrowColor, nullColor]);
 
   return (
     <div className="flex gap-6">
@@ -183,8 +202,9 @@ export default function DoublyLinkedListDemo() {
         </div>
       </div>
 
-      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry">
+      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry" style={{ width, height }}>
         <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }}>
+          <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 5, 5]} intensity={1} />
           <ForestBackground4
@@ -196,12 +216,12 @@ export default function DoublyLinkedListDemo() {
             <group key={i} position={positions[i].toArray()}>
               <mesh>
                 <boxGeometry args={[2, 1, 1]} />
-                <meshStandardMaterial color="#4f46e5" />
+                <meshStandardMaterial color={nodeColor} />
               </mesh>
               <Text
                 position={[0, 0, 0.75]}
                 fontSize={0.3}
-                color="#ffffff"
+                color={textColor}
                 anchorX="center"
                 anchorY="middle"
               >
@@ -223,7 +243,7 @@ export default function DoublyLinkedListDemo() {
               <Text
                 position={tip.toArray()}
                 fontSize={0.65}
-                color="#555555"
+                color={nullColor}
                 anchorX="center"
                 anchorY="middle"
               >

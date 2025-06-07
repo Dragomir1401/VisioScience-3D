@@ -9,9 +9,28 @@ import {
   RefreshIcon,
 } from "@heroicons/react/solid";
 
-export default function ArrayDemo() {
+export default function ArrayDemo({ 
+  elements: externalElements = [],
+  onElementsChange,
+  backgroundColor = "#2D2D2D",
+  textColor = "#ffffff",
+  nodeColor = "#4f46e5",
+  highlightGetColor = "#10b981",
+  highlightSetColor = "#f472b6",
+  width = "100%",
+  height = "650px"
+}) {
+  const [internalElements, setInternalElements] = useState([]);
+  const elements = externalElements.length > 0 ? externalElements : internalElements;
+  const setElements = (newElements) => {
+    if (onElementsChange) {
+      onElementsChange(newElements);
+    } else {
+      setInternalElements(newElements);
+    }
+  };
+
   const [sizeInput, setSizeInput] = useState("");
-  const [elements, setElements] = useState([]);
   const [idxInput, setIdxInput] = useState("");
   const [valInput, setValInput] = useState("");
   const [message, setMessage] = useState("");
@@ -134,8 +153,9 @@ export default function ArrayDemo() {
         <div className="text-sm text-gray-700">Length: {elements.length}</div>
       </div>
 
-      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry">
+      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry" style={{ width, height }}>
         <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }}>
+          <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 5, 5]} intensity={1} />
           <ForestBackground4
@@ -144,9 +164,9 @@ export default function ArrayDemo() {
           />
 
           {elements.map((val, i) => {
-            let color = "#4f46e5";
+            let color = nodeColor;
             if (highlight.index === i) {
-              color = highlight.type === "get" ? "#10b981" : "#f472b6";
+              color = highlight.type === "get" ? highlightGetColor : highlightSetColor;
             }
             const x = i * spacing;
             return (
@@ -158,7 +178,7 @@ export default function ArrayDemo() {
                 <Text
                   position={[0, 0, 1]}
                   fontSize={0.35}
-                  color="#ffffff"
+                  color={textColor}
                   anchorX="center"
                   anchorY="middle"
                 >
@@ -167,7 +187,7 @@ export default function ArrayDemo() {
                 <Text
                   position={[0, -1.2, 0]}
                   fontSize={0.25}
-                  color="#333333"
+                  color={textColor}
                   anchorX="center"
                   anchorY="middle"
                 >

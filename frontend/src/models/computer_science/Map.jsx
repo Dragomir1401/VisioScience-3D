@@ -105,12 +105,31 @@ function computePositions(node, x0, x1, y, gapY, list) {
   computePositions(node.right, x, x1, y - gapY, gapY, list);
 }
 
-export default function AVLTreeDemo() {
-  const [root, setRoot] = useState(null);
+export default function AVLTreeDemo({ 
+  root: externalRoot = null,
+  onRootChange,
+  backgroundColor = "#2D2D2D",
+  textColor = "#ffffff",
+  nodeColor = "#4f46e5",
+  edgeColor = "#10b981",
+  width = "100%",
+  height = "650px"
+}) {
+  const [internalRoot, setInternalRoot] = useState(null);
+  const root = externalRoot !== null ? externalRoot : internalRoot;
+  const setRoot = (newRoot) => {
+    if (onRootChange) {
+      onRootChange(newRoot);
+    } else {
+      setInternalRoot(newRoot);
+    }
+  };
+
   const [keyInput, setKeyInput] = useState("");
   const [valueInput, setValueInput] = useState("");
   const [message, setMessage] = useState("");
   const [inorderList, setInorderList] = useState([]);
+  const [isRotating, setIsRotating] = useState(false);
 
   const handleInsert = () => {
     if (!keyInput) return;
@@ -155,8 +174,6 @@ export default function AVLTreeDemo() {
     if (node.right)
       edges.push({ from: [x, y, 0], to: [...posMap.get(node.right), 0] });
   });
-
-  const [isRotating, setIsRotating] = useState(false);
 
   return (
     <div className="flex gap-6">
@@ -209,8 +226,9 @@ export default function AVLTreeDemo() {
         </div>
       </div>
 
-      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry">
+      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry" style={{ width, height }}>
         <Canvas camera={{ position: [0, 4, 12], fov: 60 }}>
+          <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 10, 5]} intensity={1} />
           <ForestBackground4
@@ -222,7 +240,7 @@ export default function AVLTreeDemo() {
             <Line
               key={i}
               points={[e.from, e.to]}
-              color="#888888"
+              color={edgeColor}
               lineWidth={1}
             />
           ))}
@@ -231,12 +249,12 @@ export default function AVLTreeDemo() {
             <group key={node.key} position={[x, y, 0]}>
               <mesh>
                 <sphereGeometry args={[0.5, 16, 16]} />
-                <meshStandardMaterial color="#4f46e5" />
+                <meshStandardMaterial color={nodeColor} />
               </mesh>
               <Text
                 position={[0, 0, 0.75]}
                 fontSize={0.3}
-                color="#ffffff"
+                color={textColor}
                 anchorX="center"
                 anchorY="middle"
               >

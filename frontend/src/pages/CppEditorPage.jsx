@@ -21,12 +21,13 @@ import Vector from '../models/computer_science/Vector';
 // import CppList from '../models/computer_science/List';
 // import Map from '../models/computer_science/Map';
 import Set from '../models/computer_science/Set';
-// import Queue from '../models/computer_science/Queue';
+import Queue from '../models/computer_science/Queue';
 import Stack from '../models/computer_science/Stack';
 // import Deque from '../models/computer_science/Deque';
-// import PriorityQueue from '../models/computer_science/PriorityQueue';
+import PriorityQueue from '../models/computer_science/PriorityQueue';
 import UnorderedMap from '../models/computer_science/UnorderedMap';
 import UnorderedSet from '../models/computer_science/UnorderedSet';
+import Multiset from '../models/computer_science/Multiset';
 // import Multiset from '../models/computer_science/Multiset';
 
 const PageContainer = styled('div')(({ theme }) => ({
@@ -253,13 +254,13 @@ const CppEditorPage = () => {
     // 'list': CppList,
     // 'map': Map,
     'set': Set,
-    // 'queue': Queue,
+    'queue': Queue,
     'stack': Stack,
     // 'deque': Deque,
-    // 'priority_queue': PriorityQueue,
+    'priority_queue': PriorityQueue,
     'unordered_map': UnorderedMap,
     'unordered_set': UnorderedSet,
-    // 'multiset': Multiset,
+    'multiset': Multiset,
   };
 
   useEffect(() => {

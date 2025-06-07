@@ -80,6 +80,7 @@ const ComputerScience = () => {
   const [root, setRoot] = useState(null);
   const [visibleCount, setVisibleCount] = useState(0);
   const [viewMode, setViewMode] = useState("landing");
+  const [type, setType] = useState("max");
 
   React.useEffect(() => {
     setBuckets(Array(8).fill([]).map(() => []));
@@ -159,7 +160,16 @@ const ComputerScience = () => {
 
         {selected?.id === "map" && viewMode === "landing" && (
           <div className="space-y-6">
-            <AVLTreeDemo />
+            <AVLTreeDemo 
+              root={root}
+              onRootChange={setRoot}
+              backgroundColor="#2D2D2D"
+              textColor="#D4D4D4"
+              nodeColor="#9B6B9E"
+              edgeColor="#D4A5A5"
+              width="100%"
+              height="600px"
+            />
             <MapFormulas />
           </div>
         )}
@@ -198,7 +208,18 @@ const ComputerScience = () => {
 
         {selected?.id === "priority_queue" && viewMode === "landing" && (
           <div className="space-y-6">
-            <PriorityQueueDemo root={root} setRoot={setRoot} />
+            <PriorityQueueDemo 
+              elements={elements}
+              onElementsChange={setElements}
+              type={type}
+              onTypeChange={setType}
+              backgroundColor="#2D2D2D"
+              textColor="#D4D4D4"
+              nodeColor="#9B6B9E"
+              edgeColor="#D4A5A5"
+              width="100%"
+              height="600px"
+            />
             <PriorityQueueFormulas />
           </div>
         )}
@@ -207,9 +228,13 @@ const ComputerScience = () => {
           <div className="space-y-6">
             <AVLMultiSetDemo
               root={root}
-              setRoot={setRoot}
-              visibleCount={visibleCount}
-              setVisibleCount={setVisibleCount}
+              onRootChange={setRoot}
+              backgroundColor="#2D2D2D"
+              textColor="#D4D4D4"
+              nodeColor="#9B6B9E"
+              edgeColor="#D4A5A5"
+              width="100%"
+              height="600px"
             />
             <MultisetFormulas />
           </div>
@@ -217,7 +242,17 @@ const ComputerScience = () => {
 
         {selected?.id === "queue" && viewMode === "landing" && (
           <div className="space-y-6">
-            <QueueDemo root={root} setRoot={setRoot} />
+            <QueueDemo 
+              elements={elements}
+              onElementsChange={setElements}
+              backgroundColor="#2D2D2D"
+              textColor="#D4D4D4"
+              nodeColor="#9B6B9E"
+              frontIndicatorColor="#D4A5A5"
+              backIndicatorColor="#9B6B9E"
+              width="100%"
+              height="600px"
+            />
             <QueueFormulas />
           </div>
         )}
@@ -240,28 +275,68 @@ const ComputerScience = () => {
 
         {selected?.id === "deque" && viewMode === "landing" && (
           <div className="space-y-6">
-            <DequeDemo root={root} setRoot={setRoot} />
+            <DequeDemo 
+              elements={elements}
+              onElementsChange={setElements}
+              backgroundColor="#2D2D2D"
+              textColor="#D4D4D4"
+              nodeColor="#9B6B9E"
+              frontIndicatorColor="#D4A5A5"
+              backIndicatorColor="#9B6B9E"
+              width="100%"
+              height="600px"
+            />
             <DequeFormulas />
           </div>
         )}
 
         {selected?.id === "list" && viewMode === "landing" && (
           <div className="space-y-6">
-            <ListDemo root={root} setRoot={setRoot} />
+            <ListDemo 
+              elements={elements}
+              onElementsChange={setElements}
+              backgroundColor="#2D2D2D"
+              textColor="#D4D4D4"
+              nodeColor="#9B6B9E"
+              arrowColor="#D4A5A5"
+              nullColor="#9B6B9E"
+              width="100%"
+              height="600px"
+            />
             <ListFormulas />
           </div>
         )}
 
         {selected?.id === "doubly_linked_list" && viewMode === "landing" && (
           <div className="space-y-6">
-            <DoublyLinkedListDemo root={root} setRoot={setRoot} />
+            <DoublyLinkedListDemo 
+              elements={elements}
+              onElementsChange={setElements}
+              backgroundColor="#2D2D2D"
+              textColor="#D4D4D4"
+              nodeColor="#9B6B9E"
+              arrowColor="#D4A5A5"
+              nullColor="#9B6B9E"
+              width="100%"
+              height="600px"
+            />
             <DoublyLinkedListFormulas />
           </div>
         )}
 
         {selected?.id === "array" && viewMode === "landing" && (
           <div className="space-y-6">
-            <ArrayDemo root={root} setRoot={setRoot} />
+            <ArrayDemo 
+              elements={elements}
+              onElementsChange={setElements}
+              backgroundColor="#2D2D2D"
+              textColor="#D4D4D4"
+              nodeColor="#9B6B9E"
+              highlightGetColor="#D4A5A5"
+              highlightSetColor="#9B6B9E"
+              width="100%"
+              height="600px"
+            />
             <ArrayFormulas />
           </div>
         )}
