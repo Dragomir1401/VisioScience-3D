@@ -173,16 +173,23 @@ const SceneDialog = styled(Dialog)(({ theme }) => ({
     backgroundColor: '#f8edf7',
     borderRadius: theme.spacing(2),
     padding: theme.spacing(2),
-    maxWidth: '98vw',
-    maxHeight: '99vh',
-    height: '99vh',
+    maxWidth: '100%',
+    maxHeight: '450px',
+    height: '450px',
     width: '100%',
+    position: 'relative',
+    margin: 0,
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+  },
+  '& .MuiBackdrop-root': {
+    display: 'none',
   },
 }));
 
 const SceneContainer = styled(Box)(({ theme }) => ({
-  // Remove fixed positioning and dimensions from SceneContainer as it's no longer used for the main dialog
-  // It's defined but not used for the dialog anymore, so it won't impact the visualization.
+  position: 'relative',
+  height: '100%',
+  width: '100%',
 }));
 
 const SceneHeader = styled(Box)(({ theme }) => ({
@@ -717,36 +724,42 @@ const CppEditorPage = () => {
                 )}
               </StyledPaper>
             </AnalysisSection>
+
+            {selectedStructure && (
+              <SceneDialog
+                open={showScene}
+                onClose={handleCloseScene}
+                hideBackdrop
+                disablePortal
+                sx={{
+                  position: 'relative',
+                  marginTop: 2,
+                }}
+              >
+                <SceneHeader>
+                  <Typography variant="h6">{selectedStructure.name} Visualization</Typography>
+                  <IconButton onClick={handleCloseScene}>
+                    <ArrowBackIcon />
+                  </IconButton>
+                </SceneHeader>
+                <DialogContent sx={{ p: 0, flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  {selectedStructure.name === 'vector' && <Box height="350px" width="100%"><Vector elements={[]} height="100%" width="100%" canvasHeight="350px" /></Box>}
+                  {selectedStructure.name === 'unordered_map' && <Box height="350px" width="100%"><UnorderedMap buckets={[]} height="100%" width="100%" canvasHeight="350px" /></Box>}
+                  {selectedStructure.name === 'map' && <Box height="350px" width="100%"><Set root={null} onRootChange={() => {}} height="100%" width="100%" canvasHeight="350px" /></Box>}
+                  {selectedStructure.name === 'set' && <Box height="350px" width="100%"><Multiset root={null} onRootChange={() => {}} height="100%" width="100%" canvasHeight="350px" /></Box>}
+                  {selectedStructure.name === 'multiset' && <Box height="350px" width="100%"><Multiset root={null} onRootChange={() => {}} height="100%" width="100%" canvasHeight="350px" /></Box>}
+                  {selectedStructure.name === 'priority_queue' && <Box height="350px" width="100%"><PriorityQueue elements={[]} onElementsChange={() => {}} type="min" onTypeChange={() => {}} height="100%" width="100%" canvasHeight="350px" /></Box>}
+                  {selectedStructure.name === 'queue' && <Box height="350px" width="100%"><Queue elements={[]} onElementsChange={() => {}} height="100%" width="100%" canvasHeight="350px" /></Box>}
+                  {selectedStructure.name === 'stack' && <Box height="350px" width="100%"><Stack elements={[]} onElementsChange={() => {}} height="100%" width="100%" canvasHeight="350px" /></Box>}
+                  {selectedStructure.name === 'deque' && <Box height="350px" width="100%"><Queue elements={[]} onElementsChange={() => {}} height="100%" width="100%" canvasHeight="350px" /></Box>}
+                  {selectedStructure.name === 'list' && <Box height="350px" width="100%"><List elements={[]} onElementsChange={() => {}} height="100%" width="100%" canvasHeight="350px" /></Box>}
+                  {selectedStructure.name === 'doubly_linked_list' && <Box height="350px" width="100%"><DoublyLinkedList elements={[]} onElementsChange={() => {}} height="100%" width="100%" canvasHeight="350px" /></Box>}
+                  {selectedStructure.name === 'array' && <Box height="350px" width="100%"><Array elements={[]} onElementsChange={() => {}} height="100%" width="100%" canvasHeight="350px" /></Box>}
+                </DialogContent>
+              </SceneDialog>
+            )}
           </IOSection>
         </EditorContent>
-
-        {selectedStructure && (
-          <SceneDialog
-            open={showScene}
-            onClose={handleCloseScene}
-          >
-            <SceneHeader>
-              <Typography variant="h6">{selectedStructure.name} Visualization</Typography>
-              <IconButton onClick={handleCloseScene}>
-                <ArrowBackIcon />
-              </IconButton>
-            </SceneHeader>
-            <DialogContent sx={{ p: 0, flex: 1, display: 'flex', flexDirection: 'column' }}>
-              {selectedStructure.name === 'vector' && <Box height="550px" width="100%"><Vector elements={[]} height="100%" width="100%" canvasHeight="550px" /></Box>}
-              {selectedStructure.name === 'unordered_map' && <Box height="550px" width="100%"><UnorderedMap buckets={[]} height="100%" width="100%" canvasHeight="550px" /></Box>}
-              {selectedStructure.name === 'map' && <Box height="550px" width="100%"><Set root={null} onRootChange={() => {}} height="100%" width="100%" canvasHeight="550px" /></Box>}
-              {selectedStructure.name === 'set' && <Box height="550px" width="100%"><Multiset root={null} onRootChange={() => {}} height="100%" width="100%" canvasHeight="550px" /></Box>}
-              {selectedStructure.name === 'multiset' && <Box height="550px" width="100%"><Multiset root={null} onRootChange={() => {}} height="100%" width="100%" canvasHeight="550px" /></Box>}
-              {selectedStructure.name === 'priority_queue' && <Box height="550px" width="100%"><PriorityQueue elements={[]} onElementsChange={() => {}} type="min" onTypeChange={() => {}} height="100%" width="100%" canvasHeight="550px" /></Box>}
-              {selectedStructure.name === 'queue' && <Box height="550px" width="100%"><Queue elements={[]} onElementsChange={() => {}} height="100%" width="100%" canvasHeight="550px" /></Box>}
-              {selectedStructure.name === 'stack' && <Box height="550px" width="100%"><Stack elements={[]} onElementsChange={() => {}} height="100%" width="100%" canvasHeight="550px" /></Box>}
-              {selectedStructure.name === 'deque' && <Box height="550px" width="100%"><Queue elements={[]} onElementsChange={() => {}} height="100%" width="100%" canvasHeight="550px" /></Box>}
-              {selectedStructure.name === 'list' && <Box height="550px" width="100%"><List elements={[]} onElementsChange={() => {}} height="100%" width="100%" canvasHeight="550px" /></Box>}
-              {selectedStructure.name === 'doubly_linked_list' && <Box height="550px" width="100%"><DoublyLinkedList elements={[]} onElementsChange={() => {}} height="100%" width="100%" canvasHeight="550px" /></Box>}
-              {selectedStructure.name === 'array' && <Box height="550px" width="100%"><Array elements={[]} onElementsChange={() => {}} height="100%" width="100%" canvasHeight="550px" /></Box>}
-            </DialogContent>
-          </SceneDialog>
-        )}
       </EditorContainer>
     </PageContainer>
   );
