@@ -3,7 +3,19 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text } from "@react-three/drei";
 import ForestBackground4 from "../ForestBackground4";
 
-export const MapScene = ({ buckets }) => {
+export const MapScene = ({ 
+  buckets = [
+    [{ key: 1, value: "A" }, { key: 2, value: "B" }],
+    [{ key: 3, value: "C" }],
+    [{ key: 4, value: "D" }, { key: 5, value: "E" }],
+  ],
+  backgroundColor = "#2D2D2D",
+  textColor = "#D4D4D4",
+  nodeColor = "#9B6B9E",
+  edgeColor = "#D4A5A5",
+  width = "100%",
+  height = "100%"
+}) => {
   const [isRotating, setIsRotating] = useState(false);
   const spacing = 2;
   const count = buckets.length;
@@ -12,8 +24,9 @@ export const MapScene = ({ buckets }) => {
   const camDist = count * spacing - 3;
 
   return (
-    <div className="w-full h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry">
+    <div style={{ width, height, position: 'relative', borderRadius: '8px', overflow: 'hidden' }}>
       <Canvas camera={{ position: [centerX, camHeight, camDist], fov: 60 }}>
+        <color attach="background" args={[backgroundColor]} />
         <ambientLight intensity={0.4} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
         <ForestBackground4
@@ -27,12 +40,12 @@ export const MapScene = ({ buckets }) => {
             <group key={i} position={[x, 0, 0]}>
               <mesh>
                 <boxGeometry args={[1.8, 0.4, 1.8]} />
-                <meshStandardMaterial color="#7b3fe4" />
+                <meshStandardMaterial color={edgeColor} />
               </mesh>
               <Text
                 position={[0, 0.6, 0]}
                 fontSize={0.3}
-                color="#ffffff"
+                color={textColor}
                 anchorX="center"
                 anchorY="middle"
               >
@@ -42,11 +55,11 @@ export const MapScene = ({ buckets }) => {
               {bucket.map((entry, j) => (
                 <mesh key={j} position={[0, 1.2 + j * 1.2, 0]}>
                   <boxGeometry args={[1.4, 1, 1.4]} />
-                  <meshStandardMaterial color="#4f46e5" />
+                  <meshStandardMaterial color={nodeColor} />
                   <Text
                     position={[0, 0, 0.8]}
                     fontSize={0.2}
-                    color="#ffffff"
+                    color={textColor}
                     anchorX="center"
                     anchorY="middle"
                   >
@@ -68,3 +81,9 @@ export const MapScene = ({ buckets }) => {
     </div>
   );
 };
+
+const UnorderedMap = (props) => {
+  return <MapScene {...props} />;
+};
+
+export default UnorderedMap;

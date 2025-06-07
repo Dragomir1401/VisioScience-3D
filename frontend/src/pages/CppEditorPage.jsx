@@ -4,7 +4,7 @@ import {
   Button, Box, Typography, Paper, TextField,
   Alert, CircularProgress, IconButton, Tooltip,
   List, ListItem, ListItemIcon, ListItemText,
-  Chip
+  Chip, Dialog, DialogContent
 } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
@@ -15,6 +15,19 @@ import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+
+// Import 3D scenes
+// import Vector from '../models/computer_science/Vector';
+// import CppList from '../models/computer_science/List';
+// import Map from '../models/computer_science/Map';
+// import Set from '../models/computer_science/Set';
+// import Queue from '../models/computer_science/Queue';
+// import Stack from '../models/computer_science/Stack';
+// import Deque from '../models/computer_science/Deque';
+// import PriorityQueue from '../models/computer_science/PriorityQueue';
+import UnorderedMap from '../models/computer_science/UnorderedMap';
+// import UnorderedSet from '../models/computer_science/UnorderedSet';
+// import Multiset from '../models/computer_science/Multiset';
 
 const PageContainer = styled('div')(({ theme }) => ({
   minHeight: '100vh',
@@ -143,9 +156,51 @@ const DataStructureChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
   backgroundColor: '#9B6B9E',
   color: 'white',
+  cursor: 'pointer',
+  transition: 'all 0.2s ease-in-out',
   '&:hover': {
     backgroundColor: '#D4A5A5',
+    transform: 'scale(1.05)',
   },
+  '&:active': {
+    transform: 'scale(0.95)',
+  },
+}));
+
+const SceneDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialog-paper': {
+    backgroundColor: '#f8edf7',
+    borderRadius: theme.spacing(2),
+    padding: theme.spacing(2),
+    maxWidth: '90vw',
+    maxHeight: '90vh',
+  },
+}));
+
+const SceneContainer = styled(Box)(({ theme }) => ({
+  position: 'fixed',
+  bottom: theme.spacing(2),
+  right: theme.spacing(2),
+  width: '400px',
+  height: '300px',
+  backgroundColor: '#2D2D2D',
+  borderRadius: theme.spacing(1),
+  overflow: 'hidden',
+  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
+  zIndex: 1000,
+  transition: 'all 0.3s ease-in-out',
+  '&.hidden': {
+    transform: 'translateX(120%)',
+  },
+}));
+
+const SceneHeader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: theme.spacing(1, 2),
+  backgroundColor: '#9B6B9E',
+  color: 'white',
 }));
 
 const defaultCode = `#include <iostream>
@@ -189,6 +244,23 @@ const CppEditorPage = () => {
   const resizerRef = useRef(null);
   const horizontalResizerRef = useRef(null);
   const editorContainerRef = useRef(null);
+  const [selectedStructure, setSelectedStructure] = useState(null);
+  const [showScene, setShowScene] = useState(false);
+
+  // Map structure names to their components
+  const structureComponents = {
+    // 'vector': Vector,
+    // 'list': CppList,
+    // 'map': Map,
+    // 'set': Set,
+    // 'queue': Queue,
+    // 'stack': Stack,
+    // 'deque': Deque,
+    // 'priority_queue': PriorityQueue,
+    'unordered_map': UnorderedMap,
+    // 'unordered_set': UnorderedSet,
+    // 'multiset': Multiset,
+  };
 
   useEffect(() => {
     localStorage.setItem('cppEditorCode', code);
@@ -454,6 +526,20 @@ const CppEditorPage = () => {
     analyzeCode(code);
   }, [code]);
 
+  const handleStructureClick = (structure) => {
+    if (structureComponents[structure.name]) {
+      setSelectedStructure(structure);
+      setShowScene(true);
+    }
+  };
+
+  const handleCloseScene = () => {
+    setShowScene(false);
+    setTimeout(() => {
+      setSelectedStructure(null);
+    }, 300);
+  };
+
   return (
     <PageContainer>
       <EditorContainer elevation={3}>
@@ -613,16 +699,17 @@ const CppEditorPage = () => {
                             {typeStructures.map((structure) => (
                               <Tooltip 
                                 key={structure.name}
-                                title={structure.description}
+                                title={`Click to view ${structure.name} visualization`}
                                 placement="top"
                               >
                                 <DataStructureChip
                                   icon={<DataObjectIcon />}
                                   label={structure.name}
+                                  onClick={() => handleStructureClick(structure)}
                                   sx={{
                                     backgroundColor: type === 'ordered' ? '#9B6B9E' :
                                                    type === 'unordered' ? '#D4A5A5' :
-                                                   '#C49595'
+                                                   '#C49595',
                                   }}
                                 />
                               </Tooltip>
@@ -641,6 +728,36 @@ const CppEditorPage = () => {
             </AnalysisSection>
           </IOSection>
         </EditorContent>
+
+        <SceneContainer className={showScene ? '' : 'hidden'}>
+          <SceneHeader>
+            <Typography variant="subtitle1">
+              {selectedStructure?.name} Visualization
+            </Typography>
+            <IconButton 
+              onClick={handleCloseScene} 
+              size="small"
+              sx={{ 
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                },
+              }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          </SceneHeader>
+          {selectedStructure && structureComponents[selectedStructure.name] && 
+            React.createElement(structureComponents[selectedStructure.name], {
+              backgroundColor: '#2D2D2D',
+              textColor: '#D4D4D4',
+              nodeColor: '#9B6B9E',
+              edgeColor: '#D4A5A5',
+              width: '100%',
+              height: 'calc(100% - 48px)',
+            })
+          }
+        </SceneContainer>
       </EditorContainer>
     </PageContainer>
   );

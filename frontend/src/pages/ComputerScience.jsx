@@ -45,6 +45,8 @@ import {
   list,
   dll,
 } from "../assets/icons";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import HomeIcon from '@mui/icons-material/Home';
 
 const csObjects = [
   { id: "array", label: "Array", icon: array },
@@ -91,6 +93,11 @@ const ComputerScience = () => {
     navigate('/computer-science/editor');
   };
 
+  const handleBackToLanding = () => {
+    setSelected(null);
+    setViewMode("landing");
+  };
+
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-lavender via-[#f8edf7] to-[#fdf6f6] pt-[80px]">
       <SideMenu
@@ -101,6 +108,22 @@ const ComputerScience = () => {
       />
 
       <main className="flex-1 p-7 overflow-y-auto text-black-500">
+        {selected && (
+          <div className="mb-6 flex items-center gap-4">
+            <button
+              onClick={handleBackToLanding}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all 
+                       bg-[#4f46e5] hover:bg-[#3f36d5] text-white font-semibold
+                       shadow-lg hover:shadow-xl
+                       border-2 border-[#4138d0] hover:border-[#3128c0]
+                       transform hover:-translate-y-0.5"
+            >
+              <HomeIcon />
+              Înapoi la pagina principală
+            </button>
+          </div>
+        )}
+
         {viewMode === "landing" && !selected && <CSLanding onShowCppEditor={handleShowCppEditor} />}
 
         {selected?.id === "vector" && viewMode === "landing" && (
@@ -113,7 +136,15 @@ const ComputerScience = () => {
 
         {selected?.id === "unordered_map" && viewMode === "landing" && (
           <div className="space-y-6">
-            <MapScene buckets={buckets} />
+            <MapScene 
+              buckets={buckets}
+              backgroundColor="#2D2D2D"
+              textColor="#D4D4D4"
+              nodeColor="#9B6B9E"
+              edgeColor="#D4A5A5"
+              width="100%"
+              height="600px"
+            />
             <MapOperations buckets={buckets} onChange={setBuckets} />
             <UnorderedMapFormulas />
           </div>

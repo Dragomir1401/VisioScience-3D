@@ -25,13 +25,12 @@ const CSLanding = ({ onShowCppEditor }) => (
     </p>
     <button
       onClick={onShowCppEditor}
-      className="mt-4 px-6 py-3 rounded-lg transition-all 
-                 bg-[#4f46e5] hover:bg-[#3f36d5] text-white font-semibold
-                 shadow-lg hover:shadow-xl flex items-center gap-2
-                 border-2 border-[#4138d0] hover:border-[#3128c0]
-                 transform hover:-translate-y-0.5"
+      className="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-md
+                 bg-gradient-to-r from-blue-400 to-mulberry text-white
+                 hover:from-purple-700 hover:to-mulberry-600 transition
+                 shadow-lg"
     >
-      Editor C++ și Vizualizare 3D
+      🖥️ Editor C++ și Vizualizare 3D
     </button>
   </div>
 );
