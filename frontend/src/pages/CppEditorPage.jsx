@@ -17,16 +17,16 @@ import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
 // Import 3D scenes
-// import Vector from '../models/computer_science/Vector';
+import Vector from '../models/computer_science/Vector';
 // import CppList from '../models/computer_science/List';
 // import Map from '../models/computer_science/Map';
-// import Set from '../models/computer_science/Set';
+import Set from '../models/computer_science/Set';
 // import Queue from '../models/computer_science/Queue';
-// import Stack from '../models/computer_science/Stack';
+import Stack from '../models/computer_science/Stack';
 // import Deque from '../models/computer_science/Deque';
 // import PriorityQueue from '../models/computer_science/PriorityQueue';
 import UnorderedMap from '../models/computer_science/UnorderedMap';
-// import UnorderedSet from '../models/computer_science/UnorderedSet';
+import UnorderedSet from '../models/computer_science/UnorderedSet';
 // import Multiset from '../models/computer_science/Multiset';
 
 const PageContainer = styled('div')(({ theme }) => ({
@@ -249,16 +249,16 @@ const CppEditorPage = () => {
 
   // Map structure names to their components
   const structureComponents = {
-    // 'vector': Vector,
+    'vector': Vector,
     // 'list': CppList,
     // 'map': Map,
-    // 'set': Set,
+    'set': Set,
     // 'queue': Queue,
-    // 'stack': Stack,
+    'stack': Stack,
     // 'deque': Deque,
     // 'priority_queue': PriorityQueue,
     'unordered_map': UnorderedMap,
-    // 'unordered_set': UnorderedSet,
+    'unordered_set': UnorderedSet,
     // 'multiset': Multiset,
   };
 

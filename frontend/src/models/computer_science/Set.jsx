@@ -100,40 +100,15 @@ function computePositions(node, x0, x1, y, gapY, list) {
   computePositions(node.right, x, x1, y - gapY, gapY, list);
 }
 
-export default function AVLSetDemo() {
-  const [root, setRoot] = useState(null);
-  const [valueInput, setValueInput] = useState("");
-  const [message, setMessage] = useState("");
-  const [inorderList, setInorderList] = useState([]);
-  const [isRotating, setIsRotating] = useState(false);
-
-  const handleInsert = () => {
-    if (!valueInput) return;
-    const v = isNaN(valueInput) ? valueInput : Number(valueInput);
-    const newRoot = insertNode(root, v);
-    setRoot(newRoot);
-    setMessage(`Inserted ${v}`);
-    setValueInput("");
-  };
-
-  const handleDelete = () => {
-    if (!valueInput) return;
-    const v = isNaN(valueInput) ? valueInput : Number(valueInput);
-    const newRoot = deleteNode(root, v);
-    setRoot(newRoot);
-    setMessage(`Deleted ${v}`);
-    setValueInput("");
-  };
-
-  const handleClear = () => {
-    setRoot(null);
-    setMessage("Cleared all");
-  };
-
-  useEffect(() => {
-    setInorderList(inorder(root));
-  }, [root]);
-
+const AVLTreeScene = ({ 
+  root = null,
+  backgroundColor = "#2D2D2D",
+  textColor = "#ffffff",
+  nodeColor = "#4f46e5",
+  edgeColor = "#7b3fe4",
+  width = "100%",
+  height = "100%"
+}) => {
   const flat = [];
   const edges = [];
   const total = inorder(root).length;
@@ -151,6 +126,98 @@ export default function AVLSetDemo() {
       edges.push({ from: [x, y, 0], to: [rx, ry, 0] });
     }
   });
+
+  return (
+    <div style={{ 
+      width, 
+      height, 
+      position: 'relative', 
+      borderRadius: '8px', 
+      overflow: 'hidden',
+      border: '2px solid #9B6B9E'
+    }}>
+      <Canvas camera={{ position: [0, 4, 12], fov: 60 }}>
+        <color attach="background" args={[backgroundColor]} />
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[5, 5, 5]} intensity={1} />
+        <ForestBackground4
+          isRotatingForestBackground={false}
+          isRotatingForestBackgroundSetter={() => {}}
+        />
+
+        {edges.map((edge, i) => (
+          <Line
+            key={i}
+            points={[edge.from, edge.to]}
+            color={edgeColor}
+            lineWidth={2}
+          />
+        ))}
+
+        {flat.map(({ node, x, y }) => (
+          <group key={node.key} position={[x, y, 0]}>
+            <mesh>
+              <sphereGeometry args={[0.5, 32, 32]} />
+              <meshStandardMaterial color={nodeColor} />
+            </mesh>
+            <Text
+              position={[0, 0, 0.6]}
+              fontSize={0.4}
+              color={textColor}
+              anchorX="center"
+              anchorY="middle"
+            >
+              {node.key}
+            </Text>
+          </group>
+        ))}
+
+        <OrbitControls enablePan enableZoom enableRotate />
+      </Canvas>
+    </div>
+  );
+};
+
+const AVLSetDemo = ({ 
+  root = null,
+  onRootChange,
+  backgroundColor = "#2D2D2D",
+  textColor = "#ffffff",
+  nodeColor = "#4f46e5",
+  edgeColor = "#7b3fe4",
+  width = "100%",
+  height = "650px"
+}) => {
+  const [valueInput, setValueInput] = useState("");
+  const [message, setMessage] = useState("");
+  const [inorderList, setInorderList] = useState([]);
+
+  const handleInsert = () => {
+    if (!valueInput) return;
+    const v = isNaN(valueInput) ? valueInput : Number(valueInput);
+    const newRoot = insertNode(root, v);
+    onRootChange?.(newRoot);
+    setMessage(`Inserted ${v}`);
+    setValueInput("");
+  };
+
+  const handleDelete = () => {
+    if (!valueInput) return;
+    const v = isNaN(valueInput) ? valueInput : Number(valueInput);
+    const newRoot = deleteNode(root, v);
+    onRootChange?.(newRoot);
+    setMessage(`Deleted ${v}`);
+    setValueInput("");
+  };
+
+  const handleClear = () => {
+    onRootChange?.(null);
+    setMessage("Cleared all");
+  };
+
+  useEffect(() => {
+    setInorderList(inorder(root));
+  }, [root]);
 
   return (
     <div className="flex gap-6">
@@ -196,45 +263,19 @@ export default function AVLSetDemo() {
         </div>
       </div>
 
-      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry">
-        <Canvas camera={{ position: [0, 4, 12], fov: 60 }}>
-          <ambientLight intensity={0.4} />
-          <directionalLight position={[5, 10, 5]} intensity={1} />
-          <ForestBackground4
-            isRotatingForestBackground={isRotating}
-            isRotatingForestBackgroundSetter={setIsRotating}
-          />
-
-          {edges.map((e, i) => (
-            <Line
-              key={i}
-              points={[e.from, e.to]}
-              color="#888888"
-              lineWidth={1}
-            />
-          ))}
-
-          {flat.map(({ node, x, y }) => (
-            <group key={node.key} position={[x, y, 0]}>
-              <mesh>
-                <sphereGeometry args={[0.5, 16, 16]} />
-                <meshStandardMaterial color="#4f46e5" />
-              </mesh>
-              <Text
-                position={[0, 0, 0.75]}
-                fontSize={0.3}
-                color="#ffffff"
-                anchorX="center"
-                anchorY="middle"
-              >
-                {node.key}
-              </Text>
-            </group>
-          ))}
-
-          <OrbitControls />
-        </Canvas>
+      <div className="w-2/3">
+        <AVLTreeScene 
+          root={root}
+          backgroundColor={backgroundColor}
+          textColor={textColor}
+          nodeColor={nodeColor}
+          edgeColor={edgeColor}
+          width={width}
+          height={height}
+        />
       </div>
     </div>
   );
-}
+};
+
+export default AVLSetDemo;

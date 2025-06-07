@@ -9,15 +9,110 @@ import {
   ArrowCircleLeftIcon,
 } from "@heroicons/react/solid";
 
-export default function StackDemo() {
-  const [elements, setElements] = useState([]);
+const StackScene = ({ 
+  elements = [],
+  backgroundColor = "#2D2D2D",
+  textColor = "#ffffff",
+  nodeColor = "#4f46e5",
+  topIndicatorColor = "#10b981",
+  width = "100%",
+  height = "100%"
+}) => {
+  const spacing = 1.6;
+  const count = elements.length;
+  const centerY = count > 0 ? ((count - 1) * spacing) / 2 : 0;
+  const camHeight = centerY + 2;
+  const camDist = Math.max(count * spacing + 5, 10);
+
+  return (
+    <div style={{ 
+      width, 
+      height, 
+      position: 'relative', 
+      borderRadius: '8px', 
+      overflow: 'hidden',
+      border: '2px solid #9B6B9E'
+    }}>
+      <Canvas
+        camera={{
+          position: [0, camHeight, camDist],
+          fov: 50,
+        }}
+      >
+        <color attach="background" args={[backgroundColor]} />
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[5, 5, 5]} intensity={1} />
+        <ForestBackground4
+          isRotatingForestBackground={false}
+          isRotatingForestBackgroundSetter={() => {}}
+        />
+
+        {elements.map((val, i) => {
+          const y = i * spacing;
+          return (
+            <group key={i} position={[0, y, 0]}>
+              <mesh>
+                <boxGeometry args={[1.8, 1, 1.8]} />
+                <meshStandardMaterial color={nodeColor} />
+              </mesh>
+              <Text
+                position={[0, 0, 1]}
+                fontSize={0.4}
+                color={textColor}
+                anchorX="center"
+                anchorY="middle"
+              >
+                {val}
+              </Text>
+            </group>
+          );
+        })}
+
+        {count > 0 && (
+          <>
+            <Line
+              points={[
+                [0, (count - 1) * spacing + 1.2, 0],
+                [0, (count - 1) * spacing + 0.4, 0],
+              ]}
+              color={topIndicatorColor}
+              lineWidth={2}
+            />
+            <Text
+              position={[0, (count - 1) * spacing + 1.5, 0]}
+              fontSize={0.3}
+              color={topIndicatorColor}
+              anchorX="center"
+              anchorY="middle"
+            >
+              top
+            </Text>
+          </>
+        )}
+
+        <OrbitControls enablePan enableZoom enableRotate />
+      </Canvas>
+    </div>
+  );
+};
+
+const StackDemo = ({ 
+  elements = [],
+  onElementsChange,
+  backgroundColor = "#2D2D2D",
+  textColor = "#ffffff",
+  nodeColor = "#4f46e5",
+  topIndicatorColor = "#10b981",
+  width = "100%",
+  height = "650px"
+}) => {
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
-  const [isRotating, setIsRotating] = useState(false);
 
   const handlePush = () => {
     if (!input) return;
-    setElements((prev) => [...prev, input]);
+    const newElements = [...elements, input];
+    onElementsChange?.(newElements);
     setMessage(`pushed ${input}`);
     setInput("");
   };
@@ -28,7 +123,8 @@ export default function StackDemo() {
       return;
     }
     const top = elements[elements.length - 1];
-    setElements((prev) => prev.slice(0, -1));
+    const newElements = elements.slice(0, -1);
+    onElementsChange?.(newElements);
     setMessage(`popped ${top}`);
   };
 
@@ -41,15 +137,9 @@ export default function StackDemo() {
   };
 
   const handleClear = () => {
-    setElements([]);
+    onElementsChange?.([]);
     setMessage("cleared");
   };
-
-  const spacing = 1.6;
-  const count = elements.length;
-  const centerY = count > 0 ? ((count - 1) * spacing) / 2 : 0;
-  const camHeight = centerY + 2;
-  const camDist = Math.max(count * spacing + 5, 10);
 
   return (
     <div className="flex gap-6">
@@ -100,66 +190,19 @@ export default function StackDemo() {
         </div>
       </div>
 
-      <div className="w-2/3 h-[650px] relative rounded-xl overflow-hidden border-2 border-mulberry">
-        <Canvas
-          camera={{
-            position: [0, camHeight, camDist],
-            fov: 50,
-          }}
-        >
-          <ambientLight intensity={0.4} />
-          <directionalLight position={[5, 5, 5]} intensity={1} />
-          <ForestBackground4
-            isRotatingForestBackground={isRotating}
-            isRotatingForestBackgroundSetter={setIsRotating}
-          />
-
-          {elements.map((val, i) => {
-            const y = i * spacing;
-            return (
-              <group key={i} position={[0, y, 0]}>
-                <mesh>
-                  <boxGeometry args={[1.8, 1, 1.8]} />
-                  <meshStandardMaterial color="#4f46e5" />
-                </mesh>
-                <Text
-                  position={[0, 0, 1]}
-                  fontSize={0.4}
-                  color="#ffffff"
-                  anchorX="center"
-                  anchorY="middle"
-                >
-                  {val}
-                </Text>
-              </group>
-            );
-          })}
-
-          {count > 0 && (
-            <>
-              <Line
-                points={[
-                  [0, (count - 1) * spacing + 1.2, 0],
-                  [0, (count - 1) * spacing + 0.4, 0],
-                ]}
-                color="#10b981"
-                lineWidth={2}
-              />
-              <Text
-                position={[0, (count - 1) * spacing + 1.5, 0]}
-                fontSize={0.3}
-                color="#10b981"
-                anchorX="center"
-                anchorY="middle"
-              >
-                top
-              </Text>
-            </>
-          )}
-
-          <OrbitControls enablePan enableZoom enableRotate />
-        </Canvas>
+      <div className="w-2/3">
+        <StackScene 
+          elements={elements}
+          backgroundColor={backgroundColor}
+          textColor={textColor}
+          nodeColor={nodeColor}
+          topIndicatorColor={topIndicatorColor}
+          width={width}
+          height={height}
+        />
       </div>
     </div>
   );
-}
+};
+
+export default StackDemo;

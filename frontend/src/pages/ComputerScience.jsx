@@ -128,7 +128,14 @@ const ComputerScience = () => {
 
         {selected?.id === "vector" && viewMode === "landing" && (
           <div className="space-y-6">
-            <VectorScene elements={elements} />
+            <VectorScene 
+              elements={elements}
+              backgroundColor="#2D2D2D"
+              textColor="#D4D4D4"
+              nodeColor="#9B6B9E"
+              width="100%"
+              height="600px"
+            />
             <VectorOperations elements={elements} onChange={setElements} />
             <VectorFormulas />
           </div>
@@ -159,7 +166,15 @@ const ComputerScience = () => {
 
         {selected?.id === "unordered_set" && viewMode === "landing" && (
           <div className="space-y-6">
-            <UnorderedSetScene buckets={buckets} />
+            <UnorderedSetScene 
+              buckets={buckets}
+              backgroundColor="#2D2D2D"
+              textColor="#D4D4D4"
+              nodeColor="#9B6B9E"
+              edgeColor="#D4A5A5"
+              width="100%"
+              height="600px"
+            />
             <UnorderedSetOperations buckets={buckets} onChange={setBuckets} />
             <UnorderedSetFormulas />
           </div>
@@ -167,7 +182,16 @@ const ComputerScience = () => {
 
         {selected?.id === "set" && viewMode === "landing" && (
           <div className="space-y-6">
-            <AVLSetDemo root={root} setRoot={setRoot} />
+            <AVLSetDemo 
+              root={root}
+              onRootChange={setRoot}
+              backgroundColor="#2D2D2D"
+              textColor="#D4D4D4"
+              nodeColor="#9B6B9E"
+              edgeColor="#D4A5A5"
+              width="100%"
+              height="600px"
+            />
             <SetFormulas />
           </div>
         )}
@@ -200,7 +224,16 @@ const ComputerScience = () => {
 
         {selected?.id === "stack" && viewMode === "landing" && (
           <div className="space-y-6">
-            <StackDemo root={root} setRoot={setRoot} />
+            <StackDemo 
+              elements={elements}
+              onElementsChange={setElements}
+              backgroundColor="#2D2D2D"
+              textColor="#D4D4D4"
+              nodeColor="#9B6B9E"
+              topIndicatorColor="#D4A5A5"
+              width="100%"
+              height="600px"
+            />
             <StackFormulas />
           </div>
         )}
