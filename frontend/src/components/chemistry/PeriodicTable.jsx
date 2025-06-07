@@ -461,16 +461,22 @@ function Element({ data, index, layout, onSelect, elements }) {
   );
 }
 
-function Scene({ layout, onSelectElement, elements }) {
+function Scene({ layout, onSelectElement, elements, controls }) {
   useFrame(() => TWEEN.update());
   return (
     <>
       <ambientLight intensity={0.8} />
       <OrbitControls
-        enablePan={false}
-        minDistance={500}
+        enablePan={controls.pan}
+        enableZoom={controls.zoom}
+        enableRotate={controls.rotate}
+        minDistance={100}
         maxDistance={6000}
         rotateSpeed={0.5}
+        zoomSpeed={0.8}
+        panSpeed={0.5}
+        dampingFactor={0.05}
+        screenSpacePanning={true}
       />
       {elements.map((el, i) => (
         <Element key={i} data={el} index={i} layout={layout} onSelect={onSelectElement} elements={elements} />
@@ -485,6 +491,11 @@ export default function PeriodicTable3D() {
   const [elements, setElements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [controls, setControls] = useState({
+    zoom: true,
+    pan: true,
+    rotate: true
+  });
   const accent = ACCENTS.default;
 
   useEffect(() => {
@@ -527,6 +538,39 @@ export default function PeriodicTable3D() {
         onClose={() => setSelectedElement(null)} 
       />
 
+      <div className="absolute top-6 right-6 flex flex-col gap-2 z-10">
+        <button
+          onClick={() => setControls(prev => ({ ...prev, zoom: !prev.zoom }))}
+          className="px-4 py-2 rounded-lg text-white"
+          style={{
+            background: controls.zoom ? `${accent}80` : `${accent}20`,
+            border: `1px solid ${accent}aa`,
+          }}
+        >
+          {controls.zoom ? '🔍 Zoom On' : '🔍 Zoom Off'}
+        </button>
+        <button
+          onClick={() => setControls(prev => ({ ...prev, pan: !prev.pan }))}
+          className="px-4 py-2 rounded-lg text-white"
+          style={{
+            background: controls.pan ? `${accent}80` : `${accent}20`,
+            border: `1px solid ${accent}aa`,
+          }}
+        >
+          {controls.pan ? '✋ Pan On' : '✋ Pan Off'}
+        </button>
+        <button
+          onClick={() => setControls(prev => ({ ...prev, rotate: !prev.rotate }))}
+          className="px-4 py-2 rounded-lg text-white"
+          style={{
+            background: controls.rotate ? `${accent}80` : `${accent}20`,
+            border: `1px solid ${accent}aa`,
+          }}
+        >
+          {controls.rotate ? '🔄 Rotate On' : '🔄 Rotate Off'}
+        </button>
+      </div>
+
       <div className="absolute bottom-6 w-full text-center space-x-2 z-10">
         {Object.entries(layouts).map(([k, cfg]) => (
           <button
@@ -564,7 +608,12 @@ export default function PeriodicTable3D() {
         style={{ background: "#1a0b2e" }}
         camera={{ position:[0,0,3000], fov:40, near:1, far:10000 }}
       >
-        <Scene layout={layout} onSelectElement={setSelectedElement} elements={elements} />
+        <Scene 
+          layout={layout} 
+          onSelectElement={setSelectedElement} 
+          elements={elements}
+          controls={controls}
+        />
       </Canvas>
     </div>
   );
