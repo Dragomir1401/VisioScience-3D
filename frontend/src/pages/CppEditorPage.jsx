@@ -2,26 +2,30 @@ import React, { useState, useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import {
   Button, Box, Typography, Paper, TextField,
-  Alert, CircularProgress, IconButton
+  Alert, CircularProgress, IconButton, Tooltip,
+  List, ListItem, ListItemIcon, ListItemText,
+  Chip
 } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import DataObjectIcon from '@mui/icons-material/DataObject';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
-// Styled components
 const PageContainer = styled('div')(({ theme }) => ({
   minHeight: '100vh',
-  padding: '80px 0 0 0', // 80px pentru navbar
+  padding: '80px 0 0 0', 
   background: 'linear-gradient(to bottom right, #f8edf7, #fdf6f6)',
 }));
 
 const EditorContainer = styled(Paper)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  height: 'calc(100vh - 80px)', // Scădem înălțimea navbar-ului
+  height: 'calc(100vh - 80px)', 
   backgroundColor: theme.palette.background.default,
   borderRadius: '0',
   overflow: 'hidden',
@@ -32,7 +36,7 @@ const EditorHeader = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   padding: theme.spacing(1, 2),
-  backgroundColor: '#9B6B9E', // Culoarea mulberry
+  backgroundColor: '#9B6B9E',
   color: 'white',
 }));
 
@@ -42,19 +46,58 @@ const EditorContent = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
 }));
 
+const Resizer = styled('div')(({ theme }) => ({
+  width: '4px',
+  cursor: 'col-resize',
+  backgroundColor: '#9B6B9E',
+  opacity: 0.5,
+  transition: 'opacity 0.2s',
+  '&:hover': {
+    opacity: 1,
+  },
+  '&.dragging': {
+    opacity: 1,
+    backgroundColor: '#D4A5A5',
+  },
+}));
+
+const HorizontalResizer = styled(Resizer)({
+  width: '100%',
+  height: '4px',
+  cursor: 'row-resize',
+});
+
 const CodeSection = styled(Box)(({ theme }) => ({
-  flex: 2,
+  flex: '1 1 60%',
   display: 'flex',
   flexDirection: 'column',
-  borderRight: `1px solid ${theme.palette.divider}`,
+  minWidth: '300px',
+  maxWidth: '80%',
 }));
 
 const IOSection = styled(Box)(({ theme }) => ({
-  flex: 1,
+  flex: '1 1 40%',
   display: 'flex',
   flexDirection: 'column',
   padding: theme.spacing(2),
-  backgroundColor: '#f8edf7', // Culoarea lavender
+  backgroundColor: '#f8edf7',
+  minWidth: '250px',
+  gap: theme.spacing(2),
+}));
+
+const OutputSection = styled(Box)(({ theme }) => ({
+  flex: '0 0 150px',
+  display: 'flex',
+  flexDirection: 'column',
+  minHeight: '100px',
+  maxHeight: '300px',
+}));
+
+const AnalysisSection = styled(Box)(({ theme }) => ({
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  minHeight: '100px',
 }));
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
@@ -75,6 +118,33 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   whiteSpace: 'pre-wrap',
   '&.MuiPaper-root': {
     borderColor: '#9B6B9E',
+  },
+}));
+
+const ZoomControls = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.spacing(1),
+  marginRight: theme.spacing(2),
+  '& .MuiIconButton-root': {
+    color: 'white',
+    padding: theme.spacing(0.5),
+  },
+}));
+
+const ZoomLevel = styled(Typography)(({ theme }) => ({
+  color: 'white',
+  fontSize: '0.875rem',
+  minWidth: '40px',
+  textAlign: 'center',
+}));
+
+const DataStructureChip = styled(Chip)(({ theme }) => ({
+  margin: theme.spacing(0.5),
+  backgroundColor: '#9B6B9E',
+  color: 'white',
+  '&:hover': {
+    backgroundColor: '#D4A5A5',
   },
 }));
 
@@ -100,20 +170,39 @@ const CppEditorPage = () => {
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [fontSize, setFontSize] = useState(() => {
+    const savedSize = localStorage.getItem('cppEditorFontSize');
+    return savedSize ? parseInt(savedSize) : 14;
+  });
+  const [isDragging, setIsDragging] = useState(false);
+  const [isDraggingHorizontal, setIsDraggingHorizontal] = useState(false);
+  const [codeWidth, setCodeWidth] = useState(() => {
+    const savedWidth = localStorage.getItem('cppEditorCodeWidth');
+    return savedWidth ? parseFloat(savedWidth) : 60;
+  });
+  const [outputHeight, setOutputHeight] = useState(() => {
+    const savedHeight = localStorage.getItem('cppEditorOutputHeight');
+    return savedHeight ? parseFloat(savedHeight) : 150;
+  });
+  const [dataStructures, setDataStructures] = useState([]);
   const editorRef = useRef(null);
+  const resizerRef = useRef(null);
+  const horizontalResizerRef = useRef(null);
+  const editorContainerRef = useRef(null);
 
-  // Save code and input to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('cppEditorCode', code);
     localStorage.setItem('cppEditorInput', input);
-  }, [code, input]);
+    localStorage.setItem('cppEditorFontSize', fontSize.toString());
+    localStorage.setItem('cppEditorCodeWidth', codeWidth.toString());
+    localStorage.setItem('cppEditorOutputHeight', outputHeight.toString());
+  }, [code, input, fontSize, codeWidth, outputHeight]);
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
     
-    // Configure editor options
     editor.updateOptions({
-      fontSize: 14,
+      fontSize: fontSize,
       fontFamily: 'Fira Code, monospace',
       minimap: { enabled: false },
       scrollBeyondLastLine: false,
@@ -123,7 +212,6 @@ const CppEditorPage = () => {
       wordWrap: 'on',
     });
 
-    // Set custom theme colors
     monaco.editor.defineTheme('customTheme', {
       base: 'vs-dark',
       inherit: true,
@@ -137,6 +225,22 @@ const CppEditorPage = () => {
       }
     });
     monaco.editor.setTheme('customTheme');
+  };
+
+  const handleZoomIn = () => {
+    const newSize = Math.min(fontSize + 2, 24);
+    setFontSize(newSize);
+    if (editorRef.current) {
+      editorRef.current.updateOptions({ fontSize: newSize });
+    }
+  };
+
+  const handleZoomOut = () => {
+    const newSize = Math.max(fontSize - 2, 8);
+    setFontSize(newSize);
+    if (editorRef.current) {
+      editorRef.current.updateOptions({ fontSize: newSize });
+    }
   };
 
   const handleRun = async () => {
@@ -184,6 +288,172 @@ const CppEditorPage = () => {
     navigate('/computer-science');
   };
 
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging || !editorContainerRef.current) return;
+
+    const containerRect = editorContainerRef.current.getBoundingClientRect();
+    const newWidth = ((e.clientX - containerRect.left) / containerRect.width) * 100;
+    
+    if (newWidth >= 30 && newWidth <= 80) {
+      setCodeWidth(newWidth);
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging]);
+
+  const handleHorizontalMouseDown = (e) => {
+    setIsDraggingHorizontal(true);
+    document.body.style.cursor = 'row-resize';
+    document.body.style.userSelect = 'none';
+  };
+
+  const handleHorizontalMouseMove = (e) => {
+    if (!isDraggingHorizontal || !editorContainerRef.current) return;
+
+    const containerRect = editorContainerRef.current.getBoundingClientRect();
+    const newHeight = e.clientY - containerRect.top;
+    
+    if (newHeight >= 100 && newHeight <= 300) {
+      setOutputHeight(newHeight);
+    }
+  };
+
+  const handleHorizontalMouseUp = () => {
+    setIsDraggingHorizontal(false);
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousemove', handleHorizontalMouseMove);
+    document.addEventListener('mouseup', handleHorizontalMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', handleHorizontalMouseMove);
+      document.removeEventListener('mouseup', handleHorizontalMouseUp);
+    };
+  }, [isDraggingHorizontal]);
+
+  const analyzeCode = (code) => {
+    const structures = [];
+    const patterns = {
+      'vector': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?vector\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        type: 'ordered',
+        description: 'Dynamic array with contiguous storage'
+      },
+      'list': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?list\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        type: 'ordered',
+        description: 'Doubly-linked list'
+      },
+      'deque': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?deque\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        type: 'ordered',
+        description: 'Double-ended queue'
+      },
+      'array': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?array\s*<[^,]+,\s*\d+>(?=\s|;|\)|,|$)/g,
+        type: 'ordered',
+        description: 'Fixed-size array'
+      },
+      
+      'unordered_map': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_map\s*<[^,]+,\s*[^>]+>(?=\s|;|\)|,|$)/g,
+        type: 'unordered',
+        description: 'Hash table based map'
+      },
+      'unordered_set': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_set\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        type: 'unordered',
+        description: 'Hash table based set'
+      },
+      'unordered_multimap': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_multimap\s*<[^,]+,\s*[^>]+>(?=\s|;|\)|,|$)/g,
+        type: 'unordered',
+        description: 'Hash table based multimap'
+      },
+      'unordered_multiset': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_multiset\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        type: 'unordered',
+        description: 'Hash table based multiset'
+      },
+      
+      'map': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)map\s*<[^,]+,\s*[^>]+>(?=\s|;|\)|,|$)/g,
+        type: 'ordered',
+        description: 'Sorted key-value pairs'
+      },
+      'set': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)set\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        type: 'ordered',
+        description: 'Sorted unique elements'
+      },
+      'multimap': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)multimap\s*<[^,]+,\s*[^>]+>(?=\s|;|\)|,|$)/g,
+        type: 'ordered',
+        description: 'Sorted key-value pairs with duplicate keys'
+      },
+      'multiset': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)multiset\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        type: 'ordered',
+        description: 'Sorted elements with duplicates'
+      },
+      
+      'queue': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?queue\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        type: 'adaptor',
+        description: 'FIFO queue'
+      },
+      'stack': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?stack\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        type: 'adaptor',
+        description: 'LIFO stack'
+      },
+      'priority_queue': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?priority_queue\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        type: 'adaptor',
+        description: 'Priority queue'
+      }
+    };
+
+    for (const [structure, info] of Object.entries(patterns)) {
+      if (info.pattern.test(code)) {
+        structures.push({
+          name: structure,
+          type: info.type,
+          description: info.description
+        });
+      }
+    }
+
+    setDataStructures(structures);
+  };
+
+  useEffect(() => {
+    analyzeCode(code);
+  }, [code]);
+
   return (
     <PageContainer>
       <EditorContainer elevation={3}>
@@ -194,7 +464,20 @@ const CppEditorPage = () => {
             </IconButton>
             <Typography variant="h6">C++ Editor</Typography>
           </Box>
-          <Box>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <ZoomControls>
+              <Tooltip title="Zoom Out">
+                <IconButton onClick={handleZoomOut} size="small">
+                  <ZoomOutIcon />
+                </IconButton>
+              </Tooltip>
+              <ZoomLevel>{fontSize}px</ZoomLevel>
+              <Tooltip title="Zoom In">
+                <IconButton onClick={handleZoomIn} size="small">
+                  <ZoomInIcon />
+                </IconButton>
+              </Tooltip>
+            </ZoomControls>
             <Button
               startIcon={<ContentCopyIcon />}
               onClick={handleCopy}
@@ -216,7 +499,7 @@ const CppEditorPage = () => {
               onClick={handleRun}
               variant="contained"
               sx={{ 
-                backgroundColor: '#D4A5A5', // Culoarea rosy-brown
+                backgroundColor: '#D4A5A5', 
                 '&:hover': {
                   backgroundColor: '#C49595',
                 },
@@ -229,8 +512,8 @@ const CppEditorPage = () => {
           </Box>
         </EditorHeader>
 
-        <EditorContent>
-          <CodeSection>
+        <EditorContent ref={editorContainerRef}>
+          <CodeSection sx={{ flex: `${codeWidth} 1 0` }}>
             <Editor
               height="100%"
               defaultLanguage="cpp"
@@ -239,7 +522,7 @@ const CppEditorPage = () => {
               onMount={handleEditorDidMount}
               theme="customTheme"
               options={{
-                fontSize: 14,
+                fontSize: fontSize,
                 fontFamily: 'Fira Code, monospace',
                 minimap: { enabled: false },
                 scrollBeyondLastLine: false,
@@ -251,7 +534,13 @@ const CppEditorPage = () => {
             />
           </CodeSection>
 
-          <IOSection>
+          <Resizer
+            ref={resizerRef}
+            onMouseDown={handleMouseDown}
+            className={isDragging ? 'dragging' : ''}
+          />
+
+          <IOSection sx={{ flex: `${100 - codeWidth} 1 0` }}>
             <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
               Input
             </Typography>
@@ -262,28 +551,94 @@ const CppEditorPage = () => {
               onChange={(e) => setInput(e.target.value)}
               variant="outlined"
               fullWidth
-              sx={{ mb: 2 }}
             />
 
-            <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
-              Output
-            </Typography>
-            <StyledPaper
-              variant="outlined"
-              sx={{
-                p: 2,
-                minHeight: '100px',
-                fontFamily: 'monospace',
-                whiteSpace: 'pre-wrap',
-              }}
-            >
-              {error ? (
-                <Alert severity="error" sx={{ mb: 1 }}>
-                  {error}
-                </Alert>
-              ) : null}
-              {output}
-            </StyledPaper>
+            <HorizontalResizer
+              ref={horizontalResizerRef}
+              onMouseDown={handleHorizontalMouseDown}
+              className={isDraggingHorizontal ? 'dragging' : ''}
+            />
+
+            <OutputSection sx={{ height: `${outputHeight}px` }}>
+              <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
+                Output
+              </Typography>
+              <StyledPaper
+                variant="outlined"
+                sx={{
+                  p: 2,
+                  flex: 1,
+                  fontFamily: 'monospace',
+                  whiteSpace: 'pre-wrap',
+                  overflow: 'auto',
+                }}
+              >
+                {error ? (
+                  <Alert severity="error" sx={{ mb: 1 }}>
+                    {error}
+                  </Alert>
+                ) : null}
+                {output}
+              </StyledPaper>
+            </OutputSection>
+
+            <AnalysisSection>
+              <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
+                Identified Data Structures
+              </Typography>
+              <StyledPaper
+                variant="outlined"
+                sx={{
+                  p: 2,
+                  flex: 1,
+                  overflow: 'auto',
+                }}
+              >
+                {dataStructures.length > 0 ? (
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    {['ordered', 'unordered', 'adaptor'].map(type => {
+                      const typeStructures = dataStructures.filter(s => s.type === type);
+                      if (typeStructures.length === 0) return null;
+                      
+                      return (
+                        <Box key={type}>
+                          <Typography variant="subtitle2" sx={{ 
+                            color: '#9B6B9E',
+                            textTransform: 'capitalize',
+                            mb: 1
+                          }}>
+                            {type} Containers
+                          </Typography>
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                            {typeStructures.map((structure) => (
+                              <Tooltip 
+                                key={structure.name}
+                                title={structure.description}
+                                placement="top"
+                              >
+                                <DataStructureChip
+                                  icon={<DataObjectIcon />}
+                                  label={structure.name}
+                                  sx={{
+                                    backgroundColor: type === 'ordered' ? '#9B6B9E' :
+                                                   type === 'unordered' ? '#D4A5A5' :
+                                                   '#C49595'
+                                  }}
+                                />
+                              </Tooltip>
+                            ))}
+                          </Box>
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                ) : (
+                  <Typography variant="body2" color="text.secondary">
+                    No data structures found in the code.
+                  </Typography>
+                )}
+              </StyledPaper>
+            </AnalysisSection>
           </IOSection>
         </EditorContent>
       </EditorContainer>
