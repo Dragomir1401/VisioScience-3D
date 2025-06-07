@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpp-compiler-service
+  labels:
+    app: cpp-compiler-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpp-compiler-service
+  template:
+    metadata:
+      labels:
+        app: cpp-compiler-service
+    spec:
+      containers:
+      - name: cpp-compiler-service
+        image: dragomir1401/cpp-compiler-service:latest
+        ports:
+        - containerPort: 8081
+        securityContext:
+          privileged: true

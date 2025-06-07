@@ -31,6 +31,7 @@ import DoublyLinkedListDemo from "../models/computer_science/DoublyLinkedList";
 import DoublyLinkedListFormulas from "../components/computer_science/DoublyLinkedListFormulas";
 import ArrayDemo from "../models/computer_science/Array";
 import ArrayFormulas from "../components/computer_science/ArrayFormulas";
+import CppEditor from "../components/computer_science/CppEditor";
 import {
   array,
   vector,
@@ -74,13 +75,17 @@ const ComputerScience = () => {
   );
   const [root, setRoot] = useState(null);
   const [visibleCount, setVisibleCount] = useState(0);
+  const [viewMode, setViewMode] = useState("landing");
 
   React.useEffect(() => {
     setBuckets(Array(8).fill([]).map(() => []));
     setElements([1, 2, 3, 4, 5]);
     setRoot(null);
     setVisibleCount(0);
+    setViewMode("landing");
   }, [selected?.id]);
+
+  const handleShowCppEditor = () => { setViewMode("cpp_editor"); setSelected(null); };
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-lavender via-[#f8edf7] to-[#fdf6f6] pt-[80px]">
@@ -92,9 +97,9 @@ const ComputerScience = () => {
       />
 
       <main className="flex-1 p-7 overflow-y-auto text-black-500">
-        {!selected && <CSLanding />}
+        {viewMode === "landing" && !selected && <CSLanding onShowCppEditor={handleShowCppEditor} />}
 
-        {selected?.id === "vector" && (
+        {selected?.id === "vector" && viewMode === "landing" && (
           <div className="space-y-6">
             <VectorScene elements={elements} />
             <VectorOperations elements={elements} onChange={setElements} />
@@ -102,7 +107,7 @@ const ComputerScience = () => {
           </div>
         )}
 
-        {selected?.id === "unordered_map" && (
+        {selected?.id === "unordered_map" && viewMode === "landing" && (
           <div className="space-y-6">
             <MapScene buckets={buckets} />
             <MapOperations buckets={buckets} onChange={setBuckets} />
@@ -110,14 +115,14 @@ const ComputerScience = () => {
           </div>
         )}
 
-        {selected?.id === "map" && (
+        {selected?.id === "map" && viewMode === "landing" && (
           <div className="space-y-6">
             <AVLTreeDemo />
             <MapFormulas />
           </div>
         )}
 
-        {selected?.id === "unordered_set" && (
+        {selected?.id === "unordered_set" && viewMode === "landing" && (
           <div className="space-y-6">
             <UnorderedSetScene buckets={buckets} />
             <UnorderedSetOperations buckets={buckets} onChange={setBuckets} />
@@ -125,21 +130,21 @@ const ComputerScience = () => {
           </div>
         )}
 
-        {selected?.id === "set" && (
+        {selected?.id === "set" && viewMode === "landing" && (
           <div className="space-y-6">
             <AVLSetDemo root={root} setRoot={setRoot} />
             <SetFormulas />
           </div>
         )}
 
-        {selected?.id === "priority_queue" && (
+        {selected?.id === "priority_queue" && viewMode === "landing" && (
           <div className="space-y-6">
             <PriorityQueueDemo root={root} setRoot={setRoot} />
             <PriorityQueueFormulas />
           </div>
         )}
 
-        {selected?.id === "multiset" && (
+        {selected?.id === "multiset" && viewMode === "landing" && (
           <div className="space-y-6">
             <AVLMultiSetDemo
               root={root}
@@ -151,49 +156,58 @@ const ComputerScience = () => {
           </div>
         )}
 
-        {selected?.id === "queue" && (
+        {selected?.id === "queue" && viewMode === "landing" && (
           <div className="space-y-6">
             <QueueDemo root={root} setRoot={setRoot} />
             <QueueFormulas />
           </div>
         )}
 
-        {selected?.id === "stack" && (
+        {selected?.id === "stack" && viewMode === "landing" && (
           <div className="space-y-6">
             <StackDemo root={root} setRoot={setRoot} />
             <StackFormulas />
           </div>
         )}
 
-        {selected?.id === "deque" && (
+        {selected?.id === "deque" && viewMode === "landing" && (
           <div className="space-y-6">
             <DequeDemo root={root} setRoot={setRoot} />
             <DequeFormulas />
           </div>
         )}
 
-        {selected?.id === "list" && (
+        {selected?.id === "list" && viewMode === "landing" && (
           <div className="space-y-6">
             <ListDemo root={root} setRoot={setRoot} />
             <ListFormulas />
           </div>
         )}
 
-        {selected?.id === "doubly_linked_list" && (
+        {selected?.id === "doubly_linked_list" && viewMode === "landing" && (
           <div className="space-y-6">
             <DoublyLinkedListDemo root={root} setRoot={setRoot} />
             <DoublyLinkedListFormulas />
           </div>
         )}
 
-        {selected?.id === "array" && (
+        {selected?.id === "array" && viewMode === "landing" && (
           <div className="space-y-6">
             <ArrayDemo root={root} setRoot={setRoot} />
             <ArrayFormulas />
           </div>
         )}
 
-        {!selected && (
+        {viewMode === "cpp_editor" && (
+          <div className="p-6 bg-white border-2 border-mulberry rounded-lg shadow-xl h-[80vh]">
+            <h2 className="text-xl font-bold text-mulberry mb-4">
+              Editor C++ și Vizualizare Structuri de Date 3D
+            </h2>
+            <CppEditor />
+          </div>
+        )}
+
+        {!selected && viewMode === "landing" && (
           <p className="text-rosy-brown italic mt-6">
             Selectează un subiect din meniul din stânga pentru secţiunea de
             Informatică.
