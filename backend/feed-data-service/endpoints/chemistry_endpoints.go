@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	helpers "feed-data-service/helpers"
@@ -263,4 +264,166 @@ func GetMolecule3D(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(result.ParsedData)
+}
+
+// GetAllElements returns all elements from the periodic table
+func GetAllElements(w http.ResponseWriter, r *http.Request) {
+	collection := helpers.Client.Database("data-feed-db").Collection("elements")
+
+	var elements []models.PeriodicElement
+	cursor, err := collection.Find(context.Background(), bson.M{})
+	if err != nil {
+		http.Error(w, "Error fetching elements: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer cursor.Close(context.Background())
+
+	if err = cursor.All(context.Background(), &elements); err != nil {
+		http.Error(w, "Error decoding elements: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(elements)
+}
+
+// GetElementBySymbol returns an element by its symbol
+func GetElementBySymbol(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	symbol := vars["symbol"]
+
+	collection := helpers.Client.Database("data-feed-db").Collection("elements")
+
+	var element models.PeriodicElement
+	err := collection.FindOne(context.Background(), bson.M{"symbol": symbol}).Decode(&element)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			http.Error(w, "Element not found", http.StatusNotFound)
+			return
+		}
+		http.Error(w, "Error fetching element: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(element)
+}
+
+// GetElementsByGroup returns all elements from a specific group
+func GetElementsByGroup(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	group, err := strconv.Atoi(vars["group"])
+	if err != nil {
+		http.Error(w, "Invalid group number", http.StatusBadRequest)
+		return
+	}
+
+	collection := helpers.Client.Database("data-feed-db").Collection("elements")
+
+	var elements []models.PeriodicElement
+	cursor, err := collection.Find(context.Background(), bson.M{"group": group})
+	if err != nil {
+		http.Error(w, "Error fetching elements: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer cursor.Close(context.Background())
+
+	if err = cursor.All(context.Background(), &elements); err != nil {
+		http.Error(w, "Error decoding elements: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(elements)
+}
+
+// GetElementsByPeriod returns all elements from a specific period
+func GetElementsByPeriod(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	period, err := strconv.Atoi(vars["period"])
+	if err != nil {
+		http.Error(w, "Invalid period number", http.StatusBadRequest)
+		return
+	}
+
+	collection := helpers.Client.Database("data-feed-db").Collection("elements")
+
+	var elements []models.PeriodicElement
+	cursor, err := collection.Find(context.Background(), bson.M{"period": period})
+	if err != nil {
+		http.Error(w, "Error fetching elements: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer cursor.Close(context.Background())
+
+	if err = cursor.All(context.Background(), &elements); err != nil {
+		http.Error(w, "Error decoding elements: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(elements)
+}
+
+// CreateElement - POST /chem/elements
+func CreateElement(w http.ResponseWriter, r *http.Request) {
+	log.Println("[CreateElement] Received request to create a new element")
+	w.Header().Set("Content-Type", "application/json")
+
+	var element models.PeriodicElement
+	if err := json.NewDecoder(r.Body).Decode(&element); err != nil {
+		http.Error(w, "Invalid JSON: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	log.Println("[CreateElement] Received data:", element.Symbol, element.Name)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	collection := helpers.Client.Database("data-feed-db").Collection("elements")
+
+	var existingElement models.PeriodicElement
+	err := collection.FindOne(ctx, bson.M{"symbol": element.Symbol}).Decode(&existingElement)
+	if err == nil {
+		update := bson.M{
+			"$set": bson.M{
+				"name":         element.Name,
+				"atomicNumber": element.AtomicNumber,
+				"group":        element.Group,
+				"period":       element.Period,
+				"atomicMass":   element.AtomicMass,
+				"description":  element.Description,
+			},
+		}
+		_, err := collection.UpdateOne(ctx, bson.M{"symbol": element.Symbol}, update)
+		if err != nil {
+			log.Println("[CreateElement] Update error:", err)
+			http.Error(w, "Failed to update element", http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"message": "Element updated",
+			"symbol":  element.Symbol,
+		})
+		return
+	} else if err != mongo.ErrNoDocuments {
+		log.Println("[CreateElement] Find error:", err)
+		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
+	}
+
+	_, err = collection.InsertOne(ctx, element)
+	if err != nil {
+		log.Println("[CreateElement] Insert error:", err)
+		http.Error(w, "Failed to insert element", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"message": "Element created",
+		"symbol":  element.Symbol,
+	})
 }

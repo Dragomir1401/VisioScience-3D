@@ -53,3 +53,13 @@ type MolCounts struct {
 	Chiral bool   `bson:"chiral"`
 	Stext  string `bson:"stext"`
 }
+
+type PeriodicElement struct {
+	Symbol       string `json:"symbol" bson:"symbol"`
+	Name         string `json:"name" bson:"name"`
+	AtomicNumber string `json:"atomicNumber" bson:"atomicNumber"`
+	Group        int    `json:"group" bson:"group"`
+	Period       int    `json:"period" bson:"period"`
+	AtomicMass   string `json:"atomicMass" bson:"atomicMass"`
+	Description  string `json:"description" bson:"description"`
+}

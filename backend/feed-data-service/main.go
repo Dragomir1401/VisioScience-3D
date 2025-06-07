@@ -93,6 +93,13 @@ func main() {
 	// GET /chem/molecules/{id}/3d
 	r.HandleFunc("/feed/chem/molecules/{id}/3d", handlers.GetMolecule3D).Methods("GET")
 
+	// Periodic Table endpoints
+	r.HandleFunc("/feed/chem/elements", handlers.GetAllElements).Methods("GET")
+	r.HandleFunc("/feed/chem/elements", handlers.CreateElement).Methods("POST")
+	r.HandleFunc("/feed/chem/elements/{symbol}", handlers.GetElementBySymbol).Methods("GET")
+	r.HandleFunc("/feed/chem/elements/group/{group}", handlers.GetElementsByGroup).Methods("GET")
+	r.HandleFunc("/feed/chem/elements/period/{period}", handlers.GetElementsByPeriod).Methods("GET")
+
 	log.Println("feed-data-service running on :8080")
 	if err := http.ListenAndServe(":8080", corsObj(r)); err != nil {
 		log.Fatal(err)

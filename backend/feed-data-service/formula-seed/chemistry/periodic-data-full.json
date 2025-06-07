@@ -1,0 +1,1064 @@
+[
+  {
+    "symbol": "H",
+    "name": "Hydrogen",
+    "atomicNumber": "1.00794",
+    "group": 1,
+    "period": 1,
+    "atomicMass": "1.00794",
+    "description": "Cel mai ușor element, component principal al apei și al tuturor compușilor organici."
+  },
+  {
+    "symbol": "He",
+    "name": "Helium",
+    "atomicNumber": "4.002602",
+    "group": 18,
+    "period": 1,
+    "atomicMass": "4.002602",
+    "description": "Gaz nobil, al doilea element cel mai abundent în univers, folosit în baloane și criogenie."
+  },
+  {
+    "symbol": "Li",
+    "name": "Lithium",
+    "atomicNumber": "6.941",
+    "group": 1,
+    "period": 2,
+    "atomicMass": "6.941",
+    "description": "Metal alcalin ușor, folosit în baterii și tratamente psihiatrice."
+  },
+  {
+    "symbol": "Be",
+    "name": "Beryllium",
+    "atomicNumber": "9.012182",
+    "group": 2,
+    "period": 2,
+    "atomicMass": "9.012182",
+    "description": "Metal alcalin-pământos, folosit în aliaje și tehnologie nucleară."
+  },
+  {
+    "symbol": "B",
+    "name": "Boron",
+    "atomicNumber": "10.811",
+    "group": 13,
+    "period": 2,
+    "atomicMass": "10.811",
+    "description": "Metaloid, component important în sticle și materiale ceramice."
+  },
+  {
+    "symbol": "C",
+    "name": "Carbon",
+    "atomicNumber": "12.0107",
+    "group": 14,
+    "period": 2,
+    "atomicMass": "12.0107",
+    "description": "Bază a vieții, formează diamante, grafit și toate compușii organici."
+  },
+  {
+    "symbol": "N",
+    "name": "Nitrogen",
+    "atomicNumber": "14.0067",
+    "group": 15,
+    "period": 2,
+    "atomicMass": "14.0067",
+    "description": "Gaz inactiv, component major al atmosferei, esențial pentru proteine."
+  },
+  {
+    "symbol": "O",
+    "name": "Oxygen",
+    "atomicNumber": "15.9994",
+    "group": 16,
+    "period": 2,
+    "atomicMass": "15.9994",
+    "description": "Element vital pentru respirație, component major al apei și atmosferei."
+  },
+  {
+    "symbol": "F",
+    "name": "Fluorine",
+    "atomicNumber": "18.99840",
+    "group": 17,
+    "period": 2,
+    "atomicMass": "18.99840",
+    "description": "Cel mai reactiv element, folosit în pastă de dinți și teflon."
+  },
+  {
+    "symbol": "Ne",
+    "name": "Neon",
+    "atomicNumber": "20.1797",
+    "group": 18,
+    "period": 2,
+    "atomicMass": "20.1797",
+    "description": "Gaz nobil, folosit în semne luminoase și laseruri."
+  },
+  {
+    "symbol": "Na",
+    "name": "Sodium",
+    "atomicNumber": "22.98977",
+    "group": 1,
+    "period": 3,
+    "atomicMass": "22.98977",
+    "description": "Metal alcalin reactiv, esențial pentru funcționarea nervilor și mușchilor."
+  },
+  {
+    "symbol": "Mg",
+    "name": "Magnesium",
+    "atomicNumber": "24.305",
+    "group": 2,
+    "period": 3,
+    "atomicMass": "24.305",
+    "description": "Metal alcalin-pământos, important pentru fotosinteză și sănătate."
+  },
+  {
+    "symbol": "Al",
+    "name": "Aluminium",
+    "atomicNumber": "26.98154",
+    "group": 13,
+    "period": 3,
+    "atomicMass": "26.98154",
+    "description": "Metal ușor, rezistent la coroziune, folosit în construcții și ambalaje."
+  },
+  {
+    "symbol": "Si",
+    "name": "Silicon",
+    "atomicNumber": "28.0855",
+    "group": 14,
+    "period": 3,
+    "atomicMass": "28.0855",
+    "description": "Semiconductor, component principal al nisipului și calculatoarelor."
+  },
+  {
+    "symbol": "P",
+    "name": "Phosphorus",
+    "atomicNumber": "30.97376",
+    "group": 15,
+    "period": 3,
+    "atomicMass": "30.97376",
+    "description": "Element vital pentru ADN și energie celulară."
+  },
+  {
+    "symbol": "S",
+    "name": "Sulfur",
+    "atomicNumber": "32.065",
+    "group": 16,
+    "period": 3,
+    "atomicMass": "32.065",
+    "description": "Element esențial pentru proteine și compuși organici."
+  },
+  {
+    "symbol": "Cl",
+    "name": "Chlorine",
+    "atomicNumber": "35.453",
+    "group": 17,
+    "period": 3,
+    "atomicMass": "35.453",
+    "description": "Halogen, folosit în purificarea apei și producerea PVC."
+  },
+  {
+    "symbol": "Ar",
+    "name": "Argon",
+    "atomicNumber": "39.948",
+    "group": 18,
+    "period": 3,
+    "atomicMass": "39.948",
+    "description": "Gaz nobil, folosit în sudură și iluminat."
+  },
+  {
+    "symbol": "K",
+    "name": "Potassium",
+    "atomicNumber": "39.0983",
+    "group": 1,
+    "period": 4,
+    "atomicMass": "39.0983",
+    "description": "Metal alcalin, esențial pentru funcționarea celulelor."
+  },
+  {
+    "symbol": "Ca",
+    "name": "Calcium",
+    "atomicNumber": "40.078",
+    "group": 2,
+    "period": 4,
+    "atomicMass": "40.078",
+    "description": "Metal alcalin-pământos, component principal al oaselor."
+  },
+  {
+    "symbol": "Sc",
+    "name": "Scandium",
+    "atomicNumber": "44.95591",
+    "group": 3,
+    "period": 4,
+    "atomicMass": "44.95591",
+    "description": "Metal de tranziție, folosit în aliaje ușoare."
+  },
+  {
+    "symbol": "Ti",
+    "name": "Titanium",
+    "atomicNumber": "47.867",
+    "group": 4,
+    "period": 4,
+    "atomicMass": "47.867",
+    "description": "Metal rezistent, folosit în implanturi medicale și aviație."
+  },
+  {
+    "symbol": "V",
+    "name": "Vanadium",
+    "atomicNumber": "50.9415",
+    "group": 5,
+    "period": 4,
+    "atomicMass": "50.9415",
+    "description": "Metal de tranziție, folosit în oțeluri speciale."
+  },
+  {
+    "symbol": "Cr",
+    "name": "Chromium",
+    "atomicNumber": "51.9961",
+    "group": 6,
+    "period": 4,
+    "atomicMass": "51.9961",
+    "description": "Metal de tranziție, folosit în cromare și oțeluri inoxidabile."
+  },
+  {
+    "symbol": "Mn",
+    "name": "Manganese",
+    "atomicNumber": "54.93804",
+    "group": 7,
+    "period": 4,
+    "atomicMass": "54.93804",
+    "description": "Metal de tranziție, important pentru producția de oțel."
+  },
+  {
+    "symbol": "Fe",
+    "name": "Iron",
+    "atomicNumber": "55.845",
+    "group": 8,
+    "period": 4,
+    "atomicMass": "55.845",
+    "description": "Cel mai abundent metal, component principal al oțelului."
+  },
+  {
+    "symbol": "Co",
+    "name": "Cobalt",
+    "atomicNumber": "58.93319",
+    "group": 9,
+    "period": 4,
+    "atomicMass": "58.93319",
+    "description": "Metal de tranziție, folosit în baterii și aliaje magnetice."
+  },
+  {
+    "symbol": "Ni",
+    "name": "Nickel",
+    "atomicNumber": "58.6934",
+    "group": 10,
+    "period": 4,
+    "atomicMass": "58.6934",
+    "description": "Metal de tranziție, folosit în monede și baterii."
+  },
+  {
+    "symbol": "Cu",
+    "name": "Copper",
+    "atomicNumber": "63.546",
+    "group": 11,
+    "period": 4,
+    "atomicMass": "63.546",
+    "description": "Metal excelent conductor, folosit în cabluri și monede."
+  },
+  {
+    "symbol": "Zn",
+    "name": "Zinc",
+    "atomicNumber": "65.38",
+    "group": 12,
+    "period": 4,
+    "atomicMass": "65.38",
+    "description": "Metal, important pentru sistemul imunitar și galvanizare."
+  },
+  {
+    "symbol": "Ga",
+    "name": "Gallium",
+    "atomicNumber": "69.723",
+    "group": 13,
+    "period": 4,
+    "atomicMass": "69.723",
+    "description": "Metal post-tranziție, folosit în semiconductori."
+  },
+  {
+    "symbol": "Ge",
+    "name": "Germanium",
+    "atomicNumber": "72.63",
+    "group": 14,
+    "period": 4,
+    "atomicMass": "72.63",
+    "description": "Semiconductor, folosit în electronice."
+  },
+  {
+    "symbol": "As",
+    "name": "Arsenic",
+    "atomicNumber": "74.9216",
+    "group": 15,
+    "period": 4,
+    "atomicMass": "74.9216",
+    "description": "Metaloid, folosit în semiconductori și pesticide."
+  },
+  {
+    "symbol": "Se",
+    "name": "Selenium",
+    "atomicNumber": "78.96",
+    "group": 16,
+    "period": 4,
+    "atomicMass": "78.96",
+    "description": "Element esențial pentru sănătate, folosit în panouri solare."
+  },
+  {
+    "symbol": "Br",
+    "name": "Bromine",
+    "atomicNumber": "79.904",
+    "group": 17,
+    "period": 4,
+    "atomicMass": "79.904",
+    "description": "Halogen lichid, folosit în medicamente și ignifugare."
+  },
+  {
+    "symbol": "Kr",
+    "name": "Krypton",
+    "atomicNumber": "83.798",
+    "group": 18,
+    "period": 4,
+    "atomicMass": "83.798",
+    "description": "Gaz nobil, folosit în iluminat și laseruri."
+  },
+  {
+    "symbol": "Rb",
+    "name": "Rubidium",
+    "atomicNumber": "85.4678",
+    "group": 1,
+    "period": 5,
+    "atomicMass": "85.4678",
+    "description": "Metal alcalin, folosit în ceasuri atomice."
+  },
+  {
+    "symbol": "Sr",
+    "name": "Strontium",
+    "atomicNumber": "87.62",
+    "group": 2,
+    "period": 5,
+    "atomicMass": "87.62",
+    "description": "Metal alcalin-pământos, folosit în semne luminoase."
+  },
+  {
+    "symbol": "Y",
+    "name": "Yttrium",
+    "atomicNumber": "88.90585",
+    "group": 3,
+    "period": 5,
+    "atomicMass": "88.90585",
+    "description": "Metal de tranziție, folosit în LED-uri și superconductori."
+  },
+  {
+    "symbol": "Zr",
+    "name": "Zirconium",
+    "atomicNumber": "91.224",
+    "group": 4,
+    "period": 5,
+    "atomicMass": "91.224",
+    "description": "Metal de tranziție, folosit în reactoare nucleare."
+  },
+  {
+    "symbol": "Nb",
+    "name": "Niobium",
+    "atomicNumber": "92.90638",
+    "group": 5,
+    "period": 5,
+    "atomicMass": "92.90638",
+    "description": "Metal de tranziție, folosit în aliaje speciale."
+  },
+  {
+    "symbol": "Mo",
+    "name": "Molybdenum",
+    "atomicNumber": "95.96",
+    "group": 6,
+    "period": 5,
+    "atomicMass": "95.96",
+    "description": "Metal de tranziție, important pentru enzime."
+  },
+  {
+    "symbol": "Tc",
+    "name": "Technetium",
+    "atomicNumber": "(98)",
+    "group": 7,
+    "period": 5,
+    "atomicMass": "98",
+    "description": "Element radioactiv, folosit în medicină nucleară."
+  },
+  {
+    "symbol": "Ru",
+    "name": "Ruthenium",
+    "atomicNumber": "101.07",
+    "group": 8,
+    "period": 5,
+    "atomicMass": "101.07",
+    "description": "Metal de tranziție, folosit în catalizatori."
+  },
+  {
+    "symbol": "Rh",
+    "name": "Rhodium",
+    "atomicNumber": "102.9055",
+    "group": 9,
+    "period": 5,
+    "atomicMass": "102.9055",
+    "description": "Metal prețios, folosit în catalizatori auto."
+  },
+  {
+    "symbol": "Pd",
+    "name": "Palladium",
+    "atomicNumber": "106.42",
+    "group": 10,
+    "period": 5,
+    "atomicMass": "106.42",
+    "description": "Metal prețios, folosit în catalizatori și bijuterii."
+  },
+  {
+    "symbol": "Ag",
+    "name": "Silver",
+    "atomicNumber": "107.8682",
+    "group": 11,
+    "period": 5,
+    "atomicMass": "107.8682",
+    "description": "Metal prețios, cel mai bun conductor electric."
+  },
+  {
+    "symbol": "Cd",
+    "name": "Cadmium",
+    "atomicNumber": "112.411",
+    "group": 12,
+    "period": 5,
+    "atomicMass": "112.411",
+    "description": "Metal toxic, folosit în baterii și pigmenți."
+  },
+  {
+    "symbol": "In",
+    "name": "Indium",
+    "atomicNumber": "114.818",
+    "group": 13,
+    "period": 5,
+    "atomicMass": "114.818",
+    "description": "Metal post-tranziție, folosit în ecrane touch."
+  },
+  {
+    "symbol": "Sn",
+    "name": "Tin",
+    "atomicNumber": "118.71",
+    "group": 14,
+    "period": 5,
+    "atomicMass": "118.71",
+    "description": "Metal post-tranziție, folosit în aliaje și lipituri."
+  },
+  {
+    "symbol": "Sb",
+    "name": "Antimony",
+    "atomicNumber": "121.76",
+    "group": 15,
+    "period": 5,
+    "atomicMass": "121.76",
+    "description": "Metaloid, folosit în aliaje și electronice."
+  },
+  {
+    "symbol": "Te",
+    "name": "Tellurium",
+    "atomicNumber": "127.60",
+    "group": 16,
+    "period": 5,
+    "atomicMass": "127.60",
+    "description": "Metaloid, folosit în panouri solare."
+  },
+  {
+    "symbol": "I",
+    "name": "Iodine",
+    "atomicNumber": "126.9044",
+    "group": 17,
+    "period": 5,
+    "atomicMass": "126.9044",
+    "description": "Halogen, esențial pentru glanda tiroidă."
+  },
+  {
+    "symbol": "Xe",
+    "name": "Xenon",
+    "atomicNumber": "131.293",
+    "group": 18,
+    "period": 5,
+    "atomicMass": "131.293",
+    "description": "Gaz nobil, folosit în iluminat și anestezie."
+  },
+  {
+    "symbol": "Cs",
+    "name": "Caesium",
+    "atomicNumber": "132.9055",
+    "group": 1,
+    "period": 6,
+    "atomicMass": "132.9055",
+    "description": "Cel mai reactiv metal alcalin, folosit în ceasuri atomice."
+  },
+  {
+    "symbol": "Ba",
+    "name": "Barium",
+    "atomicNumber": "137.327",
+    "group": 2,
+    "period": 6,
+    "atomicMass": "137.327",
+    "description": "Metal alcalin-pământos, folosit în raze X."
+  },
+  {
+    "symbol": "La",
+    "name": "Lanthanum",
+    "atomicNumber": "138.9055",
+    "group": 4,
+    "period": 9,
+    "atomicMass": "138.9055",
+    "description": "Primul element din seria lantanidelor."
+  },
+  {
+    "symbol": "Ce",
+    "name": "Cerium",
+    "atomicNumber": "140.116",
+    "group": 5,
+    "period": 9,
+    "atomicMass": "140.116",
+    "description": "Lantanid, folosit în catalizatori auto."
+  },
+  {
+    "symbol": "Pr",
+    "name": "Praseodymium",
+    "atomicNumber": "140.9077",
+    "group": 6,
+    "period": 9,
+    "atomicMass": "140.9077",
+    "description": "Lantanid, folosit în aliaje magnetice."
+  },
+  {
+    "symbol": "Nd",
+    "name": "Neodymium",
+    "atomicNumber": "144.242",
+    "group": 7,
+    "period": 9,
+    "atomicMass": "144.242",
+    "description": "Lantanid, folosit în magneți puternici."
+  },
+  {
+    "symbol": "Pm",
+    "name": "Promethium",
+    "atomicNumber": "(145)",
+    "group": 8,
+    "period": 9,
+    "atomicMass": "145",
+    "description": "Element radioactiv, folosit în baterii nucleare."
+  },
+  {
+    "symbol": "Sm",
+    "name": "Samarium",
+    "atomicNumber": "150.36",
+    "group": 9,
+    "period": 9,
+    "atomicMass": "150.36",
+    "description": "Lantanid, folosit în magneți permanenți."
+  },
+  {
+    "symbol": "Eu",
+    "name": "Europium",
+    "atomicNumber": "151.964",
+    "group": 10,
+    "period": 9,
+    "atomicMass": "151.964",
+    "description": "Lantanid, folosit în semne luminoase."
+  },
+  {
+    "symbol": "Gd",
+    "name": "Gadolinium",
+    "atomicNumber": "157.25",
+    "group": 11,
+    "period": 9,
+    "atomicMass": "157.25",
+    "description": "Lantanid, folosit în imagistică medicală."
+  },
+  {
+    "symbol": "Tb",
+    "name": "Terbium",
+    "atomicNumber": "158.9254",
+    "group": 12,
+    "period": 9,
+    "atomicMass": "158.9254",
+    "description": "Lantanid, folosit în materiale fosforescente."
+  },
+  {
+    "symbol": "Dy",
+    "name": "Dysprosium",
+    "atomicNumber": "162.500",
+    "group": 13,
+    "period": 9,
+    "atomicMass": "162.500",
+    "description": "Lantanid, folosit în magneți permanenți."
+  },
+  {
+    "symbol": "Ho",
+    "name": "Holmium",
+    "atomicNumber": "164.9303",
+    "group": 14,
+    "period": 9,
+    "atomicMass": "164.9303",
+    "description": "Lantanid, folosit în laseruri medicale."
+  },
+  {
+    "symbol": "Er",
+    "name": "Erbium",
+    "atomicNumber": "167.259",
+    "group": 15,
+    "period": 9,
+    "atomicMass": "167.259",
+    "description": "Lantanid, folosit în fibră optică."
+  },
+  {
+    "symbol": "Tm",
+    "name": "Thulium",
+    "atomicNumber": "168.9342",
+    "group": 16,
+    "period": 9,
+    "atomicMass": "168.9342",
+    "description": "Lantanid, folosit în raze X portabile."
+  },
+  {
+    "symbol": "Yb",
+    "name": "Ytterbium",
+    "atomicNumber": "173.054",
+    "group": 17,
+    "period": 9,
+    "atomicMass": "173.054",
+    "description": "Lantanid, folosit în ceasuri atomice."
+  },
+  {
+    "symbol": "Lu",
+    "name": "Lutetium",
+    "atomicNumber": "174.9668",
+    "group": 18,
+    "period": 9,
+    "atomicMass": "174.9668",
+    "description": "Ultimul element din seria lantanidelor."
+  },
+  {
+    "symbol": "Hf",
+    "name": "Hafnium",
+    "atomicNumber": "178.49",
+    "group": 4,
+    "period": 6,
+    "atomicMass": "178.49",
+    "description": "Metal de tranziție, folosit în reactoare nucleare."
+  },
+  {
+    "symbol": "Ta",
+    "name": "Tantalum",
+    "atomicNumber": "180.9479",
+    "group": 5,
+    "period": 6,
+    "atomicMass": "180.9479",
+    "description": "Metal de tranziție, folosit în condensatori."
+  },
+  {
+    "symbol": "W",
+    "name": "Tungsten",
+    "atomicNumber": "183.84",
+    "group": 6,
+    "period": 6,
+    "atomicMass": "183.84",
+    "description": "Metal cu cel mai înalt punct de topire."
+  },
+  {
+    "symbol": "Re",
+    "name": "Rhenium",
+    "atomicNumber": "186.207",
+    "group": 7,
+    "period": 6,
+    "atomicMass": "186.207",
+    "description": "Metal de tranziție, folosit în motoare cu reacție."
+  },
+  {
+    "symbol": "Os",
+    "name": "Osmium",
+    "atomicNumber": "190.23",
+    "group": 8,
+    "period": 6,
+    "atomicMass": "190.23",
+    "description": "Cel mai dens element natural."
+  },
+  {
+    "symbol": "Ir",
+    "name": "Iridium",
+    "atomicNumber": "192.217",
+    "group": 9,
+    "period": 6,
+    "atomicMass": "192.217",
+    "description": "Metal prețios, cel mai rezistent la coroziune."
+  },
+  {
+    "symbol": "Pt",
+    "name": "Platinum",
+    "atomicNumber": "195.084",
+    "group": 10,
+    "period": 6,
+    "atomicMass": "195.084",
+    "description": "Metal prețios, folosit în catalizatori."
+  },
+  {
+    "symbol": "Au",
+    "name": "Gold",
+    "atomicNumber": "196.9666",
+    "group": 11,
+    "period": 6,
+    "atomicMass": "196.9666",
+    "description": "Metal prețios, cel mai maleabil."
+  },
+  {
+    "symbol": "Hg",
+    "name": "Mercury",
+    "atomicNumber": "200.59",
+    "group": 12,
+    "period": 6,
+    "atomicMass": "200.59",
+    "description": "Singurul metal lichid la temperatura camerei."
+  },
+  {
+    "symbol": "Tl",
+    "name": "Thallium",
+    "atomicNumber": "204.3833",
+    "group": 13,
+    "period": 6,
+    "atomicMass": "204.3833",
+    "description": "Metal toxic, folosit în electronice."
+  },
+  {
+    "symbol": "Pb",
+    "name": "Lead",
+    "atomicNumber": "207.2",
+    "group": 14,
+    "period": 6,
+    "atomicMass": "207.2",
+    "description": "Metal toxic, folosit în baterii."
+  },
+  {
+    "symbol": "Bi",
+    "name": "Bismuth",
+    "atomicNumber": "208.9804",
+    "group": 15,
+    "period": 6,
+    "atomicMass": "208.9804",
+    "description": "Cel mai puternic element diamagnetic."
+  },
+  {
+    "symbol": "Po",
+    "name": "Polonium",
+    "atomicNumber": "(209)",
+    "group": 16,
+    "period": 6,
+    "atomicMass": "209",
+    "description": "Element radioactiv, folosit în surse de căldură."
+  },
+  {
+    "symbol": "At",
+    "name": "Astatine",
+    "atomicNumber": "(210)",
+    "group": 17,
+    "period": 6,
+    "atomicMass": "210",
+    "description": "Cel mai rar element natural."
+  },
+  {
+    "symbol": "Rn",
+    "name": "Radon",
+    "atomicNumber": "(222)",
+    "group": 18,
+    "period": 6,
+    "atomicMass": "222",
+    "description": "Gaz radioactiv, periculos pentru sănătate."
+  },
+  {
+    "symbol": "Fr",
+    "name": "Francium",
+    "atomicNumber": "(223)",
+    "group": 1,
+    "period": 7,
+    "atomicMass": "223",
+    "description": "Cel mai reactiv metal alcalin, radioactiv."
+  },
+  {
+    "symbol": "Ra",
+    "name": "Radium",
+    "atomicNumber": "(226)",
+    "group": 2,
+    "period": 7,
+    "atomicMass": "226",
+    "description": "Element radioactiv, folosit în tratamente medicale."
+  },
+  {
+    "symbol": "Ac",
+    "name": "Actinium",
+    "atomicNumber": "(227)",
+    "group": 4,
+    "period": 10,
+    "atomicMass": "227",
+    "description": "Primul element din seria actinidelor."
+  },
+  {
+    "symbol": "Th",
+    "name": "Thorium",
+    "atomicNumber": "232.0381",
+    "group": 5,
+    "period": 10,
+    "atomicMass": "232.0381",
+    "description": "Actinid, potențial combustibil nuclear."
+  },
+  {
+    "symbol": "Pa",
+    "name": "Protactinium",
+    "atomicNumber": "231.0359",
+    "group": 6,
+    "period": 10,
+    "atomicMass": "231.0359",
+    "description": "Actinid, element intermediar."
+  },
+  {
+    "symbol": "U",
+    "name": "Uranium",
+    "atomicNumber": "238.0289",
+    "group": 7,
+    "period": 10,
+    "atomicMass": "238.0289",
+    "description": "Actinid, folosit în energie nucleară."
+  },
+  {
+    "symbol": "Np",
+    "name": "Neptunium",
+    "atomicNumber": "(237)",
+    "group": 8,
+    "period": 10,
+    "atomicMass": "237",
+    "description": "Primul element transuranian."
+  },
+  {
+    "symbol": "Pu",
+    "name": "Plutonium",
+    "atomicNumber": "(244)",
+    "group": 9,
+    "period": 10,
+    "atomicMass": "244",
+    "description": "Element radioactiv, folosit în arme nucleare."
+  },
+  {
+    "symbol": "Am",
+    "name": "Americium",
+    "atomicNumber": "(243)",
+    "group": 10,
+    "period": 10,
+    "atomicMass": "243",
+    "description": "Actinid, folosit în detectoare de fum."
+  },
+  {
+    "symbol": "Cm",
+    "name": "Curium",
+    "atomicNumber": "(247)",
+    "group": 11,
+    "period": 10,
+    "atomicMass": "247",
+    "description": "Actinid, folosit în surse de energie."
+  },
+  {
+    "symbol": "Bk",
+    "name": "Berkelium",
+    "atomicNumber": "(247)",
+    "group": 12,
+    "period": 10,
+    "atomicMass": "247",
+    "description": "Actinid, element sintetic."
+  },
+  {
+    "symbol": "Cf",
+    "name": "Californium",
+    "atomicNumber": "(251)",
+    "group": 13,
+    "period": 10,
+    "atomicMass": "251",
+    "description": "Actinid, folosit în neutroni."
+  },
+  {
+    "symbol": "Es",
+    "name": "Einsteinium",
+    "atomicNumber": "(252)",
+    "group": 14,
+    "period": 10,
+    "atomicMass": "252",
+    "description": "Actinid, element sintetic."
+  },
+  {
+    "symbol": "Fm",
+    "name": "Fermium",
+    "atomicNumber": "(257)",
+    "group": 15,
+    "period": 10,
+    "atomicMass": "257",
+    "description": "Actinid, element sintetic."
+  },
+  {
+    "symbol": "Md",
+    "name": "Mendelevium",
+    "atomicNumber": "(258)",
+    "group": 16,
+    "period": 10,
+    "atomicMass": "258",
+    "description": "Actinid, element sintetic."
+  },
+  {
+    "symbol": "No",
+    "name": "Nobelium",
+    "atomicNumber": "(259)",
+    "group": 17,
+    "period": 10,
+    "atomicMass": "259",
+    "description": "Actinid, element sintetic."
+  },
+  {
+    "symbol": "Lr",
+    "name": "Lawrencium",
+    "atomicNumber": "(262)",
+    "group": 18,
+    "period": 10,
+    "atomicMass": "262",
+    "description": "Ultimul element din seria actinidelor."
+  },
+  {
+    "symbol": "Rf",
+    "name": "Rutherfordium",
+    "atomicNumber": "(267)",
+    "group": 4,
+    "period": 7,
+    "atomicMass": "267",
+    "description": "Element transactinid, sintetic."
+  },
+  {
+    "symbol": "Db",
+    "name": "Dubnium",
+    "atomicNumber": "(268)",
+    "group": 5,
+    "period": 7,
+    "atomicMass": "268",
+    "description": "Element transactinid, sintetic."
+  },
+  {
+    "symbol": "Sg",
+    "name": "Seaborgium",
+    "atomicNumber": "(271)",
+    "group": 6,
+    "period": 7,
+    "atomicMass": "271",
+    "description": "Element transactinid, sintetic."
+  },
+  {
+    "symbol": "Bh",
+    "name": "Bohrium",
+    "atomicNumber": "(272)",
+    "group": 7,
+    "period": 7,
+    "atomicMass": "272",
+    "description": "Element transactinid, sintetic."
+  },
+  {
+    "symbol": "Hs",
+    "name": "Hassium",
+    "atomicNumber": "(270)",
+    "group": 8,
+    "period": 7,
+    "atomicMass": "270",
+    "description": "Element transactinid, sintetic."
+  },
+  {
+    "symbol": "Mt",
+    "name": "Meitnerium",
+    "atomicNumber": "(276)",
+    "group": 9,
+    "period": 7,
+    "atomicMass": "276",
+    "description": "Element transactinid, sintetic."
+  },
+  {
+    "symbol": "Ds",
+    "name": "Darmstadtium",
+    "atomicNumber": "(281)",
+    "group": 10,
+    "period": 7,
+    "atomicMass": "281",
+    "description": "Element transactinid, sintetic."
+  },
+  {
+    "symbol": "Rg",
+    "name": "Roentgenium",
+    "atomicNumber": "(280)",
+    "group": 11,
+    "period": 7,
+    "atomicMass": "280",
+    "description": "Element transactinid, sintetic."
+  },
+  {
+    "symbol": "Cn",
+    "name": "Copernicium",
+    "atomicNumber": "(285)",
+    "group": 12,
+    "period": 7,
+    "atomicMass": "285",
+    "description": "Element transactinid, sintetic."
+  },
+  {
+    "symbol": "Nh",
+    "name": "Nihonium",
+    "atomicNumber": "(286)",
+    "group": 13,
+    "period": 7,
+    "atomicMass": "286",
+    "description": "Element transactinid, sintetic."
+  },
+  {
+    "symbol": "Fl",
+    "name": "Flerovium",
+    "atomicNumber": "(289)",
+    "group": 14,
+    "period": 7,
+    "atomicMass": "289",
+    "description": "Element transactinid, sintetic."
+  },
+  {
+    "symbol": "Mc",
+    "name": "Moscovium",
+    "atomicNumber": "(289)",
+    "group": 15,
+    "period": 7,
+    "atomicMass": "289",
+    "description": "Element transactinid, sintetic."
+  },
+  {
+    "symbol": "Lv",
+    "name": "Livermorium",
+    "atomicNumber": "(293)",
+    "group": 16,
+    "period": 7,
+    "atomicMass": "293",
+    "description": "Element transactinid, sintetic."
+  },
+  {
+    "symbol": "Ts",
+    "name": "Tennessine",
+    "atomicNumber": "(294)",
+    "group": 17,
+    "period": 7,
+    "atomicMass": "294",
+    "description": "Element transactinid, sintetic."
+  },
+  {
+    "symbol": "Og",
+    "name": "Oganesson",
+    "atomicNumber": "(294)",
+    "group": 18,
+    "period": 7,
+    "atomicMass": "294",
+    "description": "Cel mai greu element cunoscut, sintetic."
+  }
+]
