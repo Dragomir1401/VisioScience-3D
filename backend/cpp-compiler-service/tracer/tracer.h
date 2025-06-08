@@ -20,6 +20,31 @@ class Tracer;
 // Global tracer instance
 extern Tracer* globalTracer;
 
+// Helper function to convert any numeric type to string
+template<typename T>
+std::string toString(const T& value) {
+    if constexpr (std::is_same_v<T, std::string>) {
+        return "\"" + value + "\"";
+    } else if constexpr (std::is_arithmetic_v<T>) {
+        return std::to_string(value);
+    } else {
+        return std::string(value);
+    }
+}
+
+// Helper function to serialize a pair
+template<typename T1, typename T2>
+std::string serializePair(const std::pair<T1, T2>& p) {
+    return "{\"key\":" + toString(p.first) + 
+           ",\"value\":" + toString(p.second) + "}";
+}
+
+// Helper function to serialize a value
+template<typename T>
+std::string serializeValue(const T& value) {
+    return toString(value);
+}
+
 // Base class for all traceable objects
 class Traceable {
 public:
@@ -89,7 +114,11 @@ public:
     }
 
     std::string getType() const override {
-        return "container";
+        if constexpr (std::is_same_v<Container, std::map<typename Container::key_type, typename Container::mapped_type>>) {
+            return "map";
+        } else {
+            return "container";
+        }
     }
 
     std::string getName() const override {
@@ -97,31 +126,36 @@ public:
     }
 
     std::string getState() const override {
-        std::stringstream ss;
-        ss << "[";
+        std::string result = "[";
         bool first = true;
         for (const auto& item : container) {
-            if (!first) ss << ",";
-            if constexpr (std::is_same_v<typename Container::value_type, std::string>) {
-                ss << "\"" << item << "\"";
+            if (!first) result += ",";
+            if constexpr (std::is_same_v<Container, std::map<typename Container::key_type, typename Container::mapped_type>>) {
+                result += toString(item.second);
             } else {
-                ss << item;
+                result += toString(item);
             }
             first = false;
         }
-        ss << "]";
-        return ss.str();
+        result += "]";
+        return result;
     }
 
     std::string getMetadata() const override {
-        std::stringstream ss;
-        ss << "{"
-           << "\"size\":" << container.size() << ","
-           << "\"capacity\":" << container.capacity() << ","
-           << "\"empty\":" << (container.empty() ? "true" : "false") << ","
-           << "\"element_type\":\"" << typeid(typename Container::value_type).name() << "\""
-           << "}";
-        return ss.str();
+        std::string result = "{";
+        if constexpr (std::is_same_v<Container, std::map<typename Container::key_type, typename Container::mapped_type>>) {
+            result += "\"size\":" + std::to_string(container.size()) + "," +
+                     "\"empty\":" + (container.empty() ? "true" : "false") + "," +
+                     "\"key_type\":\"" + typeid(typename Container::key_type).name() + "\"," +
+                     "\"value_type\":\"" + typeid(typename Container::mapped_type).name() + "\"";
+        } else {
+            result += "\"size\":" + std::to_string(container.size()) + "," +
+                     "\"capacity\":" + std::to_string(container.capacity()) + "," +
+                     "\"empty\":" + (container.empty() ? "true" : "false") + "," +
+                     "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
+        }
+        result += "}";
+        return result;
     }
 
     void traceOperation(const std::string& operation, const std::string& description) override {

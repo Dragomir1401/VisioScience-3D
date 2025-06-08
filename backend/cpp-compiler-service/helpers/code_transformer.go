@@ -12,6 +12,7 @@ func TransformCode(code string) string {
 	transformedCode := `#include <iostream>
 #include <vector>
 #include <string>
+#include <map>
 #include "tracer.h"
 
 using namespace tracer;
@@ -23,23 +24,58 @@ using namespace tracer;
 	var tracers []string // Keep track of all tracers we create
 
 	for i, line := range lines {
-		// Transform vector declarations - improved regex to handle more cases
-		if strings.Contains(line, "vector<") {
-			// Extract variable name - improved regex to handle more cases
-			re := regexp.MustCompile(`(?:std::)?vector<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
+		// Transform map declarations
+		if strings.Contains(line, "map<") {
+			re := regexp.MustCompile(`(?:std::)?map<(?:std::)?\w+,\s*(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
 			matches := re.FindStringSubmatch(line)
 			if len(matches) >= 2 {
 				varName := matches[1]
-				// Add tracer wrapper
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
 				tracers = append(tracers, tracerVar)
-				// Add tracer declaration after the vector declaration
 				lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", %s);",
 					tracerVar, varName, varName)
 			}
 		}
 
-		// Transform vector operations - improved regex to handle more cases
+		// Transform vector declarations
+		if strings.Contains(line, "vector<") {
+			re := regexp.MustCompile(`(?:std::)?vector<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				tracers = append(tracers, tracerVar)
+				lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", %s);",
+					tracerVar, varName, varName)
+			}
+		}
+
+		// Transform map operations
+		if strings.Contains(line, "[") && strings.Contains(line, "]=") {
+			// Handle map[key] = value operations
+			re := regexp.MustCompile(`(\w+)\[([^]]+)\]\s*=`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 3 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"insert\", \"Inserted or updated key-value pair\");",
+					tracerVar)
+			}
+		}
+
+		// Handle map erase
+		if strings.Contains(line, ".erase(") {
+			re := regexp.MustCompile(`(\w+)\.erase\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"delete\", \"Deleted key-value pair\");",
+					tracerVar)
+			}
+		}
+
+		// Transform vector operations
 		if strings.Contains(line, ".push_back(") {
 			re := regexp.MustCompile(`(\w+)\.push_back\(`)
 			matches := re.FindStringSubmatch(line)
@@ -58,28 +94,6 @@ using namespace tracer;
 				varName := matches[1]
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
 				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"delete\", \"Deleted last element\");",
-					tracerVar)
-			}
-		}
-
-		if strings.Contains(line, ".insert(") {
-			re := regexp.MustCompile(`(\w+)\.insert\(`)
-			matches := re.FindStringSubmatch(line)
-			if len(matches) >= 2 {
-				varName := matches[1]
-				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"insert\", \"Inserted element at position\");",
-					tracerVar)
-			}
-		}
-
-		if strings.Contains(line, ".erase(") {
-			re := regexp.MustCompile(`(\w+)\.erase\(`)
-			matches := re.FindStringSubmatch(line)
-			if len(matches) >= 2 {
-				varName := matches[1]
-				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"delete\", \"Deleted element at position\");",
 					tracerVar)
 			}
 		}
