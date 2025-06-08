@@ -17,7 +17,6 @@ import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import ExecutionSteps from '../components/ExecutionSteps';
 
-// Import 3D scenes
 import Vector from '../models/computer_science/Vector';
 import CppList from '../models/computer_science/List';
 import Map from '../models/computer_science/Map';
@@ -230,13 +229,13 @@ int main() {
     return 0;
 }`;
 
-const NUM_BUCKETS = 10; // Define a fixed number of buckets for visualization
+const NUM_BUCKETS = 10; 
 
 const hashString = (str, numBuckets) => {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0; // Convert to 32bit integer
+    hash |= 0; 
   }
   return Math.abs(hash) % numBuckets;
 };
@@ -297,7 +296,6 @@ const CppEditorPage = () => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [structureStates, setStructureStates] = useState({});
 
-  // Map structure names to their components
   const structureComponents = {
     'vector': Vector,
     'list': CppList,
@@ -372,7 +370,7 @@ const CppEditorPage = () => {
     setOutput('');
     setExecutionSteps([]);
     setCurrentStepIndex(0);
-    setStructureStates({}); // Reset structure states on new run
+    setStructureStates({}); 
 
     try {
       const response = await fetch('http://localhost:8000/cpp-compiler/compile-run', {
@@ -624,7 +622,6 @@ const CppEditorPage = () => {
       setSelectedStructure(structure);
       setShowScene(true);
       
-      // Find the last step that contains data for this structure
       const lastStep = [...executionSteps].reverse().find(step => 
         step.name === structure.variableName && step.state
       );
@@ -646,8 +643,8 @@ const CppEditorPage = () => {
           [structure.variableName]: structureData
         }));
         console.log("DEBUG (CppEditorPage.jsx handleStructureClick): Updated structureStates:", {
-            ...structureStates, // Log the current state for context
-            [structure.variableName]: structureData // Log the new value for the specific variable
+            ...structureStates, 
+            [structure.variableName]: structureData 
         });
       }
     }
@@ -662,7 +659,6 @@ const CppEditorPage = () => {
 
   const handleStepChange = (index) => {
     setCurrentStepIndex(index);
-    // Update the state for the currently selected structure
     if (selectedStructure) {
       const currentStep = executionSteps[index];
       if (currentStep && currentStep.name === selectedStructure.variableName) {
@@ -682,8 +678,8 @@ const CppEditorPage = () => {
           [selectedStructure.variableName]: structureData
         }));
         console.log("DEBUG (CppEditorPage.jsx handleStepChange): Updated structureStates:", {
-            ...structureStates, // Log the current state for context
-            [selectedStructure.variableName]: structureData // Log the new value for the specific variable
+            ...structureStates,
+            [selectedStructure.variableName]: structureData 
         });
       }
     }
