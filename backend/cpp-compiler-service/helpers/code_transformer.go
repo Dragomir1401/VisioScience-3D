@@ -23,16 +23,17 @@ using namespace tracer;
 	var tracers []string // Keep track of all tracers we create
 
 	for i, line := range lines {
-		// Transform vector declarations
+		// Transform vector declarations - improved regex to handle more cases
 		if strings.Contains(line, "vector<") {
 			// Extract variable name - improved regex to handle more cases
-			re := regexp.MustCompile(`(?:std::)?vector<(?:std::)?\w+>\s+(\w+)\s*(?:=|{)`)
+			re := regexp.MustCompile(`(?:std::)?vector<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
 			matches := re.FindStringSubmatch(line)
 			if len(matches) >= 2 {
 				varName := matches[1]
 				// Add tracer wrapper
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
 				tracers = append(tracers, tracerVar)
+				// Add tracer declaration after the vector declaration
 				lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", %s);",
 					tracerVar, varName, varName)
 			}
