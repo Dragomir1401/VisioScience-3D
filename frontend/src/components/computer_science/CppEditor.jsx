@@ -14,7 +14,7 @@ import ArrayDemo from '../../models/computer_science/Array';
 import DequeDemo from '../../models/computer_science/Deque';
 import ListDemo from '../../models/computer_science/List';
 import DoublyLinkedListDemo from '../../models/computer_science/DoublyLinkedList';
-import { MapScene } from '../../models/computer_science/UnorderedMap';
+import { UnorderedMapScene } from '../../models/computer_science/UnorderedMap';
 import AVLTreeDemo from '../../models/computer_science/Map';
 import { UnorderedSetScene } from '../../models/computer_science/UnorderedSet';
 import AVLSetDemo from '../../models/computer_science/Set';
@@ -22,6 +22,8 @@ import AVLMultiSetDemo from '../../models/computer_science/Multiset';
 import PriorityQueueDemo from '../../models/computer_science/PriorityQueue';
 import QueueDemo from '../../models/computer_science/Queue';
 import StackDemo from '../../models/computer_science/Stack';
+import UnorderedMap from '../../models/computer_science/UnorderedMap';
+import UnorderedSet from '../../models/computer_science/UnorderedSet';
 
 // Styled components
 const EditorContainer = styled(Paper)(({ theme }) => ({
@@ -275,27 +277,27 @@ const CppEditor = () => {
               Unordered Containers
             </GroupTitle>
             <Grid container spacing={3}>
-              <Grid item xs={12} style={{ height: '600px' }}>
-                <MapScene 
-                  buckets={buckets}
-                  backgroundColor="#2D2D2D"
-                  textColor="#D4D4D4"
-                  nodeColor="#9B6B9E"
-                  edgeColor="#D4A5A5"
-                  width="100%"
-                  height="100%"
-                />
+              <Grid item xs={12} sx={{ height: '800px', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                  <UnorderedMap 
+                    buckets={buckets}
+                    showControls={false}
+                    height="100%"
+                    width="100%"
+                    canvasHeight="100%"
+                  />
+                </Box>
               </Grid>
-              <Grid item xs={12} style={{ height: '600px' }}>
-                <UnorderedSetScene 
-                  buckets={buckets}
-                  backgroundColor="#2D2D2D"
-                  textColor="#D4D4D4"
-                  nodeColor="#9B6B9E"
-                  edgeColor="#D4A5A5"
-                  width="100%"
-                  height="100%"
-                />
+              <Grid item xs={12} sx={{ height: '800px', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                  <UnorderedSet 
+                    buckets={buckets}
+                    showControls={false}
+                    height="100%"
+                    width="100%"
+                    canvasHeight="100%"
+                  />
+                </Box>
               </Grid>
             </Grid>
           </ContainerGroup>
@@ -305,55 +307,64 @@ const CppEditor = () => {
               Ordered Containers
             </GroupTitle>
             <Grid container spacing={3}>
-              <Grid item xs={12} style={{ height: '600px' }}>
-                <AVLTreeDemo 
-                  root={root}
-                  onRootChange={setRoot}
-                  backgroundColor="#2D2D2D"
-                  textColor="#D4D4D4"
-                  nodeColor="#9B6B9E"
-                  edgeColor="#D4A5A5"
-                  width="100%"
-                  height="100%"
-                />
+              <Grid item xs={12} sx={{ height: '800px', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                  <AVLTreeDemo 
+                    root={root}
+                    onRootChange={setRoot}
+                    backgroundColor="#2D2D2D"
+                    textColor="#D4D4D4"
+                    nodeColor="#9B6B9E"
+                    edgeColor="#D4A5A5"
+                    width="100%"
+                    height="100%"
+                    canvasHeight="100%"
+                  />
+                </Box>
               </Grid>
-              <Grid item xs={12} style={{ height: '600px' }}>
-                <AVLSetDemo 
-                  root={root}
-                  onRootChange={setRoot}
-                  backgroundColor="#2D2D2D"
-                  textColor="#D4D4D4"
-                  nodeColor="#9B6B9E"
-                  edgeColor="#D4A5A5"
-                  width="100%"
-                  height="100%"
-                />
+              <Grid item xs={12} sx={{ height: '800px', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                  <AVLSetDemo 
+                    root={root}
+                    onRootChange={setRoot}
+                    backgroundColor="#2D2D2D"
+                    textColor="#D4D4D4"
+                    nodeColor="#9B6B9E"
+                    edgeColor="#D4A5A5"
+                    width="100%"
+                    height="100%"
+                  />
+                </Box>
               </Grid>
-              <Grid item xs={12} style={{ height: '600px' }}>
-                <AVLMultiSetDemo 
-                  root={root}
-                  onRootChange={setRoot}
-                  backgroundColor="#2D2D2D"
-                  textColor="#D4D4D4"
-                  nodeColor="#9B6B9E"
-                  edgeColor="#D4A5A5"
-                  width="100%"
-                  height="100%"
-                />
+              <Grid item xs={12} sx={{ height: '800px', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                  <AVLMultiSetDemo 
+                    root={root}
+                    onRootChange={setRoot}
+                    backgroundColor="#2D2D2D"
+                    textColor="#D4D4D4"
+                    nodeColor="#9B6B9E"
+                    edgeColor="#D4A5A5"
+                    width="100%"
+                    height="100%"
+                  />
+                </Box>
               </Grid>
-              <Grid item xs={12} style={{ height: '600px' }}>
-                <PriorityQueueDemo 
-                  elements={elements}
-                  onElementsChange={setElements}
-                  type={type}
-                  onTypeChange={setType}
-                  backgroundColor="#2D2D2D"
-                  textColor="#D4D4D4"
-                  nodeColor="#9B6B9E"
-                  edgeColor="#D4A5A5"
-                  width="100%"
-                  height="100%"
-                />
+              <Grid item xs={12} sx={{ height: '800px', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                  <PriorityQueueDemo 
+                    elements={elements}
+                    onElementsChange={setElements}
+                    type={type}
+                    onTypeChange={setType}
+                    backgroundColor="#2D2D2D"
+                    textColor="#D4D4D4"
+                    nodeColor="#9B6B9E"
+                    edgeColor="#D4A5A5"
+                    width="100%"
+                    height="100%"
+                  />
+                </Box>
               </Grid>
             </Grid>
           </ContainerGroup>
@@ -363,82 +374,94 @@ const CppEditor = () => {
               Linear Containers
             </GroupTitle>
             <Grid container spacing={3}>
-              <Grid item xs={12} style={{ height: '600px' }}>
-                <ArrayDemo 
-                  elements={elements}
-                  onElementsChange={setElements}
-                  backgroundColor="#2D2D2D"
-                  textColor="#D4D4D4"
-                  nodeColor="#9B6B9E"
-                  highlightGetColor="#D4A5A5"
-                  highlightSetColor="#9B6B9E"
-                  width="100%"
-                  height="100%"
-                />
+              <Grid item xs={12} sx={{ height: '800px', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                  <ArrayDemo 
+                    elements={elements}
+                    onElementsChange={setElements}
+                    backgroundColor="#2D2D2D"
+                    textColor="#D4D4D4"
+                    nodeColor="#9B6B9E"
+                    highlightGetColor="#D4A5A5"
+                    highlightSetColor="#9B6B9E"
+                    width="100%"
+                    height="100%"
+                  />
+                </Box>
               </Grid>
-              <Grid item xs={12} style={{ height: '600px' }}>
-                <DequeDemo 
-                  elements={elements}
-                  onElementsChange={setElements}
-                  backgroundColor="#2D2D2D"
-                  textColor="#D4D4D4"
-                  nodeColor="#9B6B9E"
-                  frontIndicatorColor="#D4A5A5"
-                  backIndicatorColor="#9B6B9E"
-                  width="100%"
-                  height="100%"
-                />
+              <Grid item xs={12} sx={{ height: '800px', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                  <DequeDemo 
+                    elements={elements}
+                    onElementsChange={setElements}
+                    backgroundColor="#2D2D2D"
+                    textColor="#D4D4D4"
+                    nodeColor="#9B6B9E"
+                    frontIndicatorColor="#D4A5A5"
+                    backIndicatorColor="#9B6B9E"
+                    width="100%"
+                    height="100%"
+                  />
+                </Box>
               </Grid>
-              <Grid item xs={12} style={{ height: '600px' }}>
-                <ListDemo 
-                  elements={elements}
-                  onElementsChange={setElements}
-                  backgroundColor="#2D2D2D"
-                  textColor="#D4D4D4"
-                  nodeColor="#9B6B9E"
-                  arrowColor="#D4A5A5"
-                  nullColor="#9B6B9E"
-                  width="100%"
-                  height="100%"
-                />
+              <Grid item xs={12} sx={{ height: '800px', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                  <ListDemo 
+                    elements={elements}
+                    onElementsChange={setElements}
+                    backgroundColor="#2D2D2D"
+                    textColor="#D4D4D4"
+                    nodeColor="#9B6B9E"
+                    arrowColor="#D4A5A5"
+                    nullColor="#9B6B9E"
+                    width="100%"
+                    height="100%"
+                  />
+                </Box>
               </Grid>
-              <Grid item xs={12} style={{ height: '600px' }}>
-                <DoublyLinkedListDemo 
-                  elements={elements}
-                  onElementsChange={setElements}
-                  backgroundColor="#2D2D2D"
-                  textColor="#D4D4D4"
-                  nodeColor="#9B6B9E"
-                  arrowColor="#D4A5A5"
-                  nullColor="#9B6B9E"
-                  width="100%"
-                  height="100%"
-                />
+              <Grid item xs={12} sx={{ height: '800px', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                  <DoublyLinkedListDemo 
+                    elements={elements}
+                    onElementsChange={setElements}
+                    backgroundColor="#2D2D2D"
+                    textColor="#D4D4D4"
+                    nodeColor="#9B6B9E"
+                    arrowColor="#D4A5A5"
+                    nullColor="#9B6B9E"
+                    width="100%"
+                    height="100%"
+                  />
+                </Box>
               </Grid>
-              <Grid item xs={12} style={{ height: '600px' }}>
-                <QueueDemo 
-                  elements={elements}
-                  onElementsChange={setElements}
-                  backgroundColor="#2D2D2D"
-                  textColor="#D4D4D4"
-                  nodeColor="#9B6B9E"
-                  frontIndicatorColor="#D4A5A5"
-                  backIndicatorColor="#9B6B9E"
-                  width="100%"
-                  height="100%"
-                />
+              <Grid item xs={12} sx={{ height: '800px', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                  <QueueDemo 
+                    elements={elements}
+                    onElementsChange={setElements}
+                    backgroundColor="#2D2D2D"
+                    textColor="#D4D4D4"
+                    nodeColor="#9B6B9E"
+                    frontIndicatorColor="#D4A5A5"
+                    backIndicatorColor="#9B6B9E"
+                    width="100%"
+                    height="100%"
+                  />
+                </Box>
               </Grid>
-              <Grid item xs={12} style={{ height: '600px' }}>
-                <StackDemo 
-                  elements={elements}
-                  onElementsChange={setElements}
-                  backgroundColor="#2D2D2D"
-                  textColor="#D4D4D4"
-                  nodeColor="#9B6B9E"
-                  topIndicatorColor="#D4A5A5"
-                  width="100%"
-                  height="100%"
-                />
+              <Grid item xs={12} sx={{ height: '800px', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                  <StackDemo 
+                    elements={elements}
+                    onElementsChange={setElements}
+                    backgroundColor="#2D2D2D"
+                    textColor="#D4D4D4"
+                    nodeColor="#9B6B9E"
+                    topIndicatorColor="#D4A5A5"
+                    width="100%"
+                    height="100%"
+                  />
+                </Box>
               </Grid>
             </Grid>
           </ContainerGroup>

@@ -6,7 +6,7 @@ import CSLanding from "../components/computer_science/ComputerScienceLanding";
 import VectorScene from "../models/computer_science/Vector";
 import VectorOperations from "../components/computer_science/VectorOperations";
 import VectorFormulas from "../components/computer_science/VectorFormulas";
-import { MapScene } from "../models/computer_science/UnorderedMap";
+import { UnorderedMapScene } from "../models/computer_science/UnorderedMap";
 import { MapOperations } from "../components/computer_science/UnorderedMapOperations";
 import UnorderedMapFormulas from "../components/computer_science/UnorderedMapFormulas";
 import AVLTreeDemo from "../models/computer_science/Map";
@@ -145,7 +145,7 @@ const ComputerScience = () => {
 
         {selected?.id === "unordered_map" && viewMode === "landing" && (
           <div className="space-y-6">
-            <MapScene 
+            <UnorderedMapScene 
               buckets={buckets}
               showControls={true}
               backgroundColor="#2D2D2D"

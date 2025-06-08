@@ -181,13 +181,13 @@ const ExecutionSteps = ({ steps = [], onStepChange, currentStepIndex = 0 }) => {
                         value.map((item, i) => (
                           <StateChip
                             key={i}
-                            label={item}
+                            label={typeof item === 'object' ? `${item.key} → ${item.value}` : item}
                             size="small"
                           />
                         ))
                       ) : (
                         <StateChip
-                          label={value}
+                          label={typeof value === 'object' ? `${value.key} → ${value.value}` : value}
                           size="small"
                         />
                       )}

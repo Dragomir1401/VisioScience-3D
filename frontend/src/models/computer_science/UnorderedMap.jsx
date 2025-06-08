@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text } from "@react-three/drei";
 import ForestBackground4 from "../ForestBackground4";
+import useMeasure from "react-use-measure";
 
-export const MapScene = ({ 
+export const UnorderedMapScene = ({ 
   buckets = [
-    [{ key: 1, value: "A" }, { key: 2, value: "B" }],
-    [{ key: 3, value: "C" }],
-    [{ key: 4, value: "D" }, { key: 5, value: "E" }],
+    [{ key: "John", value: 85 }, { key: "Alice", value: 92 }],
+    [{ key: "Bob", value: 78 }],
+    [{ key: "Charlie", value: 88 }, { key: "David", value: 95 }],
   ],
   backgroundColor = "#2D2D2D",
   textColor = "#D4D4D4",
@@ -21,12 +22,36 @@ export const MapScene = ({
   const spacing = 2;
   const count = buckets.length;
   const centerX = count > 0 ? ((count - 1) * spacing) / 2 : 0;
-  const camHeight = 4;
-  const camDist = count * spacing - 3;
+  const camHeight = 8;
+  const camDist = count * spacing + 2;
+  const [bounds, ref] = useMeasure();
 
   return (
-    <div style={{ width, height, position: 'relative', borderRadius: '8px', overflow: 'hidden', border: '2px solid #9B6B9E' }}>
-      <Canvas camera={{ position: [centerX, camHeight, camDist], fov: 60 }} style={{ height: canvasHeight, width: width }}>
+    <div style={{ 
+      width, 
+      height, 
+      position: 'relative', 
+      borderRadius: '8px', 
+      overflow: 'hidden',
+      border: '2px solid #9B6B9E',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      <Canvas 
+        camera={{ 
+          position: [centerX, camHeight, camDist], 
+          fov: 75,
+          near: 0.1,
+          far: 1000
+        }} 
+        style={{
+          flex: 1,
+          width: '100%',
+          height: '100%'
+        }}
+        width={bounds.width}
+        height={bounds.height}
+      >
         <color attach="background" args={[backgroundColor]} />
         <ambientLight intensity={0.4} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
@@ -73,10 +98,14 @@ export const MapScene = ({
         })}
 
         <OrbitControls
-          target={[centerX, 0, 0]}
+          target={[centerX, 2, 0]}
           enablePan
           enableZoom
           enableRotate
+          minDistance={2}
+          maxDistance={15}
+          minPolarAngle={0}
+          maxPolarAngle={Math.PI / 2}
         />
       </Canvas>
     </div>
@@ -84,7 +113,7 @@ export const MapScene = ({
 };
 
 const UnorderedMap = (props) => {
-  return <MapScene {...props} />;
+  return <UnorderedMapScene {...props} />;
 };
 
 export default UnorderedMap;

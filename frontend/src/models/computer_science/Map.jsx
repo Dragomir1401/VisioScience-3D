@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Line } from "@react-three/drei";
 import ForestBackground4 from "../ForestBackground4";
 import { PlusIcon, TrashIcon, RefreshIcon } from "@heroicons/react/solid";
+import useMeasure from "react-use-measure";
 
 class AVLNode {
   constructor(key, value) {
@@ -14,11 +15,11 @@ class AVLNode {
   }
 }
 
-const height = (node) => (node ? node.height : 0);
+const getNodeHeight = (node) => (node ? node.height : 0);
 const updateHeight = (node) => {
-  node.height = 1 + Math.max(height(node.left), height(node.right));
+  node.height = 1 + Math.max(getNodeHeight(node.left), getNodeHeight(node.right));
 };
-const balanceFactor = (node) => height(node.left) - height(node.right);
+const balanceFactor = (node) => getNodeHeight(node.left) - getNodeHeight(node.right);
 const rotateRight = (y) => {
   const x = y.left;
   y.left = x.right;
@@ -76,13 +77,13 @@ export function deleteNode(node, key) {
   if (!node) return null;
   updateHeight(node);
   const bf = balanceFactor(node);
-  if (bf > 1 && balanceFactor(node.left) >= 0) return rotateRight(node);
-  if (bf > 1 && balanceFactor(node.left) < 0) {
+  if (bf > 1 && getNodeHeight(node.left) >= 0) return rotateRight(node);
+  if (bf > 1 && getNodeHeight(node.left) < 0) {
     node.left = rotateLeft(node.left);
     return rotateRight(node);
   }
-  if (bf < -1 && balanceFactor(node.right) <= 0) return rotateLeft(node);
-  if (bf < -1 && balanceFactor(node.right) > 0) {
+  if (bf < -1 && getNodeHeight(node.right) <= 0) return rotateLeft(node);
+  if (bf < -1 && getNodeHeight(node.right) > 0) {
     node.right = rotateRight(node.right);
     return rotateLeft(node);
   }
@@ -114,7 +115,8 @@ export default function AVLTreeDemo({
   nodeColor = "#4f46e5",
   edgeColor = "#10b981",
   width = "100%",
-  height = "650px"
+  height = "100%",
+  canvasHeight = "100%"
 }) {
   const [internalRoot, setInternalRoot] = useState(null);
   const root = externalRoot !== null ? externalRoot : internalRoot;
@@ -176,8 +178,10 @@ export default function AVLTreeDemo({
       edges.push({ from: [x, y, 0], to: [...posMap.get(node.right), 0] });
   });
 
+  const [bounds, ref] = useMeasure();
+
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-6" style={{ height: '100%' }}>
       {showControls && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
           <h4 className="text-lg font-semibold text-mulberry">
@@ -229,8 +233,25 @@ export default function AVLTreeDemo({
         </div>
       )}
 
-      <div className={showControls ? "w-2/3" : "w-full"} style={{ height }}>
-        <Canvas camera={{ position: [0, 4, 12], fov: 60 }}>
+      <div ref={ref} className={showControls ? "w-2/3" : "w-full"} style={{ 
+        height, 
+        position: 'relative', 
+        borderRadius: '8px', 
+        overflow: 'hidden',
+        border: '2px solid #9B6B9E',
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+        <Canvas 
+          camera={{ position: [0, 5, 12], fov: 75, near: 0.1, far: 1000 }}
+          style={{
+            flex: 1,
+            width: '100%',
+            height: '100%'
+          }}
+          width={bounds.width}
+          height={bounds.height}
+        >
           <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 10, 5]} intensity={1} />
@@ -266,7 +287,16 @@ export default function AVLTreeDemo({
             </group>
           ))}
 
-          <OrbitControls />
+          <OrbitControls 
+            target={[0, 1, 0]}
+            enablePan
+            enableZoom
+            enableRotate
+            minDistance={2}
+            maxDistance={15}
+            minPolarAngle={0}
+            maxPolarAngle={Math.PI / 2}
+          />
         </Canvas>
       </div>
     </div>
