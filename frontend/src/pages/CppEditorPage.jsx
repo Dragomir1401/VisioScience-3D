@@ -348,6 +348,7 @@ const CppEditorPage = () => {
       });
 
       const data = await response.json();
+      console.log('Backend response:', data);
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to compile and run code');
@@ -358,10 +359,12 @@ const CppEditorPage = () => {
       } else {
         setOutput(data.output);
         if (data.executionData) {
+          console.log('Execution data received:', data.executionData);
           setExecutionSteps(data.executionData);
         }
       }
     } catch (err) {
+      console.error('Error during execution:', err);
       setError(err.message);
     } finally {
       setIsLoading(false);
@@ -771,13 +774,20 @@ const CppEditorPage = () => {
                   </Box>
                   <Box sx={{ flex: 1, p: 2 }}>
                     {selectedStructure.name === 'vector' && (
-                      <Vector 
-                        elements={executionSteps[currentStepIndex]?.state?.elements || []} 
-                        showControls={false} 
-                        height="100%" 
-                        width="100%" 
-                        canvasHeight="100%" 
-                      />
+                      (() => {
+                        const currentStep = executionSteps[currentStepIndex];
+                        console.log('Current step:', currentStep);
+                        console.log('Vector state:', currentStep?.state);
+                        return (
+                          <Vector 
+                            elements={currentStep?.state || []} 
+                            showControls={false} 
+                            height="100%" 
+                            width="100%" 
+                            canvasHeight="100%" 
+                          />
+                        );
+                      })()
                     )}
                     {selectedStructure.name === 'unordered_map' && (
                       <UnorderedMap 
