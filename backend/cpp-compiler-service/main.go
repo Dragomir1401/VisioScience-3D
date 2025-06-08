@@ -2,37 +2,32 @@ package main
 
 import (
 	"bytes"
+	"cpp-compiler-service/helpers"
+	"cpp-compiler-service/models"
 	"encoding/json"
 	"log"
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"strings"
 	"time"
 
 	gorillaHandlers "github.com/gorilla/handlers"
 )
 
-type CodeExecutionRequest struct {
-	Code  string `json:"code"`
-	Input string `json:"input"`
-}
-
-type CodeExecutionResponse struct {
-	Output        string        `json:"output"`
-	Error         string        `json:"error"`
-	Success       bool          `json:"success"`
-	ExecutionData []interface{} `json:"execution_data"`
-}
-
 func compileAndRun(w http.ResponseWriter, r *http.Request) {
 	log.Println("[compileAndRun] Received request")
 	w.Header().Set("Content-Type", "application/json")
 
-	var req CodeExecutionRequest
+	var req models.CodeExecutionRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid JSON: "+err.Error(), http.StatusBadRequest)
 		return
 	}
+
+	// Transform the code to use our tracing system
+	transformedCode := helpers.TransformCode(req.Code)
 
 	tmpDir, err := os.MkdirTemp("", "cpp-exec-*")
 	if err != nil {
@@ -41,32 +36,56 @@ func compileAndRun(w http.ResponseWriter, r *http.Request) {
 	}
 	defer os.RemoveAll(tmpDir)
 
-	codeFile := tmpDir + "/main.cpp"
-	execFile := tmpDir + "/a.out"
+	// Copy tracer files to temp directory
+	tracerDir := filepath.Join(tmpDir, "tracer")
+	if err := os.Mkdir(tracerDir, 0755); err != nil {
+		http.Error(w, "Failed to create tracer dir: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-	if err := os.WriteFile(codeFile, []byte(req.Code), 0644); err != nil {
+	// Write tracer files
+	if err := os.WriteFile(filepath.Join(tracerDir, "tracer.h"), []byte(tracerHeader), 0644); err != nil {
+		http.Error(w, "Failed to write tracer.h: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if err := os.WriteFile(filepath.Join(tracerDir, "tracer.cpp"), []byte(tracerImpl), 0644); err != nil {
+		http.Error(w, "Failed to write tracer.cpp: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Write main code
+	codeFile := filepath.Join(tmpDir, "main.cpp")
+	if err := os.WriteFile(codeFile, []byte(transformedCode), 0644); err != nil {
 		http.Error(w, "Failed to write code file: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	// Compile the code with the correct include path
 	log.Println("[compileAndRun] Compiling code...")
-	compileCmd := exec.Command("g++", codeFile, "-o", execFile)
+	compileCmd := exec.Command("g++",
+		"-std=c++17",
+		"-I"+tracerDir, // Add the tracer directory to include path
+		codeFile,
+		filepath.Join(tracerDir, "tracer.cpp"),
+		"-o", filepath.Join(tmpDir, "a.out"))
 	var compileErr bytes.Buffer
 	compileCmd.Stderr = &compileErr
 
 	err = compileCmd.Run()
 	if err != nil {
 		log.Println("[compileAndRun] Compilation error:", compileErr.String())
-		json.NewEncoder(w).Encode(CodeExecutionResponse{
-			Output:  "",
-			Error:   "Compilation failed: " + compileErr.String(),
-			Success: false,
+		json.NewEncoder(w).Encode(models.CodeExecutionResponse{
+			Output:        "",
+			Error:         "Compilation failed: " + compileErr.String(),
+			Success:       false,
+			ExecutionData: []models.ExecutionStep{},
 		})
 		return
 	}
 
+	// Run the executable
 	log.Println("[compileAndRun] Running executable...")
-	runCmd := exec.Command(execFile)
+	runCmd := exec.Command(filepath.Join(tmpDir, "a.out"))
 	runCmd.Stdin = bytes.NewBufferString(req.Input)
 	var runOutput bytes.Buffer
 	var runErr bytes.Buffer
@@ -78,34 +97,91 @@ func compileAndRun(w http.ResponseWriter, r *http.Request) {
 		runErrCh <- runCmd.Run()
 	}()
 
+	var executionSteps []models.ExecutionStep
+	var outputStr string
+	var errorStr string
+	var success bool
+
 	select {
 	case err := <-runErrCh:
 		if err != nil {
 			log.Println("[compileAndRun] Execution error:", runErr.String())
-			json.NewEncoder(w).Encode(CodeExecutionResponse{
-				Output:  runOutput.String(),
-				Error:   "Execution failed: " + runErr.String() + err.Error(),
-				Success: false,
-			})
-			return
+			outputStr = runOutput.String()
+			errorStr = "Execution failed: " + runErr.String() + err.Error()
+			success = false
+		} else {
+			outputStr = runOutput.String()
+			errorStr = runErr.String()
+			success = true
 		}
 	case <-time.After(10 * time.Second):
 		log.Println("[compileAndRun] Execution timed out")
 		runCmd.Process.Kill()
-		json.NewEncoder(w).Encode(CodeExecutionResponse{
-			Output:  runOutput.String(),
-			Error:   "Execution timed out after 10 seconds",
-			Success: false,
-		})
-		return
+		outputStr = runOutput.String()
+		errorStr = "Execution timed out after 10 seconds"
+		success = false
 	}
 
-	log.Println("[compileAndRun] Execution successful")
-	json.NewEncoder(w).Encode(CodeExecutionResponse{
-		Output:        runOutput.String(),
-		Error:         runErr.String(),
-		Success:       true,
-		ExecutionData: []interface{}{},
+	// Parse execution output if we have any
+	if outputStr != "" {
+		log.Printf("[compileAndRun] Raw output: %s", outputStr)
+
+		// Split output into program output and execution data
+		var programOutput strings.Builder
+		var executionData strings.Builder
+
+		for _, line := range strings.Split(outputStr, "\n") {
+			line = strings.TrimSpace(line)
+			if line == "" {
+				continue
+			}
+
+			log.Printf("[compileAndRun] Processing line: %s", line)
+
+			// Check if the line contains a state marker
+			if stateIndex := strings.Index(line, "STATE:"); stateIndex != -1 {
+				// Extract the state data
+				stateData := line[stateIndex+6:] // Skip "STATE:"
+				executionData.WriteString(stateData)
+				executionData.WriteString("\n")
+
+				// Extract any program output before the state marker
+				if stateIndex > 0 {
+					programOutput.WriteString(line[:stateIndex])
+					programOutput.WriteString("\n")
+				}
+			} else {
+				// No state marker, it's just program output
+				programOutput.WriteString(line)
+				programOutput.WriteString("\n")
+			}
+		}
+
+		// Parse execution data
+		if executionData.Len() > 0 {
+			log.Printf("[compileAndRun] Execution data to parse: %s", executionData.String())
+			execOutput, err := helpers.ParseExecutionOutput(executionData.String())
+			if err != nil {
+				log.Printf("[compileAndRun] Error parsing execution output: %v", err)
+			} else {
+				executionSteps = helpers.ConvertToExecutionSteps(execOutput)
+				log.Printf("[compileAndRun] Parsed execution steps: %+v", executionSteps)
+			}
+		} else {
+			log.Println("[compileAndRun] No execution data found")
+		}
+
+		// Set the actual program output
+		outputStr = strings.TrimSpace(programOutput.String())
+		log.Printf("[compileAndRun] Final program output: %s", outputStr)
+	}
+
+	log.Println("[compileAndRun] Sending response")
+	json.NewEncoder(w).Encode(models.CodeExecutionResponse{
+		Output:        outputStr,
+		Error:         errorStr,
+		Success:       success,
+		ExecutionData: executionSteps,
 	})
 }
 
@@ -123,3 +199,138 @@ func main() {
 	log.Println("C++ Compiler Service running on :8081")
 	log.Fatal(http.ListenAndServe(":8081", corsObj(r)))
 }
+
+// Tracer source files as strings
+var tracerHeader = `#pragma once
+
+#include <string>
+#include <vector>
+#include <map>
+#include <memory>
+#include <functional>
+#include <iostream>
+#include <sstream>
+#include <typeinfo>
+#include <typeindex>
+
+namespace tracer {
+
+// Forward declarations
+class Traceable;
+class Tracer;
+
+// Global tracer instance
+extern Tracer* globalTracer;
+
+// Base class for all traceable objects
+class Traceable {
+public:
+    virtual ~Traceable() = default;
+    virtual std::string getType() const = 0;
+    virtual std::string getName() const = 0;
+    virtual std::string getState() const = 0;
+    virtual void traceOperation(const std::string& operation, const std::string& description) = 0;
+};
+
+// Main tracer class
+class Tracer {
+public:
+    static Tracer& getInstance() {
+        static Tracer instance;
+        return instance;
+    }
+
+    void registerObject(Traceable* obj) {
+        objects[obj->getName()] = obj;
+    }
+
+    void unregisterObject(Traceable* obj) {
+        objects.erase(obj->getName());
+    }
+
+    void traceOperation(const std::string& name, const std::string& operation, 
+                       const std::string& description) {
+        auto it = objects.find(name);
+        if (it != objects.end()) {
+            it->second->traceOperation(operation, description);
+        }
+    }
+
+    void snapshot() {
+        for (const auto& [name, obj] : objects) {
+            std::cout << "STATE:{\"type\":\"" << obj->getType() << "\","
+                     << "\"name\":\"" << obj->getName() << "\","
+                     << "\"state\":" << obj->getState() << ","
+                     << "\"operation\":\"snapshot\","
+                     << "\"description\":\"Program state snapshot\"}" << std::endl;
+        }
+    }
+
+private:
+    std::map<std::string, Traceable*> objects;
+};
+
+// Template for tracing containers
+template<typename Container>
+class ContainerTracer : public Traceable {
+public:
+    ContainerTracer(const std::string& name, Container& container)
+        : name(name), container(container) {
+        globalTracer->registerObject(this);
+    }
+
+    ~ContainerTracer() {
+        globalTracer->unregisterObject(this);
+    }
+
+    std::string getType() const override {
+        return "container";
+    }
+
+    std::string getName() const override {
+        return name;
+    }
+
+    std::string getState() const override {
+        std::stringstream ss;
+        ss << "[";
+        bool first = true;
+        for (const auto& item : container) {
+            if (!first) ss << ",";
+            if constexpr (std::is_same_v<typename Container::value_type, std::string>) {
+                ss << "\"" << item << "\"";
+            } else {
+                ss << item;
+            }
+            first = false;
+        }
+        ss << "]";
+        return ss.str();
+    }
+
+    void traceOperation(const std::string& operation, const std::string& description) override {
+        std::cout << "STATE:{\"type\":\"" << getType() << "\","
+                 << "\"name\":\"" << getName() << "\","
+                 << "\"state\":" << getState() << ","
+                 << "\"operation\":\"" << operation << "\","
+                 << "\"description\":\"" << description << "\"}" << std::endl;
+    }
+
+private:
+    std::string name;
+    Container& container;
+};
+
+// Helper function to create a traced container
+template<typename Container>
+ContainerTracer<Container> makeTracedContainer(const std::string& name, Container& container) {
+    return ContainerTracer<Container>(name, container);
+}
+
+} // namespace tracer`
+
+var tracerImpl = `#include "tracer.h"
+
+namespace tracer {
+    Tracer* globalTracer = &Tracer::getInstance();
+}`
