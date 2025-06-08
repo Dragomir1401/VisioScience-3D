@@ -116,6 +116,8 @@ public:
     std::string getType() const override {
         if constexpr (std::is_same_v<Container, std::map<typename Container::key_type, typename Container::mapped_type>>) {
             return "map";
+        } else if constexpr (std::is_same_v<Container, std::vector<typename Container::value_type>>) {
+            return "vector";
         } else {
             return "container";
         }
@@ -131,7 +133,7 @@ public:
         for (const auto& item : container) {
             if (!first) result += ",";
             if constexpr (std::is_same_v<Container, std::map<typename Container::key_type, typename Container::mapped_type>>) {
-                result += toString(item.second);
+                result += serializePair(item);
             } else {
                 result += toString(item);
             }

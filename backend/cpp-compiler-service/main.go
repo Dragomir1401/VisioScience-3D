@@ -297,6 +297,19 @@ private:
     std::map<std::string, Traceable*> objects;
 };
 
+// Helper traits to detect container types
+template<typename T>
+struct is_map : std::false_type {};
+
+template<typename K, typename V>
+struct is_map<std::map<K, V>> : std::true_type {};
+
+template<typename T>
+struct is_vector : std::false_type {};
+
+template<typename T>
+struct is_vector<std::vector<T>> : std::true_type {};
+
 // Template for tracing containers
 template<typename Container>
 class ContainerTracer : public Traceable {
@@ -311,8 +324,10 @@ public:
     }
 
     std::string getType() const override {
-        if constexpr (std::is_same_v<Container, std::map<typename Container::key_type, typename Container::mapped_type>>) {
+        if constexpr (is_map<Container>::value) {
             return "map";
+        } else if constexpr (is_vector<Container>::value) {
+            return "vector";
         } else {
             return "container";
         }
@@ -327,7 +342,7 @@ public:
         bool first = true;
         for (const auto& item : container) {
             if (!first) result += ",";
-            if constexpr (std::is_same_v<Container, std::map<typename Container::key_type, typename Container::mapped_type>>) {
+            if constexpr (is_map<Container>::value) {
                 result += serializePair(item);
             } else {
                 result += toString(item);
@@ -340,11 +355,13 @@ public:
 
     std::string getMetadata() const override {
         std::string result = "{";
-        if constexpr (std::is_same_v<Container, std::map<typename Container::key_type, typename Container::mapped_type>>) {
+        if constexpr (is_map<Container>::value) {
+            using KeyType = typename Container::key_type;
+            using ValueType = typename Container::mapped_type;
             result += "\"size\":" + std::to_string(container.size()) + "," +
                      "\"empty\":" + (container.empty() ? "true" : "false") + "," +
-                     "\"key_type\":\"" + typeid(typename Container::key_type).name() + "\"," +
-                     "\"value_type\":\"" + typeid(typename Container::mapped_type).name() + "\"";
+                     "\"key_type\":\"" + typeid(KeyType).name() + "\"," +
+                     "\"value_type\":\"" + typeid(ValueType).name() + "\"";
         } else {
             result += "\"size\":" + std::to_string(container.size()) + "," +
                      "\"capacity\":" + std::to_string(container.capacity()) + "," +
