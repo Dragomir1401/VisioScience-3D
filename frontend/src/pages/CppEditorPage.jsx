@@ -15,6 +15,7 @@ import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import ExecutionSteps from '../components/ExecutionSteps';
 
 // Import 3D scenes
 import Vector from '../models/computer_science/Vector';
@@ -60,42 +61,50 @@ const EditorContent = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
 }));
 
-const Resizer = styled('div')(({ theme }) => ({
+const Resizer = styled(Box)(({ theme }) => ({
   width: '4px',
+  backgroundColor: theme.palette.divider,
   cursor: 'col-resize',
-  backgroundColor: '#9B6B9E',
-  opacity: 0.5,
-  transition: 'opacity 0.2s',
   '&:hover': {
-    opacity: 1,
+    backgroundColor: theme.palette.primary.main,
   },
   '&.dragging': {
-    opacity: 1,
-    backgroundColor: '#D4A5A5',
+    backgroundColor: theme.palette.primary.main,
   },
 }));
 
-const HorizontalResizer = styled(Resizer)({
-  width: '100%',
-  height: '4px',
-  cursor: 'row-resize',
-});
-
 const CodeSection = styled(Box)(({ theme }) => ({
-  flex: '1 1 60%',
+  flex: '1 1 50%',
   display: 'flex',
   flexDirection: 'column',
   minWidth: '300px',
-  maxWidth: '80%',
+  maxWidth: '100%',
+}));
+
+const RightSection = styled(Box)(({ theme }) => ({
+  flex: '1 1 50%',
+  display: 'flex',
+  minWidth: '300px',
+}));
+
+const ExecutionSection = styled(Box)(({ theme }) => ({
+  flex: '0 0 40%',
+  display: 'flex',
+  flexDirection: 'column',
+  minWidth: '200px',
+  backgroundColor: '#f8edf7',
+  padding: theme.spacing(2),
+  borderLeft: `1px solid ${theme.palette.divider}`,
 }));
 
 const IOSection = styled(Box)(({ theme }) => ({
-  flex: '1 1 40%',
+  flex: '0 0 60%',
   display: 'flex',
   flexDirection: 'column',
+  minWidth: '250px',
   padding: theme.spacing(2),
   backgroundColor: '#f8edf7',
-  minWidth: '250px',
+  borderLeft: `1px solid ${theme.palette.divider}`,
   gap: theme.spacing(2),
 }));
 
@@ -108,10 +117,21 @@ const OutputSection = styled(Box)(({ theme }) => ({
 }));
 
 const AnalysisSection = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  flex: '0 0 200px',
+  minHeight: '200px',
+}));
+
+const VisualizationSection = styled(Box)(({ theme }) => ({
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
-  minHeight: '100px',
+  backgroundColor: 'white',
+  borderRadius: theme.spacing(1),
+  overflow: 'hidden',
+  marginTop: theme.spacing(2),
+  minHeight: '300px',
 }));
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
@@ -229,10 +249,7 @@ const CppEditorPage = () => {
   });
   const [isDragging, setIsDragging] = useState(false);
   const [isDraggingHorizontal, setIsDraggingHorizontal] = useState(false);
-  const [codeWidth, setCodeWidth] = useState(() => {
-    const savedWidth = localStorage.getItem('cppEditorCodeWidth');
-    return savedWidth ? parseFloat(savedWidth) : 60;
-  });
+  const [codeWidth, setCodeWidth] = useState(50);
   const [outputHeight, setOutputHeight] = useState(() => {
     const savedHeight = localStorage.getItem('cppEditorOutputHeight');
     return savedHeight ? parseFloat(savedHeight) : 150;
@@ -244,6 +261,8 @@ const CppEditorPage = () => {
   const editorContainerRef = useRef(null);
   const [selectedStructure, setSelectedStructure] = useState(null);
   const [showScene, setShowScene] = useState(false);
+  const [executionSteps, setExecutionSteps] = useState([]);
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
   // Map structure names to their components
   const structureComponents = {
@@ -318,6 +337,8 @@ const CppEditorPage = () => {
     setIsLoading(true);
     setError('');
     setOutput('');
+    setExecutionSteps([]);
+    setCurrentStepIndex(0);
 
     try {
       const response = await fetch('http://localhost:8000/cpp-compiler/compile-run', {
@@ -336,6 +357,9 @@ const CppEditorPage = () => {
         setError(data.error);
       } else {
         setOutput(data.output);
+        if (data.executionData) {
+          setExecutionSteps(data.executionData);
+        }
       }
     } catch (err) {
       setError(err.message);
@@ -360,9 +384,10 @@ const CppEditorPage = () => {
   };
 
   const handleMouseDown = (e) => {
+    e.preventDefault();
     setIsDragging(true);
-    document.body.style.cursor = 'col-resize';
-    document.body.style.userSelect = 'none';
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
   };
 
   const handleMouseMove = (e) => {
@@ -371,26 +396,17 @@ const CppEditorPage = () => {
     const containerRect = editorContainerRef.current.getBoundingClientRect();
     const newWidth = ((e.clientX - containerRect.left) / containerRect.width) * 100;
     
-    if (newWidth >= 30 && newWidth <= 80) {
+    // Limit the width between 30% and 70%
+    if (newWidth >= 30 && newWidth <= 70) {
       setCodeWidth(newWidth);
     }
   };
 
   const handleMouseUp = () => {
     setIsDragging(false);
-    document.body.style.cursor = '';
-    document.body.style.userSelect = '';
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
   };
-
-  useEffect(() => {
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isDragging]);
 
   const handleHorizontalMouseDown = (e) => {
     setIsDraggingHorizontal(true);
@@ -539,6 +555,10 @@ const CppEditorPage = () => {
     }, 300);
   };
 
+  const handleStepChange = (index) => {
+    setCurrentStepIndex(index);
+  };
+
   return (
     <PageContainer>
       <EditorContainer elevation={3}>
@@ -625,204 +645,195 @@ const CppEditorPage = () => {
             className={isDragging ? 'dragging' : ''}
           />
 
-          <IOSection sx={{ flex: `${100 - codeWidth} 1 0` }}>
-            <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
-              Input
-            </Typography>
-            <StyledTextField
-              multiline
-              rows={4}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              variant="outlined"
-              fullWidth
-            />
-
-            <HorizontalResizer
-              ref={horizontalResizerRef}
-              onMouseDown={handleHorizontalMouseDown}
-              className={isDraggingHorizontal ? 'dragging' : ''}
-            />
-
-            <OutputSection sx={{ height: `${outputHeight}px` }}>
+          <RightSection sx={{ flex: `${100 - codeWidth} 1 0` }}>
+            <ExecutionSection>
               <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
-                Output
+                Execution Steps
               </Typography>
-              <StyledPaper
-                variant="outlined"
-                sx={{
-                  p: 2,
-                  flex: 1,
-                  fontFamily: 'monospace',
-                  whiteSpace: 'pre-wrap',
-                  overflow: 'auto',
-                }}
-              >
-                {error ? (
-                  <Alert severity="error" sx={{ mb: 1 }}>
-                    {error}
-                  </Alert>
-                ) : null}
-                {output}
-              </StyledPaper>
-            </OutputSection>
+              <ExecutionSteps
+                steps={executionSteps}
+                currentStepIndex={currentStepIndex}
+                onStepChange={handleStepChange}
+              />
+            </ExecutionSection>
 
-            <AnalysisSection>
+            <IOSection>
               <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
-                Identified Data Structures
+                Input
               </Typography>
-              <StyledPaper
+              <StyledTextField
+                multiline
+                rows={4}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
                 variant="outlined"
-                sx={{
-                  p: 2,
-                  flex: 1,
-                  overflow: 'auto',
-                }}
-              >
-                {dataStructures.length > 0 ? (
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    {['ordered', 'unordered', 'adaptor'].map(type => {
-                      const typeStructures = dataStructures.filter(s => s.type === type);
-                      if (typeStructures.length === 0) return null;
-                      
-                      return (
-                        <Box key={type}>
-                          <Typography variant="subtitle2" sx={{ 
-                            color: '#9B6B9E',
-                            textTransform: 'capitalize',
-                            mb: 1
-                          }}>
-                            {type} Containers
-                          </Typography>
-                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                            {typeStructures.map((structure) => (
-                              <Tooltip 
-                                key={structure.name}
-                                title={`Click to view ${structure.name} visualization`}
-                                placement="top"
-                              >
-                                <DataStructureChip
-                                  icon={<DataObjectIcon />}
-                                  label={structure.name}
-                                  onClick={() => handleStructureClick(structure)}
-                                  sx={{
-                                    backgroundColor: type === 'ordered' ? '#9B6B9E' :
-                                                   type === 'unordered' ? '#D4A5A5' :
-                                                   '#C49595',
-                                  }}
-                                />
-                              </Tooltip>
-                            ))}
+                fullWidth
+              />
+
+              <OutputSection sx={{ height: `${outputHeight}px` }}>
+                <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
+                  Output
+                </Typography>
+                <StyledPaper
+                  variant="outlined"
+                  sx={{
+                    p: 2,
+                    flex: 1,
+                    fontFamily: 'monospace',
+                    whiteSpace: 'pre-wrap',
+                    overflow: 'auto',
+                  }}
+                >
+                  {error ? (
+                    <Alert severity="error" sx={{ mb: 1 }}>
+                      {error}
+                    </Alert>
+                  ) : null}
+                  {output}
+                </StyledPaper>
+              </OutputSection>
+
+              <AnalysisSection>
+                <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
+                  Identified Data Structures
+                </Typography>
+                <StyledPaper
+                  variant="outlined"
+                  sx={{
+                    p: 2,
+                    flex: 1,
+                    overflow: 'auto',
+                  }}
+                >
+                  {dataStructures.length > 0 ? (
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                      {['ordered', 'unordered', 'adaptor'].map(type => {
+                        const typeStructures = dataStructures.filter(s => s.type === type);
+                        if (typeStructures.length === 0) return null;
+                        
+                        return (
+                          <Box key={type}>
+                            <Typography variant="subtitle2" sx={{ 
+                              color: '#9B6B9E',
+                              textTransform: 'capitalize',
+                              mb: 1
+                            }}>
+                              {type} Containers
+                            </Typography>
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                              {typeStructures.map((structure) => (
+                                <Tooltip 
+                                  key={structure.name}
+                                  title={`Click to view ${structure.name} visualization`}
+                                  placement="top"
+                                >
+                                  <DataStructureChip
+                                    icon={<DataObjectIcon />}
+                                    label={structure.name}
+                                    onClick={() => handleStructureClick(structure)}
+                                    sx={{
+                                      backgroundColor: type === 'ordered' ? '#9B6B9E' :
+                                                     type === 'unordered' ? '#D4A5A5' :
+                                                     '#C49595',
+                                    }}
+                                  />
+                                </Tooltip>
+                              ))}
+                            </Box>
                           </Box>
-                        </Box>
-                      );
-                    })}
-                  </Box>
-                ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    No data structures found in the code.
-                  </Typography>
-                )}
-              </StyledPaper>
-            </AnalysisSection>
+                        );
+                      })}
+                    </Box>
+                  ) : (
+                    <Typography variant="body2" color="text.secondary">
+                      No data structures found in the code.
+                    </Typography>
+                  )}
+                </StyledPaper>
+              </AnalysisSection>
 
-            {selectedStructure && (
-              <SceneDialog
-                open={showScene}
-                onClose={handleCloseScene}
-                hideBackdrop
-                disablePortal
-                sx={{
-                  position: 'relative',
-                  marginTop: 2,
-                }}
-              >
-                <SceneHeader>
-                  <Typography variant="h6">{selectedStructure.name} Visualization</Typography>
-                  <IconButton onClick={handleCloseScene}>
-                    <ArrowBackIcon />
-                  </IconButton>
-                </SceneHeader>
-                <DialogContent sx={{ p: 0, flex: 1, display: 'flex', flexDirection: 'column' }}>
-                  {selectedStructure.name === 'vector' && (
-                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+              {selectedStructure && (
+                <VisualizationSection>
+                  <Box sx={{ 
+                    p: 2, 
+                    backgroundColor: '#9B6B9E', 
+                    color: 'white',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                  }}>
+                    <Typography variant="h6">
+                      {selectedStructure.name} Visualization
+                    </Typography>
+                    <IconButton onClick={handleCloseScene} sx={{ color: 'white' }}>
+                      <ArrowBackIcon />
+                    </IconButton>
+                  </Box>
+                  <Box sx={{ flex: 1, p: 2 }}>
+                    {selectedStructure.name === 'vector' && (
                       <Vector 
-                        elements={[]} 
+                        elements={executionSteps[currentStepIndex]?.state?.elements || []} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
-                        canvasHeight="450px" 
+                        canvasHeight="100%" 
                       />
-                    </Box>
-                  )}
-                  {selectedStructure.name === 'unordered_map' && (
-                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                    )}
+                    {selectedStructure.name === 'unordered_map' && (
                       <UnorderedMap 
                         buckets={[]} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
-                        canvasHeight="450px" 
+                        canvasHeight="100%" 
                       />
-                    </Box>
-                  )}
-                  {selectedStructure.name === 'map' && (
-                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                    )}
+                    {selectedStructure.name === 'map' && (
                       <Map 
                         root={null} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
-                        canvasHeight="450px" 
+                        canvasHeight="100%" 
                       />
-                    </Box>
-                  )}
-                  {selectedStructure.name === 'set' && (
-                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                    )}
+                    {selectedStructure.name === 'set' && (
                       <Set 
                         root={null} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
-                        canvasHeight="450px" 
+                        canvasHeight="100%" 
                       />
-                    </Box>
-                  )}
-                  {selectedStructure.name === 'multiset' && (
-                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                    )}
+                    {selectedStructure.name === 'multiset' && (
                       <Multiset 
                         root={null} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
-                        canvasHeight="450px" 
+                        canvasHeight="100%" 
                       />
-                    </Box>
-                  )}
-                  {selectedStructure.name === 'deque' && (
-                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                    )}
+                    {selectedStructure.name === 'deque' && (
                       <Deque 
                         elements={[]} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
-                        canvasHeight="450px" 
+                        canvasHeight="100%" 
                       />
-                    </Box>
-                  )}
-                  {selectedStructure.name === 'array' && (
-                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                    )}
+                    {selectedStructure.name === 'array' && (
                       <Array 
                         elements={[]} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
-                        canvasHeight="450px" 
+                        canvasHeight="100%" 
                       />
-                    </Box>
-                  )}
-                  {selectedStructure.name === 'priority_queue' && (
-                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                    )}
+                    {selectedStructure.name === 'priority_queue' && (
                       <PriorityQueue 
                         elements={[]} 
                         onElementsChange={() => {}} 
@@ -831,50 +842,52 @@ const CppEditorPage = () => {
                         showControls={false} 
                         height="100%" 
                         width="100%" 
-                        canvasHeight="450px" 
+                        canvasHeight="100%" 
                       />
-                    </Box>
-                  )}
-                  {selectedStructure.name === 'queue' && (
-                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                    )}
+                    {selectedStructure.name === 'queue' && (
                       <Queue 
                         elements={[]} 
                         onElementsChange={() => {}} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
-                        canvasHeight="450px" 
+                        canvasHeight="100%" 
                       />
-                    </Box>
-                  )}
-                  {selectedStructure.name === 'stack' && (
-                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                    )}
+                    {selectedStructure.name === 'stack' && (
                       <Stack 
                         elements={[]} 
                         onElementsChange={() => {}} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
-                        canvasHeight="450px" 
+                        canvasHeight="100%" 
                       />
-                    </Box>
-                  )}
-                  {selectedStructure.name === 'list' && (
-                    <Box height="450px" width="100%" sx={{ '& > div': { height: '100%' } }}>
+                    )}
+                    {selectedStructure.name === 'list' && (
                       <CppList 
                         elements={[]} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
-                        canvasHeight="450px" 
+                        canvasHeight="100%" 
                       />
-                    </Box>
-                  )}
-                  {selectedStructure.name === 'unordered_set' && <Box height="450px" width="100%"><UnorderedSet buckets={[]} showControls={false} height="100%" width="100%" canvasHeight="450px" /></Box>}
-                </DialogContent>
-              </SceneDialog>
-            )}
-          </IOSection>
+                    )}
+                    {selectedStructure.name === 'unordered_set' && (
+                      <UnorderedSet 
+                        buckets={[]} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="100%" 
+                      />
+                    )}
+                  </Box>
+                </VisualizationSection>
+              )}
+            </IOSection>
+          </RightSection>
         </EditorContent>
       </EditorContainer>
     </PageContainer>
