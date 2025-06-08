@@ -24,9 +24,9 @@ using namespace tracer;
 
 	for i, line := range lines {
 		// Transform vector declarations
-		if strings.Contains(line, "std::vector<") {
+		if strings.Contains(line, "vector<") {
 			// Extract variable name - improved regex to handle more cases
-			re := regexp.MustCompile(`std::vector<\w+>\s+(\w+)\s*(?:=|{)`)
+			re := regexp.MustCompile(`(?:std::)?vector<(?:std::)?\w+>\s+(\w+)\s*(?:=|{)`)
 			matches := re.FindStringSubmatch(line)
 			if len(matches) >= 2 {
 				varName := matches[1]
