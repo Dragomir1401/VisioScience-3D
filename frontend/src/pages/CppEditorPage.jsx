@@ -372,7 +372,6 @@ const CppEditorPage = () => {
               if (structureValue) {
                 if (structureType === 'map' || structureType === 'unordered_map') {
                   newStructureStates[structureName] = structureValue;
-                  console.log(`DEBUG (CppEditorPage.jsx handleRun): Map '${structureName}' state after processing step:`, newStructureStates[structureName], 'Is AVLNode:', newStructureStates[structureName] instanceof AVLNode);
                 } else if (structureType === 'vector') {
                   newStructureStates[structureName] = structureValue; // Vectors are already arrays
                   console.log(`DEBUG (CppEditorPage.jsx handleRun): Vector '${structureName}' state after processing step:`, newStructureStates[structureName]);
@@ -386,7 +385,7 @@ const CppEditorPage = () => {
           });
           const firstMapVarName = Object.keys(newStructureStates).find(varName => {
             const structure = dataStructures.find(ds => ds.variableName === varName && ds.name === 'map');
-            return structure && Array.isArray(newStructureStates[varName]); // Changed from AVLNode to Array.isArray
+            return structure && Array.isArray(newStructureStates[varName]); 
           });
           
           if (firstMapVarName) {

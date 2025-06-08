@@ -81,10 +81,20 @@ const ComputerScience = () => {
   const [viewMode, setViewMode] = useState("landing");
   const [type, setType] = useState("max");
 
+  // New state for map elements in the required format
+  const [mapElements, setMapElements] = useState([
+    { key: 10, value: 100 },
+    { key: 20, value: 200 },
+    { key: 15, value: 150 },
+    { key: 5, value: 50 },
+    { key: 25, value: 250 },
+  ]);
+
   React.useEffect(() => {
     setBuckets(Array(8).fill([]).map(() => []));
     setElements([1, 2, 3, 4, 5]);
-    setRoot(null);
+    // Removed setRoot(null) as it's no longer directly used for map visualization root
+    // setMapElements will be managed dynamically or reset as needed
     setVisibleCount(0);
     setViewMode("landing");
   }, [selected?.id]);
@@ -162,8 +172,7 @@ const ComputerScience = () => {
         {selected?.id === "map" && viewMode === "landing" && (
           <div className="space-y-6">
             <AVLTreeDemo 
-              root={root}
-              onRootChange={setRoot}
+              elements={mapElements}
               showControls={true}
               backgroundColor="#2D2D2D"
               textColor="#D4D4D4"
