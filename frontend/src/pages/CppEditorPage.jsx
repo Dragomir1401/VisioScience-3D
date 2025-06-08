@@ -263,6 +263,7 @@ const CppEditorPage = () => {
   const [showScene, setShowScene] = useState(false);
   const [executionSteps, setExecutionSteps] = useState([]);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [structureStates, setStructureStates] = useState({});
 
   // Map structure names to their components
   const structureComponents = {
@@ -339,6 +340,7 @@ const CppEditorPage = () => {
     setOutput('');
     setExecutionSteps([]);
     setCurrentStepIndex(0);
+    setStructureStates({}); // Reset structure states on new run
 
     try {
       const response = await fetch('http://localhost:8000/cpp-compiler/compile-run', {
@@ -448,91 +450,94 @@ const CppEditorPage = () => {
     const structures = [];
     const patterns = {
       'vector': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?vector\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?vector\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Dynamic array with contiguous storage'
       },
       'list': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?list\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?list\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Doubly-linked list'
       },
       'deque': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?deque\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?deque\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Double-ended queue'
       },
       'array': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?array\s*<[^,]+,\s*\d+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?array\s*<[^,]+,\s*\d+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Fixed-size array'
       },
       
       'unordered_map': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_map\s*<[^,]+,\s*[^>]+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_map\s*<[^,]+,\s*[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'unordered',
         description: 'Hash table based map'
       },
       'unordered_set': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_set\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_set\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'unordered',
         description: 'Hash table based set'
       },
       'unordered_multimap': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_multimap\s*<[^,]+,\s*[^>]+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_multimap\s*<[^,]+,\s*[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'unordered',
         description: 'Hash table based multimap'
       },
       'unordered_multiset': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_multiset\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_multiset\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'unordered',
         description: 'Hash table based multiset'
       },
       
       'map': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)map\s*<[^,]+,\s*[^>]+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)map\s*<[^,]+,\s*[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Sorted key-value pairs'
       },
       'set': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)set\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)set\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Sorted unique elements'
       },
       'multimap': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)multimap\s*<[^,]+,\s*[^>]+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)multimap\s*<[^,]+,\s*[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Sorted key-value pairs with duplicate keys'
       },
       'multiset': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)multiset\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)multiset\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Sorted elements with duplicates'
       },
       
       'queue': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?queue\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?queue\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'adaptor',
         description: 'FIFO queue'
       },
       'stack': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?stack\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?stack\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'adaptor',
         description: 'LIFO stack'
       },
       'priority_queue': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?priority_queue\s*<[^>]+>(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?priority_queue\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'adaptor',
         description: 'Priority queue'
       }
     };
 
     for (const [structure, info] of Object.entries(patterns)) {
-      if (info.pattern.test(code)) {
+      let match;
+      while ((match = info.pattern.exec(code)) !== null) {
+        const variableName = match[1];
         structures.push({
           name: structure,
+          variableName: variableName,
           type: info.type,
-          description: info.description
+          description: `${info.description} (${variableName})`
         });
       }
     }
@@ -548,6 +553,18 @@ const CppEditorPage = () => {
     if (structureComponents[structure.name]) {
       setSelectedStructure(structure);
       setShowScene(true);
+      
+      // Find the last step that contains data for this structure
+      const lastStep = [...executionSteps].reverse().find(step => 
+        step.name === structure.variableName && step.state
+      );
+      
+      if (lastStep) {
+        setStructureStates(prev => ({
+          ...prev,
+          [structure.variableName]: lastStep.state
+        }));
+      }
     }
   };
 
@@ -560,6 +577,16 @@ const CppEditorPage = () => {
 
   const handleStepChange = (index) => {
     setCurrentStepIndex(index);
+    // Update the state for the currently selected structure
+    if (selectedStructure) {
+      const currentStep = executionSteps[index];
+      if (currentStep && currentStep.name === selectedStructure.variableName) {
+        setStructureStates(prev => ({
+          ...prev,
+          [selectedStructure.variableName]: currentStep.state
+        }));
+      }
+    }
   };
 
   return (
@@ -697,62 +724,29 @@ const CppEditorPage = () => {
               </OutputSection>
 
               <AnalysisSection>
-                <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
-                  Identified Data Structures
-                </Typography>
-                <StyledPaper
-                  variant="outlined"
-                  sx={{
-                    p: 2,
-                    flex: 1,
-                    overflow: 'auto',
-                  }}
-                >
-                  {dataStructures.length > 0 ? (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                      {['ordered', 'unordered', 'adaptor'].map(type => {
-                        const typeStructures = dataStructures.filter(s => s.type === type);
-                        if (typeStructures.length === 0) return null;
-                        
-                        return (
-                          <Box key={type}>
-                            <Typography variant="subtitle2" sx={{ 
-                              color: '#9B6B9E',
-                              textTransform: 'capitalize',
-                              mb: 1
-                            }}>
-                              {type} Containers
-                            </Typography>
-                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                              {typeStructures.map((structure) => (
-                                <Tooltip 
-                                  key={structure.name}
-                                  title={`Click to view ${structure.name} visualization`}
-                                  placement="top"
-                                >
-                                  <DataStructureChip
-                                    icon={<DataObjectIcon />}
-                                    label={structure.name}
-                                    onClick={() => handleStructureClick(structure)}
-                                    sx={{
-                                      backgroundColor: type === 'ordered' ? '#9B6B9E' :
-                                                     type === 'unordered' ? '#D4A5A5' :
-                                                     '#C49595',
-                                    }}
-                                  />
-                                </Tooltip>
-                              ))}
-                            </Box>
-                          </Box>
-                        );
-                      })}
-                    </Box>
-                  ) : (
-                    <Typography variant="body2" color="text.secondary">
-                      No data structures found in the code.
-                    </Typography>
-                  )}
-                </StyledPaper>
+                <Box sx={{ p: 2, backgroundColor: '#9B6B9E', color: 'white' }}>
+                  <Typography variant="h6">Identified Data Structures</Typography>
+                </Box>
+                <Box sx={{ p: 2, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                  {dataStructures.map((structure, index) => (
+                    <DataStructureChip
+                      key={`${structure.name}-${structure.variableName}-${index}`}
+                      label={`${structure.name} (${structure.variableName})`}
+                      onClick={() => handleStructureClick(structure)}
+                      sx={{
+                        backgroundColor: structure.type === 'ordered' ? '#9B6B9E' :
+                                        structure.type === 'unordered' ? '#D4A5A5' :
+                                        '#C49595',
+                        color: 'white',
+                        '&:hover': {
+                          backgroundColor: structure.type === 'ordered' ? '#8A5A8D' :
+                                          structure.type === 'unordered' ? '#C49595' :
+                                          '#B38585',
+                        },
+                      }}
+                    />
+                  ))}
+                </Box>
               </AnalysisSection>
 
               {selectedStructure && (
@@ -766,7 +760,7 @@ const CppEditorPage = () => {
                     alignItems: 'center'
                   }}>
                     <Typography variant="h6">
-                      {selectedStructure.name} Visualization
+                      {selectedStructure.name} ({selectedStructure.variableName}) Visualization
                     </Typography>
                     <IconButton onClick={handleCloseScene} sx={{ color: 'white' }}>
                       <ArrowBackIcon />
@@ -774,24 +768,17 @@ const CppEditorPage = () => {
                   </Box>
                   <Box sx={{ flex: 1, p: 2 }}>
                     {selectedStructure.name === 'vector' && (
-                      (() => {
-                        const currentStep = executionSteps[currentStepIndex];
-                        console.log('Current step:', currentStep);
-                        console.log('Vector state:', currentStep?.state);
-                        return (
-                          <Vector 
-                            elements={currentStep?.state || []} 
-                            showControls={false} 
-                            height="100%" 
-                            width="100%" 
-                            canvasHeight="100%" 
-                          />
-                        );
-                      })()
+                      <Vector 
+                        elements={structureStates[selectedStructure.variableName] || []} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="100%" 
+                      />
                     )}
                     {selectedStructure.name === 'unordered_map' && (
                       <UnorderedMap 
-                        buckets={[]} 
+                        buckets={structureStates[selectedStructure.variableName] || []} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
@@ -800,7 +787,7 @@ const CppEditorPage = () => {
                     )}
                     {selectedStructure.name === 'map' && (
                       <Map 
-                        root={null} 
+                        root={structureStates[selectedStructure.variableName] || null} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
@@ -809,7 +796,7 @@ const CppEditorPage = () => {
                     )}
                     {selectedStructure.name === 'set' && (
                       <Set 
-                        root={null} 
+                        root={structureStates[selectedStructure.variableName] || null} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
@@ -818,7 +805,7 @@ const CppEditorPage = () => {
                     )}
                     {selectedStructure.name === 'multiset' && (
                       <Multiset 
-                        root={null} 
+                        root={structureStates[selectedStructure.variableName] || null} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
@@ -827,7 +814,7 @@ const CppEditorPage = () => {
                     )}
                     {selectedStructure.name === 'deque' && (
                       <Deque 
-                        elements={[]} 
+                        elements={structureStates[selectedStructure.variableName] || []} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
@@ -836,7 +823,7 @@ const CppEditorPage = () => {
                     )}
                     {selectedStructure.name === 'array' && (
                       <Array 
-                        elements={[]} 
+                        elements={structureStates[selectedStructure.variableName] || []} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
@@ -845,7 +832,7 @@ const CppEditorPage = () => {
                     )}
                     {selectedStructure.name === 'priority_queue' && (
                       <PriorityQueue 
-                        elements={[]} 
+                        elements={structureStates[selectedStructure.variableName] || []} 
                         onElementsChange={() => {}} 
                         type="min" 
                         onTypeChange={() => {}} 
@@ -857,7 +844,7 @@ const CppEditorPage = () => {
                     )}
                     {selectedStructure.name === 'queue' && (
                       <Queue 
-                        elements={[]} 
+                        elements={structureStates[selectedStructure.variableName] || []} 
                         onElementsChange={() => {}} 
                         showControls={false} 
                         height="100%" 
@@ -867,7 +854,7 @@ const CppEditorPage = () => {
                     )}
                     {selectedStructure.name === 'stack' && (
                       <Stack 
-                        elements={[]} 
+                        elements={structureStates[selectedStructure.variableName] || []} 
                         onElementsChange={() => {}} 
                         showControls={false} 
                         height="100%" 
@@ -877,7 +864,7 @@ const CppEditorPage = () => {
                     )}
                     {selectedStructure.name === 'list' && (
                       <CppList 
-                        elements={[]} 
+                        elements={structureStates[selectedStructure.variableName] || []} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
@@ -886,7 +873,7 @@ const CppEditorPage = () => {
                     )}
                     {selectedStructure.name === 'unordered_set' && (
                       <UnorderedSet 
-                        buckets={[]} 
+                        buckets={structureStates[selectedStructure.variableName] || []} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
