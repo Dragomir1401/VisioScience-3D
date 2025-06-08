@@ -230,6 +230,38 @@ int main() {
     return 0;
 }`;
 
+const NUM_BUCKETS = 10; // Define a fixed number of buckets for visualization
+
+const hashString = (str, numBuckets) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0; // Convert to 32bit integer
+  }
+  return Math.abs(hash) % numBuckets;
+};
+
+const hashNumber = (num, numBuckets) => {
+  return Math.abs(num) % numBuckets;
+};
+
+const calculateBuckets = (elements, numBuckets) => {
+  const newBuckets = Array.from({ length: numBuckets }, () => []);
+  elements.forEach(entry => {
+    let bucketIndex;
+    if (typeof entry.key === 'string') {
+      bucketIndex = hashString(entry.key, numBuckets);
+    } else if (typeof entry.key === 'number') {
+      bucketIndex = hashNumber(entry.key, numBuckets);
+    } else {
+      // Fallback for other types, or throw an error
+      bucketIndex = hashString(String(entry.key), numBuckets);
+    }
+    newBuckets[bucketIndex].push(entry);
+  });
+  return newBuckets;
+};
+
 const CppEditorPage = () => {
   const navigate = useNavigate();
   const [code, setCode] = useState(() => {
@@ -368,10 +400,15 @@ const CppEditorPage = () => {
             const structureName = step.name;
             const structureType = step.type;
             const structureValue = step.state;
-            if (structureType === 'map' || structureType === 'vector' || structureType === 'set' || structureType === 'unordered_set') {
+            if (structureType === 'map' || structureType === 'vector' || structureType === 'set' || structureType === 'unordered_set' || structureType === 'unordered_map') {
               if (structureValue) {
                 if (structureType === 'map' || structureType === 'unordered_map') {
-                  newStructureStates[structureName] = structureValue;
+                  let processedValue = structureValue;
+                  if (structureType === 'unordered_map') {
+                    processedValue = calculateBuckets(structureValue, NUM_BUCKETS);
+                    console.log(`DEBUG (CppEditorPage.jsx handleRun): UnorderedMap '` + structureName + `' state after processing step:`, processedValue);
+                  }
+                  newStructureStates[structureName] = processedValue;
                 } else if (structureType === 'vector') {
                   newStructureStates[structureName] = structureValue; // Vectors are already arrays
                   console.log(`DEBUG (CppEditorPage.jsx handleRun): Vector '${structureName}' state after processing step:`, newStructureStates[structureName]);
@@ -599,6 +636,10 @@ const CppEditorPage = () => {
           // Now, Map component expects the array directly, no need to build AVL tree here
           // structureData is already the array of key-value pairs
         }
+        if (structure.name === 'unordered_map' && structureData && Array.isArray(structureData)) {
+          structureData = calculateBuckets(structureData, NUM_BUCKETS);
+          console.log("DEBUG (CppEditorPage.jsx handleStructureClick): UnorderedMap data after processing:", structureData);
+        }
 
         setStructureStates(prev => ({
           ...prev,
@@ -630,6 +671,10 @@ const CppEditorPage = () => {
         if (selectedStructure.name === 'map' && structureData && Array.isArray(structureData)) {
           // Now, Map component expects the array directly, no need to build AVL tree here
           // structureData is already the array of key-value pairs
+        }
+        if (selectedStructure.name === 'unordered_map' && structureData && Array.isArray(structureData)) {
+          structureData = calculateBuckets(structureData, NUM_BUCKETS);
+          console.log("DEBUG (CppEditorPage.jsx handleStepChange): UnorderedMap data after processing:", structureData);
         }
 
         setStructureStates(prev => ({
@@ -911,15 +956,6 @@ const CppEditorPage = () => {
                       <Stack 
                         elements={structureStates[selectedStructure.variableName] || []} 
                         onElementsChange={() => {}} 
-                        showControls={false} 
-                        height="100%" 
-                        width="100%" 
-                        canvasHeight="100%" 
-                      />
-                    )}
-                    {selectedStructure.name === 'list' && (
-                      <CppList 
-                        elements={structureStates[selectedStructure.variableName] || []} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 

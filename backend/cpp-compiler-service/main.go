@@ -223,6 +223,22 @@ class Tracer;
 // Global tracer instance
 extern Tracer* globalTracer;
 
+// Helper traits to detect container types
+template<typename T>
+struct is_map : std::false_type {};
+
+template<typename K, typename V>
+struct is_map<std::map<K, V>> : std::true_type {};
+
+template<typename K, typename V>
+struct is_map<std::unordered_map<K, V>> : std::true_type {};
+
+template<typename T>
+struct is_vector : std::false_type {};
+
+template<typename T>
+struct is_vector<std::vector<T>> : std::true_type {};
+
 // Helper function to convert any numeric type to string
 template<typename T>
 std::string toString(const T& value) {
@@ -230,6 +246,8 @@ std::string toString(const T& value) {
         return "\"" + value + "\"";
     } else if constexpr (std::is_arithmetic_v<T>) {
         return std::to_string(value);
+    } else if constexpr (std::is_same_v<T, std::pair<const typename T::first_type, typename T::second_type>>) {
+        return "{\"key\":" + toString(value.first) + ",\"value\":" + toString(value.second) + "}";
     } else {
         return std::string(value);
     }
@@ -297,19 +315,6 @@ private:
     std::map<std::string, Traceable*> objects;
 };
 
-// Helper traits to detect container types
-template<typename T>
-struct is_map : std::false_type {};
-
-template<typename K, typename V>
-struct is_map<std::map<K, V>> : std::true_type {};
-
-template<typename T>
-struct is_vector : std::false_type {};
-
-template<typename T>
-struct is_vector<std::vector<T>> : std::true_type {};
-
 // Template for tracing containers
 template<typename Container>
 class ContainerTracer : public Traceable {
@@ -362,9 +367,13 @@ public:
                      "\"empty\":" + (container.empty() ? "true" : "false") + "," +
                      "\"key_type\":\"" + typeid(KeyType).name() + "\"," +
                      "\"value_type\":\"" + typeid(ValueType).name() + "\"";
-        } else {
+        } else if constexpr (is_vector<Container>::value) {
             result += "\"size\":" + std::to_string(container.size()) + "," +
                      "\"capacity\":" + std::to_string(container.capacity()) + "," +
+                     "\"empty\":" + (container.empty() ? "true" : "false") + "," +
+                     "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
+        } else {
+            result += "\"size\":" + std::to_string(container.size()) + "," +
                      "\"empty\":" + (container.empty() ? "true" : "false") + "," +
                      "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
         }
