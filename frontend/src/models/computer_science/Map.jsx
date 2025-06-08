@@ -106,8 +106,8 @@ function computePositions(node, x0, x1, y, gapY, list) {
   computePositions(node.right, x, x1, y - gapY, gapY, list);
 }
 
-export default function AVLTreeDemo({ 
-  root: externalRoot = null,
+export default function AVLTreeDemo({
+  elements = [],
   onRootChange,
   showControls = false,
   backgroundColor = "#2D2D2D",
@@ -119,12 +119,30 @@ export default function AVLTreeDemo({
   canvasHeight = "100%"
 }) {
   const [internalRoot, setInternalRoot] = useState(null);
-  const root = externalRoot !== null ? externalRoot : internalRoot;
+  const root = internalRoot;
+
+  useEffect(() => {
+    if (elements && Array.isArray(elements) && elements.length > 0) {
+      let newRoot = null;
+      elements.forEach(item => {
+        newRoot = insertNode(newRoot, item.key, item.value);
+      });
+      setInternalRoot(newRoot);
+      if (onRootChange) {
+        onRootChange(newRoot);
+      }
+    } else {
+      setInternalRoot(null);
+      if (onRootChange) {
+        onRootChange(null);
+      }
+    }
+  }, [elements, onRootChange]);
+
   const setRoot = (newRoot) => {
+    setInternalRoot(newRoot);
     if (onRootChange) {
       onRootChange(newRoot);
-    } else {
-      setInternalRoot(newRoot);
     }
   };
 

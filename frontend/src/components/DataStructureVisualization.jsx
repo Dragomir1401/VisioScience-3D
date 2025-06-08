@@ -8,7 +8,7 @@ import Map from '../models/computer_science/Map';
 import Set from '../models/computer_science/Set';
 import Multiset from '../models/computer_science/Multiset';
 import Deque from '../models/computer_science/Deque';
-import Array from '../models/computer_science/Array';
+import ArrayScene from '../models/computer_science/Array';
 import PriorityQueue from '../models/computer_science/PriorityQueue';
 import Queue from '../models/computer_science/Queue';
 import Stack from '../models/computer_science/Stack';
@@ -135,7 +135,7 @@ const DataStructureVisualization = ({
                 />
               )}
               {structure.name === 'array' && (
-                <Array 
+                <ArrayScene 
                   elements={[]} 
                   showControls={false} 
                   height="100%" 

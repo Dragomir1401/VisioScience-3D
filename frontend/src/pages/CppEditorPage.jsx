@@ -29,7 +29,7 @@ import PriorityQueue from '../models/computer_science/PriorityQueue';
 import UnorderedMap from '../models/computer_science/UnorderedMap';
 import UnorderedSet from '../models/computer_science/UnorderedSet';
 import Multiset from '../models/computer_science/Multiset';
-import Array from '../models/computer_science/Array';
+import ArrayScene from '../models/computer_science/Array';
 
 const PageContainer = styled('div')(({ theme }) => ({
   minHeight: '100vh',
@@ -278,7 +278,7 @@ const CppEditorPage = () => {
     'unordered_map': UnorderedMap,
     'unordered_set': UnorderedSet,
     'multiset': Multiset,
-    'array': Array,
+    'array': ArrayScene,
   };
 
   useEffect(() => {
@@ -363,6 +363,40 @@ const CppEditorPage = () => {
         if (data.executionData) {
           console.log('Execution data received:', data.executionData);
           setExecutionSteps(data.executionData);
+          const newStructureStates = {};
+          data.executionData.forEach(step => {
+            const structureName = step.name;
+            const structureType = step.type;
+            const structureValue = step.state;
+            if (structureType === 'map' || structureType === 'vector' || structureType === 'set' || structureType === 'unordered_set') {
+              if (structureValue) {
+                if (structureType === 'map' || structureType === 'unordered_map') {
+                  newStructureStates[structureName] = structureValue;
+                  console.log(`DEBUG (CppEditorPage.jsx handleRun): Map '${structureName}' state after processing step:`, newStructureStates[structureName], 'Is AVLNode:', newStructureStates[structureName] instanceof AVLNode);
+                } else if (structureType === 'vector') {
+                  newStructureStates[structureName] = structureValue; // Vectors are already arrays
+                  console.log(`DEBUG (CppEditorPage.jsx handleRun): Vector '${structureName}' state after processing step:`, newStructureStates[structureName]);
+                } else if (structureType === 'set' || structureType === 'unordered_set') {
+                  newStructureStates[structureName] = structureValue; // Sets are already arrays
+                  console.log(`DEBUG (CppEditorPage.jsx handleRun): Set '${structureName}' state after processing step:`, newStructureStates[structureName]);
+                }
+                // Add other types as needed
+              }
+            }
+          });
+          const firstMapVarName = Object.keys(newStructureStates).find(varName => {
+            const structure = dataStructures.find(ds => ds.variableName === varName && ds.name === 'map');
+            return structure && Array.isArray(newStructureStates[varName]); // Changed from AVLNode to Array.isArray
+          });
+          
+          if (firstMapVarName) {
+            const foundStructure = dataStructures.find(ds => ds.variableName === firstMapVarName && ds.name === 'map');
+            if (foundStructure) {
+              setSelectedStructure(foundStructure);
+              setShowScene(true);
+              console.log("DEBUG (CppEditorPage.jsx handleRun): Automatically selected first map variable:", foundStructure);
+            }
+          }
         }
       }
     } catch (err) {
@@ -560,10 +594,21 @@ const CppEditorPage = () => {
       );
       
       if (lastStep) {
+        console.log("DEBUG (CppEditorPage.jsx handleStructureClick): Found lastStep:", lastStep);
+        let structureData = lastStep.state;
+        if (structure.name === 'map' && structureData && Array.isArray(structureData)) {
+          // Now, Map component expects the array directly, no need to build AVL tree here
+          // structureData is already the array of key-value pairs
+        }
+
         setStructureStates(prev => ({
           ...prev,
-          [structure.variableName]: lastStep.state
+          [structure.variableName]: structureData
         }));
+        console.log("DEBUG (CppEditorPage.jsx handleStructureClick): Updated structureStates:", {
+            ...structureStates, // Log the current state for context
+            [structure.variableName]: structureData // Log the new value for the specific variable
+        });
       }
     }
   };
@@ -581,10 +626,21 @@ const CppEditorPage = () => {
     if (selectedStructure) {
       const currentStep = executionSteps[index];
       if (currentStep && currentStep.name === selectedStructure.variableName) {
+        console.log("DEBUG (CppEditorPage.jsx handleStepChange): Matching step found.");
+        let structureData = currentStep.state;
+        if (selectedStructure.name === 'map' && structureData && Array.isArray(structureData)) {
+          // Now, Map component expects the array directly, no need to build AVL tree here
+          // structureData is already the array of key-value pairs
+        }
+
         setStructureStates(prev => ({
           ...prev,
-          [selectedStructure.variableName]: currentStep.state
+          [selectedStructure.variableName]: structureData
         }));
+        console.log("DEBUG (CppEditorPage.jsx handleStepChange): Updated structureStates:", {
+            ...structureStates, // Log the current state for context
+            [selectedStructure.variableName]: structureData // Log the new value for the specific variable
+        });
       }
     }
   };
@@ -787,7 +843,7 @@ const CppEditorPage = () => {
                     )}
                     {selectedStructure.name === 'map' && (
                       <Map 
-                        root={structureStates[selectedStructure.variableName] || null} 
+                        elements={structureStates[selectedStructure.variableName] || []} 
                         showControls={false} 
                         height="100%" 
                         width="100%" 
@@ -822,7 +878,7 @@ const CppEditorPage = () => {
                       />
                     )}
                     {selectedStructure.name === 'array' && (
-                      <Array 
+                      <ArrayScene 
                         elements={structureStates[selectedStructure.variableName] || []} 
                         showControls={false} 
                         height="100%" 
