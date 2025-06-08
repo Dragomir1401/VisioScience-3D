@@ -32,7 +32,6 @@ import DoublyLinkedListDemo from "../models/computer_science/DoublyLinkedList";
 import DoublyLinkedListFormulas from "../components/computer_science/DoublyLinkedListFormulas";
 import ArrayDemo from "../models/computer_science/Array";
 import ArrayFormulas from "../components/computer_science/ArrayFormulas";
-import CppEditor from "../components/computer_science/CppEditor";
 import {
   array,
   vector,
@@ -351,15 +350,6 @@ const ComputerScience = () => {
               height="600px"
             />
             <ArrayFormulas />
-          </div>
-        )}
-
-        {viewMode === "cpp_editor" && (
-          <div className="bg-white border-2 border-mulberry rounded-lg shadow-xl h-full flex-1">
-            <h2 className="text-xl font-bold text-mulberry mb-4 p-4">
-              Editor C++ și Vizualizare Structuri de Date 3D
-            </h2>
-            <CppEditor />
           </div>
         )}
 
