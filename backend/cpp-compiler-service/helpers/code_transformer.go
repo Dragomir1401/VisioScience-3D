@@ -58,7 +58,7 @@ using namespace tracer;
 			if len(matches) >= 3 {
 				varName := matches[1]
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"insert\", \"Inserted or updated key-value pair\");",
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"insert\", \"Inserted value\");",
 					tracerVar)
 			}
 		}
@@ -70,7 +70,7 @@ using namespace tracer;
 			if len(matches) >= 2 {
 				varName := matches[1]
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"delete\", \"Deleted key-value pair\");",
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"delete\", \"Deleted value\");",
 					tracerVar)
 			}
 		}
