@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"strings"
 	"testing"
 
 	"cpp-compiler-service/models"
@@ -48,8 +49,48 @@ func TestCompileAndRun(t *testing.T) {
 		t.Fatalf("Failed to decode response: %v", err)
 	}
 
-	// Print response for debugging
-	t.Logf("Response: %+v", response)
+	// Print response details with clear separation
+	t.Log("\n=== TEST RESULTS ===")
+
+	// Print program output
+	t.Log("\n--- Program Output ---")
+	if response.Output != "" {
+		outputLines := strings.Split(response.Output, "\n")
+		for _, line := range outputLines {
+			if line != "" {
+				t.Logf("> %s", line)
+			}
+		}
+	} else {
+		t.Log("(no output)")
+	}
+
+	// Print error if any
+	if response.Error != "" {
+		t.Log("\n--- Error ---")
+		t.Logf("> %s", response.Error)
+	}
+
+	// Print execution data
+	t.Log("\n--- Execution Steps ---")
+	if len(response.ExecutionData) > 0 {
+		for i, step := range response.ExecutionData {
+			t.Logf("\nStep %d:", i+1)
+			t.Logf("  Type: %s", step.Type)
+			t.Logf("  Name: %s", step.Name)
+			t.Logf("  Operation: %s", step.Operation)
+			t.Logf("  Description: %s", step.Description)
+			t.Logf("  State: %s", step.State)
+			if !step.Metadata.Empty {
+				metadataJson, _ := json.Marshal(step.Metadata)
+				t.Logf("  Metadata: %s", string(metadataJson))
+			}
+		}
+	} else {
+		t.Log("(no execution steps)")
+	}
+
+	t.Log("\n=== END OF TEST RESULTS ===\n")
 
 	// Basic assertions
 	if !response.Success {
@@ -63,11 +104,5 @@ func TestCompileAndRun(t *testing.T) {
 	// Check if we got any execution data
 	if len(response.ExecutionData) == 0 {
 		t.Error("Expected execution data, got none")
-	}
-
-	// Print execution data for debugging
-	for i, step := range response.ExecutionData {
-		t.Logf("Step %d: Type=%s, Name=%s, Operation=%s, Description=%s, State=%s",
-			i, step.Type, step.Name, step.Operation, step.Description, step.State)
 	}
 }

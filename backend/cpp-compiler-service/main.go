@@ -139,19 +139,18 @@ func compileAndRun(w http.ResponseWriter, r *http.Request) {
 			log.Printf("[compileAndRun] Processing line: %s", line)
 
 			// Check if the line contains a state marker
-			if stateIndex := strings.Index(line, "STATE:"); stateIndex != -1 {
+			if strings.HasPrefix(line, "STATE:") {
 				// Extract the state data
-				stateData := line[stateIndex+6:] // Skip "STATE:"
+				stateData := line[6:] // Skip "STATE:"
 				executionData.WriteString(stateData)
 				executionData.WriteString("\n")
-
-				// Extract any program output before the state marker
-				if stateIndex > 0 {
-					programOutput.WriteString(line[:stateIndex])
-					programOutput.WriteString("\n")
-				}
-			} else {
-				// No state marker, it's just program output
+			} else if !strings.Contains(line, "STATE:") &&
+				!strings.Contains(line, "size=") &&
+				!strings.Contains(line, "step '") &&
+				!strings.HasPrefix(line, "(skip)") &&
+				!strings.HasPrefix(line, "[find]") &&
+				!strings.HasPrefix(line, "[erase]") {
+				// Only add to program output if it doesn't contain debug info
 				programOutput.WriteString(line)
 				programOutput.WriteString("\n")
 			}
@@ -213,6 +212,8 @@ var tracerHeader = `#pragma once
 #include <typeinfo>
 #include <typeindex>
 #include <chrono>
+#include <stack>
+#include <queue>
 
 namespace tracer {
 
@@ -238,6 +239,18 @@ struct is_vector : std::false_type {};
 
 template<typename T>
 struct is_vector<std::vector<T>> : std::true_type {};
+
+template<typename T>
+struct is_stack : std::false_type {};
+
+template<typename T, typename Container>
+struct is_stack<std::stack<T, Container>> : std::true_type {};
+
+template<typename T>
+struct is_queue : std::false_type {};
+
+template<typename T, typename Container>
+struct is_queue<std::queue<T, Container>> : std::true_type {};
 
 // Helper function to convert any numeric type to string
 template<typename T>
@@ -333,6 +346,10 @@ public:
             return "map";
         } else if constexpr (is_vector<Container>::value) {
             return "vector";
+        } else if constexpr (is_stack<Container>::value) {
+            return "stack";
+        } else if constexpr (is_queue<Container>::value) {
+            return "queue";
         } else {
             return "container";
         }
@@ -345,14 +362,35 @@ public:
     std::string getState() const override {
         std::string result = "[";
         bool first = true;
-        for (const auto& item : container) {
-            if (!first) result += ",";
-            if constexpr (is_map<Container>::value) {
-                result += serializePair(item);
-            } else {
-                result += toString(item);
+
+        if constexpr (is_stack<Container>::value) {
+            // Create a copy of the stack to iterate
+            Container temp = container;
+            while (!temp.empty()) {
+                if (!first) result += ",";
+                result += toString(temp.top());
+                temp.pop();
+                first = false;
             }
-            first = false;
+        } else if constexpr (is_queue<Container>::value) {
+            // Create a copy of the queue to iterate
+            Container temp = container;
+            while (!temp.empty()) {
+                if (!first) result += ",";
+                result += toString(temp.front());
+                temp.pop();
+                first = false;
+            }
+        } else {
+            for (const auto& item : container) {
+                if (!first) result += ",";
+                if constexpr (is_map<Container>::value) {
+                    result += serializePair(item);
+                } else {
+                    result += toString(item);
+                }
+                first = false;
+            }
         }
         result += "]";
         return result;
@@ -370,6 +408,10 @@ public:
         } else if constexpr (is_vector<Container>::value) {
             result += "\"size\":" + std::to_string(container.size()) + "," +
                      "\"capacity\":" + std::to_string(container.capacity()) + "," +
+                     "\"empty\":" + (container.empty() ? "true" : "false") + "," +
+                     "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
+        } else if constexpr (is_stack<Container>::value || is_queue<Container>::value) {
+            result += "\"size\":" + std::to_string(container.size()) + "," +
                      "\"empty\":" + (container.empty() ? "true" : "false") + "," +
                      "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
         } else {
