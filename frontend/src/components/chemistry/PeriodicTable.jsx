@@ -2,7 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Html } from "@react-three/drei";
 import { Vector3, Quaternion, Matrix4 } from "three";
-import TWEEN from "@tweenjs/tween.js";
+import * as TWEEN from "@tweenjs/tween.js";
+
+// Create a global tweens group
+const tweens = new TWEEN.Group();
 
 const ACCENTS = {
   1:  "#690375", 
@@ -375,7 +378,7 @@ function Element({ data, index, layout, onSelect, elements }) {
   useEffect(() => {
     const obj = ref.current;
     if (!obj) return;
-
+  
     if (obj.position.lengthSq() === 0) {
       obj.position.set(
         Math.random() * 4000 - 2000,
@@ -383,15 +386,21 @@ function Element({ data, index, layout, onSelect, elements }) {
         Math.random() * 4000 - 2000
       );
     }
-
-    const targetPos = layouts[layout].getPos([data.symbol, data.name, data.atomicNumber, data.group, data.period], index, elements);
-    const tweenPos = new TWEEN.Tween(obj.position)
+  
+    const targetPos = layouts[layout].getPos(
+      [data.symbol, data.name, data.atomicNumber, data.group, data.period],
+      index,
+      elements
+    );
+  
+    const now = performance.now();                 
+    const tweenPos = new TWEEN.Tween(obj.position, tweens)
       .to(targetPos, Math.random() * 2000 + 2000)
       .easing(TWEEN.Easing.Exponential.InOut)
-      .start();
-
+      .start(now);                                  
+  
     return () => tweenPos.stop();
-  }, [layout, data, index, elements]);
+  }, [layout, data, index, elements, tweens]);
 
   const wantQ = useRef(new Quaternion()).current;  
   const mat   = useRef(new Matrix4()).current;
@@ -462,7 +471,9 @@ function Element({ data, index, layout, onSelect, elements }) {
 }
 
 function Scene({ layout, onSelectElement, elements, controls }) {
-  useFrame(() => TWEEN.update());
+  useFrame(({ clock }) => {
+    tweens.update(clock.getElapsedTime() * 1000);
+  });
   return (
     <>
       <ambientLight intensity={0.8} />
