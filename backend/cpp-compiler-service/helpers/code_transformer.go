@@ -337,7 +337,7 @@ using namespace tracer;
 			if len(matches) >= 2 {
 				varName := matches[1]
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"insert\", \"Pushed element to priority queue\");",
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"insert\", \"Pushed element\");",
 					tracerVar)
 			}
 		}
@@ -348,7 +348,7 @@ using namespace tracer;
 			if len(matches) >= 2 {
 				varName := matches[1]
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"delete\", \"Popped element from priority queue\");",
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"delete\", \"Popped element\");",
 					tracerVar)
 			}
 		}
@@ -359,7 +359,7 @@ using namespace tracer;
 			if len(matches) >= 2 {
 				varName := matches[1]
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"access\", \"Accessed top element of priority queue\");",
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"access\", \"Accessed top element\");",
 					tracerVar)
 			}
 		}

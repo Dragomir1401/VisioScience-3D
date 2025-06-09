@@ -67,7 +67,8 @@ export const UnorderedSetScene = ({
   nodeColor = "#4f46e5",
   edgeColor = "#7b3fe4",
   width = "100%",
-  height = "650px"
+  height = "100%",
+  canvasHeight = "100%"
 }) => {
   const [isRotating, setIsRotating] = useState(false);
   const spacing = 2;
@@ -85,7 +86,7 @@ export const UnorderedSetScene = ({
       overflow: 'hidden',
       border: '2px solid #9B6B9E'
     }}>
-      <Canvas camera={{ position: [centerX, camHeight, camDist], fov: 60 }}>
+      <Canvas camera={{ position: [0, 5, 12], fov: 75 }} style={{ height: canvasHeight, width: width }}>
         <color attach="background" args={[backgroundColor]} />
         <ambientLight intensity={0.4} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
@@ -110,4 +111,20 @@ export const UnorderedSetScene = ({
   );
 };
 
-export default UnorderedSetScene;
+const UnorderedSet = (props) => {
+  return (
+    <div className="flex gap-6" style={{ height: '100%' }}>
+      {props.showControls && (
+        <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
+          {/* ... existing controls ... */}
+        </div>
+      )}
+
+      <div className={props.showControls ? "w-2/3" : "w-full"} style={{ height: '100%' }}>
+        <UnorderedSetScene {...props} />
+      </div>
+    </div>
+  );
+};
+
+export default UnorderedSet;

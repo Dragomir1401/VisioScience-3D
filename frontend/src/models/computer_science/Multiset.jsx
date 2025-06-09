@@ -212,7 +212,8 @@ const AVLMultisetDemo = ({
   nodeColor = "#4f46e5",
   edgeColor = "#7b3fe4",
   width = "100%",
-  height = "650px"
+  height = "100%",
+  canvasHeight = "100%"
 }) => {
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
@@ -246,7 +247,7 @@ const AVLMultisetDemo = ({
   };
 
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-6" style={{ height: '100%' }}>
       {showControls && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
           <h4 className="text-lg font-semibold text-mulberry">
@@ -297,7 +298,7 @@ const AVLMultisetDemo = ({
         </div>
       )}
 
-      <div className={showControls ? "w-2/3" : "w-full"}>
+      <div className={showControls ? "w-2/3" : "w-full"} style={{ height: '100%' }}>
         <MultisetScene 
           root={root}
           backgroundColor={backgroundColor}

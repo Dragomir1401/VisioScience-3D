@@ -129,7 +129,8 @@ const QueueDemo = ({
   frontIndicatorColor = "#10b981",
   backIndicatorColor = "#ef4444",
   width = "100%",
-  height = "650px"
+  height = "100%",
+  canvasHeight = "100%"
 }) => {
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
@@ -167,7 +168,7 @@ const QueueDemo = ({
   };
 
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-6" style={{ height: '100%' }}>
       {showControls && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry w-1/3 space-y-4">
           <h4 className="text-lg font-semibold text-mulberry">FIFO Queue</h4>
@@ -224,7 +225,7 @@ const QueueDemo = ({
         </div>
       )}
 
-      <div className={showControls ? "w-2/3" : "w-full"}>
+      <div className={showControls ? "w-2/3" : "w-full"} style={{ height: '100%' }}>
         <QueueScene 
           elements={elements}
           backgroundColor={backgroundColor}

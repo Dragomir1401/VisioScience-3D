@@ -144,7 +144,8 @@ const PriorityQueueDemo = ({
   nodeColor = "#4f46e5",
   edgeColor = "#10b981",
   width = "100%",
-  height = "650px"
+  height = "100%",
+  canvasHeight = "100%"
 }) => {
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
@@ -195,9 +196,9 @@ const PriorityQueueDemo = ({
   };
 
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-6" style={{ height: '100%' }}>
       {showControls && (
-        <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry w-1/3 space-y-4">
+        <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
           <h4 className="text-lg font-semibold text-mulberry">
             Priority Queue ({type === "min" ? "Min-Heap" : "Max-Heap"})
           </h4>
@@ -254,7 +255,7 @@ const PriorityQueueDemo = ({
         </div>
       )}
 
-      <div className={showControls ? "w-2/3" : "w-full"}>
+      <div className={showControls ? "w-2/3" : "w-full"} style={{ height: '100%' }}>
         <PriorityQueueScene 
           elements={heap}
           type={type}

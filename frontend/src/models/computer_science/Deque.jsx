@@ -22,7 +22,8 @@ export default function DequeDemo({
   backIndicatorColor = "#ef4444",
   edgeColor = "#7b3fe4",
   width = "100%",
-  height = "650px"
+  height = "100%",
+  canvasHeight = "100%"
 }) {
   const [internalElements, setInternalElements] = useState([]);
   const elements = externalElements.length > 0 ? externalElements : internalElements;
@@ -81,7 +82,7 @@ export default function DequeDemo({
   const camZ = Math.max(count * spacing, 10);
 
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-6" style={{ height: '100%' }}>
       {showControls && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
           <h4 className="text-xl font-bold text-mulberry">
@@ -150,8 +151,8 @@ export default function DequeDemo({
         </div>
       )}
 
-      <div className={showControls ? "w-2/3" : "w-full"}>
-        <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }}>
+      <div className={showControls ? "w-2/3" : "w-full"} style={{ height: '100%' }}>
+        <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }} style={{ height: canvasHeight, width: width }}>
           <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 5, 5]} intensity={1} />

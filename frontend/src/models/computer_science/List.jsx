@@ -21,7 +21,8 @@ export default function ListDemo({
   arrowColor = "#888888",
   nullColor = "#888888",
   width = "100%",
-  height = "650px"
+  height = "100%",
+  canvasHeight = "100%"
 }) {
   const [internalElements, setInternalElements] = useState([]);
   const elements = externalElements.length > 0 ? externalElements : internalElements;
@@ -97,7 +98,7 @@ export default function ListDemo({
   }, [positions, spacing, arrowColor]);
 
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-6" style={{ height: '100%' }}>
       {showControls && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
           <h4 className="text-lg font-semibold text-mulberry">
@@ -156,9 +157,9 @@ export default function ListDemo({
         </div>
       )}
 
-      <div className={showControls ? "w-2/3" : "w-full"}>
+      <div className={showControls ? "w-2/3" : "w-full"} style={{ height: '100%' }}>
         <div style={{ width: "100%", height: "100%" }}>
-          <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }}>
+          <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }} style={{ height: canvasHeight, width: width }}>
             <color attach="background" args={[backgroundColor]} />
             <ambientLight intensity={0.4} />
             <directionalLight position={[5, 5, 5]} intensity={1} />

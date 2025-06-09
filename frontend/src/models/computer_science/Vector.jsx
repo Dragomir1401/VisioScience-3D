@@ -40,7 +40,8 @@ const VectorScene = ({
   textColor = "#ffffff",
   nodeColor = "#4f46e5",
   width = "100%",
-  height = "650px"
+  height = "100%",
+  canvasHeight = "100%"
 }) => {
   const [isRotatingForestBackground, setIsRotatingForestBackground] = useState(false);
   const spacing = 1.2;
@@ -65,6 +66,7 @@ const VectorScene = ({
           near: 0.2,
           far: 1000,
         }}
+        style={{ height: canvasHeight, width: width }}
       >
         <color attach="background" args={[backgroundColor]} />
         <ambientLight intensity={0.3} />

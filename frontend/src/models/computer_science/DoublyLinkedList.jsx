@@ -19,7 +19,7 @@ const DoublyLinkedListScene = ({
   arrowColor = "#888888",
   nullColor = "#555555",
   width = "100%",
-  height = "650px"
+  height = "100%"
 }) => {
   const spacing = 3;
   const boxHalf = 1;
@@ -102,7 +102,7 @@ const DoublyLinkedListScene = ({
 
   return (
     <div style={{ width, height }}>
-      <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }}>
+      <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }} style={{ height: '100%', width: '100%' }}>
         <color attach="background" args={[backgroundColor]} />
         <ambientLight intensity={0.4} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
@@ -166,7 +166,8 @@ export default function DoublyLinkedListDemo({
   arrowColor = "#888888",
   nullColor = "#555555",
   width = "100%",
-  height = "650px"
+  height = "100%",
+  canvasHeight = "100%"
 }) {
   const [internalElements, setInternalElements] = useState([]);
   const elements = externalElements.length > 0 ? externalElements : internalElements;
@@ -212,7 +213,7 @@ export default function DoublyLinkedListDemo({
   };
 
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-6" style={{ height: '100%' }}>
       {showControls && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
           <h4 className="text-lg font-semibold text-mulberry">
@@ -271,7 +272,7 @@ export default function DoublyLinkedListDemo({
         </div>
       )}
 
-      <div className={showControls ? "w-2/3" : "w-full"}>
+      <div className={showControls ? "w-2/3" : "w-full"} style={{ height: '100%' }}>
         <DoublyLinkedListScene 
           elements={elements}
           backgroundColor={backgroundColor}

@@ -19,6 +19,7 @@ import ExecutionSteps from '../components/ExecutionSteps';
 
 import Vector from '../models/computer_science/Vector';
 import CppList from '../models/computer_science/List';
+import DoubleLinkedList from '../models/computer_science/DoublyLinkedList';
 import Map from '../models/computer_science/Map';
 import Set from '../models/computer_science/Set';
 import Queue from '../models/computer_science/Queue';
@@ -131,6 +132,7 @@ const VisualizationSection = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
   marginTop: theme.spacing(2),
   minHeight: '400px',
+  height: '100%'
 }));
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
@@ -400,37 +402,55 @@ const CppEditorPage = () => {
             const structureName = step.name;
             const structureType = step.type;
             const structureValue = step.state;
-            if (structureType === 'map' || structureType === 'vector' || structureType === 'set' || structureType === 'unordered_set' || structureType === 'unordered_map') {
-              if (structureValue) {
-                if (structureType === 'map' || structureType === 'unordered_map') {
+            
+            // Handle all supported data structures
+            if (structureValue) {
+              switch (structureType) {
+                case 'map':
+                case 'unordered_map':
                   let processedValue = structureValue;
                   if (structureType === 'unordered_map') {
                     processedValue = calculateBuckets(structureValue, NUM_BUCKETS);
-                    console.log(`DEBUG (CppEditorPage.jsx handleRun): UnorderedMap '` + structureName + `' state after processing step:`, processedValue);
                   }
                   newStructureStates[structureName] = processedValue;
-                } else if (structureType === 'vector') {
-                  newStructureStates[structureName] = structureValue; // Vectors are already arrays
-                  console.log(`DEBUG (CppEditorPage.jsx handleRun): Vector '${structureName}' state after processing step:`, newStructureStates[structureName]);
-                } else if (structureType === 'set' || structureType === 'unordered_set') {
-                  newStructureStates[structureName] = structureValue; // Sets are already arrays
-                  console.log(`DEBUG (CppEditorPage.jsx handleRun): Set '${structureName}' state after processing step:`, newStructureStates[structureName]);
-                }
-                // Add other types as needed
+                  break;
+                
+                case 'vector':
+                case 'deque':
+                case 'array':
+                case 'list':
+                case 'forward_list':
+                  newStructureStates[structureName] = structureValue;
+                  break;
+                
+                case 'set':
+                case 'unordered_set':
+                case 'multiset':
+                case 'unordered_multiset':
+                  newStructureStates[structureName] = structureValue;
+                  break;
+                
+                case 'queue':
+                case 'stack':
+                case 'priority_queue':
+                  newStructureStates[structureName] = structureValue;
+                  break;
               }
             }
           });
-          const firstMapVarName = Object.keys(newStructureStates).find(varName => {
-            const structure = dataStructures.find(ds => ds.variableName === varName && ds.name === 'map');
-            return structure && Array.isArray(newStructureStates[varName]); 
+
+          // Find first available structure to visualize
+          const firstStructure = Object.keys(newStructureStates).find(varName => {
+            const structure = dataStructures.find(ds => ds.variableName === varName);
+            return structure && newStructureStates[varName];
           });
           
-          if (firstMapVarName) {
-            const foundStructure = dataStructures.find(ds => ds.variableName === firstMapVarName && ds.name === 'map');
+          if (firstStructure) {
+            const foundStructure = dataStructures.find(ds => ds.variableName === firstStructure);
             if (foundStructure) {
               setSelectedStructure(foundStructure);
               setShowScene(true);
-              console.log("DEBUG (CppEditorPage.jsx handleRun): Automatically selected first map variable:", foundStructure);
+              console.log("DEBUG: Automatically selected first structure:", foundStructure);
             }
           }
         }
@@ -528,6 +548,11 @@ const CppEditorPage = () => {
         pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?list\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Doubly-linked list'
+      },
+      'forward_list': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?forward_list\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        type: 'ordered',
+        description: 'Singly-linked list'
       },
       'deque': {
         pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?deque\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
@@ -689,22 +714,32 @@ const CppEditorPage = () => {
             return prev;
           }
           const nextIndex = prev + 1;
-          // Update structure states when auto-playing
           const currentStep = executionSteps[nextIndex];
-          if (currentStep && currentStep.name === selectedStructure?.variableName) {
-            let structureData = currentStep.state;
-            if (selectedStructure.name === 'unordered_map' && structureData && Array.isArray(structureData)) {
-              structureData = calculateBuckets(structureData, NUM_BUCKETS);
-            } else if (selectedStructure.name === 'vector' && structureData) {
-              // Ensure vector data is properly formatted
-              structureData = Array.isArray(structureData) ? structureData : [structureData];
-              console.log("Vector data for step:", structureData);
+          
+          // Check if the current step has a different structure than the selected one
+          if (currentStep && currentStep.name) {
+            const structure = dataStructures.find(ds => ds.variableName === currentStep.name);
+            if (structure && (!selectedStructure || selectedStructure.variableName !== currentStep.name)) {
+              // Switch to the new structure
+              setSelectedStructure(structure);
+              setShowScene(true);
             }
-            setStructureStates(prev => ({
-              ...prev,
-              [selectedStructure.variableName]: structureData
-            }));
+            
+            // Update structure states
+            if (currentStep.state) {
+              let structureData = currentStep.state;
+              if (structure.name === 'unordered_map' && structureData && Array.isArray(structureData)) {
+                structureData = calculateBuckets(structureData, NUM_BUCKETS);
+              } else if (structure.name === 'vector' && structureData) {
+                structureData = Array.isArray(structureData) ? structureData : [structureData];
+              }
+              setStructureStates(prev => ({
+                ...prev,
+                [currentStep.name]: structureData
+              }));
+            }
           }
+          
           return nextIndex;
         });
       }, 2000);
@@ -895,7 +930,7 @@ const CppEditorPage = () => {
                       <ArrowBackIcon />
                     </IconButton>
                   </Box>
-                  <Box sx={{ flex: 1, p: 2 }}>
+                  <Box sx={{ flex: 1, p: 2, height: 'calc(100% - 64px)' }}>
                     {selectedStructure.name === 'vector' && (
                       <Vector 
                         elements={structureStates[selectedStructure.variableName] || []} 
