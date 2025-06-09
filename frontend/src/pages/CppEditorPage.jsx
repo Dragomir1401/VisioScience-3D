@@ -295,6 +295,8 @@ const CppEditorPage = () => {
   const [executionSteps, setExecutionSteps] = useState([]);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [structureStates, setStructureStates] = useState({});
+  const [isPlaying, setIsPlaying] = useState(false);
+  const playIntervalRef = useRef(null);
 
   const structureComponents = {
     'vector': Vector,
@@ -629,23 +631,18 @@ const CppEditorPage = () => {
       if (lastStep) {
         console.log("DEBUG (CppEditorPage.jsx handleStructureClick): Found lastStep:", lastStep);
         let structureData = lastStep.state;
-        if (structure.name === 'map' && structureData && Array.isArray(structureData)) {
-          // Now, Map component expects the array directly, no need to build AVL tree here
-          // structureData is already the array of key-value pairs
-        }
         if (structure.name === 'unordered_map' && structureData && Array.isArray(structureData)) {
           structureData = calculateBuckets(structureData, NUM_BUCKETS);
-          console.log("DEBUG (CppEditorPage.jsx handleStructureClick): UnorderedMap data after processing:", structureData);
+        } else if (structure.name === 'vector' && structureData) {
+          // Ensure vector data is properly formatted
+          structureData = Array.isArray(structureData) ? structureData : [structureData];
+          console.log("Vector data for structure click:", structureData);
         }
 
         setStructureStates(prev => ({
           ...prev,
           [structure.variableName]: structureData
         }));
-        console.log("DEBUG (CppEditorPage.jsx handleStructureClick): Updated structureStates:", {
-            ...structureStates, 
-            [structure.variableName]: structureData 
-        });
       }
     }
   };
@@ -662,28 +659,65 @@ const CppEditorPage = () => {
     if (selectedStructure) {
       const currentStep = executionSteps[index];
       if (currentStep && currentStep.name === selectedStructure.variableName) {
-        console.log("DEBUG (CppEditorPage.jsx handleStepChange): Matching step found.");
         let structureData = currentStep.state;
-        if (selectedStructure.name === 'map' && structureData && Array.isArray(structureData)) {
-          // Now, Map component expects the array directly, no need to build AVL tree here
-          // structureData is already the array of key-value pairs
-        }
         if (selectedStructure.name === 'unordered_map' && structureData && Array.isArray(structureData)) {
           structureData = calculateBuckets(structureData, NUM_BUCKETS);
-          console.log("DEBUG (CppEditorPage.jsx handleStepChange): UnorderedMap data after processing:", structureData);
+        } else if (selectedStructure.name === 'vector' && structureData) {
+          // Ensure vector data is properly formatted
+          structureData = Array.isArray(structureData) ? structureData : [structureData];
+          console.log("Vector data for step:", structureData);
         }
-
         setStructureStates(prev => ({
           ...prev,
           [selectedStructure.variableName]: structureData
         }));
-        console.log("DEBUG (CppEditorPage.jsx handleStepChange): Updated structureStates:", {
-            ...structureStates,
-            [selectedStructure.variableName]: structureData 
-        });
       }
     }
   };
+
+  const handlePlayPause = () => {
+    if (isPlaying) {
+      clearInterval(playIntervalRef.current);
+      setIsPlaying(false);
+    } else {
+      setIsPlaying(true);
+      playIntervalRef.current = setInterval(() => {
+        setCurrentStepIndex(prev => {
+          if (prev >= executionSteps.length - 1) {
+            clearInterval(playIntervalRef.current);
+            setIsPlaying(false);
+            return prev;
+          }
+          const nextIndex = prev + 1;
+          // Update structure states when auto-playing
+          const currentStep = executionSteps[nextIndex];
+          if (currentStep && currentStep.name === selectedStructure?.variableName) {
+            let structureData = currentStep.state;
+            if (selectedStructure.name === 'unordered_map' && structureData && Array.isArray(structureData)) {
+              structureData = calculateBuckets(structureData, NUM_BUCKETS);
+            } else if (selectedStructure.name === 'vector' && structureData) {
+              // Ensure vector data is properly formatted
+              structureData = Array.isArray(structureData) ? structureData : [structureData];
+              console.log("Vector data for step:", structureData);
+            }
+            setStructureStates(prev => ({
+              ...prev,
+              [selectedStructure.variableName]: structureData
+            }));
+          }
+          return nextIndex;
+        });
+      }, 2000);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (playIntervalRef.current) {
+        clearInterval(playIntervalRef.current);
+      }
+    };
+  }, []);
 
   return (
     <PageContainer>
@@ -773,13 +807,12 @@ const CppEditorPage = () => {
 
           <RightSection sx={{ flex: `${100 - codeWidth} 1 0` }}>
             <ExecutionSection>
-              <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
-                Pași de execuție
-              </Typography>
               <ExecutionSteps
                 steps={executionSteps}
                 currentStepIndex={currentStepIndex}
                 onStepChange={handleStepChange}
+                isPlaying={isPlaying}
+                onPlayPause={handlePlayPause}
               />
             </ExecutionSection>
 

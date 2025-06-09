@@ -71,12 +71,17 @@ const StateChip = styled(Chip)(({ theme }) => ({
   color: 'white',
 }));
 
-const ExecutionSteps = ({ steps = [], onStepChange, currentStepIndex = 0 }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+const ExecutionSteps = ({ 
+  steps = [], 
+  onStepChange, 
+  currentStepIndex = 0,
+  isPlaying,
+  onPlayPause
+}) => {
   const [expandedSteps, setExpandedSteps] = useState({});
 
   const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
+    onPlayPause();
   };
 
   const handleNext = () => {
