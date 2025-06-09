@@ -693,7 +693,7 @@ const CppEditorPage = () => {
             <IconButton onClick={handleBack} sx={{ color: 'white' }}>
               <ArrowBackIcon />
             </IconButton>
-            <Typography variant="h6">C++ Editor</Typography>
+            <Typography variant="h6">Editor de cod</Typography>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <ZoomControls>
@@ -715,7 +715,7 @@ const CppEditorPage = () => {
               sx={{ mr: 1, color: 'white' }}
               size="small"
             >
-              Copy
+              Copiază
             </Button>
             <Button
               startIcon={<RestartAltIcon />}
@@ -723,7 +723,7 @@ const CppEditorPage = () => {
               sx={{ mr: 1, color: 'white' }}
               size="small"
             >
-              Reset
+              Resetare
             </Button>
             <Button
               startIcon={<PlayArrowIcon />}
@@ -774,7 +774,7 @@ const CppEditorPage = () => {
           <RightSection sx={{ flex: `${100 - codeWidth} 1 0` }}>
             <ExecutionSection>
               <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
-                Execution Steps
+                Pași de execuție
               </Typography>
               <ExecutionSteps
                 steps={executionSteps}
@@ -785,7 +785,7 @@ const CppEditorPage = () => {
 
             <IOSection>
               <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
-                Input
+                Intrare
               </Typography>
               <StyledTextField
                 multiline
@@ -798,7 +798,7 @@ const CppEditorPage = () => {
 
               <OutputSection sx={{ height: `${outputHeight}px` }}>
                 <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
-                  Output
+                  Ieșire
                 </Typography>
                 <StyledPaper
                   variant="outlined"
@@ -821,7 +821,7 @@ const CppEditorPage = () => {
 
               <AnalysisSection>
                 <Box sx={{ p: 2, backgroundColor: '#9B6B9E', color: 'white' }}>
-                  <Typography variant="h6">Identified Data Structures</Typography>
+                  <Typography variant="h6">Structuri de date identificate</Typography>
                 </Box>
                 <Box sx={{ p: 2, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                   {dataStructures.map((structure, index) => (

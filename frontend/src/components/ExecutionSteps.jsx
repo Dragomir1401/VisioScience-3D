@@ -122,7 +122,7 @@ const ExecutionSteps = ({ steps = [], onStepChange, currentStepIndex = 0 }) => {
   return (
     <ExecutionContainer>
       <Typography variant="h6" sx={{ color: '#9B6B9E' }}>
-        Execution Steps
+        Pași de execuție
       </Typography>
 
       <ControlsContainer>
