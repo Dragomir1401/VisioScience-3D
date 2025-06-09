@@ -144,6 +144,33 @@ using namespace tracer;
 			}
 		}
 
+		// Transform priority_queue declarations
+		if strings.Contains(line, "priority_queue<") {
+			// Match priority_queue with standard comparators
+			re := regexp.MustCompile(`(?:std::)?priority_queue<(?:std::)?\w+(?:,\s*(?:std::)?vector<(?:std::)?\w+>)?(?:,\s*(?:std::)?(?:greater|less)<(?:std::)?\w+>)?>\s+(\w+)(?:\s*(?:=|{|;))?`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				tracers = append(tracers, tracerVar)
+				lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", %s);",
+					tracerVar, varName, varName)
+			}
+		}
+
+		// Transform deque declarations
+		if strings.Contains(line, "deque<") {
+			re := regexp.MustCompile(`(?:std::)?deque<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				tracers = append(tracers, tracerVar)
+				lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", %s);",
+					tracerVar, varName, varName)
+			}
+		}
+
 		// Transform map operations
 		if strings.Contains(line, "[") && strings.Contains(line, "]=") {
 			// Handle map[key] = value operations
@@ -303,14 +330,14 @@ using namespace tracer;
 			}
 		}
 
-		// Transform queue operations
+		// Transform priority_queue operations
 		if strings.Contains(line, ".push(") {
 			re := regexp.MustCompile(`(\w+)\.push\(`)
 			matches := re.FindStringSubmatch(line)
 			if len(matches) >= 2 {
 				varName := matches[1]
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"insert\", \"Pushed element to queue\");",
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"insert\", \"Pushed element to priority queue\");",
 					tracerVar)
 			}
 		}
@@ -321,7 +348,63 @@ using namespace tracer;
 			if len(matches) >= 2 {
 				varName := matches[1]
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"delete\", \"Popped element from queue\");",
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"delete\", \"Popped element from priority queue\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".top()") {
+			re := regexp.MustCompile(`(\w+)\.top\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"access\", \"Accessed top element of priority queue\");",
+					tracerVar)
+			}
+		}
+
+		// Transform deque operations
+		if strings.Contains(line, ".push_front(") {
+			re := regexp.MustCompile(`(\w+)\.push_front\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"insert\", \"Inserted element at front\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".push_back(") {
+			re := regexp.MustCompile(`(\w+)\.push_back\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"insert\", \"Inserted element at back\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".pop_front()") {
+			re := regexp.MustCompile(`(\w+)\.pop_front\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"delete\", \"Deleted front element\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".pop_back()") {
+			re := regexp.MustCompile(`(\w+)\.pop_back\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"delete\", \"Deleted back element\");",
 					tracerVar)
 			}
 		}
@@ -344,6 +427,61 @@ using namespace tracer;
 				varName := matches[1]
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
 				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"access\", \"Accessed back element\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".at(") {
+			re := regexp.MustCompile(`(\w+)\.at\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"access\", \"Accessed element at position\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".insert(") {
+			re := regexp.MustCompile(`(\w+)\.insert\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"insert\", \"Inserted element at position\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".erase(") {
+			re := regexp.MustCompile(`(\w+)\.erase\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"delete\", \"Deleted element at position\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".resize(") {
+			re := regexp.MustCompile(`(\w+)\.resize\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"resize\", \"Resized container\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".shrink_to_fit()") {
+			re := regexp.MustCompile(`(\w+)\.shrink_to_fit\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"shrink\", \"Shrunk container capacity\");",
 					tracerVar)
 			}
 		}

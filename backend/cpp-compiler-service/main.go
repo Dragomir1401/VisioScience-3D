@@ -219,6 +219,7 @@ var tracerHeader = `#pragma once
 #include <forward_list>
 #include <set>
 #include <unordered_set>
+#include <deque>
 
 namespace tracer {
 
@@ -253,6 +254,18 @@ struct is_set<std::multiset<T>> : std::true_type {};
 
 template<typename T>
 struct is_set<std::unordered_multiset<T>> : std::true_type {};
+
+template<typename T>
+struct is_priority_queue : std::false_type {};
+
+template<typename T, typename Container, typename Compare>
+struct is_priority_queue<std::priority_queue<T, Container, Compare>> : std::true_type {};
+
+template<typename T>
+struct is_deque : std::false_type {};
+
+template<typename T>
+struct is_deque<std::deque<T>> : std::true_type {};
 
 template<typename T>
 struct is_vector : std::false_type {};
@@ -388,6 +401,10 @@ public:
             return "stack";
         } else if constexpr (is_queue<Container>::value) {
             return "queue";
+        } else if constexpr (is_priority_queue<Container>::value) {
+            return "priority_queue";
+        } else if constexpr (is_deque<Container>::value) {
+            return "deque";
         } else if constexpr (is_array<Container>::value) {
             return "array";
         } else if constexpr (is_list<Container>::value) {
@@ -435,6 +452,21 @@ public:
                 temp.pop();
                 first = false;
             }
+        } else if constexpr (is_priority_queue<Container>::value) {
+            // Create a copy of the priority queue to iterate
+            Container temp = container;
+            while (!temp.empty()) {
+                if (!first) result += ",";
+                result += toString(temp.top());
+                temp.pop();
+                first = false;
+            }
+        } else if constexpr (is_deque<Container>::value) {
+            for (const auto& item : container) {
+                if (!first) result += ",";
+                result += toString(item);
+                first = false;
+            }
         } else {
             for (const auto& item : container) {
                 if (!first) result += ",";
@@ -464,7 +496,12 @@ public:
                      "\"capacity\":" + std::to_string(container.capacity()) + "," +
                      "\"empty\":" + (container.empty() ? "true" : "false") + "," +
                      "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
-        } else if constexpr (is_stack<Container>::value || is_queue<Container>::value) {
+        } else if constexpr (is_stack<Container>::value || is_queue<Container>::value || 
+                           is_priority_queue<Container>::value) {
+            result += "\"size\":" + std::to_string(container.size()) + "," +
+                     "\"empty\":" + (container.empty() ? "true" : "false") + "," +
+                     "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
+        } else if constexpr (is_deque<Container>::value) {
             result += "\"size\":" + std::to_string(container.size()) + "," +
                      "\"empty\":" + (container.empty() ? "true" : "false") + "," +
                      "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
