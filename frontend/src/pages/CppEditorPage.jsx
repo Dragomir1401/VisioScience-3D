@@ -87,17 +87,17 @@ const RightSection = styled(Box)(({ theme }) => ({
 }));
 
 const ExecutionSection = styled(Box)(({ theme }) => ({
-  flex: '0 0 40%',
+  flex: '0 0 30%',
   display: 'flex',
   flexDirection: 'column',
-  minWidth: '200px',
+  minWidth: '180px',
   backgroundColor: '#f8edf7',
   padding: theme.spacing(2),
   borderLeft: `1px solid ${theme.palette.divider}`,
 }));
 
 const IOSection = styled(Box)(({ theme }) => ({
-  flex: '0 0 60%',
+  flex: '0 0 70%',
   display: 'flex',
   flexDirection: 'column',
   minWidth: '250px',
@@ -118,8 +118,8 @@ const OutputSection = styled(Box)(({ theme }) => ({
 const AnalysisSection = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  flex: '0 0 200px',
-  minHeight: '200px',
+  flex: '0 0 150px',
+  minHeight: '150px',
 }));
 
 const VisualizationSection = styled(Box)(({ theme }) => ({
@@ -130,7 +130,7 @@ const VisualizationSection = styled(Box)(({ theme }) => ({
   borderRadius: theme.spacing(1),
   overflow: 'hidden',
   marginTop: theme.spacing(2),
-  minHeight: '300px',
+  minHeight: '400px',
 }));
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
