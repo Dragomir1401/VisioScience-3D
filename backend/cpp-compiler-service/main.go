@@ -217,6 +217,8 @@ var tracerHeader = `#pragma once
 #include <array>
 #include <list>
 #include <forward_list>
+#include <set>
+#include <unordered_set>
 
 namespace tracer {
 
@@ -236,6 +238,21 @@ struct is_map<std::map<K, V>> : std::true_type {};
 
 template<typename K, typename V>
 struct is_map<std::unordered_map<K, V>> : std::true_type {};
+
+template<typename T>
+struct is_set : std::false_type {};
+
+template<typename T>
+struct is_set<std::set<T>> : std::true_type {};
+
+template<typename T>
+struct is_set<std::unordered_set<T>> : std::true_type {};
+
+template<typename T>
+struct is_set<std::multiset<T>> : std::true_type {};
+
+template<typename T>
+struct is_set<std::unordered_multiset<T>> : std::true_type {};
 
 template<typename T>
 struct is_vector : std::false_type {};
@@ -377,6 +394,16 @@ public:
             return "list";
         } else if constexpr (is_forward_list<Container>::value) {
             return "forward_list";
+        } else if constexpr (is_set<Container>::value) {
+            if constexpr (std::is_same_v<Container, std::set<typename Container::value_type>>) {
+                return "set";
+            } else if constexpr (std::is_same_v<Container, std::unordered_set<typename Container::value_type>>) {
+                return "unordered_set";
+            } else if constexpr (std::is_same_v<Container, std::multiset<typename Container::value_type>>) {
+                return "multiset";
+            } else {
+                return "unordered_multiset";
+            }
         } else {
             return "container";
         }
@@ -456,6 +483,10 @@ public:
                      "\"empty\":" + (container.empty() ? "true" : "false") + "," +
                      "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
         } else if constexpr (is_list<Container>::value) {
+            result += "\"size\":" + std::to_string(container.size()) + "," +
+                     "\"empty\":" + (container.empty() ? "true" : "false") + "," +
+                     "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
+        } else if constexpr (is_set<Container>::value) {
             result += "\"size\":" + std::to_string(container.size()) + "," +
                      "\"empty\":" + (container.empty() ? "true" : "false") + "," +
                      "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";

@@ -1,91 +1,192 @@
 #include <iostream>
-#include <unordered_map>
-#include <stack>
-#include <queue>
-#include <array>
-#include <list>
-#include <forward_list>
+#include <set>
+#include <unordered_set>
 #include <algorithm>
 
 int main() {
-    std::cout << "\n=== Array Operations ===\n";
-    std::array<int, 5> arr = {1, 2, 3, 4, 5};
+    std::cout << "\n=== Set Operations ===\n";
+    std::set<int> s = {1, 2, 3, 4, 5};
     
-    // Fill array with a value
-    arr.fill(10);
-    std::cout << "After fill: ";
-    for (int x : arr) std::cout << x << " ";
+    // Insert operations
+    s.insert(6);
+    std::cout << "After insert 6: ";
+    for (int x : s) std::cout << x << " ";
     std::cout << "\n";
     
-    // Use array as a circular buffer
-    for (int i = 0; i < 8; i++) {
-        std::rotate(arr.begin(), arr.begin() + 1, arr.end());
-        std::cout << "After rotation " << i + 1 << ": ";
-        for (int x : arr) std::cout << x << " ";
-        std::cout << "\n";
+    // Insert with hint
+    auto it = s.find(3);
+    s.insert(it, 7);
+    std::cout << "After insert with hint: ";
+    for (int x : s) std::cout << x << " ";
+    std::cout << "\n";
+    
+    // Insert range
+    std::vector<int> v = {8, 9, 10};
+    s.insert(v.begin(), v.end());
+    std::cout << "After insert range: ";
+    for (int x : s) std::cout << x << " ";
+    std::cout << "\n";
+    
+    // Erase operations
+    s.erase(5);
+    std::cout << "After erase 5: ";
+    for (int x : s) std::cout << x << " ";
+    std::cout << "\n";
+    
+    // Erase with iterator
+    it = s.find(3);
+    s.erase(it);
+    std::cout << "After erase iterator: ";
+    for (int x : s) std::cout << x << " ";
+    std::cout << "\n";
+    
+    // Find operations
+    it = s.find(4);
+    if (it != s.end()) {
+        std::cout << "Found 4 in set\n";
     }
+    
+    // Count operations
+    std::cout << "Count of 4: " << s.count(4) << "\n";
+    std::cout << "Count of 20: " << s.count(20) << "\n";
+    
+    // Lower and upper bound
+    s.insert({11, 12, 13, 14, 15});
+    auto lower = s.lower_bound(10);
+    auto upper = s.upper_bound(14);
+    std::cout << "Elements between 10 and 14: ";
+    for (auto i = lower; i != upper; ++i) {
+        std::cout << *i << " ";
+    }
+    std::cout << "\n";
+    
+    // Equal range
+    auto range = s.equal_range(12);
+    std::cout << "Equal range for 12: ";
+    for (auto i = range.first; i != range.second; ++i) {
+        std::cout << *i << " ";
+    }
+    std::cout << "\n";
+    
+    // Clear
+    s.clear();
+    std::cout << "After clear, size: " << s.size() << "\n";
 
-    // Test list operations
-    std::cout << "\n=== List Operations ===\n";
-    std::list<int> lst = {1, 2, 3, 4, 5};
+    std::cout << "\n=== Unordered Set Operations ===\n";
+    std::unordered_set<int> us = {1, 2, 3, 4, 5};
     
-    // Splice operation
-    std::list<int> other = {10, 20, 30};
-    lst.splice(lst.begin(), other);
-    std::cout << "After splice: ";
-    for (int x : lst) std::cout << x << " ";
+    // Insert
+    us.insert(6);
+    std::cout << "After insert 6: ";
+    for (int x : us) std::cout << x << " ";
     std::cout << "\n";
     
-    // Unique operation
-    lst.push_back(10);
-    lst.push_back(10);
-    lst.push_back(20);
-    lst.unique();
-    std::cout << "After unique: ";
-    for (int x : lst) std::cout << x << " ";
+    // Insert range
+    us.insert(v.begin(), v.end());
+    std::cout << "After insert range: ";
+    for (int x : us) std::cout << x << " ";
     std::cout << "\n";
     
-    // Merge operation
-    std::list<int> toMerge = {15, 25, 35};
-    lst.merge(toMerge);
-    std::cout << "After merge: ";
-    for (int x : lst) std::cout << x << " ";
+    // Erase
+    us.erase(5);
+    std::cout << "After erase 5: ";
+    for (int x : us) std::cout << x << " ";
     std::cout << "\n";
+    
+    // Find
+    if (us.find(4) != us.end()) {
+        std::cout << "Found 4 in unordered_set\n";
+    }
+    
+    // Count
+    std::cout << "Count of 4: " << us.count(4) << "\n";
+    
+    // Clear
+    us.clear();
+    std::cout << "After clear, size: " << us.size() << "\n";
 
-    // Test forward_list operations
-    std::cout << "\n=== Forward List Operations ===\n";
-    std::forward_list<int> flst = {1, 2, 3, 4, 5};
+    std::cout << "\n=== Multiset Operations ===\n";
+    std::multiset<int> ms = {1, 2, 2, 3, 3, 3, 4, 4, 4, 4};
     
-    // Insert after specific position
-    auto it = flst.begin();
-    std::advance(it, 2);
-    flst.insert_after(it, 100);
-    std::cout << "After insert_after: ";
-    for (int x : flst) std::cout << x << " ";
+    // Insert
+    ms.insert(5);
+    std::cout << "After insert 5: ";
+    for (int x : ms) std::cout << x << " ";
     std::cout << "\n";
     
-    // Erase after specific position
-    it = flst.begin();
-    std::advance(it, 1);
-    flst.erase_after(it);
-    std::cout << "After erase_after: ";
-    for (int x : flst) std::cout << x << " ";
+    // Insert multiple
+    ms.insert(3);
+    ms.insert(3);
+    std::cout << "After insert multiple 3: ";
+    for (int x : ms) std::cout << x << " ";
     std::cout << "\n";
     
-    // Splice after
-    std::forward_list<int> other_fl = {50, 60, 70};
-    it = flst.begin();
-    std::advance(it, 2);
-    flst.splice_after(it, other_fl);
-    std::cout << "After splice_after: ";
-    for (int x : flst) std::cout << x << " ";
+    // Count
+    std::cout << "Count of 3: " << ms.count(3) << "\n";
+    
+    // Lower and upper bound
+    auto ms_lower = ms.lower_bound(3);
+    auto ms_upper = ms.upper_bound(3);
+    std::cout << "All 3s: ";
+    for (auto i = ms_lower; i != ms_upper; ++i) {
+        std::cout << *i << " ";
+    }
     std::cout << "\n";
     
-    // Remove if
-    flst.remove_if([](int x) { return x % 2 == 0; });
-    std::cout << "After remove_if (even numbers): ";
-    for (int x : flst) std::cout << x << " ";
+    // Equal range
+    auto ms_range = ms.equal_range(4);
+    std::cout << "All 4s: ";
+    for (auto i = ms_range.first; i != ms_range.second; ++i) {
+        std::cout << *i << " ";
+    }
     std::cout << "\n";
+    
+    // Erase
+    ms.erase(3);
+    std::cout << "After erase all 3s: ";
+    for (int x : ms) std::cout << x << " ";
+    std::cout << "\n";
+    
+    // Clear
+    ms.clear();
+    std::cout << "After clear, size: " << ms.size() << "\n";
+
+    std::cout << "\n=== Unordered Multiset Operations ===\n";
+    std::unordered_multiset<int> ums = {1, 2, 2, 3, 3, 3, 4, 4, 4, 4};
+    
+    // Insert
+    ums.insert(5);
+    std::cout << "After insert 5: ";
+    for (int x : ums) std::cout << x << " ";
+    std::cout << "\n";
+    
+    // Insert multiple
+    ums.insert(3);
+    ums.insert(3);
+    std::cout << "After insert multiple 3: ";
+    for (int x : ums) std::cout << x << " ";
+    std::cout << "\n";
+    
+    // Count
+    std::cout << "Count of 3: " << ums.count(3) << "\n";
+    
+    // Find
+    auto ums_range = ums.equal_range(4);
+    std::cout << "All 4s: ";
+    for (auto i = ums_range.first; i != ums_range.second; ++i) {
+        std::cout << *i << " ";
+    }
+    std::cout << "\n";
+    
+    // Erase
+    ums.erase(3);
+    std::cout << "After erase all 3s: ";
+    for (int x : ums) std::cout << x << " ";
+    std::cout << "\n";
+    
+    // Clear
+    ums.clear();
+    std::cout << "After clear, size: " << ums.size() << "\n";
 
     return 0;
 }

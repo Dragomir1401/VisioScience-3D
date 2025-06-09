@@ -19,6 +19,8 @@ func TransformCode(code string) string {
 #include <array>
 #include <list>
 #include <forward_list>
+#include <set>
+#include <unordered_set>
 #include "tracer.h"
 
 using namespace tracer;
@@ -35,6 +37,20 @@ using namespace tracer;
 		if strings.HasPrefix(trimmedLine, "//") {
 			lines[i] = line // Keep the original line with its indentation
 			continue
+		}
+
+		// Transform set declarations
+		if strings.Contains(line, "set<") || strings.Contains(line, "unordered_set<") ||
+			strings.Contains(line, "multiset<") || strings.Contains(line, "unordered_multiset<") {
+			re := regexp.MustCompile(`(?:std::)?(?:unordered_)?(?:multi)?set<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				tracers = append(tracers, tracerVar)
+				lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", %s);",
+					tracerVar, varName, varName)
+			}
 		}
 
 		// Transform array declarations
@@ -610,6 +626,17 @@ using namespace tracer;
 			}
 		}
 
+		if strings.Contains(line, ".splice(") {
+			re := regexp.MustCompile(`(\w+)\.splice\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"splice\", \"Moved elements from another container\");",
+					tracerVar)
+			}
+		}
+
 		if strings.Contains(line, ".unique()") {
 			re := regexp.MustCompile(`(\w+)\.unique\(`)
 			matches := re.FindStringSubmatch(line)
@@ -617,6 +644,95 @@ using namespace tracer;
 				varName := matches[1]
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
 				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"unique\", \"Removed consecutive duplicates\");",
+					tracerVar)
+			}
+		}
+
+		// Transform set operations
+		if strings.Contains(line, ".insert(") {
+			re := regexp.MustCompile(`(\w+)\.insert\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"insert\", \"Inserted element\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".erase(") {
+			re := regexp.MustCompile(`(\w+)\.erase\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"delete\", \"Deleted element\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".find(") {
+			re := regexp.MustCompile(`(\w+)\.find\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"find\", \"Searched for element\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".count(") {
+			re := regexp.MustCompile(`(\w+)\.count\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"count\", \"Counted occurrences of element\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".lower_bound(") {
+			re := regexp.MustCompile(`(\w+)\.lower_bound\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"lower_bound\", \"Found lower bound\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".upper_bound(") {
+			re := regexp.MustCompile(`(\w+)\.upper_bound\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"upper_bound\", \"Found upper bound\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".equal_range(") {
+			re := regexp.MustCompile(`(\w+)\.equal_range\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"equal_range\", \"Found equal range\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".clear()") {
+			re := regexp.MustCompile(`(\w+)\.clear\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"clear\", \"Cleared container\");",
 					tracerVar)
 			}
 		}
