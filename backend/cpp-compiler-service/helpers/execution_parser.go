@@ -20,8 +20,10 @@ func ParseExecutionOutput(rawOutput string) (*models.ExecutionOutput, error) {
 
 	// Process each line
 	for _, line := range lines {
+		// Trim all whitespace (spaces and tabs) from both ends
 		line = strings.TrimSpace(line)
-		if line == "" {
+		// Skip empty lines and comments (after trimming whitespace)
+		if line == "" || strings.HasPrefix(line, "//") {
 			continue
 		}
 

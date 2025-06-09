@@ -214,6 +214,9 @@ var tracerHeader = `#pragma once
 #include <chrono>
 #include <stack>
 #include <queue>
+#include <array>
+#include <list>
+#include <forward_list>
 
 namespace tracer {
 
@@ -251,6 +254,24 @@ struct is_queue : std::false_type {};
 
 template<typename T, typename Container>
 struct is_queue<std::queue<T, Container>> : std::true_type {};
+
+template<typename T>
+struct is_array : std::false_type {};
+
+template<typename T, std::size_t N>
+struct is_array<std::array<T, N>> : std::true_type {};
+
+template<typename T>
+struct is_list : std::false_type {};
+
+template<typename T>
+struct is_list<std::list<T>> : std::true_type {};
+
+template<typename T>
+struct is_forward_list : std::false_type {};
+
+template<typename T>
+struct is_forward_list<std::forward_list<T>> : std::true_type {};
 
 // Helper function to convert any numeric type to string
 template<typename T>
@@ -350,6 +371,12 @@ public:
             return "stack";
         } else if constexpr (is_queue<Container>::value) {
             return "queue";
+        } else if constexpr (is_array<Container>::value) {
+            return "array";
+        } else if constexpr (is_list<Container>::value) {
+            return "list";
+        } else if constexpr (is_forward_list<Container>::value) {
+            return "forward_list";
         } else {
             return "container";
         }
@@ -411,6 +438,24 @@ public:
                      "\"empty\":" + (container.empty() ? "true" : "false") + "," +
                      "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
         } else if constexpr (is_stack<Container>::value || is_queue<Container>::value) {
+            result += "\"size\":" + std::to_string(container.size()) + "," +
+                     "\"empty\":" + (container.empty() ? "true" : "false") + "," +
+                     "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
+        } else if constexpr (is_array<Container>::value) {
+            result += "\"size\":" + std::to_string(container.size()) + "," +
+                     "\"max_size\":" + std::to_string(container.max_size()) + "," +
+                     "\"empty\":" + (container.empty() ? "true" : "false") + "," +
+                     "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
+        } else if constexpr (is_forward_list<Container>::value) {
+            // Calculate size manually for forward_list
+            size_t count = 0;
+            for (auto it = container.begin(); it != container.end(); ++it) {
+                ++count;
+            }
+            result += "\"size\":" + std::to_string(count) + "," +
+                     "\"empty\":" + (container.empty() ? "true" : "false") + "," +
+                     "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
+        } else if constexpr (is_list<Container>::value) {
             result += "\"size\":" + std::to_string(container.size()) + "," +
                      "\"empty\":" + (container.empty() ? "true" : "false") + "," +
                      "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
