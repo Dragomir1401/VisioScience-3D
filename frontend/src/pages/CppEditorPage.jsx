@@ -540,85 +540,85 @@ const CppEditorPage = () => {
     const structures = [];
     const patterns = {
       'vector': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?vector\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?vector\s*<[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Dynamic array with contiguous storage'
       },
       'list': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?list\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?list\s*<[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Doubly-linked list'
       },
       'forward_list': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?forward_list\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?forward_list\s*<[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Singly-linked list'
       },
       'deque': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?deque\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?deque\s*<[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Double-ended queue'
       },
       'array': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?array\s*<[^,]+,\s*\d+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?array\s*<[^,]+,\s*\d+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Fixed-size array'
       },
       
       'unordered_map': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_map\s*<[^,]+,\s*[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_map\s*<[^,]+,\s*[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'unordered',
         description: 'Hash table based map'
       },
       'unordered_set': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_set\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_set\s*<[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'unordered',
         description: 'Hash table based set'
       },
       'unordered_multimap': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_multimap\s*<[^,]+,\s*[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_multimap\s*<[^,]+,\s*[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'unordered',
         description: 'Hash table based multimap'
       },
       'unordered_multiset': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_multiset\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?unordered_multiset\s*<[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'unordered',
         description: 'Hash table based multiset'
       },
       
       'map': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)map\s*<[^,]+,\s*[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)map\s*<[^,]+,\s*[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Sorted key-value pairs'
       },
       'set': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)set\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)set\s*<[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Sorted unique elements'
       },
       'multimap': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)multimap\s*<[^,]+,\s*[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)multimap\s*<[^,]+,\s*[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Sorted key-value pairs with duplicate keys'
       },
       'multiset': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)multiset\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?(?<!unordered_)multiset\s*<[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'ordered',
         description: 'Sorted elements with duplicates'
       },
       
       'queue': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?queue\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?queue\s*<[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'adaptor',
         description: 'FIFO queue'
       },
       'stack': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?stack\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?stack\s*<[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'adaptor',
         description: 'LIFO stack'
       },
       'priority_queue': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?priority_queue\s*<[^>]+>\s*(\w+)(?=\s|;|\)|,|$)/g,
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?priority_queue\s*<[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'adaptor',
         description: 'Priority queue'
       }
@@ -628,15 +628,21 @@ const CppEditorPage = () => {
       let match;
       while ((match = info.pattern.exec(code)) !== null) {
         const variableName = match[1];
-        structures.push({
-          name: structure,
-          variableName: variableName,
-          type: info.type,
-          description: `${info.description} (${variableName})`
-        });
+        // Skip if this is a parameter in a function declaration
+        const line = code.substring(0, match.index).split('\n').pop();
+        if (!line.includes('(') || line.includes('{')) {
+          console.log(`Found ${structure}: ${variableName}`); // Debug log
+          structures.push({
+            name: structure,
+            variableName: variableName,
+            type: info.type,
+            description: `${info.description} (${variableName})`
+          });
+        }
       }
     }
 
+    console.log('Detected structures:', structures); // Debug log
     setDataStructures(structures);
   };
 
@@ -656,12 +662,16 @@ const CppEditorPage = () => {
       if (lastStep) {
         console.log("DEBUG (CppEditorPage.jsx handleStructureClick): Found lastStep:", lastStep);
         let structureData = lastStep.state;
+        
+        // Handle different structure types
         if (structure.name === 'unordered_map' && structureData && Array.isArray(structureData)) {
           structureData = calculateBuckets(structureData, NUM_BUCKETS);
         } else if (structure.name === 'vector' && structureData) {
-          // Ensure vector data is properly formatted
           structureData = Array.isArray(structureData) ? structureData : [structureData];
-          console.log("Vector data for structure click:", structureData);
+        } else if (structure.name === 'list' && structureData) {
+          // Ensure list data is properly formatted
+          structureData = Array.isArray(structureData) ? structureData : [structureData];
+          console.log("List data for structure click:", structureData);
         }
 
         setStructureStates(prev => ({
@@ -933,6 +943,15 @@ const CppEditorPage = () => {
                   <Box sx={{ flex: 1, p: 2, height: 'calc(100% - 64px)' }}>
                     {selectedStructure.name === 'vector' && (
                       <Vector 
+                        elements={structureStates[selectedStructure.variableName] || []} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="100%" 
+                      />
+                    )}
+                    {selectedStructure.name === 'list' && (
+                      <DoubleLinkedList 
                         elements={structureStates[selectedStructure.variableName] || []} 
                         showControls={false} 
                         height="100%" 
