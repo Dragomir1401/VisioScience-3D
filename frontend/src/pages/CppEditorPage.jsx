@@ -302,7 +302,8 @@ const CppEditorPage = () => {
 
   const structureComponents = {
     'vector': Vector,
-    'list': CppList,
+    'list': DoubleLinkedList,
+    'forward_list': CppList,
     'map': Map,
     'set': Set,
     'queue': Queue,
@@ -952,6 +953,15 @@ const CppEditorPage = () => {
                     )}
                     {selectedStructure.name === 'list' && (
                       <DoubleLinkedList 
+                        elements={structureStates[selectedStructure.variableName] || []} 
+                        showControls={false} 
+                        height="100%" 
+                        width="100%" 
+                        canvasHeight="100%" 
+                      />
+                    )}
+                    {selectedStructure.name === 'forward_list' && (
+                      <CppList 
                         elements={structureStates[selectedStructure.variableName] || []} 
                         showControls={false} 
                         height="100%" 
