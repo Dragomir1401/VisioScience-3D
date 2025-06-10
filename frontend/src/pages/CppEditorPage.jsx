@@ -425,9 +425,6 @@ const CppEditorPage = () => {
                   break;
                 
                 case 'set':
-                case 'unordered_set':
-                case 'multiset':
-                case 'unordered_multiset':
                   // Convert array of values to AVL tree nodes
                   let root = null;
                   if (Array.isArray(structureValue)) {
@@ -436,6 +433,23 @@ const CppEditorPage = () => {
                     });
                   }
                   newStructureStates[structureName] = root;
+                  break;
+
+                case 'unordered_set':
+                  // Convert array of values to hash table buckets
+                  if (Array.isArray(structureValue)) {
+                    const buckets = Array.from({ length: NUM_BUCKETS }, () => []);
+                    structureValue.forEach(value => {
+                      const bucketIndex = hashNumber(value, NUM_BUCKETS);
+                      buckets[bucketIndex].push(value);
+                    });
+                    newStructureStates[structureName] = buckets;
+                  }
+                  break;
+                
+                case 'multiset':
+                case 'unordered_multiset':
+                  newStructureStates[structureName] = structureValue;
                   break;
                 
                 case 'queue':
@@ -726,6 +740,16 @@ const CppEditorPage = () => {
             });
           }
           structureData = root;
+        } else if (selectedStructure.name === 'unordered_set' && structureData) {
+          // Convert array of values to hash table buckets
+          if (Array.isArray(structureData)) {
+            const buckets = Array.from({ length: NUM_BUCKETS }, () => []);
+            structureData.forEach(value => {
+              const bucketIndex = hashNumber(value, NUM_BUCKETS);
+              buckets[bucketIndex].push(value);
+            });
+            structureData = buckets;
+          }
         }
         setStructureStates(prev => ({
           ...prev,
@@ -775,6 +799,16 @@ const CppEditorPage = () => {
                     });
                   }
                   structureData = root;
+                } else if (structure.name === 'unordered_set' && structureData) {
+                  // Convert array of values to hash table buckets
+                  if (Array.isArray(structureData)) {
+                    const buckets = Array.from({ length: NUM_BUCKETS }, () => []);
+                    structureData.forEach(value => {
+                      const bucketIndex = hashNumber(value, NUM_BUCKETS);
+                      buckets[bucketIndex].push(value);
+                    });
+                    structureData = buckets;
+                  }
                 }
                 setStructureStates(prev => ({
                   ...prev,
