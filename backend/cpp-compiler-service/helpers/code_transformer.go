@@ -29,7 +29,10 @@ using namespace tracer;
 
 	// Process the code line by line
 	lines := strings.Split(code, "\n")
-	var tracers []string // Keep track of all tracers we create
+	var tracers []string       // Keep track of all tracers we create
+	inIOOperation := false     // Track if we're in a multi-line I/O operation
+	inDumpFunction := false    // Track if we're in a dump function
+	var templateVarName string // Track the variable name in template function
 
 	for i, line := range lines {
 		// Skip commented lines
@@ -39,22 +42,68 @@ using namespace tracer;
 			continue
 		}
 
+		// Check if we're entering a dump function
+		if strings.Contains(line, "void dump") {
+			inDumpFunction = true
+		}
+
+		// Check if we're exiting a dump function
+		if inDumpFunction && strings.Contains(line, "}") {
+			inDumpFunction = false
+		}
+
+		// Skip processing if we're in a dump function
+		if inDumpFunction {
+			lines[i] = line
+			continue
+		}
+
+		// Check if this line starts a new I/O operation
+		if strings.Contains(line, "std::cout") || strings.Contains(line, "std::cin") {
+			inIOOperation = true
+		}
+
+		// Check if this line ends the I/O operation
+		if inIOOperation && strings.Contains(line, ";") {
+			inIOOperation = false
+		}
+
+		// Skip adding tracers if we're in an I/O operation
+		if inIOOperation {
+			lines[i] = line
+			continue
+		}
+
+		// Handle template function calls
+		if strings.Contains(line, "template<") && strings.Contains(line, "void dump") {
+			// Add tracer after the cout operation
+			tracerVar := fmt.Sprintf("%s_tracer", templateVarName)
+			lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", %s);",
+				tracerVar, templateVarName, templateVarName)
+			lines[i] += "\n" + fmt.Sprintf("%s.traceOperation(\"dump\", \"Dumped container contents\");",
+				tracerVar)
+			tracers = append(tracers, tracerVar)
+			continue
+		}
+
 		// Transform set declarations
 		if strings.Contains(line, "set<") || strings.Contains(line, "unordered_set<") ||
 			strings.Contains(line, "multiset<") || strings.Contains(line, "unordered_multiset<") {
-			re := regexp.MustCompile(`(?:std::)?(?:unordered_)?(?:multi)?set<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
-			matches := re.FindStringSubmatch(line)
-			if len(matches) >= 2 {
-				varName := matches[1]
-				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				tracers = append(tracers, tracerVar)
-				lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", %s);",
-					tracerVar, varName, varName)
+			if !strings.Contains(line, "const") && !strings.Contains(line, "&") {
+				re := regexp.MustCompile(`(?:std::)?(?:unordered_)?(?:multi)?set<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
+				matches := re.FindStringSubmatch(line)
+				if len(matches) >= 2 {
+					varName := matches[1]
+					tracerVar := fmt.Sprintf("%s_tracer", varName)
+					tracers = append(tracers, tracerVar)
+					lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", %s);",
+						tracerVar, varName, varName)
+				}
 			}
 		}
 
 		// Transform array declarations
-		if strings.Contains(line, "array<") {
+		if strings.Contains(line, "array<") && !strings.Contains(line, "const") && !strings.Contains(line, "&") {
 			re := regexp.MustCompile(`(?:std::)?array<(?:std::)?\w+,\s*\d+>\s+(\w+)(?:\s*(?:=|{|;))?`)
 			matches := re.FindStringSubmatch(line)
 			if len(matches) >= 2 {
@@ -66,8 +115,120 @@ using namespace tracer;
 			}
 		}
 
+		// Transform array operations
+		if strings.Contains(line, "[") && !strings.Contains(line, "[]=") {
+			// Handle array[index] operations
+			re := regexp.MustCompile(`(\w+)\[([^]]+)\]`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 3 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"access\", \"Accessed element at index\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".front()") {
+			re := regexp.MustCompile(`(\w+)\.front\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"access\", \"Accessed front element\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".back()") {
+			re := regexp.MustCompile(`(\w+)\.back\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"access\", \"Accessed back element\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".size()") {
+			re := regexp.MustCompile(`(\w+)\.size\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"size\", \"Accessed size\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".empty()") {
+			re := regexp.MustCompile(`(\w+)\.empty\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"empty\", \"Checked if empty\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, ".fill(") {
+			re := regexp.MustCompile(`(\w+)\.fill\(`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"fill\", \"Filled array with value\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, "std::swap(") {
+			re := regexp.MustCompile(`std::swap\((\w+)\[`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"swap\", \"Swapped array elements\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, "std::sort(") {
+			re := regexp.MustCompile(`std::sort\((\w+)\.begin\(\)`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"sort\", \"Sorted array elements\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, "std::rotate(") {
+			re := regexp.MustCompile(`std::rotate\((\w+)\.begin\(\)`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"rotate\", \"Rotated array elements\");",
+					tracerVar)
+			}
+		}
+
+		if strings.Contains(line, "std::iota(") {
+			re := regexp.MustCompile(`std::iota\((\w+)\.begin\(\)`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"iota\", \"Filled array with sequential values\");",
+					tracerVar)
+			}
+		}
+
 		// Transform list declarations
-		if strings.Contains(line, "list<") {
+		if strings.Contains(line, "list<") && !strings.Contains(line, "const") && !strings.Contains(line, "&") {
 			re := regexp.MustCompile(`(?:std::)?list<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
 			matches := re.FindStringSubmatch(line)
 			if len(matches) >= 2 {
@@ -80,7 +241,7 @@ using namespace tracer;
 		}
 
 		// Transform forward_list declarations
-		if strings.Contains(line, "forward_list<") {
+		if strings.Contains(line, "forward_list<") && !strings.Contains(line, "const") && !strings.Contains(line, "&") {
 			re := regexp.MustCompile(`(?:std::)?forward_list<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
 			matches := re.FindStringSubmatch(line)
 			if len(matches) >= 2 {
@@ -482,40 +643,6 @@ using namespace tracer;
 				varName := matches[1]
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
 				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"shrink\", \"Shrunk container capacity\");",
-					tracerVar)
-			}
-		}
-
-		// Transform array operations
-		if strings.Contains(line, ".fill(") {
-			re := regexp.MustCompile(`(\w+)\.fill\(`)
-			matches := re.FindStringSubmatch(line)
-			if len(matches) >= 2 {
-				varName := matches[1]
-				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"fill\", \"Filled array with value\");",
-					tracerVar)
-			}
-		}
-
-		if strings.Contains(line, "std::rotate(") {
-			re := regexp.MustCompile(`std::rotate\((\w+)\.begin\(\)`)
-			matches := re.FindStringSubmatch(line)
-			if len(matches) >= 2 {
-				varName := matches[1]
-				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"rotate\", \"Rotated array elements\");",
-					tracerVar)
-			}
-		}
-
-		if strings.Contains(line, "std::sort(") {
-			re := regexp.MustCompile(`std::sort\((\w+)\.begin\(\)`)
-			matches := re.FindStringSubmatch(line)
-			if len(matches) >= 2 {
-				varName := matches[1]
-				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				lines[i] = line + "\n" + fmt.Sprintf("%s.traceOperation(\"sort\", \"Sorted array elements\");",
 					tracerVar)
 			}
 		}

@@ -467,6 +467,12 @@ public:
                 result += toString(item);
                 first = false;
             }
+        } else if constexpr (is_array<Container>::value) {
+            for (const auto& item : container) {
+                if (!first) result += ",";
+                result += toString(item);
+                first = false;
+            }
         } else {
             for (const auto& item : container) {
                 if (!first) result += ",";
@@ -496,6 +502,11 @@ public:
                      "\"capacity\":" + std::to_string(container.capacity()) + "," +
                      "\"empty\":" + (container.empty() ? "true" : "false") + "," +
                      "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
+        } else if constexpr (is_array<Container>::value) {
+            result += "\"size\":" + std::to_string(container.size()) + "," +
+                     "\"max_size\":" + std::to_string(container.max_size()) + "," +
+                     "\"empty\":" + (container.empty() ? "true" : "false") + "," +
+                     "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
         } else if constexpr (is_stack<Container>::value || is_queue<Container>::value || 
                            is_priority_queue<Container>::value) {
             result += "\"size\":" + std::to_string(container.size()) + "," +
@@ -503,11 +514,6 @@ public:
                      "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
         } else if constexpr (is_deque<Container>::value) {
             result += "\"size\":" + std::to_string(container.size()) + "," +
-                     "\"empty\":" + (container.empty() ? "true" : "false") + "," +
-                     "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
-        } else if constexpr (is_array<Container>::value) {
-            result += "\"size\":" + std::to_string(container.size()) + "," +
-                     "\"max_size\":" + std::to_string(container.max_size()) + "," +
                      "\"empty\":" + (container.empty() ? "true" : "false") + "," +
                      "\"element_type\":\"" + typeid(typename Container::value_type).name() + "\"";
         } else if constexpr (is_forward_list<Container>::value) {

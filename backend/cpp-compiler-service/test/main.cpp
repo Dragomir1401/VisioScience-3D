@@ -1,100 +1,69 @@
 #include <iostream>
-#include <set>
-#include <unordered_set>
-#include <algorithm>
-#include <queue>
-#include <deque>
-#include <functional>
+#include <list>
+#include <forward_list>
+#include <array>
+#include <algorithm>   // sort, reverse
+#include <numeric>     // iota
+
+/* util pentru afişare ---------------------------------------------------- */
+template<class Cont>
+void dump(const char* name, const Cont& c)
+{
+    std::cout << name << " = [ ";
+    for (auto v : c) std::cout << v << ' ';
+    std::cout << "] size=" << std::size(c) << '\n';   // std::size <C++17: c.size()
+}
+
+/* suprasarcină pt. forward_list (nu are size()) -------------------------- */
+template<class T>
+void dump(const char* name, const std::forward_list<T>& fl)
+{
+    std::cout << name << " = [ ";
+    auto n = 0;
+    for (auto v : fl) { std::cout << v << ' '; ++n; }
+    std::cout << "] size=" << n << '\n';
+}
 
 int main() {
-    std::cout << "\n=== Priority Queue Operations ===\n";
-    std::priority_queue<int> pq;
-    
-    // Push operations
-    pq.push(5);
-    pq.push(2);
-    pq.push(8);
-    pq.push(1);
-    pq.push(9);
-    
-    std::cout << "After pushing elements: ";
-    while (!pq.empty()) {
-        std::cout << pq.top() << " ";
-        pq.pop();
-    }
-    std::cout << "\n";
-    
-    std::priority_queue<int, std::vector<int>, std::greater<int>> altpq;
-    altpq.push(5);
-    altpq.push(2);
-    altpq.push(8);
-    altpq.push(1);
-    altpq.push(9);
-    
-    std::cout << "Min priority queue: ";
-    while (!altpq.empty()) {
-        std::cout << altpq.top() << " ";
-        altpq.pop();
-    }
-    std::cout << "\n";
+/*---------------------------------------------------------------------- */
+/* 1) std::list<int>  –  doubly-linked                                  */
+/*---------------------------------------------------------------------- */
+    std::list<int> dl{1, 2, 3};
+    dl.push_back(4);                  // … 3 4
+    dl.push_front(0);                 // 0 …
+    auto it = std::next(dl.begin(),2);
+    dl.insert(it, 99);                // 0 1 99 2 …
+    dl.remove(3);                     // şterge prin valoare
+    dl.sort();                        // sortare stabilă
+    dl.reverse();                     // inversare
 
-    std::cout << "\n=== Deque Operations ===\n";
-    std::deque<int> dq = {1, 2, 3, 4, 5};
-    
-    // Front operations
-    dq.push_front(0);
-    std::cout << "After push_front(0): ";
-    for (int x : dq) std::cout << x << " ";
-    std::cout << "\n";
-    
-    // Back operations
-    dq.push_back(6);
-    std::cout << "After push_back(6): ";
-    for (int x : dq) std::cout << x << " ";
-    std::cout << "\n";
-    
-    // Pop operations
-    dq.pop_front();
-    std::cout << "After pop_front(): ";
-    for (int x : dq) std::cout << x << " ";
-    std::cout << "\n";
-    
-    dq.pop_back();
-    std::cout << "After pop_back(): ";
-    for (int x : dq) std::cout << x << " ";
-    std::cout << "\n";
-    
-    // Access operations
-    std::cout << "Front element: " << dq.front() << "\n";
-    std::cout << "Back element: " << dq.back() << "\n";
-    std::cout << "Element at index 2: " << dq[2] << "\n";
-    std::cout << "Element at index 3 using at(): " << dq.at(3) << "\n";
-    
-    // Insert operations
-    dq.insert(dq.begin() + 2, 10);
-    std::cout << "After insert at position 2: ";
-    for (int x : dq) std::cout << x << " ";
-    std::cout << "\n";
-    
-    // Erase operations
-    dq.erase(dq.begin() + 2);
-    std::cout << "After erase at position 2: ";
-    for (int x : dq) std::cout << x << " ";
-    std::cout << "\n";
-    
-    // Resize operations
-    dq.resize(8, 0);
-    std::cout << "After resize to 8: ";
-    for (int x : dq) std::cout << x << " ";
-    std::cout << "\n";
-    
-    // Shrink to fit
-    dq.shrink_to_fit();
-    std::cout << "After shrink_to_fit()\n";
-    
-    // Clear
-    dq.clear();
-    std::cout << "After clear, size: " << dq.size() << "\n";
+    dump("doubly list", dl);
+
+/*---------------------------------------------------------------------- */
+/* 2) std::forward_list<int> – singly-linked                             */
+/*---------------------------------------------------------------------- */
+    std::forward_list<int> sl = {10, 20, 30};
+    sl.push_front(5);                 // 5 10 20 30
+    auto fit = sl.begin();
+    sl.insert_after(fit, 15);         // după 5 ⇒ 5 15 10 …
+    sl.erase_after(fit);              // şterge 15
+    sl.sort();
+    sl.reverse();
+
+    dump("singly list", sl);
+
+/*---------------------------------------------------------------------- */
+/* 3) std::array<int,5>                                                  */
+/*---------------------------------------------------------------------- */
+    std::array<int,5> arr;
+    std::iota(arr.begin(), arr.end(), 1);   // 1 2 3 4 5
+    arr[2] = 99;                            // index-based write
+    std::swap(arr[0], arr[4]);              // swap elemente
+    dump("array", arr);
+
+    std::cout << "front=" << arr.front()
+              << " back=" << arr.back()
+              << " size=" << arr.size() << '\n';
 
     return 0;
 }
