@@ -1,69 +1,53 @@
 #include <iostream>
-#include <list>
-#include <forward_list>
-#include <array>
-#include <algorithm>   // sort, reverse
-#include <numeric>     // iota
+#include <set>
+#include <unordered_set>
+#include <algorithm>   // merge, includes
 
-/* util pentru afişare ---------------------------------------------------- */
-template<class Cont>
-void dump(const char* name, const Cont& c)
-{
-    std::cout << name << " = [ ";
-    for (auto v : c) std::cout << v << ' ';
-    std::cout << "] size=" << std::size(c) << '\n';   // std::size <C++17: c.size()
-}
 
-/* suprasarcină pt. forward_list (nu are size()) -------------------------- */
-template<class T>
-void dump(const char* name, const std::forward_list<T>& fl)
-{
-    std::cout << name << " = [ ";
-    auto n = 0;
-    for (auto v : fl) { std::cout << v << ' '; ++n; }
-    std::cout << "] size=" << n << '\n';
-}
 
 int main() {
-/*---------------------------------------------------------------------- */
-/* 1) std::list<int>  –  doubly-linked                                  */
-/*---------------------------------------------------------------------- */
-    std::list<int> dl{1, 2, 3};
-    dl.push_back(4);                  // … 3 4
-    dl.push_front(0);                 // 0 …
-    auto it = std::next(dl.begin(),2);
-    dl.insert(it, 99);                // 0 1 99 2 …
-    dl.remove(3);                     // şterge prin valoare
-    dl.sort();                        // sortare stabilă
-    dl.reverse();                     // inversare
+/*-----------------------------------------------------------------------
+  1) std::set  – mulțime ordonată, elemente unice
+ -----------------------------------------------------------------------*/
+    std::set<int> os;                       // gol
+    os.insert({5, 1, 3});                   // insert range
+    os.insert(2);                           // insert single
+    os.emplace(4);                          // emplace
 
-    dump("doubly list", dl);
+    std::cout << "os.count(3) = " << os.count(3) << '\n';  // 1
+    os.erase(1);                                          // șterge cheie
 
-/*---------------------------------------------------------------------- */
-/* 2) std::forward_list<int> – singly-linked                             */
-/*---------------------------------------------------------------------- */
-    std::forward_list<int> sl = {10, 20, 30};
-    sl.push_front(5);                 // 5 10 20 30
-    auto fit = sl.begin();
-    sl.insert_after(fit, 15);         // după 5 ⇒ 5 15 10 …
-    sl.erase_after(fit);              // şterge 15
-    sl.sort();
-    sl.reverse();
+/*-----------------------------------------------------------------------
+  2) std::unordered_set – hash-set, elemente unice (fără ordine)
+ -----------------------------------------------------------------------*/
+    std::unordered_set<int> us;
+    us.insert({10,20,30});
+    us.insert(20);                          // duplicatul este ignorat
 
-    dump("singly list", sl);
+    int key = 25;
+    std::cout << "find " << key << " -> "
+              << (us.find(key)==us.end() ? "n/a" : "found") << '\n';
+    us.erase(30);
 
-/*---------------------------------------------------------------------- */
-/* 3) std::array<int,5>                                                  */
-/*---------------------------------------------------------------------- */
-    std::array<int,5> arr;
-    std::iota(arr.begin(), arr.end(), 1);   // 1 2 3 4 5
-    arr[2] = 99;                            // index-based write
-    std::swap(arr[0], arr[4]);              // swap elemente
-    dump("array", arr);
+/*-----------------------------------------------------------------------
+  3) std::multiset – ordonat, dar permite duplicate
+ -----------------------------------------------------------------------*/
+    std::multiset<int> ms{1,2,2,3};
+    ms.insert(2);                           // încă un duplicat
 
-    std::cout << "front=" << arr.front()
-              << " back=" << arr.back()
-              << " size=" << arr.size() << '\n';
+    std::cout << "ms.count(2) = " << ms.count(2) << '\n';  // 3
 
+    // erase DOAR primele două valori 2
+    auto itLow = ms.lower_bound(2);
+    auto itUp  = std::next(itLow, 2);        // +2 poziții
+    ms.erase(itLow, itUp);
+
+/*-----------------------------------------------------------------------
+  4) operație comună: merge (C++17) pe set-uri
+ -----------------------------------------------------------------------*/
+#if __cplusplus >= 201703L
+    std::set<int>   a{1,3,5},  b{2,3,4};
+    a.merge(b);                                      // mută elementele
+#endif
     return 0;
 }

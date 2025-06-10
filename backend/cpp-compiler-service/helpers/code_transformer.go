@@ -26,13 +26,11 @@ func TransformCode(code string) string {
 using namespace tracer;
 
 `
-
 	// Process the code line by line
 	lines := strings.Split(code, "\n")
-	var tracers []string       // Keep track of all tracers we create
-	inIOOperation := false     // Track if we're in a multi-line I/O operation
-	inDumpFunction := false    // Track if we're in a dump function
-	var templateVarName string // Track the variable name in template function
+	var tracers []string    // Keep track of all tracers we create
+	inIOOperation := false  // Track if we're in a multi-line I/O operation
+	inDumpFunction := false // Track if we're in a dump function
 
 	for i, line := range lines {
 		// Skip commented lines
@@ -76,29 +74,45 @@ using namespace tracer;
 
 		// Handle template function calls
 		if strings.Contains(line, "template<") && strings.Contains(line, "void dump") {
-			// Add tracer after the cout operation
-			tracerVar := fmt.Sprintf("%s_tracer", templateVarName)
-			lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", %s);",
-				tracerVar, templateVarName, templateVarName)
-			lines[i] += "\n" + fmt.Sprintf("%s.traceOperation(\"dump\", \"Dumped container contents\");",
-				tracerVar)
-			tracers = append(tracers, tracerVar)
+			// Extract parameter name from the function
+			paramRegex := regexp.MustCompile(`\([^,]+,\s*const\s+(\w+)&\)`)
+			if matches := paramRegex.FindStringSubmatch(line); len(matches) > 1 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				// Add tracer declaration at the start of the function
+				lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", const_cast<%s&>(%s));",
+					tracerVar, varName, varName, varName)
+				tracers = append(tracers, tracerVar)
+			}
+			continue
+		}
+
+		// Handle dumpPQ function
+		if strings.Contains(line, "void dumpPQ") {
+			// Extract parameter name from the function
+			paramRegex := regexp.MustCompile(`\([^,]+,\s*(\w+)\)`)
+			if matches := paramRegex.FindStringSubmatch(line); len(matches) > 1 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				// Add tracer declaration at the start of the function
+				lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", %s);",
+					tracerVar, varName, varName)
+				tracers = append(tracers, tracerVar)
+			}
 			continue
 		}
 
 		// Transform set declarations
 		if strings.Contains(line, "set<") || strings.Contains(line, "unordered_set<") ||
 			strings.Contains(line, "multiset<") || strings.Contains(line, "unordered_multiset<") {
-			if !strings.Contains(line, "const") && !strings.Contains(line, "&") {
-				re := regexp.MustCompile(`(?:std::)?(?:unordered_)?(?:multi)?set<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
-				matches := re.FindStringSubmatch(line)
-				if len(matches) >= 2 {
-					varName := matches[1]
-					tracerVar := fmt.Sprintf("%s_tracer", varName)
-					tracers = append(tracers, tracerVar)
-					lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", %s);",
-						tracerVar, varName, varName)
-				}
+			re := regexp.MustCompile(`(?:std::)?(?:unordered_)?(?:multi)?set<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
+			matches := re.FindStringSubmatch(line)
+			if len(matches) >= 2 {
+				varName := matches[1]
+				tracerVar := fmt.Sprintf("%s_tracer", varName)
+				tracers = append(tracers, tracerVar)
+				lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", %s);",
+					tracerVar, varName, varName)
 			}
 		}
 
