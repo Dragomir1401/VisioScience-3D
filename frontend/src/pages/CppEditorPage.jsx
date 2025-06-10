@@ -700,6 +700,15 @@ const CppEditorPage = () => {
         // Ensure priority queue data is properly formatted
         structureData = Array.isArray(structureData) ? structureData : [structureData];
         console.log("Priority queue data:", structureData);
+      } else if (structure.name === 'multiset' && structureData) {
+        // Process multiset data similar to set
+        let root = null;
+        if (Array.isArray(structureData)) {
+          structureData.forEach(value => {
+            root = insertNode(root, value);
+          });
+        }
+        structureData = root;
       }
 
       setStructureStates(prev => ({
@@ -750,6 +759,15 @@ const CppEditorPage = () => {
             });
             structureData = buckets;
           }
+        } else if (selectedStructure.name === 'multiset' && structureData) {
+          // Process multiset data similar to set
+          let root = null;
+          if (Array.isArray(structureData)) {
+            structureData.forEach(value => {
+              root = insertNode(root, value);
+            });
+          }
+          structureData = root;
         }
         setStructureStates(prev => ({
           ...prev,
@@ -809,6 +827,15 @@ const CppEditorPage = () => {
                     });
                     structureData = buckets;
                   }
+                } else if (structure.name === 'multiset' && structureData) {
+                  // Process multiset data similar to set
+                  let root = null;
+                  if (Array.isArray(structureData)) {
+                    structureData.forEach(value => {
+                      root = insertNode(root, value);
+                    });
+                  }
+                  structureData = root;
                 }
                 setStructureStates(prev => ({
                   ...prev,
