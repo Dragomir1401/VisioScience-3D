@@ -21,7 +21,7 @@ import Vector from '../models/computer_science/Vector';
 import CppList from '../models/computer_science/List';
 import DoubleLinkedList from '../models/computer_science/DoublyLinkedList';
 import Map from '../models/computer_science/Map';
-import Set from '../models/computer_science/Set';
+import Set, { insertNode } from '../models/computer_science/Set';
 import Queue from '../models/computer_science/Queue';
 import Stack from '../models/computer_science/Stack';
 import Deque from '../models/computer_science/Deque';
@@ -428,7 +428,14 @@ const CppEditorPage = () => {
                 case 'unordered_set':
                 case 'multiset':
                 case 'unordered_multiset':
-                  newStructureStates[structureName] = structureValue;
+                  // Convert array of values to AVL tree nodes
+                  let root = null;
+                  if (Array.isArray(structureValue)) {
+                    structureValue.forEach(value => {
+                      root = insertNode(root, value);
+                    });
+                  }
+                  newStructureStates[structureName] = root;
                   break;
                 
                 case 'queue':
@@ -710,6 +717,15 @@ const CppEditorPage = () => {
             elements: structureData,
             type: isMinHeap ? 'min' : 'max'
           };
+        } else if (selectedStructure.name === 'set' && structureData) {
+          // Convert array of values to AVL tree nodes
+          let root = null;
+          if (Array.isArray(structureData)) {
+            structureData.forEach(value => {
+              root = insertNode(root, value);
+            });
+          }
+          structureData = root;
         }
         setStructureStates(prev => ({
           ...prev,
@@ -750,6 +766,15 @@ const CppEditorPage = () => {
                     elements: structureData,
                     type: isMinHeap ? 'min' : 'max'
                   };
+                } else if (structure.name === 'set' && structureData) {
+                  // Convert array of values to AVL tree nodes
+                  let root = null;
+                  if (Array.isArray(structureData)) {
+                    structureData.forEach(value => {
+                      root = insertNode(root, value);
+                    });
+                  }
+                  structureData = root;
                 }
                 setStructureStates(prev => ({
                   ...prev,
