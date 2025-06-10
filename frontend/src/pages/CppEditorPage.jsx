@@ -555,6 +555,11 @@ const CppEditorPage = () => {
         type: 'ordered',
         description: 'Singly-linked list'
       },
+      'priority_queue': {
+        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?priority_queue\s*<(?:[^>]+|(?:[^,]+,\s*std::\w+<[^>]+>(?:,\s*std::(?:less|greater)<[^>]+>)?))>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
+        type: 'adaptor',
+        description: 'Priority queue'
+      },
       'deque': {
         pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?deque\s*<[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'ordered',
@@ -617,11 +622,6 @@ const CppEditorPage = () => {
         pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?stack\s*<[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
         type: 'adaptor',
         description: 'LIFO stack'
-      },
-      'priority_queue': {
-        pattern: /(?:^|\s|;|\(|\)|,|&|::)(?:std::)?priority_queue\s*<[^>]+>\s*(\w+)(?:\s*\{[^}]*\})?(?=\s|;|\)|,|$)/g,
-        type: 'adaptor',
-        description: 'Priority queue'
       }
     };
 
@@ -652,34 +652,39 @@ const CppEditorPage = () => {
   }, [code]);
 
   const handleStructureClick = (structure) => {
-    if (structureComponents[structure.name]) {
-      setSelectedStructure(structure);
-      setShowScene(true);
-      
-      const lastStep = [...executionSteps].reverse().find(step => 
-        step.name === structure.variableName && step.state
-      );
-      
-      if (lastStep) {
-        console.log("DEBUG (CppEditorPage.jsx handleStructureClick): Found lastStep:", lastStep);
-        let structureData = lastStep.state;
-        
-        // Handle different structure types
-        if (structure.name === 'unordered_map' && structureData && Array.isArray(structureData)) {
-          structureData = calculateBuckets(structureData, NUM_BUCKETS);
-        } else if (structure.name === 'vector' && structureData) {
-          structureData = Array.isArray(structureData) ? structureData : [structureData];
-        } else if (structure.name === 'list' && structureData) {
-          // Ensure list data is properly formatted
-          structureData = Array.isArray(structureData) ? structureData : [structureData];
-          console.log("List data for structure click:", structureData);
-        }
+    if (!structure || !structure.name || !structureComponents[structure.name]) {
+      console.error('Invalid structure:', structure);
+      return;
+    }
 
-        setStructureStates(prev => ({
-          ...prev,
-          [structure.variableName]: structureData
-        }));
+    setSelectedStructure(structure);
+    setShowScene(true);
+    
+    const lastStep = [...executionSteps].reverse().find(step => 
+      step.name === structure.variableName && step.state
+    );
+    
+    if (lastStep) {
+      console.log("DEBUG (CppEditorPage.jsx handleStructureClick): Found lastStep:", lastStep);
+      let structureData = lastStep.state;
+      
+      // Handle different structure types
+      if (structure.name === 'unordered_map' && structureData && Array.isArray(structureData)) {
+        structureData = calculateBuckets(structureData, NUM_BUCKETS);
+      } else if (structure.name === 'vector' && structureData) {
+        structureData = Array.isArray(structureData) ? structureData : [structureData];
+      } else if (structure.name === 'list' && structureData) {
+        structureData = Array.isArray(structureData) ? structureData : [structureData];
+      } else if (structure.name === 'priority_queue' && structureData) {
+        // Ensure priority queue data is properly formatted
+        structureData = Array.isArray(structureData) ? structureData : [structureData];
+        console.log("Priority queue data:", structureData);
       }
+
+      setStructureStates(prev => ({
+        ...prev,
+        [structure.variableName]: structureData
+      }));
     }
   };
 
@@ -698,10 +703,13 @@ const CppEditorPage = () => {
         let structureData = currentStep.state;
         if (selectedStructure.name === 'unordered_map' && structureData && Array.isArray(structureData)) {
           structureData = calculateBuckets(structureData, NUM_BUCKETS);
-        } else if (selectedStructure.name === 'vector' && structureData) {
-          // Ensure vector data is properly formatted
-          structureData = Array.isArray(structureData) ? structureData : [structureData];
-          console.log("Vector data for step:", structureData);
+        } else if (selectedStructure.name === 'priority_queue' && structureData) {
+          // Determine heap type from the snapshot
+          const isMinHeap = currentStep.metadata?.comparator === 'greater';
+          structureData = {
+            elements: structureData,
+            type: isMinHeap ? 'min' : 'max'
+          };
         }
         setStructureStates(prev => ({
           ...prev,
@@ -727,27 +735,33 @@ const CppEditorPage = () => {
           const nextIndex = prev + 1;
           const currentStep = executionSteps[nextIndex];
           
-          // Check if the current step has a different structure than the selected one
           if (currentStep && currentStep.name) {
             const structure = dataStructures.find(ds => ds.variableName === currentStep.name);
-            if (structure && (!selectedStructure || selectedStructure.variableName !== currentStep.name)) {
-              // Switch to the new structure
-              setSelectedStructure(structure);
-              setShowScene(true);
-            }
-            
-            // Update structure states
-            if (currentStep.state) {
-              let structureData = currentStep.state;
-              if (structure.name === 'unordered_map' && structureData && Array.isArray(structureData)) {
-                structureData = calculateBuckets(structureData, NUM_BUCKETS);
-              } else if (structure.name === 'vector' && structureData) {
-                structureData = Array.isArray(structureData) ? structureData : [structureData];
+            if (structure) {
+              // Update structure states
+              if (currentStep.state) {
+                let structureData = currentStep.state;
+                if (structure.name === 'unordered_map' && structureData && Array.isArray(structureData)) {
+                  structureData = calculateBuckets(structureData, NUM_BUCKETS);
+                } else if (structure.name === 'priority_queue' && structureData) {
+                  // Determine heap type from the snapshot
+                  const isMinHeap = currentStep.metadata?.comparator === 'greater';
+                  structureData = {
+                    elements: structureData,
+                    type: isMinHeap ? 'min' : 'max'
+                  };
+                }
+                setStructureStates(prev => ({
+                  ...prev,
+                  [currentStep.name]: structureData
+                }));
               }
-              setStructureStates(prev => ({
-                ...prev,
-                [currentStep.name]: structureData
-              }));
+
+              // Switch to the new structure if needed
+              if (!selectedStructure || selectedStructure.variableName !== currentStep.name) {
+                setSelectedStructure(structure);
+                setShowScene(true);
+              }
             }
           }
           
@@ -1025,9 +1039,9 @@ const CppEditorPage = () => {
                     )}
                     {selectedStructure.name === 'priority_queue' && (
                       <PriorityQueue 
-                        elements={structureStates[selectedStructure.variableName] || []} 
+                        elements={structureStates[selectedStructure.variableName]?.elements || []} 
                         onElementsChange={() => {}} 
-                        type="min" 
+                        type={structureStates[selectedStructure.variableName]?.type || 'max'} 
                         onTypeChange={() => {}} 
                         showControls={false} 
                         height="100%" 
