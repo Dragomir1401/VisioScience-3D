@@ -4,19 +4,19 @@
 \label{sec:proj-backend-architecture}
 
 Backend-ul este construit folosind o arhitectură cu microservicii, care permite scalabilitate și
-întreținere ușoară a serviciilor care rulează. Avem trei servicii principale pentru logică de 
-produs, un serviciu care funcționează ca router al arhitecturii, doua instanțe de baze de date
+întreținere ușoară a serviciilor care răspund la cereri în spate. Avem patru servicii principale pentru logică de
+produs, un serviciu care funcționează ca router al arhitecturii, două instanțe de baze de date
 nerelaționale, un serviciu de gestionare a infrastructurii, un serviciu de monitorizare care
 funcționează împreună cu un serviciu de provizionare de metrici și un serviciu de vizualizare
 și utilitarele corespunzătoare pentru gestionarea bazelor de date integrate.
 
 \subsection{Configurarea clusterului}
-Clusterul este configurat folosind Kubernetes, care permite orchestrarea containerelor și
+Clusterul este configurat folosind Kubernetes\footnote{https://kubernetes.io/}, care permite orchestrarea containerelor și
 gestionarea resurselor într-un mod eficient. Fiecare serviciu este containerizat folosind Docker,
 permițându-ne să rulăm aplicațiile într-un mediu izolat și consistent. Kubernetes gestionează
 scalarea automată a serviciilor, distribuția sarcinilor și asigură disponibilitatea acestora.
 
-Clusterul a fost creat utilizând kind (Kubernetes in Docker), care permite rularea
+Clusterul a fost creat utilizând kind\footnote{Kubernetes in Docker}, care permite rularea
 Kubernetes într-un mediu de dezvoltare local. Acest lucru facilitează testarea și dezvoltarea
 aplicațiilor înainte de a le lansa în mediul de producție.
 
@@ -25,16 +25,20 @@ testarea acestora într-un mediu controlat. De asemenea, a permis simularea unor
 scalabilitate și performanță, asigurându-ne că aplicația poate gestiona un număr mare de
 utilizatori și cereri simultane.
 
-Procesul de implementare și lansare presupune construirea imaginilor Docker pentru fiecare
+Procesul de implementare și lansare presupune construirea imaginilor Docker\footnote{Tehnologie de containerizare
+a aplicațiilor software https://www.docker.com/} pentru fiecare
 serviciu, încărcarea acestora în registrul de imagini gestionat prin Docker Desktop pentru
 testare și apoi reîncărcărea acestora în clusterul Kubernetes. Acest proces este automatizat
-prin intermediul unui pipeline CI/CD în mediul de dezvoltare Github. Pentru asta se folosesc
-GitHub Actions, care permit rularea automată a diferitelor procese de construire, formatare
+prin intermediul unui pipeline CI/CD în mediul de dezvoltare Github. Pentru asta se folosește
+GitHub Actions\footnote{https://github.com/features/actions}, care permit rularea automată a diferitelor procese de construire, formatare
 și apoi trecerea prin procesul de testare și implementare/lansare a aplicației.
+Practic folosind GitHub Actions, am putut să creăm un flux de integrare și livrare
+continuă\footnote{https://www.redhat.com/en/topics/devops/what-is-ci-cd} care a permis să automatizăm
+procesul de construire, testare și implementare a platformei.
 
-Fiecare serviciu are propriile fișiere \textit{.yaml} de configurare, care definesc care
-definesc după caz modul de rulare, variabilele de mediu, resursele necesare, rutarea, porturile
-expuse și alte setări specifice. Aceste fișiere sunt esențiale pentru a asigura
+Fiecare serviciu are propriile fișiere \textit{.yaml}\footnote{fișiere de configurare, în limbaj de marcaj}
+care definesc după caz modul de rulare, variabilele de mediu,
+resursele necesare, rutarea, porturile expuse și alte setări specifice. Aceste fișiere sunt esențiale pentru a asigura
 funcționarea corectă a serviciilor în cadrul clusterului Kubernetes și pentru a permite
 gestionarea eficientă a acestora.
 
@@ -132,7 +136,8 @@ spec:
 \newpage
 
   \item \textbf{ConfigMap \& PVC}: ConfigMap pentru configurări (de ex. pentru serviciul de provizionare
-\texttt{prometheus.yml}) şi PVC pentru volumul serviciului de vizualizare a metricilor Grafana:
+\texttt{prometheus.yml}) şi PVC pentru volumul serviciului de vizualizare a metricilor în
+Grafana\footnote{Unealtă de vizualizare a metricilor și a datelor de monitorizare}:
   \begin{lstlisting}[style=yamlstyle]
 apiVersion: v1
 kind: ConfigMap
@@ -156,26 +161,26 @@ spec:
   \end{lstlisting}
 \end{itemize}
 
-Fiecărei resurse îi corespunde un singur fişier YAML – conţinând \texttt{apiVersion}, \texttt{kind},
-metadatele şi \texttt{spec} – care poate fi aplicat cu \cmd{kubectl apply -f <fișier>}, sau 
-automatizat printr-un pipeline de integrare continuă / livrare continuă (CI/CD).
+Fiecărei resurse îi corespunde un singur fişier YAML – conţinând \texttt{apiVersion}, tipul \texttt{kind},
+metadatele şi \texttt{spec} – care poate fi aplicat cu \cmd{kubectl apply -f <fișier>}, sau
+automatizat printr-un pipeline de integrare continuă / livrare continuă (CI/CD) cum am discutat anterior.
 
 \subsection{Gestionarea clusterului}
 
-Clusterul este creat și gestionat în principal cu Kubernetes, folosind manifesturi YAML.
+Clusterul este creat și gestionat după cum s-a prezentat în primul rând cu Kubernetes, folosind manifesturi YAML.
 Pe lângă linia de comandă, am integrat \emph{Portainer CE} pentru o interfață web
 unificată de administrare. Portainer rulează ca un \texttt{Deployment} sub contul de
 serviciu \texttt{portainer-sa}, căruia i s-a atribuit un \texttt{ClusterRole} cu toate
-privilegiile şi un \texttt{ClusterRoleBinding} aferent. Manifestele corespunzătoare (\texttt{portainer-sa,
-portainer-role, portainer-deployment, portainer-rolebinding,
-portainer-service şi portainer-ingress}) sunt folosite pentru configurare științelor
-gestionare accesului Portainer în cluster. Interfața Portainer, expusă printr-un \texttt{Service}
+privilegiile şi un \texttt{ClusterRoleBinding} aferent. Manifestele corespunzătoare (\texttt{portainer-sa},
+\texttt{portainer-role}, \texttt{portainer-deployment}, \texttt{portainer-rolebinding},
+\texttt{service} şi \texttt{portainer-ingress}) sunt folosite pentru configurare și
+gestionare a accesului Portainer în cluster. Interfața Portainer, expusă printr-un \texttt{Service}
 şi un \texttt{Ingress} pe ruta \texttt{/portainer}, permite vizualizarea nodurilor, pod-urilor, volumelor şi
 gestionarea configurațiilor (scaling, redeploy, logs) fără comenzi complexe, oferind
-în acelaşi timp controale RBAC şi monitorizare centralizată.  
+în acelaşi timp controale RBAC\footnote{Controlul accesului bazat pe roluri} şi monitorizare centralizată.
 
-Se poate vedea în imaginea de mai jos cum arată interfața Portainer pe clusterul nostru:
-\fig[width=1\textwidth]{imgs/portainerlanding.png}{fig:portainer-landing}{Interfața Portainer pe clusterul nostru}
+Se poate vedea în imaginea de mai jos cum arată interfața Portainer pe clusterul produsului:
+\fig[width=1\textwidth]{imgs/portainerlanding.png}{fig:portainer-landing}{Interfața Portainer pe cluster}
 
 Și mai jos se poate observa listarea serviciilor in linie de comandă versus în Portainer:
 

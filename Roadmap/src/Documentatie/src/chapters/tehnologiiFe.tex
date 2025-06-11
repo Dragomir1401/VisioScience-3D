@@ -226,9 +226,9 @@ crește semnificativ.
 
 Interfața păstrează un design simplu cu meniul plasat sus și în stânga pentru selecția materiilor
 după rotire.
-\fig[width=0.3\textwidth]{imgs/interfata.png}{fig:interfata}{Interfața meniului principal}
+\fig[width=0.2\textwidth]{imgs/interfata.png}{fig:interfata}{Interfața meniului principal}
 
-interfața profilului este simplă și ușor de folosit, având elemente care ies ușor în evidență
+Panoul profilului este simplu și ușor de folosit, având elemente care ies ușor în evidență
 și care sunt ușor de accesat cu acțiuni simple de tipul selecție, drag-and-drop sau butoane de toggle.
 De exemplu în imagine de mai jos se poate observa interfața profilului elevului.
 
@@ -260,7 +260,7 @@ preventDefault pentru a preveni comportamentele implicite.
 
 \subsubsection{Optimizarea performanței graficii 3D}
 
-Pentru a optimiza performanța graficii 3D pe framework-ul bazat pe WebGL, se abordează câteva tehnici generale:
+Pentru a optimiza performanța graficii 3D pe framework-ul bazat pe WebGL\footnote{Framework de bază pentru grafică 3D în browsere, https://webglfundamentals.org/}, se abordează câteva tehnici generale:
 \begin{itemize}
   \item \textbf{Reducerea numărului de draw calls:}
     Combinăm mesh-urile similare folosind \texttt{BufferGeometry} 
@@ -310,9 +310,9 @@ din \texttt{\@react-spring/three} transformă această stare într-un set de pro
 \texttt{mesh}.
 
 În plus, componenta de background ataşează direct evenimente DOM (\texttt{mousedown}, \texttt{mousemove},
-\texttt{keydown}) şi gestionate în interiorul declanșatorului \texttt{useFrame} din \texttt{\@react-three/fiber},
+\texttt{keydown}) şi gestionate în interiorul declanșatorului \texttt{useFrame} din frameworkul de React,
 permiţând controlul direct al rotaţiei scenei în funcţie de interacţiunea utilizatorului.
-Starea şi logica aplicației se propagă în lumea 3D, creând o leagătură reactivă între UI-ul
+Starea şi logica aplicației se propagă în lumea 3D, creând o legătură reactivă între UI-ul
 convenţional şi grafica gestionată prin WebGL.
 
 
