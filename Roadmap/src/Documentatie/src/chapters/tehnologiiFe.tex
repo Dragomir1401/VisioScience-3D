@@ -5,8 +5,10 @@
 \section{Soluția de front-end}
 \subsection{Framework principal}
 
-Frameworkul principal care s-a folosit este React JS, care este o tehnologie foarte populară
-și răspândită bazată pe JavaScript. În alegerii de tehnologie pentru front-endul platformei VisioScience3D,
+Frameworkul principal care s-a folosit este React JS\footnote{https://reactjs.org/}, care este o tehnologie foarte populară
+și răspândită bazată pe JavaScript\footnote{https://www.javascript.com/}, una dintre cele mai populare limbaje de programare destinate
+web-ului existent.
+În alegerii de tehnologie pentru front-endul platformei VisioScience3D,
 am concentrat atenția pe criterii precum maturitatea ecosistemului, performanță, curba de învățare,
 flexibilitate în personalizare şi capacitatea de integrare cu biblioteci 3D. Dintre principalele
 opțiuni (Vue.js, Angular, Svelte), React s-a impus datorită următoarelor avantaje:
@@ -35,7 +37,7 @@ opțiuni (Vue.js, Angular, Svelte), React s-a impus datorită următoarelor avan
 \end{itemize}
 
 
-Pe zona de stilizare a interfeței, am optat pentru Tailwind CSS, un framework CSS utilitar 
+Pe zona de stilizare a interfeței, am optat pentru Tailwind CSS\footnote{https://tailwindcss.com/}, un framework CSS utilitar 
 care ne-a permis să creăm un design personalizat. Am comparat framework-uri clasice de CSS
 (Bootstrap, Material UI) cu Tailwind CSS și am observat următoarele avantaje:
 \begin{itemize}
@@ -61,11 +63,11 @@ care ne-a permis să creăm un design personalizat. Am comparat framework-uri cl
 \end{itemize}
 
 Bibliotecile de creare și gestionare a graficii 3D sunt esențiale pentru platforma noastră,
-iar pentru a crea simulări interactive, am ales Three.js, o bibliotecă JavaScript populară.
+iar pentru a crea simulări interactive, am ales Three.js\footnote{https://threejs.org/}, o bibliotecă JavaScript populară.
 Three.js oferă un API bine gândit pentru crearea de scene 3D, animații și interacțiuni și împreună
-cu React Three Fiber (R3F), o bibliotecă care integrează Three.js cu React, am putut să ne concentrăm
+cu React Three Fiber (R3F)\footnote{https://r3f.docs.pmnd.rs/r}, o bibliotecă care integrează Three.js cu React, am putut să ne concentrăm
 pe dezvoltarea rapidă a aplicațiilor 3D fără a ne preocupa de detaliile de implementare ale Three.js.
-Utilizarea peste a Drei, ce conține o suită de componente și utilitare pentru R3F, a permis accelerarea
+Utilizarea peste a Drei\footnote{https://drei.pmnd.rs/}, ce conține o suită de componente și utilitare pentru R3F, a permis accelerarea
 procesului de dezvoltare, oferind soluții gata făcute pentru anumite probleme comune.
 
 Câteva dintre beneficiile integrării cu Three.js prin React Three Fiber și Drei care au făcut 
@@ -74,8 +76,9 @@ alegerea justificată sunt:
 \begin{itemize}
 \item
   \textbf{Abstracție declarativă}:
-    R3F “împachetează” API-ul imperativ Three.js într-un DSL React, 
-    permițându-ne să definim scene, obiecte și materiale în JSX, sub formă de componente. 
+    R3F “împachetează” API-ul imperativ Three.js într-un DSL\footnote{Limbaj specific de domeniu} React, 
+    permițându-ne să definim scene, obiecte și materiale în JSX\footnote{Format de JavaScript pentru limbajul de marcare}, 
+    sub formă de componente. 
     Astfel, putem folosi hook-uri (useFrame, useLoader) pentru a sincroniza animațiile și 
     resursele fără prea mult cod duplicat.
 \item
@@ -92,7 +95,7 @@ alegerea justificată sunt:
 Așadar, combinația React + React Router DOM + Tailwind CSS + React Three Fiber + Drei ne-a oferit un
 stack unificat, performant și ușor de întreținut, bine adaptat
 pentru dezvoltarea rapidă de simulări 3D interactive în browser și pentru extinderea ușoară a
-platformei VisioScience3D. Se poate observa în figura \ref{fig:fediagram} cum arată
+platformei VisioScience3D. Se poate observa în figura de mai jos cum arată
 arhitectura simplificată a frontend-ului platformei.
 
 \fig[width=1.1\textwidth]{imgs/fediagram.png}{fig:fediagram}{Diagrama de design principală a frontend-ului}
@@ -132,7 +135,7 @@ creăm scene 3D complexe folosind JSX și să integrăm hook-uri ca:
     actualizarea stării în funcție de modificările din scenă.
 \end{itemize}
 
-Pentru integrarea obiectelor cu extensia .glb am folosit un convertor gltf  și anume [20] care
+Pentru integrarea obiectelor cu extensia .glb am folosit un convertor GLTF\footnote{https://gltf.pmnd.rs/} care
 ne permite să convertim modele .glb în componente React Three Fiber oferind grupuri de meshe-uri și
 materiale. Acest lucru a permis să importăm modelele 3D direct în aplicația React și să creăm
 diverse manipulări și animații folosind API-ul R3F.
@@ -146,7 +149,7 @@ Am folosit Blender pentru a crea modelele 3D utilizând modele și primitive exi
 modelul paginii principale a fost făcut din primitive de insule și castele și adaptat la un număr de 
 insule potrivit materiilor din meniu, cât și loc pentru suport viitor pentru alte materii. 
 
-Putem observa în figura următoare dezvoltarea modelului în Blender.
+Putem observa în figura următoare o scenă din dezvoltarea modelului în Blender.
 
 \fig[width=1\textwidth]{imgs/Blender.png}{fig:fediagram}{Modelul paginii principale în Blender}
 
@@ -160,9 +163,9 @@ animație continuă de plutire și animații realiste de zbor pentru dronele din
 \subsubsection{Paleta de culori}
 Brandingul VisioScience3D se bazează pe o paletă caldă, prietenoasă şi destul de pastelată,
 menită să creeze o atmosferă de joc și luminoasă pentru elevi. Fundalurile folosesc un gradient
-subtil de la \#fdf4ff (alb-roz pal) prin \#f3e8ff (lavandă delicată) spre \#fff7ed (piersică pal),
-în timp ce culorile de accent dau personalitate interfeţei: nuanţa profundă de mulberry (\#690375)
-marchează elementele active, bordurile şi textele importante, iar tonul rosy-brown (\#AE847E) 
+simplu de la \#fdf4ff (alb-roz pal) prin \#f3e8ff (lavandă) spre \#fff7ed (piersică pal),
+în timp ce culorile de accent dau personalitate interfeţei: nuanţa de mulberry (\#690375)
+marchează elementele active, bordurile şi textele importante, iar tonul maro rozaliu (\#AE847E) 
 individualizează secţiunile de chimie şi astronomie. Pentru evidenţierea vizualizărilor 3D
 am introdus un violet închis (\#4f46e5). Culorile reflectă o atmosferă dinamică și 
 energică, încurajând explorarea și învățarea.

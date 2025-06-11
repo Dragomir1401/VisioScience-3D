@@ -78,16 +78,16 @@ tehnică modernă, cu tehnologiile din ziua de azi, deci cu mult potențial de d
 Dezvoltarea produsului s-a realizat în manieră iterativă, bazat pe testarea progresivă a funcționalităților 
 implementate și feedback-ul primit de la utilizatorii pe care i-am avut la dispoziție în timpul dezvoltării.
 De fiecare dată s-au reevaluat cerințele și reprioritizat implementarea lor până la realizarea unui MVP
-(produs minim valabil) satisfacător care poate fi menținut și dezvoltat cu alte funcționalități în ultima
+\footnote{Produs cu funcționalitate minim valabilă} satisfacător care poate fi menținut și dezvoltat cu alte funcționalități în ultima
 parte a proiectului. 
 
 Cerințele și dorințele clasei țintă de utilizatori au fost colectate prin discuții directe și cu elevii din clasele
-unde este profesor unul dintre părinții mei. Elevii au prezentat un entuziasm crescut pentru existența unei
+unde este profesor unul dintre părinții autorului. Elevii au prezentat un entuziasm crescut pentru existența unei
 astfel de platforme gratuite și au dat sugestii după folosirea prototipului minim funcțional. Printre feedback-ul
 principal primit s-au numărat:
 \begin{itemize}
     \item Animațiile 3D sunt ușor de folosit și interesante.
-    \item S-ar dori mai multă interactivitate cu ele.
+    \item S-ar dori mai multă interactivitate cu scenele.
     \item Testele funcționează bine și rezultatele sunt ușor de vizualizat.
     \item Ar fi interesant să existe un sistem de recompense prin obiecte sau insigne 3D pentru rezultatele obținute.
     \item Pe partea de algoritmică, ar fi interesant chiar un motor de vizualizare a structurii de date cum se modifică
@@ -97,11 +97,11 @@ principal primit s-au numărat:
 \section{Cerințe funcționale}
 \label{sec:proj-requirements}
 
-interfața a fost realizată după două principii de bază:
+Interfața a fost realizată după trei principii de bază:
 \begin{itemize}
     \item \textbf{Simplitate}: am ales un design simplu, minimalist, care să nu distragă atenția utilizatorului de la conținutul educațional
     \item \textbf{Interactivitate}: am ales să folosim animații 3D în cât mai multe zone ale aplicației, pentru a face experiența de învățare mai captivantă și mai plăcută
-    \item \textbf{Accesibilitate}: am ales să folosim o paletă de culori care să fie ușor de citit și să nu obosească ochii utilizatorului
+    \item \textbf{Accesibilitate}: am ales să folosim o paletă de culori care să fie ușor de privit și să nu obosească ochii utilizatorului
 \end{itemize}
 
 Cerințele funcționale sunt împărțite în două mari categorii, în funcție de tipul de utilizator:
@@ -216,7 +216,8 @@ Browsere compatibile: Chrome > 60, Firefox > 52, Safari > 11, Edge > 16.
 
 \subsection*{3. Memorie (RAM)}
 \begin{itemize}
-  \item \textbf{Minim:} 2 GB RAM total, din care \(\ge 256\) MB cel puțin liberi pentru heapul JavaScript şi texturi.
+  \item \textbf{Minim:} 2 GB RAM total, din care \(\ge 256\) MB cel puțin liberi pentru heapul folosit de JavaScript și 
+  Three.js pentru încărcat modele și texturi.
   \item \textbf{Recomandat:} 4 GB+ RAM.
 \end{itemize}
 
