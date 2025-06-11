@@ -20,6 +20,7 @@ jobs:
           - backend/evaluation-service
           - backend/feed-data-service
           - backend/user-data-service
+          - backend/cpp-compiler-service
 
     defaults:
       run:
