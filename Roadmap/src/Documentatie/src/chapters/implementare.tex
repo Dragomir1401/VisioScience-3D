@@ -43,7 +43,7 @@ Mai jos se află comparația limbajelor de care am discutat mai sus.
 \caption{Compararea limbajelor de programare care ar fi fost potrivite pentru VisioScience3D}
 \begin{tabular}{|p{2.5cm}|p{4cm}|p{4cm}|p{4cm}|}
 \hline
-\textbf{Caracteristică} & \textbf{Go} & \textbf{Node.js (JavaScript)} & \textbf{Python} \\
+\textbf{Caracteristică} & \textbf{Go\footnote{https://golang.org/}} & \textbf{Node.js (JavaScript)\footnote{https://nodejs.org/}} & \textbf{Python\footnote{https://www.python.org/}} \\
 \hline
 \textbf{Performanță} & Compilat, foarte rapid, cu suport nativ pentru concurență eficientă (goroutine) & Interpretat, bun pentru I/O non-blocant, dar mai lent decât Go & Interpretat, mai lent, CPU-intensive tasks pot fi mai lente \\
 \hline
@@ -90,7 +90,7 @@ func prometheusMiddleware(next http.Handler) http.Handler {
 \label{subsec:implementare-backend}
 
 Codul este organizat în pachete separate pentru rute, modele de date, pachet cu fișiere ajutătoare, metrici,
-utils, panou grafana, pachet cu fișiere Kubernetes de configurare și middleware (ex: autentificare JWT).
+utils, panou Grafana, pachet cu fișiere Kubernetes de configurare și middleware (ex: autentificare JWT).
 
 Pentru rutare se utilizează biblioteca Gorilla Mux, iar fiecare endpoint implementează operații
 CRUD pentru toate resursele din platformă precum quizuri, clase, molecule, formulare și altele.
@@ -101,33 +101,8 @@ pentru succes și eșecuri, ceea ce permite monitorizarea calității serviciilo
 
 Pentru interacțiunea cu MongoDB, structurile Go sunt mapate la documente BSON, cu chei explicite 
 și suport pentru ID-uri generate automat. Structurile BSON sunt convertite nativ in JSON pentru
-serializare/deserializarea datelor și trimitea lor între servicii și front-end.
-
-\begin{lstlisting}[language=Go, caption={Generare și validare token JWT}]
-func GenerateToken(userID, role, email string) (string, error) {
-    claims := CustomClaims{
-        UserID: userID,
-        Role:   role,
-        Email:  email,
-        RegisteredClaims: jwt.RegisteredClaims{
-            ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
-            IssuedAt:  jwt.NewNumericDate(time.Now()),
-        },
-    }
-    token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-    return token.SignedString(getJwtSecret())
-}
-
-func ParseToken(tokenString string) (*CustomClaims, error) {
-    token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
-        return getJwtSecret(), nil
-    })
-    if err != nil || !token.Valid {
-        return nil, errors.New("invalid token")
-    }
-    return token.Claims.(*CustomClaims), nil
-}
-\end{lstlisting}
+serializare/deserializarea datelor și trimitea lor între servicii și front-end. Se poate observa
+un exemplu generare și parsare a token-ului în structuri de date in anexa \ref{lst:jwt-token}.
 
 \subsection{Conectivitate}
 \label{subsec:implementare-backend}
@@ -137,73 +112,80 @@ Pentru dezvoltare locală, se utilizează port-forwarding Kubernetes pentru a ex
 externe către mașina locală. Gestionarea rutelor externe și balansării numărului de cereri se realizează 
 cu ajutorul Kong Ingress Controller, care asigură rutarea traficului HTTP către serviciile potrivite.
 
-\begin{lstlisting}[language=Go, caption={Funcția CreateQuiz pentru crearea unui quiz nou în MongoDB}]
-func CreateQuiz(w http.ResponseWriter, r *http.Request) {
-    var input models.QuizInput
-    if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-        http.Error(w, err.Error(), http.StatusBadRequest)
-        return
-    }
+În anexa \ref{lst:create-quiz} putem să vedem un exemplu de implementare a unui endpoint pentru crearea unui quiz,
+care primește datele de la front-end, le validează și le inserează în baza de date MongoDB, iar apoi răspunde 
+cu codul HTTP corespunzător.
 
-    classID, err := primitive.ObjectIDFromHex(input.ClassID)
-    if err != nil {
-        http.Error(w, "Invalid class_id", http.StatusBadRequest)
-        return
-    }
+Anexa \ref{lst:routes-jwt} arată cum se configurează rutele tipice în routerul unui microserviciu,
+inclusiv aplicarea middleware-ului JWT pentru protejarea endpoint-urilor sensibile.
 
-    quiz := models.Quiz{
-        ID:        primitive.NewObjectID(),
-        Title:     input.Title,
-        ClassID:   classID,
-        Questions: input.Questions,
-        CreatedAt: time.Now(),
-    }
+\subsection{Procesarea codului în editorul interactiv}
+\label{subsec:procesare-cod}
+Pentru procesarea codului C++ introdus de utilizator în editorul interactiv,
+s-a implementat un serviciu dedicat care primește codul sursă, îl compilează și execută,
+returnând rezultatele intermediare în format JSON.
 
-    collection := helpers.Client.Database("data-feed-db").Collection("quizzes")
-    if _, err := collection.InsertOne(context.Background(), quiz); err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
+Pentru a vizualiza stările fiecărui container \textit{la runtime} s-au parcurs următorii paşi:
+\begin{enumerate}
+  \item Inserăm antetul \verb|tracer.h| şi instanţa globală a tracer-ului în fişierul C++.
+  \item Funcţia Go \lstinline{TransformCode} parcurge sursa linie cu linie şi:
+        \begin{itemize}
+          \item detectează declaraţii de containere STL (\texttt{vector}, \texttt{map}, \texttt{stack} ș.a.);
+          \item generează pentru fiecare un \lstinline{ContainerTracer} cu \lstinline{makeTracedContainer()};
+          \item inserează apeluri \lstinline{traceOperation()} după operaţiile semnificative (\lstinline{push_back}, \lstinline{insert}, \lstinline{erase}, etc.).;
+          \item adaugă \lstinline{Tracer::getInstance().snapshot()} înainte de \lstinline{return} şi după structuri de control.
+        \end{itemize}
+  \item La rulare, fiecare operaţie scoate pe \texttt{stdout} linii JSON prefixate cu \texttt{STATE:}.
+  \item Backend-ul Go parsează aceste linii, le converteşte în \texttt{ExecutionStep} şi le trimite front-end-ului.
+\end{enumerate}
 
-    w.WriteHeader(http.StatusCreated)
-    json.NewEncoder(w).Encode(quiz)
+
+\begin{lstlisting}[language=C++, caption={Injectarea antetului și singleton-ului tracer}, label={lst:inject-header}]
+#include "tracer.h"
+
+namespace tracer {
+    Tracer* globalTracer = &Tracer::getInstance();
 }
 \end{lstlisting}
 
-\begin{lstlisting}[language=Go, caption={Definirea rutelor și aplicarea middleware-ului JWT}]
-r := mux.NewRouter()
+\begin{lstlisting}[language=C++, caption={Generarea unui tracer pentru un vector}, label={lst:vector-tracer}]
+std::vector<int> v = {1, 2, 3};
+auto v_tracer = makeTracedContainer("v", v);   // inserat automat de TransformCode
+\end{lstlisting}
 
-r.Handle("/user/auth/register", handlers.Register).Methods("POST")
-r.Handle("/user/auth/login", handlers.Login).Methods("POST")
-r.Handle("/user/me", middleware.JWT(http.Handler(handlers.GetMe)))
-r.Handle("/user/classes", middleware.JWT(http.Handler(handlers.CreateClass))).Methods("POST")
-// Alte rute...
+\begin{lstlisting}[language=C++, caption={Instrumentarea unei operaţii asupra vectorului}, label={lst:vector-op}]
+v.push_back(42);
+v_tracer.traceOperation("insert", "Inserted element at back");
+\end{lstlisting}
 
-corsObj := gorillaHandlers.CORS(
-    gorillaHandlers.AllowedOrigins([]string{"*"}),
-    gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
-    gorillaHandlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
-)
-
-http.ListenAndServe(":8081", corsObj(r))
+\begin{lstlisting}[language=Go, caption={Parsearea ieşirii EXEC şi construirea ExecutionStep}, label={lst:parse-state}]
+for _, line := range strings.Split(rawOutput, "\n") {
+    if strings.HasPrefix(line, "STATE:") {
+        var st models.ExecutionState
+        json.Unmarshal([]byte(line[6:]), &st)
+        output.States = append(output.States, st)
+    }
+}
 \end{lstlisting}
 
 
 \section{Front-end}
 \label{sec:implementare-frontend}
 
-Pentru dezvoltarea front-end-ului am folosit React, împreună cu React Router DOM pentru navigare,
+Pentru dezvoltarea front-end-ului am folosit React, împreună cu React Router 
+DOM\footnote{https://reactrouter.com/} pentru navigare,
 și tehnologia Three.js prin biblioteca React Three Fiber (R3F) și Drei pentru componente 3D reutilizabile.
-Această combinație a permis crearea unei interfețe interactive plină de vizualizări 3D dinamice.
+Această combinație a permis crearea unei interfețe interactive cu multiple vizualizări 3D dinamice.
 
 \subsection{Configurare front-end}
 \label{subsec:implementare-frontend}
 
-Mediul de dezvoltare a fost configurat cu Node.js și npm, folosind Vite ca bundler și server de dezvoltare rapidă.
+Mediul de dezvoltare a fost configurat cu Node.js\footnote{https://nodejs.org/} și 
+npm\footnote{https://www.npmjs.com/}, folosind Vite\footnote{https://vitejs.dev/} ca bundler și server de dezvoltare rapidă.
 În directorul proiectului, pachetele relevante instalate includ \texttt{react}, \texttt{react-router-dom}, 
 \texttt{@react-three/fiber}, \texttt{@react-three/drei} și alte dependențe utile pentru animații și stilizare.
-Tehnologiile menționate se îmbină cu folosirea Tailwind CSS pentru stilizare rapidă și eficientă,
-permițând crearea de interfețe responsive. 
+Tehnologiile menționate se îmbină cu folosirea Tailwind CSS\footnote{https://tailwindcss.com/} 
+pentru stilizare rapidă și eficientă, permițând crearea de interfețe responsive. 
 
 \subsection{Dezvoltare front-end}
 \label{subsec:implementare-frontend}
@@ -227,52 +209,17 @@ Exemple de componente dezvoltate includ:
 
 Câteva exemple relevante de cod sunt prezentate mai jos:
 
-Un exemplu de componentă standard React care utilizează Three.js pentru a crea un balon animat.
-\begin{lstlisting}[language=JavaScript, basicstyle=\ttfamily\small, breaklines=true, caption={Exemplu de componentă React pentru un balon animat}]
-const Baloon = (props) => {
-  const [state, setState] = useState("idle");
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const states = ["idle","swayLeft","swayRight","tiltForward","tiltBackward","floatUp","floatDown"];
-      setState(states[Math.floor(Math.random()*states.length)]);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
-  const { position, rotation } = useSpring({
-    position: state==="floatUp" ? [0,0.3,0] : state==="floatDown" ? [0,-0.3,0] : [0,0,0],
-    rotation: state==="swayLeft" ? [0,-0.1,0] : state==="swayRight" ? [0,0.1,0] : [0,0,0],
-    config: { duration: 2000 }
-  });
-  return <a.mesh position={position} rotation={rotation} scale={props.scale}>...</a.mesh>;
-};
-\end{lstlisting}
+Un exemplu de componentă standard React care utilizează Three.js pentru a crea un balon animat se află
+la zona de anexe \ref{lst:react-baloon}. Această componentă folosește \texttt{useSpring} pentru a anima 
+poziția și rotația balonului.
 
 \vspace{0.5em}
 
-Alt exemplu este componenta meniului principal, care include o insulă complexă animată ce poate fi rotită cu mouse-ul.
-\begin{lstlisting}[language=JavaScript, basicstyle=\ttfamily\small, breaklines=true, caption={Exemplu de animație a insulei meniului principal}]
-const Island = ({ isRotating, setIsRotating }) => {
-  const ref = useRef();
-  const lastX = useRef(0);
-  const alfa = 0.0075;
-  const onDown = e => { setIsRotating(true); lastX.current = e.clientX || e.touches[0].clientX; };
-  const onMove = e => {
-    if (!isRotating) return;
-    const currentX = e.clientX || e.touches[0].clientX;
-    const delta = (currentX - lastX.current) / window.innerWidth;
-    lastX.current = currentX;
-    ref.current.rotation.y += delta * alfa * Math.PI;
-  };
-  const onUp = e => setIsRotating(false);
-  useEffect(() => {
-    window.addEventListener("mousedown", onDown);
-    window.addEventListener("mouseup", onUp);
-    window.addEventListener("mousemove", onMove);
-    return () => { ... };
-  }, [isRotating]);
-  return <a.group ref={ref}>...</a.group>;
-};
-\end{lstlisting}
+Alt exemplu este componenta meniului principal, care include o insulă complexă animată ce 
+poate fi rotită cu mouse-ul în anexa \ref{lst:react-island}. Aceasta folosește
+\texttt{useRef} pentru a manipula direct obiectele Three.js și a aplica rotații în funcție
+de mișcarea mouse-ului.
+
 
 \subsection{Conectivitate}
 \label{subsec:conectivitate-frontend}
@@ -289,98 +236,20 @@ mediului de dezvoltare în care s-a lucrat. S-au implementat următoarele patter
 \end{itemize}
 
 
-Un exemplu de componentă React care face fetch pentru informațți pentru planeta Mercur se oservă mai jos.
-\begin{lstlisting}[language=JavaScript, basicstyle=\ttfamily\small, breaklines=true, caption={Exemplu de fetch formule chimice cu loading și eroare}]
-const MercuryFormulas = () => {
-  const [formulas, setFormulas] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  useEffect(() => {
-    fetch("http://localhost:8000/feed/shape/mercury")
-      .then(res => {
-        if(!res.ok) throw new Error();
-        return res.json();
-      })
-      .then(data => setFormulas(Array.isArray(data)?data:[]))
-      .catch(() => setError("Eroare la incarcare"))
-      .finally(() => setLoading(false));
-  }, []);
-  return loading ? <p>Loading...</p> : error ? <p>{error}</p> : <ul>{formulas.map(f=><li key={f._id}>{f.formula.name}: {f.formula.expr}</li>)}</ul>;
-};
-\end{lstlisting}
+Un exemplu de componentă React care face fetch pentru informațți pentru planeta Mercur se 
+oservă în anexa \ref{lst:react-mercury-formulas}. Ea folosește useEffect pentru a chema
+callback-urille de JavaScript care iau datele de la backend și le afișează în interfață.
 
 
 Iar o secțiune importantă este vizualizarea 3D a moleculelor, care primește datele de la backend și crează o reprezentare
-3D a atomilor și legăturilor chimice folosind Three.js.
-\begin{lstlisting}[language=JavaScript, basicstyle=\ttfamily\small, breaklines=true, caption={Vizualizare 3D Molecule (atomi și legături cilindrice)}]
-const Molecule = ({moleculeId}) => {
-  const [atoms,setAtoms] = useState([]);
-  const [bonds,setBonds] = useState([]);
-  useEffect(() => {
-    fetch(`/feed/chem/molecules/${moleculeId}/3d`)
-      .then(r => r.json())
-      .then(data => { setAtoms(data.atoms); setBonds(data.bonds); });
-  }, [moleculeId]);
-  useEffect(() => {
-    if(groupRef.current) {
-      const box = new THREE.Box3().setFromObject(groupRef.current);
-      const center = new THREE.Vector3();
-      box.getCenter(center);
-      groupRef.current.position.sub(center);
-    }
-  }, [atoms,bonds]);
-  return <group ref={groupRef}>
-    {atoms.map((a,i)=><mesh key={i} position={[a.x,a.y,a.z]}><sphereGeometry args={[0.5,32,32]} /><meshStandardMaterial color="#ccc" /></mesh>)}
-    {bonds.map((b,i)=> {
-      const start=atoms[b.atom1], end=atoms[b.atom2];
-      if(!start||!end) return null;
-      const startV=new THREE.Vector3(start.x,start.y,start.z);
-      const endV=new THREE.Vector3(end.x,end.y,end.z);
-      const mid = startV.clone().add(endV).multiplyScalar(0.5);
-      const dir = endV.clone().sub(startV).normalize();
-      const len = startV.distanceTo(endV);
-      const quat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0), dir);
-      return <mesh key={i} position={mid} quaternion={quat}><cylinderGeometry args={[0.1,0.1,len,16]} /><meshStandardMaterial color={0x888888} /></mesh>;
-    })}
-  </group>;
-};
-\end{lstlisting}
+3D a atomilor și legăturilor chimice folosind Three.js. Se folosește de asemenea useEffect pentru a 
+încărca datele și apoi le poziționează într-un grup de obiecte Three.js. Acest lucru se poate
+observa în anexa \ref{lst:react-molecule}.
 
-
-Iar crearea unei scene complexe ca cea din secțiunea de informatică pentru structura de date coadă cu priorități este realizată mai jos.
-
-\begin{lstlisting}[language=JavaScript, basicstyle=\ttfamily\small, breaklines=true, caption={Exemplu de vizualizare de coadă cu priorități 3D folosind React Three Fiber}]
-class PriorityQueue {
-  constructor(comparator) {
-    this.heap = [];
-    this.compare = comparator;
-  }
-  push(val) { this.heap.push(val); this._siftUp(this.heap.length - 1); }
-  pop() { if (this.heap.length === 0) return null; const top = this.heap[0]; const last = this.heap.pop(); if (this.heap.length > 0) { this.heap[0] = last; this._siftDown(0); } return top; }
-  _shiftUp(idx) { /*  mutarea element in sus */ }
-  _shiftDown(idx) { /* mutarea element in jos */ }
-}
-
-class TreeNode { constructor(value) { /* crearea unui nod din arbore */ } }
-const buildTree = (arr) => { /* construirea arborelui dintr-un array */ };
-const inorder = (node, arr = []) => { /* parcurgerea in ordine */ };
-const computePositions = (node, x0, x1, y, gapY, list) => { /* calcularea pozitiilor nodurilor */ };
-
-export default function PriorityQueueDemo() {
-  const [type, setType] = useState("min");
-  const [value, setValue] = useState("");
-  const [pq, setPq] = useState(new PriorityQueue((a, b) => a - b));
-
-  const handlePush = () => { if (value === "") return; pq.push(Number(value)); setValue(""); };
-  const handlePop = () => { const top = pq.pop(); setPq(pq); };
-
-  return (
-    <div>
-      <button onClick={handlePush}>push()</button>
-      <button onClick={handlePop}>pop()</button>
-      <div>{pq.heap.map((v, i) => <span key={i}>{v}</span>)}</div>
-    </div>
-  );
-}
-\end{lstlisting}
+Iar crearea unei scene dinamice mai importantă ca cele din secțiunea de informatică pentru structuri de date 
+complexe se face prin folosirea simularea lor în cod construite manual pentru
+a vedea rezultatul operaţiilor pe ele și conținutul lor la un moment dat. Apoi se crează o scenă 3D 
+demo care afișează nodurile și conexiunile lor folosind Three.js și React Three Fiber.
+Un exemplu de implementare a unei cozi cu priorități 3D folosind React Three Fiber 
+se află în anexa \ref{lst:react-priority-queue}.
 

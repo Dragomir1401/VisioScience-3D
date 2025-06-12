@@ -1,6 +1,211 @@
 \chapter{Anexe}
 \label{chapter:anexe}
 
+\begin{lstlisting}[language=Go, caption={Generare și validare token JWT}, label={lst:jwt-token}]
+func GenerateToken(userID, role, email string) (string, error)
+    claims := CustomClaims
+        UserID: userID,
+        Role:   role,
+        Email:  email,
+        RegisteredClaims: jwt.RegisteredClaims
+            ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
+            IssuedAt:  jwt.NewNumericDate(time.Now()),
+    token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+    return token.SignedString(getJwtSecret())
+
+func ParseToken(tokenString string) (*CustomClaims, error)
+    token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error)
+        return getJwtSecret(), nil
+    if err != nil || !token.Valid 
+        return nil, errors.New("invalid token")
+    return token.Claims.(*CustomClaims), nil
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Go, caption={Funcția CreateQuiz pentru crearea unui quiz nou în MongoDB}, label={lst:create-quiz}]
+func CreateQuiz(w http.ResponseWriter, r *http.Request) {
+    var input models.QuizInput
+    if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+
+    classID, err := primitive.ObjectIDFromHex(input.ClassID)
+    if err != nil {
+        http.Error(w, "Invalid class_id", http.StatusBadRequest)
+        return
+    }
+
+    quiz := models.Quiz{
+        ID:        primitive.NewObjectID(),
+        Title:     input.Title,
+        ClassID:   classID,
+        Questions: input.Questions,
+        CreatedAt: time.Now(),
+    }
+
+    collection := helpers.Client.Database("data-feed-db").Collection("quizzes")
+    if _, err := collection.InsertOne(context.Background(), quiz); err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    w.WriteHeader(http.StatusCreated)
+    json.NewEncoder(w).Encode(quiz)
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Go, caption={Definirea rutelor și aplicarea middleware-ului JWT}, label={lst:routes-jwt}]
+r := mux.NewRouter()
+
+r.Handle("/user/auth/register", handlers.Register).Methods("POST")
+r.Handle("/user/auth/login", handlers.Login).Methods("POST")
+r.Handle("/user/me", middleware.JWT(http.Handler(handlers.GetMe)))
+r.Handle("/user/classes", middleware.JWT(http.Handler(handlers.CreateClass))).Methods("POST")
+// Alte rute...
+
+corsObj := gorillaHandlers.CORS(
+    gorillaHandlers.AllowedOrigins([]string{"*"}),
+    gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
+    gorillaHandlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
+)
+
+http.ListenAndServe(":8081", corsObj(r))
+\end{lstlisting}
+
+\begin{lstlisting}[language=JavaScript, basicstyle=\ttfamily\small, breaklines=true, caption={Exemplu de componentă React pentru un balon animat}, label={lst:react-baloon}]
+const Baloon = (props) => {
+  const [state, setState] = useState("idle");
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const states = ["idle","swayLeft","swayRight","tiltForward","tiltBackward","floatUp","floatDown"];
+      setState(states[Math.floor(Math.random()*states.length)]);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+  const { position, rotation } = useSpring({
+    position: state==="floatUp" ? [0,0.3,0] : state==="floatDown" ? [0,-0.3,0] : [0,0,0],
+    rotation: state==="swayLeft" ? [0,-0.1,0] : state==="swayRight" ? [0,0.1,0] : [0,0,0],
+    config: { duration: 2000 }
+  });
+  return <a.mesh position={position} rotation={rotation} scale={props.scale}>...</a.mesh>;
+};
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=JavaScript, basicstyle=\ttfamily\small, breaklines=true, caption={Exemplu de animație a insulei meniului principal}, label={lst:react-island}]
+const Island = ({ isRotating, setIsRotating }) => {
+  const ref = useRef();
+  const lastX = useRef(0);
+  const alfa = 0.0075;
+  const onDown = e => { setIsRotating(true); lastX.current = e.clientX || e.touches[0].clientX; };
+  const onMove = e => {
+    if (!isRotating) return;
+    const currentX = e.clientX || e.touches[0].clientX;
+    const delta = (currentX - lastX.current) / window.innerWidth;
+    lastX.current = currentX;
+    ref.current.rotation.y += delta * alfa * Math.PI;
+  };
+  const onUp = e => setIsRotating(false);
+  useEffect(() => {
+    window.addEventListener("mousedown", onDown);
+    window.addEventListener("mouseup", onUp);
+    window.addEventListener("mousemove", onMove);
+    return () => { ... };
+  }, [isRotating]);
+  return <a.group ref={ref}>...</a.group>;
+};
+\end{lstlisting}
+
+\begin{lstlisting}[language=JavaScript, basicstyle=\ttfamily\small, breaklines=true, caption={Exemplu de fetch formule chimice cu loading și eroare}, label={lst:react-mercury-formulas}]
+const MercuryFormulas = () => {
+  const [formulas, setFormulas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  useEffect(() => {
+    fetch("http://localhost:8000/feed/shape/mercury")
+      .then(res => {
+        if(!res.ok) throw new Error();
+        return res.json();
+      })
+      .then(data => setFormulas(Array.isArray(data)?data:[]))
+      .catch(() => setError("Eroare la incarcare"))
+      .finally(() => setLoading(false));
+  }, []);
+  return loading ? <p>Loading...</p> : error ? <p>{error}</p> : <ul>{formulas.map(f=><li key={f._id}>{f.formula.name}: {f.formula.expr}</li>)}</ul>;
+};
+\end{lstlisting}
+
+\begin{lstlisting}[language=JavaScript, basicstyle=\ttfamily\small, breaklines=true, caption={Vizualizare 3D Molecule (atomi și legături cilindrice)}, label={lst:react-molecule}]
+const Molecule = ({moleculeId}) => {
+  const [atoms,setAtoms] = useState([]);
+  const [bonds,setBonds] = useState([]);
+  useEffect(() => {
+    fetch(`/feed/chem/molecules/${moleculeId}/3d`)
+      .then(r => r.json())
+      .then(data => { setAtoms(data.atoms); setBonds(data.bonds); });
+  }, [moleculeId]);
+  useEffect(() => {
+    if(groupRef.current) {
+      const box = new THREE.Box3().setFromObject(groupRef.current);
+      const center = new THREE.Vector3();
+      box.getCenter(center);
+      groupRef.current.position.sub(center);
+    }
+  }, [atoms,bonds]);
+  return <group ref={groupRef}>
+    {atoms.map((a,i)=><mesh key={i} position={[a.x,a.y,a.z]}><sphereGeometry args={[0.5,32,32]} /><meshStandardMaterial color="#ccc" /></mesh>)}
+    {bonds.map((b,i)=> {
+      const start=atoms[b.atom1], end=atoms[b.atom2];
+      if(!start||!end) return null;
+      const startV=new THREE.Vector3(start.x,start.y,start.z);
+      const endV=new THREE.Vector3(end.x,end.y,end.z);
+      const mid = startV.clone().add(endV).multiplyScalar(0.5);
+      const dir = endV.clone().sub(startV).normalize();
+      const len = startV.distanceTo(endV);
+      const quat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0), dir);
+      return <mesh key={i} position={mid} quaternion={quat}><cylinderGeometry args={[0.1,0.1,len,16]} /><meshStandardMaterial color={0x888888} /></mesh>;
+    })}
+  </group>;
+};
+\end{lstlisting}
+
+\begin{lstlisting}[language=JavaScript, basicstyle=\ttfamily\small, breaklines=true, caption={Exemplu de vizualizare de coadă cu priorități 3D folosind React Three Fiber}, label={lst:react-priority-queue}]
+class PriorityQueue {
+  constructor(comparator) {
+    this.heap = [];
+    this.compare = comparator;
+  }
+  push(val) { this.heap.push(val); this._siftUp(this.heap.length - 1); }
+  pop() { if (this.heap.length === 0) return null; const top = this.heap[0]; const last = this.heap.pop(); if (this.heap.length > 0) { this.heap[0] = last; this._siftDown(0); } return top; }
+  _shiftUp(idx) { /*  mutarea element in sus */ }
+  _shiftDown(idx) { /* mutarea element in jos */ }
+}
+
+class TreeNode { constructor(value) { /* crearea unui nod din arbore */ } }
+const buildTree = (arr) => { /* construirea arborelui dintr-un array */ };
+const inorder = (node, arr = []) => { /* parcurgerea in ordine */ };
+const computePositions = (node, x0, x1, y, gapY, list) => { /* calcularea pozitiilor nodurilor */ };
+
+export default function PriorityQueueDemo() {
+  const [type, setType] = useState("min");
+  const [value, setValue] = useState("");
+  const [pq, setPq] = useState(new PriorityQueue((a, b) => a - b));
+
+  const handlePush = () => { if (value === "") return; pq.push(Number(value)); setValue(""); };
+  const handlePop = () => { const top = pq.pop(); setPq(pq); };
+
+  return (
+    <div>
+      <button onClick={handlePush}>push()</button>
+      <button onClick={handlePop}>pop()</button>
+      <div>{pq.heap.map((v, i) => <span key={i}>{v}</span>)}</div>
+    </div>
+  );
+}
+\end{lstlisting}
+
 \begin{table}[htb]
   \centering
   \caption{Endpoint-uri REST ale microserviciilor}
