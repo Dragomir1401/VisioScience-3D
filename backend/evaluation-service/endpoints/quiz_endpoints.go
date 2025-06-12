@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	helpers "evaluation-service/helpers"
@@ -8,6 +9,8 @@ import (
 	models "evaluation-service/models"
 	"log"
 	"net/http"
+	"os"
+	"sort"
 	"time"
 
 	"evaluation-service/utils"
@@ -647,4 +650,280 @@ func containsInt(arr []int, v int) bool {
 		}
 	}
 	return false
+}
+
+// calculatePoints calculates the total points for a quiz result
+func calculatePoints(quiz *models.Quiz, result *models.QuizResult, userStats *models.UserQuizStats) int64 {
+	var totalPoints int64
+
+	// Base points from correct answers
+	basePoints := int64(float64(result.Score) / float64(len(quiz.Questions)) * float64(quiz.MaxPoints))
+	totalPoints += basePoints
+
+	// Perfect score bonus
+	if result.Score == len(quiz.Questions) && quiz.PerfectBonus > 0 {
+		totalPoints += quiz.PerfectBonus
+		result.PerfectBonus = quiz.PerfectBonus
+	}
+
+	// Time bonus
+	if quiz.TimeBonus {
+		// Calculate time bonus based on average completion time
+		// More bonus for faster completion
+		avgTime := float64(userStats.AverageTime)
+		if avgTime > 0 {
+			timeRatio := float64(result.TimeTaken) / avgTime
+			if timeRatio < 0.5 { // Completed in less than half the average time
+				timeBonus := int64(float64(quiz.MaxPoints) * 0.2) // 20% bonus
+				totalPoints += timeBonus
+				result.TimeBonus = timeBonus
+			} else if timeRatio < 0.75 { // Completed in less than 75% of average time
+				timeBonus := int64(float64(quiz.MaxPoints) * 0.1) // 10% bonus
+				totalPoints += timeBonus
+				result.TimeBonus = timeBonus
+			}
+		}
+	}
+
+	// Streak bonus
+	if quiz.StreakBonus && userStats.ConsecutivePerfect > 0 {
+		streakBonus := int64(float64(quiz.MaxPoints) * 0.05 * float64(userStats.ConsecutivePerfect)) // 5% per streak
+		totalPoints += streakBonus
+		result.StreakBonus = streakBonus
+	}
+
+	return totalPoints
+}
+
+// updateQuizStatistics updates the statistics for a quiz
+func updateQuizStatistics(ctx context.Context, quizID primitive.ObjectID) error {
+	// Get all results for this quiz
+	cursor, err := helpers.Client.Database("data-feed-db").Collection("quizzes").Aggregate(ctx, []bson.M{
+		{"$match": bson.M{"_id": quizID}},
+		{"$unwind": "$quiz_results"},
+		{"$group": bson.M{
+			"_id":            "$_id",
+			"total_attempts": bson.M{"$sum": 1},
+			"average_score":  bson.M{"$avg": "$quiz_results.score"},
+			"average_points": bson.M{"$avg": "$quiz_results.points"},
+			"perfect_scores": bson.M{"$sum": bson.M{"$cond": []interface{}{bson.M{"$eq": []interface{}{"$quiz_results.score", bson.M{"$size": "$questions"}}}, 1, 0}}},
+			"average_time":   bson.M{"$avg": "$quiz_results.time_taken"},
+			"top_performers": bson.M{"$push": bson.M{
+				"user_id":      "$quiz_results.user_id",
+				"score":        "$quiz_results.score",
+				"points":       "$quiz_results.points",
+				"time_taken":   "$quiz_results.time_taken",
+				"submitted_at": "$quiz_results.submitted_at",
+			}},
+		}},
+	})
+	if err != nil {
+		return err
+	}
+	defer cursor.Close(ctx)
+
+	var stats []models.QuizStatistics
+	if err = cursor.All(ctx, &stats); err != nil {
+		return err
+	}
+
+	if len(stats) == 0 {
+		return nil
+	}
+
+	// Sort top performers by points
+	sort.Slice(stats[0].TopPerformers, func(i, j int) bool {
+		return stats[0].TopPerformers[i].Points > stats[0].TopPerformers[j].Points
+	})
+
+	// Keep only top 10 performers
+	if len(stats[0].TopPerformers) > 10 {
+		stats[0].TopPerformers = stats[0].TopPerformers[:10]
+	}
+
+	// Update quiz with new statistics
+	_, err = helpers.Client.Database("data-feed-db").Collection("quizzes").UpdateOne(
+		ctx,
+		bson.M{"_id": quizID},
+		bson.M{"$set": bson.M{"statistics": stats[0]}},
+	)
+	return err
+}
+
+// POST /quiz/submit
+func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
+	claims := r.Context().Value("claims").(*utils.CustomClaims)
+	userOID, err := primitive.ObjectIDFromHex(claims.UserID)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Invalid user ID", http.StatusBadRequest)
+		return
+	}
+
+	var req struct {
+		QuizID    string `json:"quiz_id"`
+		Answers   []int  `json:"answers"`
+		TimeTaken int64  `json:"time_taken"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Bad payload", http.StatusBadRequest)
+		return
+	}
+
+	quizOID, err := primitive.ObjectIDFromHex(req.QuizID)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Invalid quiz ID", http.StatusBadRequest)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// Get quiz and user stats
+	var quiz models.Quiz
+	if err := helpers.Client.Database("data-feed-db").Collection("quizzes").FindOne(ctx, bson.M{"_id": quizOID}).Decode(&quiz); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "404").Inc()
+		http.Error(w, "Quiz not found", http.StatusNotFound)
+		return
+	}
+
+	// Get user's quiz statistics
+	var userStats models.UserQuizStats
+	err = helpers.Client.Database("data-feed-db").Collection("user_quiz_stats").FindOne(ctx, bson.M{
+		"user_id": userOID,
+		"quiz_id": quizOID,
+	}).Decode(&userStats)
+
+	if err == mongo.ErrNoDocuments {
+		userStats = models.UserQuizStats{
+			UserID: userOID,
+			QuizID: quizOID,
+		}
+	} else if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to get user stats", http.StatusInternalServerError)
+		return
+	}
+
+	// Calculate score
+	score := 0
+	for i, answer := range req.Answers {
+		if i < len(quiz.Questions) && contains(quiz.Questions[i].Answer, answer) {
+			score++
+		}
+	}
+
+	// Create result
+	result := models.QuizResult{
+		ID:          primitive.NewObjectID(),
+		QuizID:      quizOID,
+		UserID:      userOID,
+		Answers:     req.Answers,
+		Score:       score,
+		TimeTaken:   req.TimeTaken,
+		SubmittedAt: time.Now(),
+	}
+
+	// Calculate points
+	result.Points = calculatePoints(&quiz, &result, &userStats)
+
+	// Update user stats
+	userStats.TotalAttempts++
+	userStats.AverageScore = (userStats.AverageScore*float64(userStats.TotalAttempts-1) + float64(score)) / float64(userStats.TotalAttempts)
+	userStats.AverageTime = (userStats.AverageTime*float64(userStats.TotalAttempts-1) + float64(req.TimeTaken)) / float64(userStats.TotalAttempts)
+
+	if score == len(quiz.Questions) {
+		userStats.ConsecutivePerfect++
+	} else {
+		userStats.ConsecutivePerfect = 0
+	}
+
+	// Update quiz with new result
+	_, err = helpers.Client.Database("data-feed-db").Collection("quizzes").UpdateOne(
+		ctx,
+		bson.M{"_id": quizOID},
+		bson.M{"$push": bson.M{"quiz_results": result}},
+	)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to save result", http.StatusInternalServerError)
+		return
+	}
+
+	// Update user stats
+	_, err = helpers.Client.Database("data-feed-db").Collection("user_quiz_stats").UpdateOne(
+		ctx,
+		bson.M{"user_id": userOID, "quiz_id": quizOID},
+		bson.M{"$set": userStats},
+		options.Update().SetUpsert(true),
+	)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to update user stats", http.StatusInternalServerError)
+		return
+	}
+
+	// Update quiz statistics
+	if err := updateQuizStatistics(ctx, quizOID); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to update quiz statistics", http.StatusInternalServerError)
+		return
+	}
+
+	// Notify user-data-service about points earned
+	go func() {
+		userDataURL := os.Getenv("USER_DATA_SERVICE_URL")
+		if userDataURL == "" {
+			userDataURL = "http://user-data-service:8080"
+		}
+
+		pointsReq := struct {
+			QuizID   string `json:"quiz_id"`
+			Score    int    `json:"score"`
+			MaxScore int    `json:"max_score"`
+		}{
+			QuizID:   req.QuizID,
+			Score:    score,
+			MaxScore: len(quiz.Questions),
+		}
+
+		jsonData, _ := json.Marshal(pointsReq)
+		http.Post(userDataURL+"/user/quiz/result", "application/json", bytes.NewBuffer(jsonData))
+	}()
+
+	metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "201").Inc()
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"message": "Result saved",
+		"score":   score,
+		"points":  result.Points,
+		"bonuses": map[string]int64{
+			"time_bonus":    result.TimeBonus,
+			"perfect_bonus": result.PerfectBonus,
+			"streak_bonus":  result.StreakBonus,
+		},
+	})
+}
+
+// GET /quiz/{id}/statistics
+func GetQuizStatistics(w http.ResponseWriter, r *http.Request) {
+	quizID, err := primitive.ObjectIDFromHex(mux.Vars(r)["id"])
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", "/quiz/{id}/statistics", "400").Inc()
+		http.Error(w, "Invalid quiz ID", http.StatusBadRequest)
+		return
+	}
+
+	var quiz models.Quiz
+	if err := helpers.Client.Database("data-feed-db").Collection("quizzes").FindOne(r.Context(), bson.M{"_id": quizID}).Decode(&quiz); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", "/quiz/{id}/statistics", "404").Inc()
+		http.Error(w, "Quiz not found", http.StatusNotFound)
+		return
+	}
+
+	metrics.HTTPRequestsTotal.WithLabelValues("GET", "/quiz/{id}/statistics", "200").Inc()
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(quiz.Statistics)
 }

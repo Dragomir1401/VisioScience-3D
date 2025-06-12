@@ -23,6 +23,14 @@ type Quiz struct {
 	QuizResults []QuizResult       `bson:"quiz_results" json:"quiz_results"`
 	CreatedAt   time.Time          `bson:"created_at" json:"created_at"`
 	IsOpen      bool               `bson:"is_open" json:"is_open"`
+
+	// Points configuration
+	MaxPoints    int64  `bson:"max_points" json:"max_points"`       // Maximum possible points for this quiz
+	TimeBonus    bool   `bson:"time_bonus" json:"time_bonus"`       // Whether to give bonus points for quick completion
+	PerfectBonus int64  `bson:"perfect_bonus" json:"perfect_bonus"` // Bonus points for perfect score
+	StreakBonus  bool   `bson:"streak_bonus" json:"streak_bonus"`   // Whether to give bonus for consecutive perfect scores
+	Difficulty   string `bson:"difficulty" json:"difficulty"`       // Easy, Medium, Hard
+	Category     string `bson:"category" json:"category"`           // Quiz category (e.g., "Algorithms", "Data Structures")
 }
 
 type QuizInput struct {
@@ -31,6 +39,14 @@ type QuizInput struct {
 	OwnerID   string     `json:"owner_id"`
 	Questions []Question `json:"questions"`
 	IsOpen    *bool      `json:"is_open,omitempty"`
+
+	// Points configuration
+	MaxPoints    int64  `json:"max_points"`
+	TimeBonus    bool   `json:"time_bonus"`
+	PerfectBonus int64  `json:"perfect_bonus"`
+	StreakBonus  bool   `json:"streak_bonus"`
+	Difficulty   string `json:"difficulty"`
+	Category     string `json:"category"`
 }
 
 type Question struct {
@@ -43,10 +59,42 @@ type Question struct {
 }
 
 type QuizResult struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
-	QuizID      primitive.ObjectID `bson:"quiz_id" json:"quiz_id"`
+	ID           primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	QuizID       primitive.ObjectID `bson:"quiz_id" json:"quiz_id"`
+	UserID       primitive.ObjectID `bson:"user_id" json:"user_id"`
+	Answers      []int              `bson:"answers" json:"answers"`
+	Score        int                `bson:"score" json:"score"`
+	Points       int64              `bson:"points" json:"points"`               // Points earned
+	TimeBonus    int64              `bson:"time_bonus" json:"time_bonus"`       // Bonus points for quick completion
+	PerfectBonus int64              `bson:"perfect_bonus" json:"perfect_bonus"` // Bonus for perfect score
+	StreakBonus  int64              `bson:"streak_bonus" json:"streak_bonus"`   // Bonus for consecutive perfect scores
+	SubmittedAt  time.Time          `bson:"submitted_at" json:"submitted_at"`
+	TimeTaken    int64              `bson:"time_taken" json:"time_taken"` // Time taken in seconds
+}
+
+// QuizStatistics holds aggregated statistics for a quiz
+type QuizStatistics struct {
+	QuizID        primitive.ObjectID `bson:"quiz_id" json:"quiz_id"`
+	TotalAttempts int                `bson:"total_attempts" json:"total_attempts"`
+	AverageScore  float64            `bson:"average_score" json:"average_score"`
+	AveragePoints float64            `bson:"average_points" json:"average_points"`
+	PerfectScores int                `bson:"perfect_scores" json:"perfect_scores"`
+	AverageTime   float64            `bson:"average_time" json:"average_time"`
+	TopPerformers []TopPerformer     `bson:"top_performers" json:"top_performers"`
+	QuestionStats []QuestionStats    `bson:"question_stats" json:"question_stats"`
+}
+
+type TopPerformer struct {
 	UserID      primitive.ObjectID `bson:"user_id" json:"user_id"`
-	Answers     []int              `bson:"answers" json:"answers"`
 	Score       int                `bson:"score" json:"score"`
+	Points      int64              `bson:"points" json:"points"`
+	TimeTaken   int64              `bson:"time_taken" json:"time_taken"`
 	SubmittedAt time.Time          `bson:"submitted_at" json:"submitted_at"`
+}
+
+type QuestionStats struct {
+	QuestionID   primitive.ObjectID `bson:"question_id" json:"question_id"`
+	CorrectCount int                `bson:"correct_count" json:"correct_count"`
+	AttemptCount int                `bson:"attempt_count" json:"attempt_count"`
+	AverageTime  float64            `bson:"average_time" json:"average_time"`
 }
