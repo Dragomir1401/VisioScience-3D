@@ -79,7 +79,6 @@ Pentru secțiunea de geometrie avem următoarele scene 3D educaționale:
 
 \fig[width=1\textwidth]{imgs/mathex.png}{fig:explorare-mathematica}{Exemplu de scenă de matematică}
 
-\newpage
 Pentru materia de fizică avem următoarele scene 3D educaționale:
 
 \begin{itemize}
@@ -211,5 +210,65 @@ obținut după finalizarea testului.
     \includegraphics[width=0.4\textwidth]{imgs/vederequiz.png}
   }
   \caption{Interacțiunea elevului cu testele}
+  \label{fig:portainer-sidebyside}
+\end{figure}
+
+
+\subsection{Compilatorul interactiv de cod}
+\label{subsec:compilator-interactiv}
+
+La zona de informatică avem și suport pentru compilatorul interactiv descris anterior. Poate fi
+folosit pentru a vedea în timp real rularea codului prin pașii prin care trece fiecare structură de
+date sau algoritm.
+
+Se poate observa cum arată partea vizuală din editorul de cod. În partea stângă avem pașii de 
+execuție extrași din cod după rulare și expuși sub formă de listă prin care se trece prin butoanele
+de navigare sau prin cel de rulare automată. În partea dreaptă avem intrarea pe care o dăm codului
+și ieșirea pe care o generează codul după rulare. În partea de jos avem scena 3D cu structurile de 
+date identificate care se actualizează în timp real cu fiecare pas de rulare a codului prin care
+trecem.
+
+\fig[width=1\textwidth]{imgs/editorvizual.png}{fig:compilator-elev}{Editorul vizual cu pași de rulare}
+
+\newpage
+Această zonă este integrată în pagina de editare a codului împreună cu partea unde se scrie codul
+în sine. În partea dreaptă se află ce am descris anterior. În partea stângă avem editorul care folosește 
+tema de Visual Studio Code\footnote{https://code.visualstudio.com/} și care are suport pentru 
+limbajul C++ la momentul actual. El suportă redimensionare, copiere automată a codului sau 
+resetare la modelul de cod inițial.
+\fig[width=1\textwidth]{imgs/cppeditor.png}{fig:compilator-elev}{Compilatorul interactiv de cod pentru elevi}
+
+
+\newpage
+\subsection{Tabloul de elemente interactiv}
+\label{subsec:tablou-elemente-interactiv}
+
+La zona de chimie avem și un tablou interactiv Mendeleev care permite elevilor să interacționeze
+cu elementele chimice și să le dispună în diferite forme. Tabelul este responsiv și reactiv
+la selectare oricărui element în orice poziție și deschide un panou de detalii despre acel element
+care arată numărul atomic, simbolul chimic, masa atomică, grupul, perioada și o descriere pe scurt 
+despre elementul selectat.
+
+\fig[width=1\textwidth]{imgs/chemtable.png}{fig:tabel-chimie}{Tabloul de elemente chimice interactiv}
+
+\newpage
+Elementele au multiple moduri de așezare interactivă, precum tabel, sferă, helix, grid, 
+spirală, piramidă, val, floare, torus, cub, galaxie, ADN, copac, vortex, stea, fagure, solar,
+fractal sau matrice. Mai jos se pot observa câteva exemple.
+
+\begin{figure}[htb]
+  \centering
+  \subfloat[Formă de ADN \label{fig:chemdna}]{
+    \includegraphics[width=0.15\textwidth]{imgs/chemdna.png}
+  }
+  \hfill
+  \subfloat[Formă de helix \label{fig:chemhelix}]{
+    \includegraphics[width=0.42\textwidth]{imgs/chemhelix.png}
+  }
+  \subfloat[Formă de torus \label{fig:chemtorus}]{
+    \includegraphics[width=0.38\textwidth]{imgs/chemtorus.png}
+  }
+  \hfill
+  \caption{Diferite forme de aranjare a elementelor chimice}
   \label{fig:portainer-sidebyside}
 \end{figure}

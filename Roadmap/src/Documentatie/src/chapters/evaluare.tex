@@ -36,6 +36,37 @@ Testele au arătat o latență medie de răspuns de 250ms pe cereri simple și s
 privește scalabilitatea, s-au făcut teste de încărcare pentru a evalua comportamentul sistemului la mai mult de 1000 de cereri simultane,
 iar infrastructura a rămas stabilă, fără scăderi semnificative ale performanței chiar și testat în mediu de dezvoltare cu resurse locale limitate.
 
+Alt nivel de testare în timpul dezvoltării a fost prin \textbf{teste unitare},
+rulate local cu \verb|go test|. Folosind pachetul \texttt{httptest} am
+simulat cereri HTTP către ruterul unui serviciu din interior şi am putut
+itera rapid și prinde bug-urile, fără să reconstruim imaginea Docker
+sau să dăm deploy în Kubernetes de fiecare dată.
+
+\begin{lstlisting}[language=Go,
+                   caption={Exemplu de testarea rapidă a endpoint-ului \texttt{/cpp-compiler/compile-run}},
+                   label={lst:test-compile-run}]
+func TestCompileAndRun(t *testing.T)
+    code, _ := os.ReadFile("testdata/hello.cpp")
+    body, _ := json.Marshal(models.CodeExecutionRequest{Code: string(code)})
+    req := httptest.NewRequest("POST",
+             "/cpp-compiler/compile-run", bytes.NewReader(body))
+    req.Header.Set("Content-Type", "application/json")
+    rr := httptest.NewRecorder()
+    compileAndRun(rr, req)
+    if rr.Code != http.StatusOK 
+        t.Fatalf("status %d; vreau 200", rr.Code)
+
+    var resp models.CodeExecutionResponse
+    json.NewDecoder(rr.Body).Decode(&resp)
+    if !resp.Success || len(resp.ExecutionData) == 0
+        t.Fatalf("nu am primit ExecutionData")
+\end{lstlisting}
+
+Rularea comenzii \verb|go test ./...| rulează sute de astfel de teste în
+sub-două secunde pe mașina de dezvoltare, oferind feedback aproape instant asupra
+regresiilor din \texttt{TransformCode()}, parserul JSON şi logica de
+gestionare a erorilor din serviciul \texttt{cpp-compiler-Service} de exemplu.
+
 \section{Evaluarea front-endului}
 \label{subsec:evaluare-frontend}
 
@@ -90,7 +121,24 @@ Acestea produceau erori de memorie în WebGL (pierdere de context, erori la shad
 Problema a fost rezolvată prin utilizarea unor variante de 4K–8K pentru texturi, încărcare leneșă a acestora și folosirea formatelor
 de texturi comprimate pentru a reduce consumul de memorie și a preveni pierderile de context WebGL.
 
-\subsection{Analiză comparativă pe metrici}
+
+\subsection{Crearea fluxului de parsare a codului C++}
+
+Cea mai dificilă parte a fost design-ul antetului \texttt{tracer.h}: au trebuit definite
+meta-trăsături (\textit{type traits}) care să distingă între \texttt{vector}, \texttt{list},
+\texttt{map}, \texttt{priority_queue} sau chiar \texttt{std::array} și altele, fără ajutorul
+reflecţiei native. În plus, a fost nevoie de serializarea stării fiecărui 
+container. Asta a complicat puternic manipularea tipurilor compuse, precum 
+\texttt{std::pair<K,V>} din map-uri. Implementarea funcţiei auxiliare
+\lstinline{serializePair()} şi a ramurilor specializate din \lstinline{getState()}
+/ \lstinline{getMetadata()} a solicitat multe iteraţii pentru a gestiona corect
+conversiile către JSON. În final s-a putut evita ambiguitatea dintre clasele STL şi tipurile
+primitive. Nu în ultimul rând, menţinerea consistenţei între operaţiile detectate
+în \lstinline{TransformCode()} şi cele raportate de template-urile tracer a
+cerut testare repetată, deoarece o singură pierdere (de exemplu
+\lstinline{deque::shrink_to_fit}) genera stări incoerente.
+
+\section{Analiză comparativă pe metrici}
 \label{subsec:analiza-metrici}
 
 Justificarea cuantificativă a avantajelor platformei \textit{VisioScience3D} se poate observa în 
@@ -114,8 +162,6 @@ Consum RAM mediu (MB) & \textbf{150} & >200 & >200 & >200 \\ \bottomrule
 \label{tab:metrics}
 \end{table}
 
-
-\newpage
 Metricile au fost obținute prin utilizarea browserului Chrome pentru accesarea siteurilor și folosind informațiile
 de latență la nivel de cerere, resursele utilizate raportate de browser și rata de cadre resimțită în scenele 3D
 la utilizare (sub 60 de cadre pe secundă se resimt mici sacadări în animații și interacțiuni).
@@ -129,13 +175,13 @@ care introduc un cost de utilizare semnificativ.
 Tehnicile adăugate ca optimizarea texturilor şi încărcarea leneșă ajută și mai mult la menţinerea
 consumului de memorie sub 150 MB.
 
-\subsection{Statistici de dezvoltare}
+\section{Statistici de dezvoltare}
 Din punct de vedere al dezvoltării software proiectul a conținut:
 \begin{itemize}
-  \item \textbf{Dimensiune back-end}: peste 3500 de linii de cod.
-  \item \textbf{Dimensiune front-end}: peste 17000 de linii de cod.
+  \item \textbf{Dimensiune back-end}: peste 6000 de linii de cod.
+  \item \textbf{Dimensiune front-end}: peste 20000 de linii de cod.
   \item \textbf{Dimensiune fișiere de configurare}: peste 800 de linii.
   \item \textbf{Dimensiune cod LaTeX}: peste 2500 de linii.
-  \item \textbf{Număr de commituri}: peste 250 de commituri în GitHub.
+  \item \textbf{Număr de commituri}: peste 300 de commituri în GitHub.
 \end{itemize}
 
