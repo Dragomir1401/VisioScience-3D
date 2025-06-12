@@ -8,7 +8,7 @@ const QuizResults = () => {
 
   const [students, setStudents] = useState([]);
   const [results, setResults] = useState([]);
-  const [totalPoints, setTotalPoints] = useState(0);
+  const [quizMeta, setQuizMeta] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -40,16 +40,27 @@ const QuizResults = () => {
         setStudents(Array.isArray(sData) ? sData : []);
         const normResults = Array.isArray(rData)
           ? rData.map((r) => ({
-              userId:   r.UserID   || r.user_id,
-              score:    r.Score    ?? r.score,
+              userId: r.UserID || r.user_id,
+              score: r.Score ?? r.score,
+              points: r.Points ?? r.points,
+              timeTaken: r.TimeTaken ?? r.time_taken,
+              perfectScore: r.PerfectScore ?? r.perfect_score,
+              streakBonus: r.StreakBonus ?? r.streak_bonus,
+              timeBonus: r.TimeBonus ?? r.time_bonus,
+              timestamp: r.Timestamp ?? r.timestamp
             }))
           : [];
         setResults(normResults);
 
-        const pointsSum = Array.isArray(mData.questions)
+        // Calculate max points from questions
+        const maxPoints = Array.isArray(mData.questions) 
           ? mData.questions.reduce((sum, q) => sum + (q.points || 1), 0)
           : 0;
-        setTotalPoints(pointsSum);
+
+        setQuizMeta({
+          ...mData,
+          max_points: maxPoints
+        });
       } catch (e) {
         setError(e.message);
       } finally {
@@ -61,11 +72,25 @@ const QuizResults = () => {
 
   const merged = students.map((stu) => {
     const r = results.find((x) => x.userId === stu.id);
-    const score = r ? r.score : null;
-    const pct = score != null && totalPoints > 0
-      ? Math.round((score / totalPoints) * 100)
+    if (!r) return { ...stu, score: null, points: null, pct: null };
+    
+    const score = r.score;
+    const points = r.points;
+    const pct = score != null && quizMeta?.max_points > 0
+      ? Math.round((score / quizMeta.max_points) * 100)
       : 0;
-    return { ...stu, score, pct };
+      
+    return { 
+      ...stu, 
+      score, 
+      points,
+      pct,
+      timeTaken: r.timeTaken,
+      perfectScore: r.perfectScore,
+      streakBonus: r.streakBonus,
+      timeBonus: r.timeBonus,
+      timestamp: r.timestamp
+    };
   });
 
   return (
@@ -84,22 +109,47 @@ const QuizResults = () => {
           <p className="text-red-600">{error}</p>
         ) : (
           <div className="bg-white p-6 rounded-xl shadow border border-purple-200">
-            <div className="grid grid-cols-3 gap-4 text-sm font-semibold text-gray-600 mb-4">
+            <div className="grid grid-cols-4 gap-4 text-sm font-semibold text-gray-600 mb-4">
               <div>Email elev</div>
-              <div className="text-center">Punctaj</div>
+              <div className="text-center">Scor</div>
+              <div className="text-center">Puncte</div>
               <div className="text-right">Procentaj</div>
             </div>
             <ul className="space-y-4">
               {merged.map((u) => (
-                <li key={u.id} className="grid grid-cols-3 gap-4 items-center">
+                <li key={u.id} className="grid grid-cols-4 gap-4 items-center">
                   <span className="text-gray-800">{u.email}</span>
-                  <span className="text-center text-gray-900">
-                    {u.score != null ? `${u.score} / ${totalPoints}` : "Necompletat"}
-                  </span>
+                  <div className="text-center">
+                    {u.score != null ? (
+                      <div className="space-y-1">
+                        <span className="text-gray-900">
+                          {u.score} / {quizMeta?.max_points || 0}
+                        </span>
+                        {u.points > u.score && (
+                          <div className="text-xs text-green-600 space-y-0.5">
+                            {u.perfectScore && <div>✨ Perfect</div>}
+                            {u.streakBonus > 0 && <div>🔥 +{u.streakBonus}</div>}
+                            {u.timeBonus > 0 && <div>⚡ +{u.timeBonus}</div>}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-gray-400 italic">Necompletat</span>
+                    )}
+                  </div>
+                  <div className="text-center text-gray-900">
+                    {u.points != null ? u.points : "—"}
+                  </div>
                   <div className="flex items-center space-x-2 justify-end">
                     {u.score != null ? (
                       <span
-                        className={`text-lg font-bold ${u.pct >= 90 ? 'text-green-600' : u.pct >= 50 ? 'text-yellow-600' : 'text-red-600'}`}
+                        className={`text-lg font-bold ${
+                          u.pct >= 90
+                            ? "text-green-600"
+                            : u.pct >= 50
+                            ? "text-yellow-600"
+                            : "text-red-600"
+                        }`}
                       >
                         {u.pct}%
                       </span>

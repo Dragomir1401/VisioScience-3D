@@ -60,6 +60,35 @@ const TeacherDashboard = () => {
 
   return (
     <div className="mt-10 px-4 max-w-4xl mx-auto space-y-10">
+      {/* Analytics Button */}
+      <div className="flex flex-col items-center justify-center p-8 bg-white rounded-xl shadow-md border border-purple-200">
+        <h3 className="text-xl font-semibold text-mulberry mb-4">Rapoarte și Metrici</h3>
+        <p className="text-gray-600 text-center mb-6">
+          Vizualizează statistici detaliate despre performanța elevilor și rezultatele quiz-urilor
+        </p>
+        <button
+          onClick={() => navigate("/analytics")}
+          className="px-8 py-4 bg-gradient-to-r from-[#FF6B6B] to-[#FF8E53] text-white rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 flex items-center gap-3 group"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 group-hover:rotate-12 transition-transform duration-200"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            />
+          </svg>
+          Vezi Rapoarte
+        </button>
+      </div>
+
+      {/* Classes List */}
       <div className="bg-white p-6 rounded-xl shadow-md border border-purple-200">
         <h3 className="text-lg font-semibold text-mulberry mb-4">
           Clasele tale

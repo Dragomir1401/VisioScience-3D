@@ -8,13 +8,15 @@ const QuizAttempt = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
-  const [quiz, setQuiz]         = useState(null);
-  const [answers, setAnswers]   = useState([]);
-  const [stage, setStage]       = useState("loading"); 
-  const [error, setError]       = useState("");
-  const [score, setScore]       = useState(null);
+  const [quiz, setQuiz] = useState(null);
+  const [answers, setAnswers] = useState([]);
+  const [stage, setStage] = useState("loading");
+  const [error, setError] = useState("");
+  const [result, setResult] = useState(null);
+  const [timeStarted, setTimeStarted] = useState(null);
 
   useEffect(() => {
+    setTimeStarted(Date.now());
     (async () => {
       try {
         dbg("GET quiz for attempt", quizId);
@@ -26,14 +28,21 @@ const QuizAttempt = () => {
         const raw = await r.json();
 
         const questions = (raw.questions || []).map((q) => ({
-          id:      q.id,
-          text:    q.text,
+          id: q.id,
+          text: q.text,
           choices: q.choices || [],
-          images:  q.images  || [],
-          points:  q.points  || 1,
+          images: q.images || [],
+          points: q.points || 1,
         }));
 
-        setQuiz({ title: raw.title, questions });
+        setQuiz({ 
+          title: raw.title, 
+          questions,
+          maxPoints: raw.maxPoints,
+          timeBonus: raw.timeBonus,
+          perfectBonus: raw.perfectBonus,
+          streakBonus: raw.streakBonus
+        });
         setAnswers(Array(questions.length).fill(null));
         setStage("ready");
       } catch (e) {
@@ -57,6 +66,8 @@ const QuizAttempt = () => {
     }
 
     try {
+      const timeTaken = Math.floor((Date.now() - timeStarted) / 1000); // in seconds
+      
       const r = await fetch(
         `http://localhost:8000/evaluation/quiz/attempt/${quizId}`,
         {
@@ -65,24 +76,36 @@ const QuizAttempt = () => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ answers }),
+          body: JSON.stringify({ 
+            answers,
+            timeTaken,
+            maxScore: quiz.questions.reduce((sum, q) => sum + q.points, 0)
+          }),
         }
       );
       if (!r.ok) throw new Error(`${r.status} – ${await r.text()}`);
 
-      const { score: sc } = await r.json();
-      setScore(sc);
+      const result = await r.json();
+      setResult(result);
       setStage("sent");
-      console.log("Sending score", sc);
+      console.log("Quiz result:", result);
 
-
+      // Notify user-data-service about the result
       await fetch("http://localhost:8000/user/quiz/result", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ quiz_id: quizId, score: sc }),
+        body: JSON.stringify({ 
+          quiz_id: quizId, 
+          score: result.score,
+          points: result.points,
+          time_taken: timeTaken,
+          perfect_score: result.perfectScore,
+          streak_bonus: result.streakBonus,
+          time_bonus: result.timeBonus
+        }),
       });
 
     } catch (e) {
@@ -101,7 +124,7 @@ const QuizAttempt = () => {
   if (!quiz) return null;
 
   const maxPoints = quiz.questions.reduce((sum, q) => sum + q.points, 0);
-  const pct       = score != null ? Math.round((score / maxPoints) * 100) : 0;
+  const pct = result ? Math.round((result.score / maxPoints) * 100) : 0;
 
   return (
     <div className="min-h-screen pt-24 px-6 bg-gradient-to-b from-[#fff0f5] via-[#f3e8ff] to-[#fff7ed]">
@@ -140,6 +163,7 @@ const QuizAttempt = () => {
                 </li>
               ))}
             </ul>
+            <p className="text-sm text-gray-500 mt-2">Puncte: {q.points}</p>
           </div>
         ))}
 
@@ -152,13 +176,39 @@ const QuizAttempt = () => {
           </button>
         ) : (
           <>
-            <div className="bg-white p-4 rounded-md shadow text-center space-y-2">
-              <p className="text-lg font-semibold text-mulberry">
-                Ai obținut {score} / {maxPoints} puncte
-              </p>
-              <p className="text-sm text-gray-600">
-                ({pct}%)
-              </p>
+            <div className="bg-white p-6 rounded-xl shadow-md border border-purple-200 space-y-4">
+              <div className="text-center">
+                <p className="text-lg font-semibold text-mulberry">
+                  Ai obținut {result.score} / {maxPoints} puncte
+                </p>
+                <p className="text-sm text-gray-600">({pct}%)</p>
+              </div>
+
+              {result.points > result.score && (
+                <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                  <h3 className="font-semibold text-green-800 mb-2">Bonusuri obținute:</h3>
+                  <ul className="space-y-2">
+                    {result.perfectScore && (
+                      <li className="flex items-center gap-2 text-green-700">
+                        <span>✨</span> Bonus scor perfect: +{quiz.perfectBonus} puncte
+                      </li>
+                    )}
+                    {result.streakBonus > 0 && (
+                      <li className="flex items-center gap-2 text-green-700">
+                        <span>🔥</span> Bonus streak: +{result.streakBonus} puncte
+                      </li>
+                    )}
+                    {result.timeBonus > 0 && (
+                      <li className="flex items-center gap-2 text-green-700">
+                        <span>⚡</span> Bonus timp: +{result.timeBonus} puncte
+                      </li>
+                    )}
+                  </ul>
+                  <p className="mt-2 font-semibold text-green-800">
+                    Total puncte cu bonusuri: {result.points}
+                  </p>
+                </div>
+              )}
             </div>
             <button
               onClick={() => navigate(-1)}

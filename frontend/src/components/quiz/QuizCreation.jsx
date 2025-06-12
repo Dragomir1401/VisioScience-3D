@@ -9,6 +9,14 @@ const QuizCreation = () => {
   const [questions, setQuestions] = useState([
     { text: "", choices: ["", "", "", ""], answer: [], image: null, points: 1 },
   ]);
+  const [quizConfig, setQuizConfig] = useState({
+    maxPoints: 100,
+    timeBonus: 10,
+    perfectBonus: 20,
+    streakBonus: 15,
+    difficulty: "medium",
+    category: "general"
+  });
 
   const handleAddQuestion = () => {
     setQuestions([
@@ -56,6 +64,13 @@ const QuizCreation = () => {
     setQuestions(newQuestions);
   };
 
+  const handleConfigChange = (field, value) => {
+    setQuizConfig(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
   const handleSubmit = async () => {
     if (!title.trim()) {
       alert("Titlul quizului nu poate fi gol.");
@@ -91,6 +106,7 @@ const QuizCreation = () => {
       class_id: classId,
       owner_id,
       questions,
+      ...quizConfig
     };
 
     try {
@@ -130,6 +146,86 @@ const QuizCreation = () => {
       <h1 className="text-2xl font-bold text-mulberry mb-6">
         Creează un quiz pentru clasă
       </h1>
+
+      <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry mb-6">
+        <h2 className="text-lg font-semibold text-mulberry mb-4">Configurare Quiz</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Puncte maxim
+            </label>
+            <input
+              type="number"
+              min="1"
+              value={quizConfig.maxPoints}
+              onChange={(e) => handleConfigChange("maxPoints", parseInt(e.target.value))}
+              className="w-full p-2 border rounded-md"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Bonus timp
+            </label>
+            <input
+              type="number"
+              min="0"
+              value={quizConfig.timeBonus}
+              onChange={(e) => handleConfigChange("timeBonus", parseInt(e.target.value))}
+              className="w-full p-2 border rounded-md"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Bonus scor perfect
+            </label>
+            <input
+              type="number"
+              min="0"
+              value={quizConfig.perfectBonus}
+              onChange={(e) => handleConfigChange("perfectBonus", parseInt(e.target.value))}
+              className="w-full p-2 border rounded-md"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Bonus streak
+            </label>
+            <input
+              type="number"
+              min="0"
+              value={quizConfig.streakBonus}
+              onChange={(e) => handleConfigChange("streakBonus", parseInt(e.target.value))}
+              className="w-full p-2 border rounded-md"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Dificultate
+            </label>
+            <select
+              value={quizConfig.difficulty}
+              onChange={(e) => handleConfigChange("difficulty", e.target.value)}
+              className="w-full p-2 border rounded-md"
+            >
+              <option value="easy">Ușor</option>
+              <option value="medium">Mediu</option>
+              <option value="hard">Greu</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Categorie
+            </label>
+            <input
+              type="text"
+              value={quizConfig.category}
+              onChange={(e) => handleConfigChange("category", e.target.value)}
+              className="w-full p-2 border rounded-md"
+              placeholder="ex: Algoritmi, Structuri de date, etc."
+            />
+          </div>
+        </div>
+      </div>
 
       <input
         className="block w-full p-3 mb-6 border rounded-md border-mulberry"

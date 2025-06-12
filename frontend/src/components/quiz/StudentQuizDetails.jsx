@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const StudentQuizDetails = ({ classId }) => {
-  const token  = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
-  const [data, setData]   = useState([]);
-  const [load, setLoad]   = useState(true);
+  const [data, setData] = useState([]);
+  const [load, setLoad] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -25,22 +25,31 @@ const StudentQuizDetails = ({ classId }) => {
         }
         const combined = await Promise.all(
           quizzes.map(async (q) => {
-            let last_score = null;
+            let result = null;
             try {
               const r = await fetch(
                 `http://localhost:8000/evaluation/quiz/${q.id}/result/${userId}`,
                 { headers: { Authorization: `Bearer ${token}` } }
               );
               if (r.ok) {
-                const { score } = await r.json();
-                last_score = score ?? null;
+                const data = await r.json();
+                result = {
+                  score: data.score ?? null,
+                  points: data.points ?? null,
+                  perfectScore: data.perfect_score ?? false,
+                  streakBonus: data.streak_bonus ?? 0,
+                  timeBonus: data.time_bonus ?? 0
+                };
               }
             } catch {}
             return {
-              id:         q.id,
-              title:      q.title,
-              last_score,
-              is_open:    q.is_open, 
+              id: q.id,
+              title: q.title,
+              result,
+              is_open: q.is_open,
+              difficulty: q.difficulty || "medium",
+              category: q.category || "general",
+              maxPoints: q.max_points || 0
             };
           })
         );
@@ -53,8 +62,8 @@ const StudentQuizDetails = ({ classId }) => {
     })();
   }, [classId, token, userId]);
 
-  if (load)   return <p className="text-sm text-gray-500">Se încarcă…</p>;
-  if (error)  return <p className="text-red-600 text-sm">{error}</p>;
+  if (load) return <p className="text-sm text-gray-500">Se încarcă…</p>;
+  if (error) return <p className="text-red-600 text-sm">{error}</p>;
   if (data.length === 0)
     return <p className="text-sm italic text-gray-500">Nu există quiz-uri încă.</p>;
 
@@ -63,20 +72,40 @@ const StudentQuizDetails = ({ classId }) => {
       {data.map((q) => (
         <li key={q.id} className="flex items-center justify-between">
           <div className="flex-1">
-            {q.is_open ? (
-              <Link
-                to={`/quiz/meta/${q.id}`}
-                className="text-mulberry font-medium hover:underline"
-              >
-                {q.title}
-              </Link>
-            ) : (
-              <span className="text-gray-400 font-medium">{q.title}</span>
-            )}
+            <div className="flex items-center gap-2">
+              {q.is_open ? (
+                <Link
+                  to={`/quiz/meta/${q.id}`}
+                  className="text-mulberry font-medium hover:underline"
+                >
+                  {q.title}
+                </Link>
+              ) : (
+                <span className="text-gray-400 font-medium">{q.title}</span>
+              )}
+              <span className="text-xs px-2 py-1 rounded-full bg-purple-100 text-purple-700">
+                {q.difficulty}
+              </span>
+              <span className="text-xs px-2 py-1 rounded-full bg-purple-50 text-purple-600">
+                {q.category}
+              </span>
+            </div>
           </div>
           <div className="flex items-center gap-4">
-            {q.last_score !== null ? (
-              <span className="text-green-700">Scor: {q.last_score}</span>
+            {q.result ? (
+              <div className="text-right">
+                <div className="text-green-700">
+                  Scor: {q.result.score} / {q.maxPoints}
+                </div>
+                {q.result.points > q.result.score && (
+                  <div className="text-xs text-green-600 space-y-0.5">
+                    {q.result.perfectScore && <span>✨ Perfect</span>}
+                    {q.result.streakBonus > 0 && <span>🔥 +{q.result.streakBonus}</span>}
+                    {q.result.timeBonus > 0 && <span>⚡ +{q.result.timeBonus}</span>}
+                    <div className="font-semibold">Total: {q.result.points}</div>
+                  </div>
+                )}
+              </div>
             ) : (
               <span className="text-gray-400 italic">Neînceput</span>
             )}
@@ -87,7 +116,7 @@ const StudentQuizDetails = ({ classId }) => {
                   ? "bg-gradient-to-r from-pink-500 to-mulberry hover:opacity-90"
                   : "bg-gray-300 cursor-not-allowed"
               }`}
-              onClick={e => {
+              onClick={(e) => {
                 if (!q.is_open) e.preventDefault();
               }}
             >

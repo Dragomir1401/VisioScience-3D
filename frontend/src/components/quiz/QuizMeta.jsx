@@ -12,6 +12,9 @@ const QuizMeta = () => {
     class_id: "",
     questions: 0,
     max_points: 0,
+    difficulty: "",
+    category: "",
+    stats: null
   });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -40,6 +43,9 @@ const QuizMeta = () => {
           questions: qs.length,
           max_points: totalPoints,
           is_open: raw.is_open,
+          difficulty: raw.difficulty || "medium",
+          category: raw.category || "general",
+          stats: raw.stats || null
         });
 
         const rRes = await fetch(
@@ -50,7 +56,12 @@ const QuizMeta = () => {
           const resRaw = await rRes.json();
           setResult({
             score: resRaw.score,
+            points: resRaw.points,
             timestamp: resRaw.timestamp,
+            time_taken: resRaw.time_taken,
+            perfect_score: resRaw.perfect_score,
+            streak_bonus: resRaw.streak_bonus,
+            time_bonus: resRaw.time_bonus
           });
         }
       } catch (e) {
@@ -70,7 +81,6 @@ const QuizMeta = () => {
       </p>
     );
 
-  // Dacă nu există rezultat sau max_points e zero, pct rămâne null
   const pct =
     result && meta.max_points > 0
       ? Math.round((result.score / meta.max_points) * 100)
@@ -80,6 +90,18 @@ const QuizMeta = () => {
     <div className="min-h-screen pt-24 px-6 bg-gradient-to-b from-[#fff0f5] via-[#f3e8ff] to-[#fff7ed]">
       <div className="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-md border border-mulberry space-y-6">
         <h1 className="text-2xl font-bold text-mulberry">{meta.title}</h1>
+        
+        <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="bg-purple-50 p-3 rounded-lg">
+            <p className="font-semibold text-purple-700">Dificultate</p>
+            <p className="text-gray-700 capitalize">{meta.difficulty}</p>
+          </div>
+          <div className="bg-purple-50 p-3 rounded-lg">
+            <p className="font-semibold text-purple-700">Categorie</p>
+            <p className="text-gray-700">{meta.category}</p>
+          </div>
+        </div>
+
         <div className="text-sm text-gray-700 space-y-1">
           <p>
             <span className="font-semibold">ID Quiz:</span> {meta.id}
@@ -102,26 +124,68 @@ const QuizMeta = () => {
           </p>
         </div>
 
+        {meta.stats && (
+          <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+            <h3 className="font-semibold text-purple-700 mb-2">Statistici Quiz</h3>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="text-gray-600">Încercări totale</p>
+                <p className="font-semibold">{meta.stats.total_attempts}</p>
+              </div>
+              <div>
+                <p className="text-gray-600">Scor mediu</p>
+                <p className="font-semibold">{meta.stats.average_score.toFixed(1)}%</p>
+              </div>
+              <div>
+                <p className="text-gray-600">Scoruri perfecte</p>
+                <p className="font-semibold">{meta.stats.perfect_scores}</p>
+              </div>
+              <div>
+                <p className="text-gray-600">Timp mediu</p>
+                <p className="font-semibold">{meta.stats.average_time}s</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {result ? (
           <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
             <p className="text-lg font-semibold text-green-700">
-              Ultimul scor obținut:
+              Ultimul rezultat:
             </p>
-            <p className="text-3xl font-bold text-green-800 flex items-baseline space-x-2">
-              <span>
-                {result.score} / {meta.max_points}
-              </span>
-              {pct !== null && (
-                <span className="text-xl font-medium text-green-600">
-                  ({pct}%)
+            <div className="mt-2 space-y-2">
+              <p className="text-2xl font-bold text-green-800 flex items-baseline space-x-2">
+                <span>
+                  {result.score} / {meta.max_points}
                 </span>
+                {pct !== null && (
+                  <span className="text-xl font-medium text-green-600">
+                    ({pct}%)
+                  </span>
+                )}
+              </p>
+              
+              {result.points > result.score && (
+                <div className="text-sm space-y-1">
+                  {result.perfect_score && (
+                    <p className="text-green-700">✨ Bonus scor perfect</p>
+                  )}
+                  {result.streak_bonus > 0 && (
+                    <p className="text-green-700">🔥 Bonus streak: +{result.streak_bonus}</p>
+                  )}
+                  {result.time_bonus > 0 && (
+                    <p className="text-green-700">⚡ Bonus timp: +{result.time_bonus}</p>
+                  )}
+                  <p className="font-semibold text-green-800">
+                    Total puncte cu bonusuri: {result.points}
+                  </p>
+                </div>
               )}
-            </p>
-            {result.timestamp && (
+              
               <p className="text-xs text-gray-500 mt-1">
                 {new Date(result.timestamp).toLocaleString()}
               </p>
-            )}
+            </div>
           </div>
         ) : (
           <div className="italic text-gray-500">
@@ -137,16 +201,16 @@ const QuizMeta = () => {
             ⬅ Înapoi
           </button>
           {!meta.is_open ? (
-          <span className="text-gray-500 italic self-center">
+            <span className="text-gray-500 italic self-center">
               Quiz închis
             </span>
           ) : (
-              <button
-                onClick={() => navigate(`/quiz/attempt/${quizId}`)}
-                className="bg-gradient-to-r from-pink-500 to-mulberry text-white px-4 py-2 rounded-md hover:opacity-90 transition text-sm"
-              >
-                {result ? "Reia quiz-ul" : "Începe quiz-ul"}
-              </button>
+            <button
+              onClick={() => navigate(`/quiz/attempt/${quizId}`)}
+              className="bg-gradient-to-r from-pink-500 to-mulberry text-white px-4 py-2 rounded-md hover:opacity-90 transition text-sm"
+            >
+              {result ? "Reia quiz-ul" : "Începe quiz-ul"}
+            </button>
           )}
         </div>
       </div>
