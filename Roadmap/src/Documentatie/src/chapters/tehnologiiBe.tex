@@ -176,7 +176,7 @@ privilegiile şi un \texttt{ClusterRoleBinding} aferent. Manifestele corespunză
 \texttt{service} şi \texttt{portainer-ingress}) sunt folosite pentru configurare și
 gestionare a accesului Portainer în cluster. Interfața Portainer, expusă printr-un \texttt{Service}
 şi un \texttt{Ingress} pe ruta \texttt{/portainer}, permite vizualizarea nodurilor, pod-urilor, volumelor şi
-gestionarea configurațiilor (scaling, redeploy, logs) fără comenzi complexe, oferind
+gestionarea configurațiilor (scalare, relivrare, mesaje) fără comenzi complexe, oferind
 în acelaşi timp controale RBAC\footnote{Controlul accesului bazat pe roluri} şi monitorizare centralizată.
 
 Se poate vedea în imaginea de mai jos cum arată interfața Portainer pe clusterul produsului:
@@ -199,7 +199,7 @@ Se poate vedea în imaginea de mai jos cum arată interfața Portainer pe cluste
 
 \subsection{Rutarea și gestionarea traficului}
 
-Pentru a centraliza şi controla traficul HTTP/S, am ales Kong ca API Gateway. În cluster am
+Pentru a centraliza şi controla traficul HTTP/S, am ales Kong\footnote{https://konghq.com/} ca API Gateway. În cluster am
 definit o clasă de rutare dedicată, astfel:
 
 \begin{lstlisting}[style=yamlstyle]
@@ -211,14 +211,17 @@ spec:
 \end{lstlisting}
 
 Controller-ul Kong va intercepta toate resursele de tip \texttt{Ingress} care 
-specifică \texttt{ingressClassName: kong}. În mediul de dezvoltare, pentru a nu expune un 
-LoadBalancer extern, am folosit port-forwarding local:
+specifică ingressClassName:\texttt{kong}. În mediul de dezvoltare, pentru a nu expune un 
+LoadBalancer\footnote{https://kubernetes.io/docs/concepts/services-networking/}
+extern, am folosit 
+port-forwarding\footnote{https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/}
+local:
 
 \noindent
 \cmd{kubectl port-forward svc/kong-kong-proxy 8000:80}
 
 Astfel, apelurile HTTP către \url{http://localhost:8000} sunt tunelate prin Kong şi pot 
-fi testate rapid împotriva serviciilor din cluster fără configurări suplimentare de reţea.
+fi testate rapid în legătură cu serviciile din cluster fără configurări suplimentare de reţea.
 
 
 \section{Descrierea serviciilor}
@@ -229,27 +232,51 @@ fi testate rapid împotriva serviciilor din cluster fără configurări suplimen
 
 \begin{itemize}
   \item \texttt{evaluation-service} – Serviciul pentru gestionarea logicii de creare, monitorizare, deschide/închidere,
-  ștergere, gestionare de teste și evaluări.
-  \item \texttt{feed-data} – Serviciul care se ocupă de gestionarea datelor de feed-urile educaționale și 
-  accesarea motorului de generare a moleculelor de chimie.
-  \item \texttt{grafana} – Grafana pentru vizualizarea metricilor și a datelor de monitorizare.
-  \item \texttt{kong-kong} – Controller Kong pentru gestionarea rutării și a API-urilor.
-  \item \texttt{mongo-express-feed-data} – Interfață web pentru gestionarea bazei de date a feed-urilor educaționale.
-  \item \texttt{mongo-express-user-data} – Interfață web pentru gestionarea bazei de date a utilizatorilor.
+  ștergere, gestionare de teste și evaluări. Funcționează ca un controller REST API care preia datele din bazele de date,
+  le modelează pentru a fi transmise către frontend și încapsulează și logica de calculare și trimitere către stocarea
+  persistentă de punctaje, scoruri, clasamente și alte statistici.
+  \item \texttt{feed-data} – Serviciul care se ocupă de gestionarea datelor legate de secțiunile educaționale și 
+  accesarea motorului de generare a moleculelor de chimie. Datele brute din fișierele .mol\footnote{Fișiere de descriere a
+  moleculelor chimice} ajung în acest serviciu și sunt parsate linie cu linie pentru a identifica poziția atomilor,
+  legăturile chimice dintre ele și tipul lor și mai dimensiunile și tipul moleculelor de asemenea. Datele sunt apoi
+  transmise către routerul serviciului pentru a fi accesibile prin API-ul REST către frontend.
+  \item \texttt{cpp-compiler-service} – Serviciul care încapsulează logica de gestionare a compilării codului C++
+  inserat în editorul interactiv și îl împarte în capturi de status a structurilor de date ce apar în cod. codul
+  este primit din frontend și trece prin mai multe etape de procesare. Se trece linie cu linie prin el pentru a identifica
+  structurile de date folosite și a le extrage. Al doilea pas este de creare și adăugare a unui header de urmărire a
+  fiecărei structuri de date capabil să înregistreze și raporteze statusul la fiecare operație. La ultimul pas 
+  aceste statusuri sunt adnotate cu metadatele necesare și inserate cronologic într-o listă de evenimente ca să personalizată
+  fi trimisă către frontend.
+  \item \texttt{grafana} – Utilitar pentru vizualizarea metricilor și a datelor de monitorizare. Practic este gazdă pentru
+  rularea imaginii de Grafana\footnote{https://grafana.com/} care primește metricile colectate de Prometheus{https://prometheus.io/} 
+  și le vizualizează într-o interfață web.
+  \item \texttt{kong-kong} – Controller Kong pentru gestionarea rutării și a API-urilor despre care s-a discutat anterior.
+  \item \texttt{mongo-express-feed-data} – Interfață web pentru gestionarea bazei de date a feed-urilor educaționale. oferă
+  o interfață grafică pentru vizualizarea și manipularea datelor din baza de date MongoDB asociată cu serviciul de feed-uri.
+  \item \texttt{mongo-express-user-data} – Interfață web pentru gestionarea bazei de date a utilizatorilor. Oferă ca și cea
+  anterior menționată o interfață grafică pentru vizualizarea și manipularea datelor din baza de date MongoDB asociată
+  cu serviciul de utilizatori.
   \item \texttt{mongo-feed-data-service} – Baza de date MongoDB pentru serviciul de feed-uri educaționale.
   \item \texttt{mongo-user-data-service} – Baza de date MongoDB pentru serviciul de utilizatori.
-  \item \texttt{monitoring-service} – Serviciul de monitorizare care colectează și expune metrici.
-  \item \texttt{portainer} – Interfață de administrare a clusterului Kubernetes. 
-  \item \texttt{prometheus} – Serviciul de colectare a metricilor și monitorizare prin Prometheus.
+  \item \texttt{monitoring-service} – Serviciul de monitorizare care colectează și expune metrici. Practic aici se încapsulează
+  partea de cod care folosesc instrumentarea oferită de Prometheus pentru a crea interfețe reutilizabile ce vor fi inserate
+  în zonele din celelalte servicii unde dorim să colectăm metrici.
+  \item \texttt{portainer} – Interfață de administrare a clusterului Kubernetes. Oferă toate operațiile posibile pentru
+  gestiune a resurselor din cluster.
+  \item \texttt{prometheus} – Serviciul care este gazdă pentru imaginea de Prometheus\footnote{https://prometheus.io/} 
+  folosită în seriviciul de monitorizare.
   \item \texttt{user-data} – Serviciul pentru gestionarea datelor utilizatorilor, 
-  inclusiv autentificare și autorizare.
+  inclusiv autentificare și autorizare. El funcționeză ca un router REST API care are mai multe straturi prin care trec datele.
+  Primul este cel de validare a token-ului de autentificare în middleware-ul \texttt{JWTAuth}, apoi prin parsarea datelor,
+  stocarea lor persistentă în baza de date MongoDB și apoi prin reexpunerea lor către frontend prin API-ul REST.
 \end{itemize}
 
+Mai jos putem observa și arhitectura principală de comunicare între serviciile din back-end, cpp-compiler-service ne fiind
+inclus pentru că funcționează pe un flux diferit și nu interacționează direct cu celelalte servicii, ci doar cu 
+frontend-ul.
 
-\fig[width=1.25\textwidth]{imgs/bearch.png}{fig:arhitectura-backend}{Arhitectura backend-ului aplicației}
+\fig[width=1\textwidth]{imgs/bearch.png}{fig:arhitectura-backend}{Arhitectura backend-ului aplicației}
 
-
-\newpage
 
 \subsection{Descrierea API-urilor}
 
@@ -259,68 +286,21 @@ Aceste API-uri sunt definite în routerul fiecărui serviciu care este creat pri
 Fiecare serviciu are un set de endpoint-uri care permit operații CRUD (Create, Read, Update, Delete) asupra resurselor sale
 și interacționează cu baza de date corespunzătoare.
 
-\newpage
-\begin{table}[htb]
-  \centering
-  \caption{Endpoint-uri REST ale microserviciilor}
-  \label{table:api-endpoints}
-  \begin{tabular}{@{}p{11cm}p{6cm}@{}}
-    \toprule
-    \textbf{Endpoint} & \textbf{Descriere} \\
-    \midrule
-    \multicolumn{2}{@{}l}{\textbf{Feed Data Service}} \\[-0.5ex]
-    \texttt{POST   /feed}                       & creare feed de formule          \\
-    \texttt{GET    /feed/\{id\}}                & folosire feed de formulă          \\
-    \texttt{PUT    /feed/\{id\}}                & actualizare feed de formulă     \\
-    \texttt{GET    /feed/shape/\{shape\}}       & listare după scenă       \\
-    \texttt{GET    /feed/chem/molecules}        & listare molecule         \\
-    \texttt{POST   /feed/chem/molecules}        & creare moleculă          \\
-    \texttt{GET    /feed/chem/molecules/\{id\}} & citire moleculă          \\
-    \texttt{PUT    /feed/chem/molecules/\{id\}} & actualizare moleculă     \\
-    \texttt{GET    /feed/chem/molecules/\{id\}/3d} & vizualizare 3D moleculă        \\
-    \addlinespace
-    \multicolumn{2}{@{}l}{\textbf{User Data Service}} \\[-0.5ex]
-    \texttt{POST   /user/auth/register}         & înregistrare utilizator            \\
-    \texttt{POST   /user/auth/login}            & autentificare utilizator           \\
-    \texttt{GET    /user/me}                    & detalii profil curent      \\
-    \texttt{POST   /user/classes}               & creare clasă             \\
-    \texttt{GET    /user/classes}               & listare clase proprii    \\
-    \texttt{POST   /user/classes/\{code\}/join} & aderare la clasă         \\
-    \texttt{POST   /user/class/add-student}     & adaugă elev              \\
-    \texttt{GET    /user/classes/\{id\}/students}        & listează elevi \\
-    \texttt{POST   /user/classes/\{id\}/invite} & trimite invitație        \\
-    \texttt{GET    /user/invites}               & listare invitații        \\
-    \texttt{POST   /user/invites/\{id\}/respond} & răspunde invitației      \\
-    \texttt{POST   /user/quiz/result}           & trimite rezultat quiz    \\
-    \texttt{GET    /user/quiz/results/\{quizId\}}           & rezultate individuale    \\
-    \texttt{GET    /user/classes/\{classId\}/quiz/\{quizId\}/results} & rezultate pe clasă \\
-    \addlinespace
-    \multicolumn{2}{@{}l}{\textbf{Evaluation Service}} \\[-0.5ex]
-    \texttt{POST   /evaluation/quiz}            & creare quiz              \\
-    \texttt{GET    /evaluation/quiz}            & listare quiz-uri         \\
-    \texttt{PUT    /evaluation/quiz/\{id\}}     & actualizare quiz         \\
-    \texttt{GET    /evaluation/quiz/class/\{class\_id\}} & listare pe clasă   \\
-    \texttt{GET    /evaluation/quiz/attempt/\{quizId\}} & pregătire quiz  \\
-    \texttt{POST   /evaluation/quiz/attempt/\{quizId\}} & trimitere răspunsuri  \\
-    \texttt{GET    /evaluation/quiz/\{quizId\}/result/\{userId\}} & ultim rezultat  \\
-    \texttt{GET    /evaluation/quiz/\{quizId\}/results} & rezultate multiple \\
-    \texttt{PUT    /evaluation/quiz/\{id\}/status} & schimbă status quiz  \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
+În zona de anexe se pot observa endpoint-urile principale în figura \ref{table:api-endpoints}.
 
 
 \section{Securitate}
 
-Toate API-urile serviciilor sunt protejate prin JWT (JSON Web Token), validat de middleware-ul \func{JWTAuth}, care
-respinge cererile fără token sau cu token invalid. Traficul extern este dirijat prin Kong,
-configurat cu HTTPS/TLS şi politici de rate-limiting, CORS şi strip-path pentru a preveni 
-atacurile de tip „path traversal” şi abuzul de resurse. În interiorul clusterului, rolurile
-şi permisiunile sunt gestionate prin RBAC Kubernetes (ClusterRole/ClusterRoleBinding), iar
-Portainer rulează sub un ServiceAccount cu drepturi strict necesare. Conexiunile la bazele
+Toate API-urile serviciilor sunt protejate prin JWT\footnote{JSON Web Token, folosit în protocoale de autentificare}, validat de secțiunea \func{JWTAuth}, care
+respinge cererile fără token sau cu token invalid. Traficul extern este dirijat prin Kong după cum am văzut,
+configurat cu HTTPS/TLS şi politici de limitare a numărului de cereri HTTP, CORS şi trunchere a căii pentru a preveni
+atacurile de tip „path traversal”\footnote{Atacuri bazate pe manipularea căii de acces a resurselor} şi abuzul de resurse.
+În interiorul clusterului, rolurile
+şi permisiunile sunt gestionate prin RBAC Kubernetes (ClusterRole/ClusterRoleBinding\footnote{https://kubernetes.io/docs/reference/access-authn-authz/rbac/}), iar
+Portainer rulează sub un ServiceAccount cu drepturile strict necesare la acces. Conexiunile la bazele
 MongoDB sunt realizate folosind URL-urile securizate (\texttt{MONGO\_URI}) şi, în producţie,
-se va face activarea criptării TLS şi a autentificării la nivel de server de baze de date. 
+se va face activarea criptării TLS\footnote{https://www.mongodb.com/docs/manual/tutorial/configure-ssl/} 
+şi a autentificării la nivel de server de baze de date.
 
 \section{CI/CD}
 
@@ -345,7 +325,8 @@ Am automatizat build-ul, testarea şi deploy-ul în Kubernetes cu GitHub Actions
 kubectl apply -f k8s/
 kubectl rollout status deployment/${{ steps.extract.outputs.name }}
     \end{lstlisting}
-  \item Runner-ul GitHub este un self-hosted pe aceeaşi mașină ca și clusterul Kind, astfel că are acces direct la kubeconfig.
+  \item Runner-ul GitHub este un hostat pe aceeaşi mașină ca și clusterul Kind, astfel că are acces direct la 
+kubeconfig\footnote{https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/}.
 \end{itemize}
 
 \subsection{Metrici / Monitorizare}
@@ -360,9 +341,9 @@ servicii și microservicii. În plus, arhitectura sa detașată de stare (statel
 pentru stocarea pe termen scurt cu export către sisteme
 externe îl fac ideal pentru arhitecturi dinamice, precum Kubernetes. De asemenea, se integrează
 nativ cu instrumente vizuale precum Grafana, oferind dashboard-uri ușor de configurat
-și interpretat de către echipele tehnice. În cazul platformei dezvoltate Grafana a recunoscut
-sursa de date din parte Prometheus direct fără configurări suplimentare și s-au putut
-crea panourile de vizualizare direct.
+și interpretat de către dezvoltatori. În cazul platformei VisioScience3D, Grafana a recunoscut
+sursa de date din partea Prometheus direct fără configurări suplimentare și s-au putut
+crea panourile de vizualizare direct prin configurări externe.
 
 \subsection{Colectare Prometheus}  
 În fiecare serviciu Go am folosit clientul official Prometheus:
@@ -381,12 +362,12 @@ http.Handle("/evaluation/metrics", promhttp.HandlerFor(registry, promhttp.Handle
 \end{lstlisting}
 
 \subsection{Grafana Dashboard}  
-De exemplu după ce Prometheus scrapează \texttt{evaluation\_service\_http\_requests\_total}, se crează un dashboard 
+De exemplu după ce Prometheus trece prin \texttt{evaluation\_service\_http\_requests\_total}, se crează un dashboard 
 persistent prin volumele Kubernetes. Dashboard-ul Grafana are în general două tipuri de panouri pentru metrici 
 similare. De exemplu pentru metrica de cereri și evaluări active din serviciul de evaluare:
 \begin{itemize}
-  \item \emph{Timeseries} pentru \texttt{evaluation\_service\_http\_requests\_total}
-  \item \emph{Gauge} pentru \texttt{evaluation\_service\_active\_evaluations}
+  \item \emph{Timeseries(serie temporală de date)} pentru \texttt{evaluation\_service\_http\_requests\_total}
+  \item \emph{Gauge(serie de valori)} pentru \texttt{evaluation\_service\_active\_evaluations}
 \end{itemize}
 Un fragment din JSON-ul dashboard-ului Grafana arată astfel:
 \begin{lstlisting}[style=yamlstyle]
@@ -408,22 +389,24 @@ la fiecare 5s (configurabil).
 Așadar există trei panouri principale în Grafana pentru trei servicii cu logică de produs existente:
 \begin{itemize}
   \item \texttt{Evaluation Service Dashboard} pentru \texttt{evaluation-service}
-  \fig[width=1\textwidth]{imgs/evaluationdashboard.png}{fig:evaluation-dashboard}{Dashboard-ul pentru evaluări în Grafana}
+  \fig[width=0.9\textwidth]{imgs/evaluationdashboard.png}{fig:evaluation-dashboard}{Dashboard-ul pentru evaluări în Grafana}
   
   Se poate observa logarea numărului de cereri HTTP din serviciul, latența și durata medie a lor, numărul de evaluări
   active și rata operațiilor pe evaluări.
   \item \texttt{Feed Data Service Dashboard} pentru \texttt{feed-data}
-  \fig[width=1\textwidth]{imgs/feeddashboard.png}{fig:feed-data-dashboard}{Dashboard-ul pentru metrici de feed-uri în Grafana}
   
   În panou se pot vedea numărul de cereri HTTP, latența și durata medie a lor, numărul de feed-uri active, numărul de molecule
   active, rata operațiilor asupra feed-urilor și moleculelor, precum și numărul de molecule generate.
-  \item \texttt{User Data Service Dashboard} pentru \texttt{user-data}
-  \fig[width=1\textwidth]{imgs/userdashboard.png}{fig:user-data-dashboard}{Dashboard-ul pentru metrici de utilizator în Grafana}
 
-  În panoul pentru metricile din serviciul de utilizatori apar numărul, latența și durata cererilor HTTP
-  numărul utilizatorilor și claselor active.
+  \item \texttt{User Data Service Dashboard} pentru \texttt{user-data}
+  \fig[width=0.9\textwidth]{imgs/userdashboard.png}{fig:user-data-dashboard}{Dashboard-ul pentru metrici de utilizator în Grafana}
+  \fig[width=0.9\textwidth]{imgs/feeddashboard.png}{fig:feed-data-dashboard}{Dashboard-ul pentru metrici de feed-uri în Grafana}
+
+  În panoul pentru metricile din serviciul de utilizatori apar numărul, latența și durata cererilor HTTP,
+  numărul utilizatorilor și al claselor active.
 \end{itemize}
 
+\newpage
 \section{Soluția de baze de date}
 \label{sec:proj-database}
 
@@ -431,8 +414,8 @@ Așadar există trei panouri principale în Grafana pentru trei servicii cu logi
 
 \subsubsection{Tipuri de baze de date utilizate / Motivația alegerii}
 
-Baza de date folosită este MongoDB, o bază de date nerelațională care oferă flexibilitate și scalabilitate
-și e ușor de folosit și mai ales de integrat în microserviciile gestionate ăn Kubernetes. Am ales o soluție
+Baza de date folosită este MongoDB\footnote{https://www.mongodb.com/}, o bază de date nerelațională care oferă flexibilitate și scalabilitate
+și e ușor de folosit și mai ales de integrat în microserviciile gestionate în Kubernetes. Am ales o soluție
 nerelațională deoarece datele noastre sunt semi-structurate și nu necesită relații complexe între tabele,
 permițându-ne să stocăm documente JSON care pot fi ușor extinse și modificate fără a necesita migrări
 de baze de date. Structura ar fi putut fi integrată și într-un mediu relațional, dar am considerat că
@@ -460,18 +443,20 @@ De exemplu, un document din colecția \texttt{quizzes} conține câmpuri precum 
 stocarea scorurilor utilizatorilor.
 
 Se folosesc structuri Go care reflectă aceste modele, permițând deserializarea și serializarea 
-automată între BSON și JSON. Astfel se poate realiza interacțiunea cu baza se face prin operații CRUD folosind
+automată între BSON\footnote{https://www.mongodb.com/resources/basics/json-and-bson} și
+JSON. Astfel, interacțiunea 
+cu baza de date se face prin operații CRUD folosind
 metodele MongoDB standard, iar aplicația transforma și face validarea datelor ușor.
 
-Gestionarea și vizualizarea ușoară a fost facută folosind interfața Mongo express, care permite
-toate operațiile cu documentele din colecțiile MongoDB printr-o interfață web simplă și intuitivă.
+Gestionarea și vizualizarea datelor în mediul de dezvoltare a fost facută folosind interfețele oferite de Mongo express,
+care permit toate operațiile cu documentele din colecțiile MongoDB printr-o interfață web simplă și intuitivă.
 
 \fig[width=1\textwidth]{imgs/mongoexpress.png}{fig:mongo-express}{Interfața Mongo Express pentru gestionarea colecțiilor}
 
 \subsection{Securitatea datelor}
 
 Datele stocate sunt protejate prin controlul accesului la nivel de cluster MongoDB, autentificare
-și autorizare prin roluri definite (de exemplu, utilizator, profesor, administrator).
+și autorizare prin roluri definite (de exemplu, utilizator, profesor).
 Parolele sunt criptate și gestionate prin variabile de mediu la nivelul serviciilor. Pe viitor 
 se poate face integrarea cu un serviciu de autentificare centralizat (ex: OAuth2, OpenID Connect)
 sau folosirea unui serviciu de identitate și secrete (precum HashiCorp Vault sau AWS Secrets Manager) pentru a gestiona
@@ -479,7 +464,7 @@ securitatea și accesul și mai granular la datele sensibile.
 
 \subsubsection{Performanța și scalabilitatea bazei de date}
 
-MongoDB permite scalarea orizontală prin sharding, facilitând distribuția datelor pe mai multe noduri când 
+MongoDB permite scalarea orizontală prin sharding\footnote{https://www.mongodb.com/docs/manual/sharding/}, facilitând distribuția datelor pe mai multe noduri când 
 cantitatea datelor ar ajunge la dimensiuni mari. Indecșii sunt definiți pe câmpuri critice 
 (ex: \texttt{\_id}, \texttt{class\_id}) pentru a optimiza căutările și interogările.
 
@@ -494,7 +479,7 @@ complet pentru operațiile pe colecții și documente, tranzacții și agregări
 La pornire, fiecare serviciu inițializează o conexiune persistentă la baza de date. Modelele Go
 definite permit maparea clară între structurile din cod și documentele MongoDB.
 De exemplu, în \texttt{evaluation-service}, obiectele \texttt{Quiz} și \texttt{QuizResult}
-sunt manipulate direct în cod, iar metodele HTTP expun API REST care gestionează aceste resurse prin CRUD.
+sunt manipulate direct în cod, iar metodele HTTP expun API REST care gestionează aceste resurse prin modelul CRUD\footnote{Create, Read, Update, and Delete}.
 
 Așsadar arhitectura descrisă permite un flux clar și mai ales scalabil între date și servicii, ușurând
 mentenanța serviciilor și extinderea aplicației.

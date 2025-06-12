@@ -1,3 +1,52 @@
 \chapter{Anexe}
 \label{chapter:anexe}
 
+\begin{table}[htb]
+  \centering
+  \caption{Endpoint-uri REST ale microserviciilor}
+  \label{table:api-endpoints}
+  \begin{tabular}{@{}p{11cm}p{5cm}@{}}
+    \toprule
+    \textbf{Endpoint} & \textbf{Descriere} \\
+    \midrule
+    \multicolumn{2}{@{}l}{\textbf{Feed Data Service}} \\[-0.5ex]
+    \texttt{POST   /feed}                       & creare feed de formuleeee          \\
+    \texttt{GET    /feed/\{id\}}                & folosire feed de formulă          \\
+    \texttt{PUT    /feed/\{id\}}                & actualizare feed de formulă     \\
+    \texttt{GET    /feed/shape/\{shape\}}       & listare după scenă       \\
+    \texttt{GET    /feed/chem/molecules}        & listare molecule         \\
+    \texttt{POST   /feed/chem/molecules}        & creare moleculă          \\
+    \texttt{GET    /feed/chem/molecules/\{id\}} & citire moleculă          \\
+    \texttt{PUT    /feed/chem/molecules/\{id\}} & actualizare moleculă     \\
+    \texttt{GET    /feed/chem/molecules/\{id\}/3d} & vizualizare 3D moleculă        \\
+    \addlinespace
+    \multicolumn{2}{@{}l}{\textbf{User Data Service}} \\[-0.5ex]
+    \texttt{POST   /user/auth/register}         & înregistrare utilizator            \\
+    \texttt{POST   /user/auth/login}            & autentificare utilizator           \\
+    \texttt{GET    /user/me}                    & detalii profil curent      \\
+    \texttt{POST   /user/classes}               & creare clasă             \\
+    \texttt{GET    /user/classes}               & listare clase proprii    \\
+    \texttt{POST   /user/classes/\{code\}/join} & aderare la clasă         \\
+    \texttt{POST   /user/class/add-student}     & adaugă elev              \\
+    \texttt{GET    /user/classes/\{id\}/students}        & listează elevi \\
+    \texttt{POST   /user/classes/\{id\}/invite} & trimite invitație        \\
+    \texttt{POST   /user/invites/\{id\}/respond} & răspunde invitației      \\
+    \texttt{POST   /user/quiz/result}           & trimite rezultat quiz    \\
+    \texttt{GET    /user/quiz/results/\{quizId\}}           & rezultate individuale    \\
+    \texttt{GET    /user/classes/\{classId\}/quiz/\{quizId\}/results} & rezultate pe clasă \\
+    \addlinespace
+    \multicolumn{2}{@{}l}{\textbf{Evaluation Service}} \\[-0.5ex]
+    \texttt{POST   /evaluation/quiz}            & creare quiz              \\
+    \texttt{GET    /evaluation/quiz}            & listare quiz-uri         \\
+    \texttt{PUT    /evaluation/quiz/\{id\}}     & actualizare quiz         \\
+    \texttt{GET    /evaluation/quiz/class/\{class\_id\}} & listare pe clasă   \\
+    \texttt{GET    /evaluation/quiz/attempt/\{quizId\}} & pregătire quiz  \\
+    \texttt{POST   /evaluation/quiz/attempt/\{quizId\}} & trimitere răspunsuri  \\
+    \texttt{GET    /evaluation/quiz/\{quizId\}/result/\{userId\}} & ultim rezultat  \\
+    \texttt{GET    /evaluation/quiz/\{quizId\}/results} & rezultate multiple \\
+    \texttt{PUT    /evaluation/quiz/\{id\}/status} & schimbă status quiz  \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\newpage
+

@@ -7,7 +7,37 @@ dezvoltarea și conectivitatea acestora.
 \section{Back-end}
 \label{sec:implementare-backend}
 
-Pentru back-end s-au analizat diferite tehnologii. Alegerea lor s-a bazat pe comparația:
+
+Pentru back-end s-au analizat diferite tehnologii. Alegerea lor s-a bazat pe comparația descrisă mai jos.
+Alegerea a fost influențată de mai mulți factori, printre care se numără performanța, ușurința de utilizare
+și suportul extins pentru dezvoltarea Web . Go oferă un model de concurență eficient și o sintaxă simplă, 
+ceea ce îl face potrivit pentru construirea rapidă de aplicații scalabile. Alt motiv principal a fost compatibilitatea
+cu infrastructura aleasă pentru proiect, bazată pe Kubernetes și Docker, care se integrează foarte ușor cu Go.
+
+Pe lângă Go, pentru serviciul de compilare a codului C++ s-a optat tot pentru consistență la Go, dar header-ul
+care este inserat după detectarea structurilor de date pentru a crea raportări de status este scris in C++ 
+pentru a asigura integrare nativă cu codul primit de la utilizator.
+
+
+\begin{lstlisting}[language=Go, caption={Middleware Prometheus pentru monitorizarea duratei cererilor HTTP}]
+template<typename Container>
+class ContainerTracer : public Traceable 
+public:
+    ContainerTracer(const std::string& name, Container& container)
+        : name(name), container(container) 
+        globalTracer->registerObject(this);
+
+class Traceable
+public:
+    virtual ~Traceable()
+        globalTracer->unregisterObject(this);
+\end{lstlisting}
+
+Se poate observa că header-ul se bazează pe structuri generice din C++ pentru a permite orice tip de container
+să fie integrat în acest tip general de raportare a operațiilor și conținutului.
+
+Mai jos se află comparația limbajelor de care am discutat mai sus.
+
 \begin{table}[h!]
 \centering
 \caption{Compararea limbajelor de programare care ar fi fost potrivite pentru VisioScience3D}
@@ -31,15 +61,6 @@ Pentru back-end s-au analizat diferite tehnologii. Alegerea lor s-a bazat pe com
 \label{tab:comparatie-limbaje}
 \end{table}
 
-
-Alegerea a fost influențată de mai mulți factori, printre care se numără performanța, ușurința de utilizare
-și suportul extins pentru dezvoltarea Web . Go oferă un model de concurență eficient și o sintaxă simplă, 
-ceea ce îl face potrivit pentru construirea rapidă de aplicații scalabile. Alt motiv principal a fost compatibilitatea
-cu infrastructura aleasă pentru proiect, bazată pe Kubernetes și Docker, care se integrează foarte ușor cu Go.
-
-
-\subsection{Configurare back-end}
-\label{subsec:implementare-backend}
 
 Fiecare microserviciu are propria configurație Kubernetes definită prin fișiere YAML pentru Deployment,
 Service, ConfigMap și alte resurse necesare. Configurarea constă în containerizarea și automatizarea
