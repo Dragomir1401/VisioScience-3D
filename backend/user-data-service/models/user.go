@@ -46,9 +46,32 @@ type Badge struct {
 	EarnedAt    time.Time          `bson:"earned_at" json:"earned_at"`
 }
 
+type PerformanceMetrics struct {
+	Accuracy    float64 `bson:"accuracy" json:"accuracy"`
+	Speed       float64 `bson:"speed" json:"speed"`
+	Consistency string  `bson:"consistency" json:"consistency"`
+}
+
 type QuizResultMeta struct {
-	QuizID    primitive.ObjectID `bson:"quiz_id" json:"quiz_id"`
-	Score     int                `bson:"score" json:"score"`
-	Points    int64              `bson:"points" json:"points"`
-	Timestamp time.Time          `bson:"timestamp" json:"timestamp"`
+	QuizID             primitive.ObjectID `bson:"quiz_id" json:"quiz_id"`
+	ClassID            primitive.ObjectID `bson:"class_id" json:"class_id"`
+	Score              int                `bson:"score" json:"score"`
+	MaxScore           int                `bson:"max_score" json:"max_score"`
+	Points             int64              `bson:"points" json:"points"`
+	Timestamp          time.Time          `bson:"timestamp" json:"timestamp"`
+	TimeTaken          int                `bson:"time_taken" json:"time_taken"`
+	PerfectScore       bool               `bson:"perfect_score" json:"perfect_score"`
+	QuestionsTotal     int                `bson:"questions_total" json:"questions_total"`
+	QuestionsCorrect   int                `bson:"questions_correct" json:"questions_correct"`
+	QuestionsIncorrect int                `bson:"questions_incorrect" json:"questions_incorrect"`
+	DifficultyLevel    string             `bson:"difficulty_level" json:"difficulty_level"`
+	CompletionTime     int                `bson:"completion_time" json:"completion_time"`
+	StreakBonus        int                `bson:"streak_bonus" json:"streak_bonus"`
+	TimeBonus          int                `bson:"time_bonus" json:"time_bonus"`
+	PerfectBonus       int                `bson:"perfect_bonus" json:"perfect_bonus"`
+	QuizTitle          string             `bson:"quiz_title" json:"quiz_title"`
+	QuizType           string             `bson:"quiz_type" json:"quiz_type"`
+	AttemptNumber      int                `bson:"attempt_number" json:"attempt_number"`
+	CompletionDate     string             `bson:"completion_date" json:"completion_date"`
+	PerformanceMetrics PerformanceMetrics `bson:"performance_metrics" json:"performance_metrics"`
 }

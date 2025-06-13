@@ -19,16 +19,32 @@ import (
 )
 
 // calculatePoints calculates points based on quiz score and other factors
-func calculatePoints(score int, maxScore int) int64 {
-	// Base points calculation (can be adjusted based on your needs)
-	basePoints := int64(float64(score) / float64(maxScore) * 100)
-
-	// Bonus points for perfect scores
-	if score == maxScore {
-		basePoints += 50
+func calculatePoints(score int, maxScore int, timeBonus int, streakBonus int, perfectBonus int) int64 {
+	// Safety check for maxScore
+	if maxScore <= 0 {
+		maxScore = 1 // Prevent division by zero
 	}
 
-	return basePoints
+	// Calculate base points (percentage of max score)
+	// Using float64 for more precise calculation
+	basePoints := float64(score) / float64(maxScore) * 100
+
+	// Convert bonuses to int64 and add them
+	var totalPoints int64
+	totalPoints = int64(basePoints) + int64(timeBonus) + int64(streakBonus) + int64(perfectBonus)
+
+	// Safety check for negative values
+	if totalPoints < 0 {
+		totalPoints = 0
+	}
+
+	// Safety check for maximum value
+	const maxInt64 = int64(^uint64(0) >> 1) // Maximum value for int64
+	if totalPoints > maxInt64 {
+		totalPoints = maxInt64
+	}
+
+	return totalPoints
 }
 
 // updateUserRankings updates the user's class and global rankings
@@ -141,6 +157,33 @@ func updateUserRankings(ctx context.Context, userID primitive.ObjectID) error {
 	return nil
 }
 
+type QuizResultRequest struct {
+	QuizID             string `json:"quiz_id"`
+	Score              int    `json:"score"`
+	MaxScore           int    `json:"max_score"`
+	TimeTaken          int    `json:"time_taken"`
+	PerfectScore       bool   `json:"perfect_score"`
+	QuestionsTotal     int    `json:"questions_total"`
+	QuestionsCorrect   int    `json:"questions_correct"`
+	QuestionsIncorrect int    `json:"questions_incorrect"`
+	DifficultyLevel    string `json:"difficulty_level"`
+	CompletionTime     int    `json:"completion_time"`
+	StreakBonus        int    `json:"streak_bonus"`
+	TimeBonus          int    `json:"time_bonus"`
+	PerfectBonus       int    `json:"perfect_bonus"`
+	TotalPoints        int    `json:"total_points"`
+	ClassID            string `json:"class_id"`
+	QuizTitle          string `json:"quiz_title"`
+	QuizType           string `json:"quiz_type"`
+	AttemptNumber      int    `json:"attempt_number"`
+	CompletionDate     string `json:"completion_date"`
+	PerformanceMetrics struct {
+		Accuracy    float64 `json:"accuracy"`
+		Speed       float64 `json:"speed"`
+		Consistency string  `json:"consistency"`
+	} `json:"performance_metrics"`
+}
+
 // POST /user/quiz/result
 func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
@@ -151,16 +194,20 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var req struct {
-		QuizID   string `json:"quiz_id"`
-		Score    int    `json:"score"`
-		MaxScore int    `json:"max_score"`
-	}
+	var req QuizResultRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
 		http.Error(w, "Bad payload", http.StatusBadRequest)
 		return
 	}
+
+	// Validate input values
+	if req.Score < 0 || req.MaxScore < 0 || req.TimeBonus < 0 || req.StreakBonus < 0 || req.PerfectBonus < 0 {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Invalid negative values in request", http.StatusBadRequest)
+		return
+	}
+
 	quizOID, err := primitive.ObjectIDFromHex(req.QuizID)
 	if err != nil {
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
@@ -168,15 +215,43 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Calculate points
-	points := calculatePoints(req.Score, req.MaxScore)
+	classOID, err := primitive.ObjectIDFromHex(req.ClassID)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Invalid class ID", http.StatusBadRequest)
+		return
+	}
+
+	// Calculate points with safety checks
+	points := calculatePoints(req.Score, req.MaxScore, req.TimeBonus, req.StreakBonus, req.PerfectBonus)
 	now := time.Now()
 
 	meta := models.QuizResultMeta{
-		QuizID:    quizOID,
-		Score:     req.Score,
-		Points:    points,
-		Timestamp: now,
+		QuizID:             quizOID,
+		ClassID:            classOID,
+		Score:              req.Score,
+		MaxScore:           req.MaxScore,
+		Points:             points,
+		Timestamp:          now,
+		TimeTaken:          req.TimeTaken,
+		PerfectScore:       req.PerfectScore,
+		QuestionsTotal:     req.QuestionsTotal,
+		QuestionsCorrect:   req.QuestionsCorrect,
+		QuestionsIncorrect: req.QuestionsIncorrect,
+		DifficultyLevel:    req.DifficultyLevel,
+		CompletionTime:     req.CompletionTime,
+		StreakBonus:        req.StreakBonus,
+		TimeBonus:          req.TimeBonus,
+		PerfectBonus:       req.PerfectBonus,
+		QuizTitle:          req.QuizTitle,
+		QuizType:           req.QuizType,
+		AttemptNumber:      req.AttemptNumber,
+		CompletionDate:     req.CompletionDate,
+		PerformanceMetrics: models.PerformanceMetrics{
+			Accuracy:    req.PerformanceMetrics.Accuracy,
+			Speed:       req.PerformanceMetrics.Speed,
+			Consistency: req.PerformanceMetrics.Consistency,
+		},
 	}
 
 	pointsEntry := models.PointsEntry{
@@ -220,6 +295,7 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message": "Result saved",
 		"points":  points,
+		"meta":    meta,
 	})
 }
 
