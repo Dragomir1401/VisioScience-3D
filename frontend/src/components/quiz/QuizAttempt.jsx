@@ -166,25 +166,29 @@ const QuizAttempt = () => {
       // 3. Actualizează statisticile quiz-ului
       console.log('\n=== UPDATING QUIZ STATISTICS ===');
       const quizStatsPayload = {
+        quiz_id: quizId,
         score: evaluationResult.score,
         time_taken: timeTaken,
-        points: evaluationResult.points,
-        bonuses: {
-          time: evaluationResult.timeBonus,
-          perfect: evaluationResult.perfectBonus,
-          streak: evaluationResult.streakBonus
-        }
+        points: evaluationResult.points || evaluationResult.score,
+        total_attempts: 1,
+        average_score: evaluationResult.score,
+        average_points: evaluationResult.points || evaluationResult.score,
+        perfect_scores: evaluationResult.score === maxScore ? 1 : 0,
+        average_time: timeTaken,
+        top_performers: [],
+        question_stats: [],
       };
       console.log('Quiz Stats Payload:', quizStatsPayload);
 
       const quizStatsResponse = await fetch(
         `http://localhost:8000/evaluation/quiz/${quizId}/statistics`,
         {
-          method: "GET",
+          method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
+          body: JSON.stringify(quizStatsPayload),
         }
       );
 

@@ -750,6 +750,87 @@ func updateQuizStatistics(ctx context.Context, quizID primitive.ObjectID) error 
 	return err
 }
 
+// Structura pentru request-ul de actualizare a statisticilor
+type QuizStatisticsUpdateRequest struct {
+	QuizID        string                 `json:"quiz_id"`
+	TotalAttempts int                    `json:"total_attempts"`
+	AverageScore  float64                `json:"average_score"`
+	AveragePoints float64                `json:"average_points"`
+	PerfectScores int                    `json:"perfect_scores"`
+	AverageTime   float64                `json:"average_time"`
+	TopPerformers []models.TopPerformer  `json:"top_performers"`
+	QuestionStats []models.QuestionStats `json:"question_stats"`
+}
+
+// POST /evaluation/quiz/{id}/statistics
+func UpdateQuizStatistics(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	path := utils.NormalizePath(r.URL.Path)
+	defer func() {
+		metrics.EvaluationDuration.WithLabelValues(path).Observe(time.Since(start).Seconds())
+	}()
+
+	quizIDStr := mux.Vars(r)["id"]
+	quizID, err := primitive.ObjectIDFromHex(quizIDStr)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", path, "400").Inc()
+		http.Error(w, "Invalid quiz ID", http.StatusBadRequest)
+		return
+	}
+
+	var req QuizStatisticsUpdateRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", path, "400").Inc()
+		log.Printf("Error decoding quiz statistics update request for quiz %s: %v", quizIDStr, err)
+		http.Error(w, "Bad payload", http.StatusBadRequest)
+		return
+	}
+
+	log.Printf("Received quiz statistics update for quiz %s: %+v", quizIDStr, req)
+
+	// Fetch the existing quiz to update its statistics
+	var quiz models.Quiz
+	collection := helpers.Client.Database("data-feed-db").Collection("quizzes")
+	err = collection.FindOne(context.Background(), bson.M{"_id": quizID}).Decode(&quiz)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			metrics.HTTPRequestsTotal.WithLabelValues("POST", path, "404").Inc()
+			http.Error(w, "Quiz not found", http.StatusNotFound)
+			return
+		}
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", path, "500").Inc()
+		http.Error(w, "Failed to fetch quiz", http.StatusInternalServerError)
+		return
+	}
+
+	// Update the statistics fields
+	quiz.Statistics.QuizID = quizID
+	quiz.Statistics.TotalAttempts = req.TotalAttempts
+	quiz.Statistics.AverageScore = req.AverageScore
+	quiz.Statistics.AveragePoints = req.AveragePoints
+	quiz.Statistics.PerfectScores = req.PerfectScores
+	quiz.Statistics.AverageTime = req.AverageTime
+	quiz.Statistics.TopPerformers = req.TopPerformers
+	quiz.Statistics.QuestionStats = req.QuestionStats
+
+	// Save the updated quiz statistics
+	_, err = collection.UpdateOne(
+		context.Background(),
+		bson.M{"_id": quizID},
+		bson.M{"$set": bson.M{"statistics": quiz.Statistics}},
+	)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", path, "500").Inc()
+		log.Printf("Error updating quiz statistics for quiz %s: %v", quizIDStr, err)
+		http.Error(w, "Failed to update quiz statistics", http.StatusInternalServerError)
+		return
+	}
+
+	metrics.HTTPRequestsTotal.WithLabelValues("POST", path, "200").Inc()
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Quiz statistics updated successfully"})
+}
+
 // POST /quiz/submit
 func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
