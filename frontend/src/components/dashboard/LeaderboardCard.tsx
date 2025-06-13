@@ -1,108 +1,104 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   TrophyIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   SearchIcon,
 } from 'lucide-react'
-// Mock data for the leaderboard
-const leaderboardData = [
-  {
-    id: 1,
-    name: 'Emma Thompson',
-    score: 98,
-    quizzesTaken: 12,
-    avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
-  },
-  {
-    id: 2,
-    name: 'James Wilson',
-    score: 95,
-    quizzesTaken: 15,
-    avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
-  },
-  {
-    id: 3,
-    name: 'Sophia Rodriguez',
-    score: 92,
-    quizzesTaken: 14,
-    avatar: 'https://randomuser.me/api/portraits/women/68.jpg',
-  },
-  {
-    id: 4,
-    name: 'Liam Johnson',
-    score: 90,
-    quizzesTaken: 13,
-    avatar: 'https://randomuser.me/api/portraits/men/75.jpg',
-  },
-  {
-    id: 5,
-    name: 'Olivia Martinez',
-    score: 89,
-    quizzesTaken: 15,
-    avatar: 'https://randomuser.me/api/portraits/women/25.jpg',
-  },
-  {
-    id: 6,
-    name: 'Noah Garcia',
-    score: 87,
-    quizzesTaken: 11,
-    avatar: 'https://randomuser.me/api/portraits/men/42.jpg',
-  },
-  {
-    id: 7,
-    name: 'Ava Brown',
-    score: 85,
-    quizzesTaken: 14,
-    avatar: 'https://randomuser.me/api/portraits/women/33.jpg',
-  },
-  {
-    id: 8,
-    name: 'William Davis',
-    score: 83,
-    quizzesTaken: 12,
-    avatar: 'https://randomuser.me/api/portraits/men/91.jpg',
-  },
-  {
-    id: 9,
-    name: 'Isabella Smith',
-    score: 81,
-    quizzesTaken: 13,
-    avatar: 'https://randomuser.me/api/portraits/women/57.jpg',
-  },
-  {
-    id: 10,
-    name: 'Benjamin Jones',
-    score: 80,
-    quizzesTaken: 10,
-    avatar: 'https://randomuser.me/api/portraits/men/64.jpg',
-  },
-]
+
+interface LeaderboardEntry {
+  user_id: string
+  email: string
+  total_points: number
+  ranking: number
+  badges: any[]
+}
+
+interface ClassFilter {
+  id: string
+  name: string
+}
+
 export const LeaderboardCard = () => {
   const [filter, setFilter] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
-  // Mock class filters
-  const classFilters = [
-    {
-      id: 'all',
-      name: 'Toate Clasele',
-    },
-    {
-      id: 'class-a',
-      name: 'Clasa A',
-    },
-    {
-      id: 'class-b',
-      name: 'Clasa B',
-    },
-    {
-      id: 'class-c',
-      name: 'Clasa C',
-    },
-  ]
-  const filteredData = leaderboardData.filter((student) =>
-    student.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [classFilters, setClassFilters] = useState<ClassFilter[]>([
+    { id: 'all', name: 'Toate Clasele' },
+  ]) // Initial state includes 'Toate Clasele'
+  const token = localStorage.getItem('token')
+
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/user/classes', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        const data: any[] = await response.json()
+        const fetchedClasses: ClassFilter[] = data.map((cls) => ({
+          id: cls.id,
+          name: cls.name,
+        }))
+        setClassFilters((prev) => [{ id: 'all', name: 'Toate Clasele' }, ...fetchedClasses])
+      } catch (e: any) {
+        console.error('Failed to fetch classes:', e)
+        // Optionally, set an error state for classes as well
+      }
+    }
+    fetchClasses()
+  }, [token])
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      setLoading(true)
+      setError(null)
+      try {
+        const url = `http://localhost:8000/user/leaderboard${
+          filter !== 'all' ? `?class_id=${filter}` : ''
+        }`
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        const data: LeaderboardEntry[] = await response.json()
+        setLeaderboard(data || []) // Ensure data is an array
+      } catch (e: any) {
+        setError(e.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchLeaderboard()
+  }, [filter, token])
+
+  const filteredData = leaderboard.filter((entry) =>
+    entry.email.toLowerCase().includes(searchQuery.toLowerCase()),
   )
+
+  if (loading) {
+    return <p className="pt-24 text-center text-mulberry">Se încarcă clasamentul...</p>
+  }
+
+  if (error) {
+    return <p className="pt-24 text-center text-red-600">Eroare la încărcarea clasamentului: {error}</p>
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -149,63 +145,49 @@ export const LeaderboardCard = () => {
                 STUDENT
               </th>
               <th className="px-20 py-3 text-left text-sm font-medium text-[#888888]">
-                SCOR
-              </th>
-              <th className="px-1 py-3 text-left text-sm font-medium text-[#888888]">
-                QUIZ-URI REZOLVATE
+                PUNCTE TOTALE
               </th>
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((student, index) => (
+            {filteredData.map((entry) => (
               <tr
-                key={student.id}
+                key={entry.user_id}
                 className="border-b border-gray-100 hover:bg-[#f3e8ff]"
               >
                 <td className="px-5 py-4">
                   <div className="flex items-center justify-center w-8 h-8 rounded-full bg-opacity-20 font-semibold text-sm">
-                    {index === 0 ? (
+                    {entry.ranking === 1 ? (
                       <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
                         <TrophyIcon size={14} className="text-yellow-500" />
                       </div>
-                    ) : index === 1 ? (
+                    ) : entry.ranking === 2 ? (
                       <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
                         <TrophyIcon size={14} className="text-gray-500" />
                       </div>
-                    ) : index === 2 ? (
+                    ) : entry.ranking === 3 ? (
                       <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
                         <TrophyIcon size={14} className="text-amber-600" />
                       </div>
                     ) : (
-                      <span className="text-[#888888]">{index + 1}</span>
+                      <span className="text-[#888888]">{entry.ranking}</span>
                     )}
                   </div>
                 </td>
                 <td className="px-20 py-4">
                   <div className="flex items-center">
                     <img
-                      src={student.avatar}
-                      alt={student.name}
+                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(entry.email)}&background=random`}
+                      alt={entry.email}
                       className="w-9 h-9 rounded-full mr-3"
                     />
-                    <span className="font-medium">{student.name}</span>
+                    <span className="font-medium">{entry.email}</span>
                   </div>
                 </td>
                 <td className="px-2 py-4">
-                  <div className="flex items-center">
-                    <div className="w-full max-w-[100px] bg-gray-100 rounded-full h-2.5">
-                      <div
-                        className="bg-[#4f46e5] h-2.5 rounded-full"
-                        style={{
-                          width: `${student.score}%`,
-                        }}
-                      ></div>
-                    </div>
-                    <span className="ml-3 font-semibold">{student.score}%</span>
-                  </div>
-                </td>
-                <td className="px-10 py-4 text-[#888888]">
-                  {student.quizzesTaken}
+                  <span className="ml-3 font-semibold">
+                    {entry.total_points}
+                  </span>
                 </td>
               </tr>
             ))}
