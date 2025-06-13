@@ -22,67 +22,67 @@ import {
 const quizList = [
   {
     id: 1,
-    name: 'Introduction to Biology',
+    name: 'Introducere în Biologie',
     completed: 32,
     avg: 85,
-    difficulty: 'Medium',
+    difficulty: 'Mediu',
   },
   {
     id: 2,
-    name: 'Cell Structure',
+    name: 'Structura Celulei',
     completed: 30,
     avg: 78,
-    difficulty: 'Hard',
+    difficulty: 'Dificil',
   },
   {
     id: 3,
-    name: 'Genetics Basics',
+    name: 'Bazele Geneticii',
     completed: 28,
     avg: 82,
-    difficulty: 'Medium',
+    difficulty: 'Mediu',
   },
   {
     id: 4,
-    name: 'Evolution Theory',
+    name: 'Teoria Evoluției',
     completed: 31,
     avg: 75,
-    difficulty: 'Hard',
+    difficulty: 'Dificil',
   },
   {
     id: 5,
-    name: 'Ecology Fundamentals',
+    name: 'Fundamentele Ecologiei',
     completed: 29,
     avg: 88,
-    difficulty: 'Easy',
+    difficulty: 'Ușor',
   },
 ]
 // Mock data for quiz completion rate
 const completionRateData = [
   {
-    name: 'Completed',
+    name: 'Completate',
     value: 85,
   },
   {
-    name: 'Not Started',
+    name: 'Neîncepute',
     value: 10,
   },
   {
-    name: 'In Progress',
+    name: 'În Progres',
     value: 5,
   },
 ]
 // Mock data for difficulty distribution
 const difficultyData = [
   {
-    name: 'Easy',
+    name: 'Ușor',
     count: 12,
   },
   {
-    name: 'Medium',
+    name: 'Mediu',
     count: 25,
   },
   {
-    name: 'Hard',
+    name: 'Dificil',
     count: 18,
   },
 ]
@@ -90,32 +90,32 @@ const difficultyData = [
 const challengingQuestions = [
   {
     id: 1,
-    quiz: 'Cell Structure',
-    question: 'Explain the function of mitochondria in cellular respiration',
+    quiz: 'Structura Celulei',
+    question: 'Explicați funcția mitocondriilor în respirația celulară',
     incorrectRate: 65,
   },
   {
     id: 2,
-    quiz: 'Evolution Theory',
-    question: 'Describe the concept of natural selection',
+    quiz: 'Teoria Evoluției',
+    question: 'Descrieți conceptul de selecție naturală',
     incorrectRate: 58,
   },
   {
     id: 3,
-    quiz: 'Genetics Basics',
-    question: "Explain Mendel's Law of Independent Assortment",
+    quiz: 'Bazele Geneticii',
+    question: 'Explicați Legea Segregării Independente a lui Mendel',
     incorrectRate: 52,
   },
   {
     id: 4,
-    quiz: 'Cell Structure',
-    question: 'Describe the structure and function of the Golgi apparatus',
+    quiz: 'Structura Celulei',
+    question: 'Descrieți structura și funcția aparatului Golgi',
     incorrectRate: 48,
   },
   {
     id: 5,
-    quiz: 'Evolution Theory',
-    question: 'Compare and contrast homologous and analogous structures',
+    quiz: 'Teoria Evoluției',
+    question: 'Comparați și contrastați structurile omoloage și analoage',
     incorrectRate: 45,
   },
 ]
@@ -127,7 +127,7 @@ export const QuizStatsCard = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <BarChart2Icon size={24} className="text-[#4f46e5]" />
-          <h2 className="text-2xl font-bold text-[#690375]">Quiz Statistics</h2>
+          <h2 className="text-2xl font-bold text-[#690375]">Statistici Quiz</h2>
         </div>
         <div className="flex gap-4">
           <select
@@ -135,7 +135,7 @@ export const QuizStatsCard = () => {
             value={selectedQuiz}
             onChange={(e) => setSelectedQuiz(e.target.value)}
           >
-            <option value="all">All Quizzes</option>
+            <option value="all">Toate Quiz-urile</option>
             {quizList.map((quiz) => (
               <option key={quiz.id} value={quiz.id}>
                 {quiz.name}
@@ -148,7 +148,7 @@ export const QuizStatsCard = () => {
         <div className="bg-white p-4 rounded-xl border border-gray-100">
           <h3 className="font-semibold mb-4 flex items-center gap-2">
             <ClipboardListIcon size={18} className="text-[#4f46e5]" />
-            <span>Quiz Completion Rate</span>
+            <span>Rata de Completare a Quiz-urilor</span>
           </h3>
           <div className="h-48 flex justify-center">
             <ResponsiveContainer width="100%" height="100%">
@@ -180,7 +180,7 @@ export const QuizStatsCard = () => {
         <div className="bg-white p-4 rounded-xl border border-gray-100">
           <h3 className="font-semibold mb-4 flex items-center gap-2">
             <BarChart2Icon size={18} className="text-[#4f46e5]" />
-            <span>Quiz Difficulty Distribution</span>
+            <span>Distribuția Dificultății Quiz-urilor</span>
           </h3>
           <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
@@ -205,7 +205,7 @@ export const QuizStatsCard = () => {
         <div className="bg-white p-4 rounded-xl border border-gray-100">
           <h3 className="font-semibold mb-4 flex items-center gap-2">
             <CheckCircleIcon size={18} className="text-[#4f46e5]" />
-            <span>Average Quiz Scores</span>
+            <span>Scoruri Medii Quiz-uri</span>
           </h3>
           <div className="space-y-4">
             {quizList.map((quiz) => (
@@ -232,7 +232,7 @@ export const QuizStatsCard = () => {
       <div className="bg-white p-4 rounded-xl border border-gray-100">
         <h3 className="font-semibold mb-4 flex items-center gap-2">
           <AlertCircleIcon size={18} className="text-[#AE847E]" />
-          <span>Most Challenging Questions</span>
+          <span>Cele Mai Dificile Întrebări</span>
         </h3>
         <div className="overflow-x-auto">
           <table className="min-w-full">
@@ -242,10 +242,10 @@ export const QuizStatsCard = () => {
                   QUIZ
                 </th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-[#888888]">
-                  QUESTION
+                  ÎNTREBARE
                 </th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-[#888888]">
-                  INCORRECT RATE
+                  RATĂ GREȘELI
                 </th>
               </tr>
             </thead>

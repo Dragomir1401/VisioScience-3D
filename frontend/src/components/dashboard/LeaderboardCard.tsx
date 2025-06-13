@@ -85,19 +85,19 @@ export const LeaderboardCard = () => {
   const classFilters = [
     {
       id: 'all',
-      name: 'All Classes',
+      name: 'Toate Clasele',
     },
     {
       id: 'class-a',
-      name: 'Class A',
+      name: 'Clasa A',
     },
     {
       id: 'class-b',
-      name: 'Class B',
+      name: 'Clasa B',
     },
     {
       id: 'class-c',
-      name: 'Class C',
+      name: 'Clasa C',
     },
   ]
   const filteredData = leaderboardData.filter((student) =>
@@ -109,7 +109,7 @@ export const LeaderboardCard = () => {
         <div className="flex items-center gap-4">
           <TrophyIcon size={24} className="text-[#4f46e5]" />
           <h2 className="text-2xl font-bold text-[#690375]">
-            Student Leaderboard
+            Clasament Studenți
           </h2>
         </div>
         <div className="flex gap-10 px-20">
@@ -119,7 +119,7 @@ export const LeaderboardCard = () => {
             </div>
             <input
               type="text"
-              placeholder="Search student..."
+              placeholder="Căutați student..."
               className="pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#4f46e5] focus:border-transparent"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -143,16 +143,16 @@ export const LeaderboardCard = () => {
           <thead>
             <tr className="border-b border-gray-200">
               <th className="px-5 py-3 text-left text-sm font-medium text-[#888888]">
-                RANK
+                CLASAMENT
               </th>
               <th className="px-20 py-3 text-left text-sm font-medium text-[#888888]">
                 STUDENT
               </th>
               <th className="px-20 py-3 text-left text-sm font-medium text-[#888888]">
-                SCORE
+                SCOR
               </th>
               <th className="px-1 py-3 text-left text-sm font-medium text-[#888888]">
-                QUIZZES TAKEN
+                QUIZ-URI REZOLVATE
               </th>
             </tr>
           </thead>

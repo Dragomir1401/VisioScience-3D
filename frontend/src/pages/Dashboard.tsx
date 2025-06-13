@@ -26,22 +26,11 @@ export const Dashboard = () => {
     <DashboardLayout>
       <div className="p-6">
         <div className="flex flex-col gap-6">
-          <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-[#690375]">
-              Professor Dashboard
-            </h1>
-            <div className="flex items-center gap-2">
-              <span className="text-[#888888]">Welcome, Prof. Johnson</span>
-              <div className="w-10 h-10 rounded-full bg-[#AE847E] flex items-center justify-center text-white">
-                PJ
-              </div>
-            </div>
-          </div>
           <MetricsSelector
             activeMetric={selectedMetric}
             onMetricChange={setSelectedMetric}
           />
-          <div className="bg-white rounded-xl shadow-md p-6">
+          <div className="bg-white rounded-xl shadow-md p-12">
             {renderMetricContent()}
           </div>
         </div>

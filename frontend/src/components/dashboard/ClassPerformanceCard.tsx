@@ -14,7 +14,7 @@ import {
 const classPerformanceData = [
   {
     id: 'class-a',
-    name: 'Class A',
+    name: 'Clasa A',
     avgScore: 85,
     totalStudents: 32,
     quizzesTaken: 256,
@@ -22,7 +22,7 @@ const classPerformanceData = [
   },
   {
     id: 'class-b',
-    name: 'Class B',
+    name: 'Clasa B',
     avgScore: 78,
     totalStudents: 28,
     quizzesTaken: 224,
@@ -30,7 +30,7 @@ const classPerformanceData = [
   },
   {
     id: 'class-c',
-    name: 'Class C',
+    name: 'Clasa C',
     avgScore: 92,
     totalStudents: 25,
     quizzesTaken: 200,
@@ -38,7 +38,7 @@ const classPerformanceData = [
   },
   {
     id: 'class-d',
-    name: 'Class D',
+    name: 'Clasa D',
     avgScore: 71,
     totalStudents: 30,
     quizzesTaken: 240,
@@ -49,31 +49,31 @@ const classPerformanceData = [
 const quizScoresByClass = [
   {
     name: 'Quiz 1',
-    'Class A': 75,
-    'Class B': 65,
-    'Class C': 85,
-    'Class D': 68,
+    'Clasa A': 75,
+    'Clasa B': 65,
+    'Clasa C': 85,
+    'Clasa D': 68,
   },
   {
     name: 'Quiz 2',
-    'Class A': 79,
-    'Class B': 70,
-    'Class C': 88,
-    'Class D': 72,
+    'Clasa A': 79,
+    'Clasa B': 70,
+    'Clasa C': 88,
+    'Clasa D': 72,
   },
   {
     name: 'Quiz 3',
-    'Class A': 82,
-    'Class B': 74,
-    'Class C': 90,
-    'Class D': 75,
+    'Clasa A': 82,
+    'Clasa B': 74,
+    'Clasa C': 90,
+    'Clasa D': 75,
   },
   {
     name: 'Quiz 4',
-    'Class A': 85,
-    'Class B': 78,
-    'Class C': 92,
-    'Class D': 71,
+    'Clasa A': 85,
+    'Clasa B': 78,
+    'Clasa C': 92,
+    'Clasa D': 71,
   },
 ]
 export const ClassPerformanceCard = () => {
@@ -84,7 +84,7 @@ export const ClassPerformanceCard = () => {
         <div className="flex items-center gap-3">
           <UsersIcon size={28} className="text-[#4f46e5]" />
           <h2 className="text-3xl font-bold text-[#690375]">
-            Class Performance
+            Performanța Clasei
           </h2>
         </div>
         <div className="flex gap-4">
@@ -93,7 +93,7 @@ export const ClassPerformanceCard = () => {
             value={selectedClass}
             onChange={(e) => setSelectedClass(e.target.value)}
           >
-            <option value="all">All Classes</option>
+            <option value="all">Toate Clasele</option>
             {classPerformanceData.map((classData) => (
               <option key={classData.id} value={classData.id}>
                 {classData.name}
@@ -116,7 +116,7 @@ export const ClassPerformanceCard = () => {
               <div>
                 <h3 className="font-semibold text-xl">{classData.name}</h3>
                 <p className="text-[#888888] text-base">
-                  {classData.totalStudents} students
+                  {classData.totalStudents} studenți
                 </p>
               </div>
               <div className="bg-[#f3e8ff] text-[#690375] font-medium px-3 py-1.5 rounded-md text-base">
@@ -125,7 +125,7 @@ export const ClassPerformanceCard = () => {
             </div>
             <div className="mt-6">
               <div className="flex justify-between text-base mb-2">
-                <span className="text-[#888888]">Average Score</span>
+                <span className="text-[#888888]">Scor Mediu</span>
                 <span className="font-semibold">{classData.avgScore}%</span>
               </div>
               <div className="w-full bg-gray-100 rounded-full h-3">
@@ -143,7 +143,7 @@ export const ClassPerformanceCard = () => {
       <div className="bg-white p-6 rounded-xl border border-gray-100">
         <div className="flex items-center gap-3 mb-6">
           <BarChart2Icon size={24} className="text-[#4f46e5]" />
-          <h3 className="font-semibold text-xl">Quiz Performance by Class</h3>
+          <h3 className="font-semibold text-xl">Performanța Quiz-urilor pe Clasă</h3>
         </div>
         <div className="h-[500px]">
           <ResponsiveContainer width="100%" height="100%">
@@ -161,10 +161,10 @@ export const ClassPerformanceCard = () => {
               <YAxis domain={[0, 100]} />
               <Tooltip />
               <Legend />
-              <Bar dataKey="Class A" fill="#4f46e5" />
-              <Bar dataKey="Class B" fill="#AE847E" />
-              <Bar dataKey="Class C" fill="#690375" />
-              <Bar dataKey="Class D" fill="#888888" />
+              <Bar dataKey="Clasa A" fill="#4f46e5" />
+              <Bar dataKey="Clasa B" fill="#AE847E" />
+              <Bar dataKey="Clasa C" fill="#690375" />
+              <Bar dataKey="Clasa D" fill="#888888" />
             </BarChart>
           </ResponsiveContainer>
         </div>

@@ -14,22 +14,22 @@ interface MetricsSelectorProps {
 const metrics = [
   {
     id: 'leaderboard',
-    label: 'Leaderboard',
+    label: 'Clasament',
     icon: <TrophyIcon size={18} />,
   },
   {
     id: 'classPerformance',
-    label: 'Class Performance',
+    label: 'Performanța clasei',
     icon: <UsersIcon size={18} />,
   },
   {
     id: 'improvements',
-    label: 'Improvements',
+    label: 'Îmbunătățiri',
     icon: <TrendingUpIcon size={18} />,
   },
   {
     id: 'quizStats',
-    label: 'Quiz Statistics',
+    label: 'Statistici Quizuri',
     icon: <BarChart2Icon size={18} />,
   },
 ];

@@ -13,49 +13,49 @@ import {
 // Mock data for improvement trends
 const improvementData = [
   {
-    name: 'Week 1',
+    name: 'Săptămâna 1',
     average: 65,
     topPerformer: 82,
     lowestPerformer: 45,
   },
   {
-    name: 'Week 2',
+    name: 'Săptămâna 2',
     average: 68,
     topPerformer: 85,
     lowestPerformer: 48,
   },
   {
-    name: 'Week 3',
+    name: 'Săptămâna 3',
     average: 70,
     topPerformer: 88,
     lowestPerformer: 52,
   },
   {
-    name: 'Week 4',
+    name: 'Săptămâna 4',
     average: 72,
     topPerformer: 90,
     lowestPerformer: 55,
   },
   {
-    name: 'Week 5',
+    name: 'Săptămâna 5',
     average: 75,
     topPerformer: 92,
     lowestPerformer: 58,
   },
   {
-    name: 'Week 6',
+    name: 'Săptămâna 6',
     average: 77,
     topPerformer: 94,
     lowestPerformer: 62,
   },
   {
-    name: 'Week 7',
+    name: 'Săptămâna 7',
     average: 80,
     topPerformer: 96,
     lowestPerformer: 65,
   },
   {
-    name: 'Week 8',
+    name: 'Săptămâna 8',
     average: 82,
     topPerformer: 98,
     lowestPerformer: 68,
@@ -116,33 +116,33 @@ export const ImprovementCard = () => {
         <div className="flex items-center gap-2">
           <TrendingUpIcon size={24} className="text-[#4f46e5]" />
           <h2 className="text-2xl font-bold text-[#690375]">
-            Student Improvements
+            Îmbunătățiri Studenți
           </h2>
         </div>
         <div className="flex gap-4 items-center">
           <div className="flex items-center gap-1 text-[#888888]">
             <CalendarIcon size={16} />
-            <span>Time Range:</span>
+            <span>Interval de Timp:</span>
           </div>
           <select
             className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#4f46e5]"
             value={timeRange}
             onChange={(e) => setTimeRange(e.target.value)}
           >
-            <option value="4-weeks">Last 4 Weeks</option>
-            <option value="8-weeks">Last 8 Weeks</option>
-            <option value="12-weeks">Last 12 Weeks</option>
-            <option value="semester">Full Semester</option>
+            <option value="4-weeks">Ultimele 4 Săptămâni</option>
+            <option value="8-weeks">Ultimele 8 Săptămâni</option>
+            <option value="12-weeks">Ultimele 12 Săptămâni</option>
+            <option value="semester">Semestru Întreg</option>
           </select>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-white p-4 rounded-xl border border-gray-100 col-span-3 md:col-span-1">
-          <h3 className="font-semibold mb-4">Overall Performance</h3>
+          <h3 className="font-semibold mb-4">Performanță Generală</h3>
           <div className="space-y-6">
             <div>
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-[#888888]">Class Average</span>
+                <span className="text-[#888888]">Media Clasei</span>
                 <div className="flex items-center">
                   <span className="font-semibold">{currentAvg}%</span>
                   <span className="ml-1 text-green-500 text-xs">
@@ -161,7 +161,7 @@ export const ImprovementCard = () => {
             </div>
             <div>
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-[#888888]">Top Performer</span>
+                <span className="text-[#888888]">Cel Mai Bun Performant</span>
                 <div className="flex items-center">
                   <span className="font-semibold">
                     {improvementData[improvementData.length - 1].topPerformer}%
@@ -179,7 +179,7 @@ export const ImprovementCard = () => {
             </div>
             <div>
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-[#888888]">Lowest Performer</span>
+                <span className="text-[#888888]">Cel Mai Slab Performant</span>
                 <div className="flex items-center">
                   <span className="font-semibold">
                     {
@@ -202,7 +202,7 @@ export const ImprovementCard = () => {
           </div>
         </div>
         <div className="bg-white p-4 rounded-xl border border-gray-100 col-span-3 md:col-span-2">
-          <h3 className="font-semibold mb-4">Performance Trends</h3>
+          <h3 className="font-semibold mb-4">Tendințe Performanță</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
@@ -224,21 +224,21 @@ export const ImprovementCard = () => {
                   dataKey="average"
                   stroke="#4f46e5"
                   strokeWidth={2}
-                  name="Class Average"
+                  name="Media Clasei"
                 />
                 <Line
                   type="monotone"
                   dataKey="topPerformer"
                   stroke="#690375"
                   strokeWidth={2}
-                  name="Top Performer"
+                  name="Cel Mai Bun Performant"
                 />
                 <Line
                   type="monotone"
                   dataKey="lowestPerformer"
                   stroke="#AE847E"
                   strokeWidth={2}
-                  name="Lowest Performer"
+                  name="Cel Mai Slab Performant"
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -246,7 +246,7 @@ export const ImprovementCard = () => {
         </div>
       </div>
       <div className="bg-white p-4 rounded-xl border border-gray-100">
-        <h3 className="font-semibold mb-4">Most Improved Students</h3>
+        <h3 className="font-semibold mb-4">Studenți cu cea Mai Mare Îmbunătățire</h3>
         <div className="overflow-x-auto">
           <table className="min-w-full">
             <thead>
@@ -255,13 +255,13 @@ export const ImprovementCard = () => {
                   STUDENT
                 </th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-[#888888]">
-                  INITIAL SCORE
+                  SCOR INIȚIAL
                 </th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-[#888888]">
-                  CURRENT SCORE
+                  SCOR CURENT
                 </th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-[#888888]">
-                  IMPROVEMENT
+                  ÎMBUNĂTĂȚIRE
                 </th>
               </tr>
             </thead>

@@ -51,7 +51,7 @@ export const DashboardLayout = ({ children }) => {
         </div>
       </div>
       {/* Main Content */}
-      <div className="flex-1 bg-[#fdf4ff] overflow-y-auto">{children}</div>
+      <div className="flex-1 bg-[#fdf4ff] overflow-y-auto pt-20">{children}</div>
     </div>
   )
 }
