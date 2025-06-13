@@ -42,6 +42,10 @@ const StudentQuizDetails = ({ classId }) => {
                 };
               }
             } catch {}
+
+            // Calculate maxPoints by summing points of all questions
+            const calculatedMaxPoints = (q.questions || []).reduce((sum, question) => sum + (question.points || 0), 0);
+
             return {
               id: q.id,
               title: q.title,
@@ -49,7 +53,7 @@ const StudentQuizDetails = ({ classId }) => {
               is_open: q.is_open,
               difficulty: q.difficulty || "medium",
               category: q.category || "general",
-              maxPoints: q.max_points || 10
+              maxPoints: calculatedMaxPoints // Use calculated max points
             };
           })
         );

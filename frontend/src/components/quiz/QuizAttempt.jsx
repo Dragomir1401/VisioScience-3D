@@ -47,6 +47,8 @@ const QuizAttempt = () => {
           classId: raw.class_id
         });
         console.log('Quiz state after setting:', quiz);
+        console.log('Processed questions for quiz:', questions);
+
         setAnswers(Array(questions.length).fill(null));
         setStage("ready");
       } catch (e) {

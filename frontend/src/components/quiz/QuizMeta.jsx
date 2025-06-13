@@ -5,6 +5,8 @@ const QuizMeta = () => {
   const { quizId } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
+  const userRole = localStorage.getItem("userRole");
 
   const [meta, setMeta] = useState({
     id: "",
@@ -108,12 +110,16 @@ const QuizMeta = () => {
           </p>
           <p>
             <span className="font-semibold">ID Clasă:</span>{" "}
-            <Link
-              to={`/classes/${meta.class_id}`}
-              className="text-purple-700 hover:underline"
-            >
-              {meta.class_id}
-            </Link>
+            {userRole === "PROFESOR" ? (
+              <Link
+                to={`/classes/${meta.class_id}`}
+                className="text-purple-700 hover:underline"
+              >
+                {meta.class_id}
+              </Link>
+            ) : (
+              <span className="text-gray-700">{meta.class_id}</span>
+            )}
           </p>
           <p>
             <span className="font-semibold">Întrebări:</span> {meta.questions}

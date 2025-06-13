@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"time"
 
@@ -254,10 +255,9 @@ func AddStudentToClass(w http.ResponseWriter, r *http.Request) {
 	classOperations.WithLabelValues("add_student", "success").Inc()
 	classStudents.WithLabelValues(class.ID.Hex()).Inc()
 
+	metrics.HTTPRequestsTotal.WithLabelValues("PUT", utils.NormalizePath(r.URL.Path), "200").Inc()
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{
-		"message": "Student adăugat cu succes în clasă.",
-	})
+	json.NewEncoder(w).Encode(map[string]string{"message": "Student added to class"})
 }
 
 func GetClassStudents(w http.ResponseWriter, r *http.Request) {
@@ -351,6 +351,118 @@ func RemoveStudentFromClass(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Student removed"})
+}
+
+// Structura pentru răspunsul de performanță a clasei
+type ClassPerformanceSummary struct {
+	ClassID       primitive.ObjectID `json:"class_id"`
+	ClassName     string             `json:"class_name"`
+	AverageScore  float64            `json:"average_score"`
+	TotalStudents int                `json:"total_students"`
+	QuizzesTaken  int                `json:"quizzes_taken"`
+	Improvement   string             `json:"improvement"` // Placeholder, needs actual calculation logic
+}
+
+// GET /user/classes/performance
+func GetClassPerformance(w http.ResponseWriter, r *http.Request) {
+	path := utils.NormalizePath(r.URL.Path)
+	defer func() {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", path, "200").Inc()
+	}()
+
+	claims := r.Context().Value("claims").(*utils.CustomClaims)
+	if claims.Role != string(models.RoleTeacher) && claims.Role != string(models.RoleAdmin) {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", path, "403").Inc()
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Get all classes
+	cursor, err := db.ClassCollection.Find(ctx, bson.M{})
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", path, "500").Inc()
+		http.Error(w, "Failed to fetch classes", http.StatusInternalServerError)
+		return
+	}
+	defer cursor.Close(ctx)
+
+	var classes []models.Class
+	if err := cursor.All(ctx, &classes); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", path, "500").Inc()
+		http.Error(w, "Failed to decode classes", http.StatusInternalServerError)
+		return
+	}
+
+	var performanceData []ClassPerformanceSummary
+
+	for _, class := range classes {
+		// Get students for the current class
+		studentCursor, err := db.UserCollection.Find(ctx, bson.M{"_id": bson.M{"$in": class.Students}})
+		if err != nil {
+			log.Printf("Error fetching students for class %s: %v", class.Name, err)
+			continue
+		}
+		var students []models.User
+		if err := studentCursor.All(ctx, &students); err != nil {
+			log.Printf("Error decoding students for class %s: %v", class.Name, err)
+			studentCursor.Close(ctx)
+			continue
+		}
+		studentCursor.Close(ctx)
+
+		totalScore := 0
+		totalMaxPossibleScore := 0 // Added to sum up max possible scores
+		totalQuizzesTaken := 0
+		totalStudents := len(students)
+
+		log.Printf("--- Class: %s (ID: %s) ---", class.Name, class.ID.Hex())
+		log.Printf("Total students in class: %d", totalStudents)
+
+		for _, student := range students {
+			studentQuizzesTaken := 0
+			studentCurrentScore := 0
+			studentCurrentMaxScore := 0 // Added to track student's max score for quizzes taken
+			for _, qr := range student.QuizResults {
+				if qr.MaxScore > 0 { // Only include results with a valid MaxScore
+					studentQuizzesTaken++
+					studentCurrentScore += qr.Score
+					studentCurrentMaxScore += qr.MaxScore
+				} else {
+					log.Printf("  Skipping quiz result %s for student %s due to MaxScore being 0.", qr.QuizID.Hex(), student.Email)
+				}
+			}
+			totalScore += studentCurrentScore
+			totalMaxPossibleScore += studentCurrentMaxScore // Accumulate total max possible score
+
+			log.Printf("  Student %s (ID: %s): Quizzes with valid MaxScore: %d, Total score for valid quizzes: %d, Total max score for valid quizzes: %d", student.Email, student.ID.Hex(), studentQuizzesTaken, studentCurrentScore, studentCurrentMaxScore)
+		}
+
+		log.Printf("Total actual score for class before average (from valid quizzes): %d", totalScore)
+		log.Printf("Total max possible score for class before average (from valid quizzes): %d", totalMaxPossibleScore)
+		log.Printf("Total quizzes with valid MaxScore for class before average: %d", totalQuizzesTaken)
+
+		avgScore := 0.0
+		if totalMaxPossibleScore > 0 {
+			avgScore = float64(totalScore) / float64(totalMaxPossibleScore) * 100 // Corrected calculation
+		}
+
+		log.Printf("Calculated average score for class %s: %.2f%%", class.Name, avgScore)
+
+		performanceData = append(performanceData, ClassPerformanceSummary{
+			ClassID:       class.ID,
+			ClassName:     class.Name,
+			AverageScore:  avgScore,
+			TotalStudents: totalStudents,
+			QuizzesTaken:  totalQuizzesTaken,
+			Improvement:   "N/A", // Placeholder
+		})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(performanceData)
 }
 
 // GET /user/classes/{classId}/quiz/{quizId}/results

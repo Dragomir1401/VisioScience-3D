@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 	"time"
 
@@ -281,6 +282,21 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
 		http.Error(w, "DB error: "+err.Error(), http.StatusInternalServerError)
 		return
+	}
+
+	// Fetch the updated user document to inspect the saved quiz result
+	var updatedUser models.User
+	err = db.UserCollection.FindOne(ctx, bson.M{"_id": userOID}).Decode(&updatedUser)
+	if err != nil {
+		log.Printf("Error fetching updated user for logging: %v", err)
+	} else {
+		// Find the newly added quiz result
+		for _, qr := range updatedUser.QuizResults {
+			if qr.QuizID == quizOID && qr.Timestamp.Equal(now) { // Assuming timestamp is unique enough for this log
+				log.Printf("Successfully saved QuizResultMeta with MaxScore: %d for QuizID: %s", qr.MaxScore, qr.QuizID.Hex())
+				break
+			}
+		}
 	}
 
 	// Update rankings

@@ -144,7 +144,7 @@ export const LeaderboardCard = () => {
               <th className="px-20 py-3 text-left text-sm font-medium text-[#888888]">
                 STUDENT
               </th>
-              <th className="px-20 py-3 text-left text-sm font-medium text-[#888888]">
+              <th className=" py-3 text-left text-sm font-medium text-[#888888]">
                 PUNCTE TOTALE
               </th>
             </tr>

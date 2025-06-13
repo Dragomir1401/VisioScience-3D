@@ -100,6 +100,9 @@ func main() {
 	r.Handle("/user/classes/{classId}/quiz/{quizId}/results", middleware.JWTAuth(http.HandlerFunc(handlers.GetClassQuizResults))).Methods("GET")
 	r.Handle("/user/classes/{id}", middleware.JWTAuth(http.HandlerFunc(handlers.DeleteClass))).Methods("DELETE")
 
+	// GET /user/classes/performance
+	r.Handle("/user/classes/performance", middleware.JWTAuth(http.HandlerFunc(handlers.GetClassPerformance))).Methods("GET")
+
 	// GET /user/leaderboard
 	r.Handle("/user/leaderboard", middleware.JWTAuth(http.HandlerFunc(handlers.GetLeaderboard))).Methods("GET")
 

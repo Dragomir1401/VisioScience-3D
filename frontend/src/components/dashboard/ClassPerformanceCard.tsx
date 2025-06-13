@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { UsersIcon, ChevronDownIcon, BarChart2Icon } from 'lucide-react'
 import {
   BarChart,
@@ -10,74 +10,110 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts'
-// Mock data for class performance
-const classPerformanceData = [
-  {
-    id: 'class-a',
-    name: 'Clasa A',
-    avgScore: 85,
-    totalStudents: 32,
-    quizzesTaken: 256,
-    improvement: '+5%',
-  },
-  {
-    id: 'class-b',
-    name: 'Clasa B',
-    avgScore: 78,
-    totalStudents: 28,
-    quizzesTaken: 224,
-    improvement: '+3%',
-  },
-  {
-    id: 'class-c',
-    name: 'Clasa C',
-    avgScore: 92,
-    totalStudents: 25,
-    quizzesTaken: 200,
-    improvement: '+8%',
-  },
-  {
-    id: 'class-d',
-    name: 'Clasa D',
-    avgScore: 71,
-    totalStudents: 30,
-    quizzesTaken: 240,
-    improvement: '+2%',
-  },
-]
-// Mock data for charts
-const quizScoresByClass = [
-  {
-    name: 'Quiz 1',
-    'Clasa A': 75,
-    'Clasa B': 65,
-    'Clasa C': 85,
-    'Clasa D': 68,
-  },
-  {
-    name: 'Quiz 2',
-    'Clasa A': 79,
-    'Clasa B': 70,
-    'Clasa C': 88,
-    'Clasa D': 72,
-  },
-  {
-    name: 'Quiz 3',
-    'Clasa A': 82,
-    'Clasa B': 74,
-    'Clasa C': 90,
-    'Clasa D': 75,
-  },
-  {
-    name: 'Quiz 4',
-    'Clasa A': 85,
-    'Clasa B': 78,
-    'Clasa C': 92,
-    'Clasa D': 71,
-  },
-]
+
+interface ClassPerformanceSummary {
+  class_id: string
+  class_name: string
+  average_score: number
+  total_students: number
+  quizzes_taken: number
+  improvement: string
+}
+
+interface ClassFilter {
+  id: string
+  name: string
+}
+
 export const ClassPerformanceCard = () => {
   const [selectedClass, setSelectedClass] = useState('all')
+  const [classPerformanceData, setClassPerformanceData] = useState<ClassPerformanceSummary[]>([])
+  const [classFilters, setClassFilters] = useState<ClassFilter[]>([
+    { id: 'all', name: 'Toate Clasele' },
+  ])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const token = localStorage.getItem('token')
+
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/user/classes', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        const data: any[] = await response.json()
+        const fetchedClasses: ClassFilter[] = data.map((cls: any) => ({
+          id: cls.id,
+          name: cls.name,
+        }))
+        setClassFilters((prev) => [{ id: 'all', name: 'Toate Clasele' }, ...fetchedClasses])
+      } catch (e: any) {
+        console.error('Failed to fetch classes:', e)
+      }
+    }
+    fetchClasses()
+  }, [token])
+
+  useEffect(() => {
+    const fetchClassPerformance = async () => {
+      setLoading(true)
+      setError(null)
+      try {
+        const url = `http://localhost:8000/user/classes/performance`
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        const data: ClassPerformanceSummary[] = await response.json()
+        setClassPerformanceData(data || [])
+      } catch (e: any) {
+        setError(e.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchClassPerformance()
+  }, [token])
+
+  // Filter for display based on selectedClass
+  const filteredClassPerformance = selectedClass === 'all'
+    ? classPerformanceData
+    : classPerformanceData.filter(cls => cls.class_id === selectedClass);
+
+  // Mock data for charts - this will need to be replaced with real data from a new backend endpoint
+  // For now, it will use a simplified structure based on fetched class names
+  const quizScoresByClass = filteredClassPerformance.length > 0 ? [
+    {
+      name: 'Exemplu Quiz',
+      ...filteredClassPerformance.reduce((acc, cls) => {
+        acc[cls.class_name] = cls.average_score; // Using average score as a placeholder
+        return acc;
+      }, {})
+    }
+  ] : [];
+
+  if (loading) {
+    return <p className="pt-24 text-center text-mulberry">Se încarcă performanța claselor...</p>
+  }
+
+  if (error) {
+    return <p className="pt-24 text-center text-red-600">Eroare la încărcarea performanței claselor: {error}</p>
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
@@ -93,8 +129,7 @@ export const ClassPerformanceCard = () => {
             value={selectedClass}
             onChange={(e) => setSelectedClass(e.target.value)}
           >
-            <option value="all">Toate Clasele</option>
-            {classPerformanceData.map((classData) => (
+            {classFilters.map((classData) => (
               <option key={classData.id} value={classData.id}>
                 {classData.name}
               </option>
@@ -103,20 +138,20 @@ export const ClassPerformanceCard = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {classPerformanceData.map((classData) => (
+        {filteredClassPerformance.map((classData) => (
           <div
-            key={classData.id}
+            key={classData.class_id}
             className={`bg-white p-6 rounded-xl border ${
-              selectedClass === classData.id || selectedClass === 'all'
+              selectedClass === classData.class_id || selectedClass === 'all'
                 ? 'border-[#4f46e5] shadow-md'
                 : 'border-gray-100'
             }`}
           >
             <div className="flex justify-between items-start">
               <div>
-                <h3 className="font-semibold text-xl">{classData.name}</h3>
+                <h3 className="font-semibold text-xl">{classData.class_name}</h3>
                 <p className="text-[#888888] text-base">
-                  {classData.totalStudents} studenți
+                  {classData.total_students} studenți
                 </p>
               </div>
               <div className="bg-[#f3e8ff] text-[#690375] font-medium px-3 py-1.5 rounded-md text-base">
@@ -126,13 +161,13 @@ export const ClassPerformanceCard = () => {
             <div className="mt-6">
               <div className="flex justify-between text-base mb-2">
                 <span className="text-[#888888]">Scor Mediu</span>
-                <span className="font-semibold">{classData.avgScore}%</span>
+                <span className="font-semibold">{classData.average_score.toFixed(1)}%</span>
               </div>
               <div className="w-full bg-gray-100 rounded-full h-3">
                 <div
                   className="bg-[#4f46e5] h-3 rounded-full"
                   style={{
-                    width: `${classData.avgScore}%`,
+                    width: `${classData.average_score}%`,
                   }}
                 ></div>
               </div>
@@ -161,10 +196,10 @@ export const ClassPerformanceCard = () => {
               <YAxis domain={[0, 100]} />
               <Tooltip />
               <Legend />
-              <Bar dataKey="Clasa A" fill="#4f46e5" />
-              <Bar dataKey="Clasa B" fill="#AE847E" />
-              <Bar dataKey="Clasa C" fill="#690375" />
-              <Bar dataKey="Clasa D" fill="#888888" />
+              {/* Dynamically add Bars based on available classes */}
+              {Object.keys(quizScoresByClass.length > 0 ? quizScoresByClass[0] : {}).filter(key => key !== 'name').map((className, index) => (
+                <Bar key={className} dataKey={className} fill={["#4f46e5", "#AE847E", "#690375", "#888888"][index % 4]} />
+              ))}
             </BarChart>
           </ResponsiveContainer>
         </div>
