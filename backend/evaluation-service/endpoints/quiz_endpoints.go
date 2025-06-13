@@ -810,7 +810,7 @@ func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 	// Calculate score
 	score := 0
 	for i, answer := range req.Answers {
-		if i < len(quiz.Questions) && contains(quiz.Questions[i].Answer, answer) {
+		if i < len(quiz.Questions) && containsInt(quiz.Questions[i].Answer, answer) {
 			score++
 		}
 	}

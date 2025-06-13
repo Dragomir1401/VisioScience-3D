@@ -23,6 +23,7 @@ type Quiz struct {
 	QuizResults []QuizResult       `bson:"quiz_results" json:"quiz_results"`
 	CreatedAt   time.Time          `bson:"created_at" json:"created_at"`
 	IsOpen      bool               `bson:"is_open" json:"is_open"`
+	Statistics  QuizStatistics     `bson:"statistics" json:"statistics"`
 
 	// Points configuration
 	MaxPoints    int64  `bson:"max_points" json:"max_points"`       // Maximum possible points for this quiz
@@ -97,4 +98,14 @@ type QuestionStats struct {
 	CorrectCount int                `bson:"correct_count" json:"correct_count"`
 	AttemptCount int                `bson:"attempt_count" json:"attempt_count"`
 	AverageTime  float64            `bson:"average_time" json:"average_time"`
+}
+
+// UserQuizStats holds statistics for a user's performance on a specific quiz
+type UserQuizStats struct {
+	UserID             primitive.ObjectID `bson:"user_id" json:"user_id"`
+	QuizID             primitive.ObjectID `bson:"quiz_id" json:"quiz_id"`
+	TotalAttempts      int                `bson:"total_attempts" json:"total_attempts"`
+	AverageScore       float64            `bson:"average_score" json:"average_score"`
+	AverageTime        float64            `bson:"average_time" json:"average_time"`
+	ConsecutivePerfect int                `bson:"consecutive_perfect" json:"consecutive_perfect"`
 }

@@ -49,7 +49,7 @@ const StudentQuizDetails = ({ classId }) => {
               is_open: q.is_open,
               difficulty: q.difficulty || "medium",
               category: q.category || "general",
-              maxPoints: q.max_points || 0
+              maxPoints: q.max_points || 10
             };
           })
         );
@@ -95,16 +95,24 @@ const StudentQuizDetails = ({ classId }) => {
             {q.result ? (
               <div className="text-right">
                 <div className="text-green-700">
-                  Scor: {q.result.score} / {q.maxPoints}
+                  {q.result.score !== null ? (
+                    <>
+                      <div>
+                        Scor: {Math.min(q.result.score, q.maxPoints)} / {q.maxPoints}
+                      </div>
+                      {q.result.points > q.result.score && (
+                        <div className="text-xs text-green-600 space-y-0.5">
+                          {q.result.perfectScore && <span>✨ Perfect</span>}
+                          {q.result.streakBonus > 0 && <span>🔥 +{q.result.streakBonus}</span>}
+                          {q.result.timeBonus > 0 && <span>⚡ +{q.result.timeBonus}</span>}
+                          <div className="font-semibold">Total cu bonus: {q.result.points}</div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <span className="text-gray-500">În curs de evaluare</span>
+                  )}
                 </div>
-                {q.result.points > q.result.score && (
-                  <div className="text-xs text-green-600 space-y-0.5">
-                    {q.result.perfectScore && <span>✨ Perfect</span>}
-                    {q.result.streakBonus > 0 && <span>🔥 +{q.result.streakBonus}</span>}
-                    {q.result.timeBonus > 0 && <span>⚡ +{q.result.timeBonus}</span>}
-                    <div className="font-semibold">Total: {q.result.points}</div>
-                  </div>
-                )}
               </div>
             ) : (
               <span className="text-gray-400 italic">Neînceput</span>

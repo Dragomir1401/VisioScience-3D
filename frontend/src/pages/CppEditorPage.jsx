@@ -521,9 +521,9 @@ const CppEditorPage = () => {
 
   const handleMouseUp = () => {
     setIsDragging(false);
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mouseup', handleMouseUp);
-  };
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
 
   const handleHorizontalMouseDown = (e) => {
     setIsDraggingHorizontal(true);
@@ -654,12 +654,12 @@ const CppEditorPage = () => {
         const line = code.substring(0, match.index).split('\n').pop();
         if (!line.includes('(') || line.includes('{')) {
           console.log(`Found ${structure}: ${variableName}`); // Debug log
-          structures.push({
-            name: structure,
+        structures.push({
+          name: structure,
             variableName: variableName,
-            type: info.type,
+          type: info.type,
             description: `${info.description} (${variableName})`
-          });
+        });
         }
       }
     }
@@ -678,8 +678,8 @@ const CppEditorPage = () => {
       return;
     }
 
-    setSelectedStructure(structure);
-    setShowScene(true);
+      setSelectedStructure(structure);
+      setShowScene(true);
     
     const lastStep = [...executionSteps].reverse().find(step => 
       step.name === structure.variableName && step.state
@@ -963,55 +963,55 @@ const CppEditorPage = () => {
             </ExecutionSection>
 
             <IOSection>
-              <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
+            <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
                 Intrare
-              </Typography>
-              <StyledTextField
-                multiline
-                rows={4}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                variant="outlined"
-                fullWidth
-              />
+            </Typography>
+            <StyledTextField
+              multiline
+              rows={4}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              variant="outlined"
+              fullWidth
+            />
 
-              <OutputSection sx={{ height: `${outputHeight}px` }}>
-                <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
+            <OutputSection sx={{ height: `${outputHeight}px` }}>
+              <Typography variant="subtitle1" gutterBottom sx={{ color: '#9B6B9E' }}>
                   Ieșire
-                </Typography>
-                <StyledPaper
-                  variant="outlined"
-                  sx={{
-                    p: 2,
-                    flex: 1,
-                    fontFamily: 'monospace',
-                    whiteSpace: 'pre-wrap',
-                    overflow: 'auto',
-                  }}
-                >
-                  {error ? (
-                    <Alert severity="error" sx={{ mb: 1 }}>
-                      {error}
-                    </Alert>
-                  ) : null}
-                  {output}
-                </StyledPaper>
-              </OutputSection>
+              </Typography>
+              <StyledPaper
+                variant="outlined"
+                sx={{
+                  p: 2,
+                  flex: 1,
+                  fontFamily: 'monospace',
+                  whiteSpace: 'pre-wrap',
+                  overflow: 'auto',
+                }}
+              >
+                {error ? (
+                  <Alert severity="error" sx={{ mb: 1 }}>
+                    {error}
+                  </Alert>
+                ) : null}
+                {output}
+              </StyledPaper>
+            </OutputSection>
 
-              <AnalysisSection>
+            <AnalysisSection>
                 <Box sx={{ p: 2, backgroundColor: '#9B6B9E', color: 'white' }}>
                   <Typography variant="h6">Structuri de date identificate</Typography>
                 </Box>
                 <Box sx={{ p: 2, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                   {dataStructures.map((structure, index) => (
-                    <DataStructureChip
+                                <DataStructureChip
                       key={`${structure.name}-${structure.variableName}-${index}`}
                       label={`${structure.name} (${structure.variableName})`}
-                      onClick={() => handleStructureClick(structure)}
-                      sx={{
+                                  onClick={() => handleStructureClick(structure)}
+                                  sx={{
                         backgroundColor: structure.type === 'ordered' ? '#9B6B9E' :
                                         structure.type === 'unordered' ? '#D4A5A5' :
-                                        '#C49595',
+                                                   '#C49595',
                         color: 'white',
                         '&:hover': {
                           backgroundColor: structure.type === 'ordered' ? '#8A5A8D' :
@@ -1020,11 +1020,11 @@ const CppEditorPage = () => {
                         },
                       }}
                     />
-                  ))}
-                </Box>
-              </AnalysisSection>
+                            ))}
+                          </Box>
+            </AnalysisSection>
 
-              {selectedStructure && (
+        {selectedStructure && (
                 <VisualizationSection>
                   <Box sx={{ 
                     p: 2, 
@@ -1038,8 +1038,8 @@ const CppEditorPage = () => {
                       {selectedStructure.name} ({selectedStructure.variableName}) Visualization
                     </Typography>
                     <IconButton onClick={handleCloseScene} sx={{ color: 'white' }}>
-                      <ArrowBackIcon />
-                    </IconButton>
+                <ArrowBackIcon />
+              </IconButton>
                   </Box>
                   <Box sx={{ flex: 1, p: 2, height: 'calc(100% - 64px)' }}>
                     {selectedStructure.name === 'vector' && (

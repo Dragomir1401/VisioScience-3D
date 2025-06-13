@@ -8,12 +8,12 @@ param(
 $serviceMap = @{
     "feed" = @{
         "name" = "feed-data"
-        "path" = "feed-data"
+        "path" = "feed-data-service"
         "deployment" = "feed-data"
     }
     "user" = @{
         "name" = "user-data"
-        "path" = "user-data"
+        "path" = "user-data-service"
         "deployment" = "user-data"
     }
     "cpp" = @{
