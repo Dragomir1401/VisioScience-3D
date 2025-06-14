@@ -118,6 +118,7 @@ func main() {
 	// Quiz routes
 	r.Handle("/user/quiz/statistics", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizStatistics))).Methods("GET")
 	r.Handle("/user/quiz/{quizId}/challenging-questions", middleware.JWTAuth(http.HandlerFunc(handlers.GetChallengingQuestions))).Methods("GET")
+	r.Handle("/user/quiz/{quizId}/question-statistics", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuestionStatistics))).Methods("GET")
 
 	corsObj := gorillaHandlers.CORS(
 		gorillaHandlers.AllowedOrigins([]string{"*"}),

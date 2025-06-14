@@ -585,7 +585,9 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 				"quiz_id": quizOID,
 			},
 		},
-	})
+	}, options.Find().SetProjection(bson.M{
+		"quiz_results": 1, // Include the entire quiz_results array
+	}))
 	if err != nil {
 		log.Printf("GetChallengingQuestions: Error fetching users: %v", err)
 		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
@@ -686,29 +688,82 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 
 	// Process each user's quiz results
 	for _, user := range users {
+		log.Printf("GetChallengingQuestions: Processing user %s", user.ID.Hex())
 		for _, qr := range user.QuizResults {
 			if qr.QuizID != quizOID {
 				continue
 			}
 
-			// Increment total attempts for all questions in this attempt
+			log.Printf("GetChallengingQuestions: Processing quiz result - User: %s, Timestamp: %v, Score: %d/%d",
+				user.ID.Hex(), qr.Timestamp, qr.Score, qr.MaxScore)
+
+			// Log the raw incorrectly answered questions array
+			if qr.IncorrectlyAnsweredQuestions == nil {
+				log.Printf("GetChallengingQuestions: IncorrectlyAnsweredQuestions is nil for attempt at %v", qr.Timestamp)
+			} else if len(qr.IncorrectlyAnsweredQuestions) == 0 {
+				log.Printf("GetChallengingQuestions: IncorrectlyAnsweredQuestions is empty for attempt at %v (Score: %d/%d)",
+					qr.Timestamp, qr.Score, qr.MaxScore)
+			} else {
+				log.Printf("GetChallengingQuestions: Found %d incorrectly answered questions for attempt at %v (Score: %d/%d): %v",
+					len(qr.IncorrectlyAnsweredQuestions), qr.Timestamp, qr.Score, qr.MaxScore, qr.IncorrectlyAnsweredQuestions)
+			}
+
+			// Get all questions that were attempted in this attempt
+			attemptedQuestions := make(map[primitive.ObjectID]bool)
 			for _, q := range quizData.Questions {
-				stats := questionStats[q.ID]
-				stats.TotalAttempts++
-				questionStats[q.ID] = stats
-				log.Printf("GetChallengingQuestions: Incremented TotalAttempts for question %s: %d", q.Text, stats.TotalAttempts)
+				attemptedQuestions[q.ID] = true
+				log.Printf("GetChallengingQuestions: Question available in quiz: ID=%s, Text=%s", q.ID.Hex(), q.Text)
+			}
+
+			// Log current stats before updates
+			for qid, stats := range questionStats {
+				log.Printf("GetChallengingQuestions: Before update - Question ID %s (text: %s): TotalAttempts=%d, IncorrectAttempts=%d",
+					qid.Hex(), stats.QuestionText, stats.TotalAttempts, stats.IncorrectAttempts)
+			}
+
+			// Increment total attempts only for questions that were attempted
+			for qid := range attemptedQuestions {
+				if stats, exists := questionStats[qid]; exists {
+					stats.TotalAttempts++
+					questionStats[qid] = stats
+					log.Printf("GetChallengingQuestions: Incremented TotalAttempts for question ID %s (text: %s): %d",
+						qid.Hex(), stats.QuestionText, stats.TotalAttempts)
+				} else {
+					log.Printf("GetChallengingQuestions: Warning - Question ID %s not found in questionStats", qid.Hex())
+				}
 			}
 
 			// Increment incorrect attempts for incorrectly answered questions
-			for _, qid := range qr.IncorrectlyAnsweredQuestions {
-				if stats, exists := questionStats[qid]; exists {
-					stats.IncorrectAttempts++
-					questionStats[qid] = stats
-					log.Printf("GetChallengingQuestions: Incremented IncorrectAttempts for question ID %s (text: %s): %d",
-						qid.Hex(), stats.QuestionText, stats.IncorrectAttempts)
+			if qr.IncorrectlyAnsweredQuestions != nil {
+				log.Printf("GetChallengingQuestions: Found %d incorrectly answered questions for this attempt", len(qr.IncorrectlyAnsweredQuestions))
+				for _, qid := range qr.IncorrectlyAnsweredQuestions {
+					log.Printf("GetChallengingQuestions: Processing incorrect answer for question ID %s", qid.Hex())
+					if stats, exists := questionStats[qid]; exists {
+						stats.IncorrectAttempts++
+						questionStats[qid] = stats
+						log.Printf("GetChallengingQuestions: Incremented IncorrectAttempts for question ID %s (text: %s): %d",
+							qid.Hex(), stats.QuestionText, stats.IncorrectAttempts)
+					} else {
+						log.Printf("GetChallengingQuestions: Warning - Question ID %s not found in quiz data", qid.Hex())
+					}
 				}
+			} else {
+				log.Printf("GetChallengingQuestions: No incorrectly answered questions for attempt at %v", qr.Timestamp)
+			}
+
+			// Log stats after updates
+			for qid, stats := range questionStats {
+				log.Printf("GetChallengingQuestions: After update - Question ID %s (text: %s): TotalAttempts=%d, IncorrectAttempts=%d",
+					qid.Hex(), stats.QuestionText, stats.TotalAttempts, stats.IncorrectAttempts)
 			}
 		}
+	}
+
+	// Log final stats before calculating rates
+	log.Printf("GetChallengingQuestions: Final stats before calculating rates:")
+	for qid, stats := range questionStats {
+		log.Printf("GetChallengingQuestions: Final - Question ID %s (text: %s): TotalAttempts=%d, IncorrectAttempts=%d",
+			qid.Hex(), stats.QuestionText, stats.TotalAttempts, stats.IncorrectAttempts)
 	}
 
 	// Convert to slice and calculate incorrect rates
@@ -720,8 +775,8 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 	for _, stats := range questionStats {
 		if stats.TotalAttempts > 0 {
 			incorrectRate := float64(stats.IncorrectAttempts) / float64(stats.TotalAttempts) * 100
-			log.Printf("GetChallengingQuestions: Question: %s, TotalAttempts: %d, IncorrectAttempts: %d, Incorrect Rate: %.2f%%",
-				stats.QuestionText, stats.TotalAttempts, stats.IncorrectAttempts, incorrectRate)
+			log.Printf("GetChallengingQuestions: Calculating rate for question %s: %d incorrect out of %d total attempts = %.2f%%",
+				stats.QuestionText, stats.IncorrectAttempts, stats.TotalAttempts, incorrectRate)
 
 			// Only include questions that have been attempted at least once
 			if stats.TotalAttempts > 0 {
@@ -759,4 +814,227 @@ func containsObjectID(slice []primitive.ObjectID, val primitive.ObjectID) bool {
 		}
 	}
 	return false
+}
+
+// GET /user/quiz/{quizId}/question-statistics
+func GetQuestionStatistics(w http.ResponseWriter, r *http.Request) {
+	claims := r.Context().Value("claims").(*utils.CustomClaims)
+	if claims.Role != string(models.RoleTeacher) && claims.Role != string(models.RoleAdmin) {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "403").Inc()
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
+	quizID := mux.Vars(r)["quizId"]
+	log.Printf("GetQuestionStatistics: Received request for quiz ID: %s", quizID)
+
+	quizOID, err := primitive.ObjectIDFromHex(quizID)
+	if err != nil {
+		log.Printf("GetQuestionStatistics: Invalid quiz ID format: %s", quizID)
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Invalid quiz ID", http.StatusBadRequest)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// First, get the quiz questions from evaluation service
+	client := &http.Client{
+		Timeout: 5 * time.Second,
+		Transport: &http.Transport{
+			MaxIdleConns:        100,
+			MaxIdleConnsPerHost: 100,
+			IdleConnTimeout:     90 * time.Second,
+		},
+	}
+
+	var quizData struct {
+		Questions []struct {
+			ID   primitive.ObjectID `json:"id"`
+			Text string             `json:"text"`
+		} `json:"questions"`
+	}
+
+	evalURL := fmt.Sprintf("%s/evaluation/quiz/%s", utils.GetEnv("EVAL_SERVICE_URL", "http://localhost:8000"), quizOID.Hex())
+	reqEval, err := http.NewRequestWithContext(ctx, "GET", evalURL, nil)
+	if err != nil {
+		log.Printf("GetQuestionStatistics: Error creating request to evaluation service: %v", err)
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Error contacting evaluation service", http.StatusInternalServerError)
+		return
+	}
+	reqEval.Header.Set("Authorization", r.Header.Get("Authorization"))
+
+	respEval, err := client.Do(reqEval)
+	if err != nil {
+		log.Printf("GetQuestionStatistics: Error contacting evaluation service: %v", err)
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Error contacting evaluation service", http.StatusInternalServerError)
+		return
+	}
+	defer respEval.Body.Close()
+
+	if respEval.StatusCode != http.StatusOK {
+		log.Printf("GetQuestionStatistics: Evaluation service returned status %d", respEval.StatusCode)
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Error fetching quiz data", http.StatusInternalServerError)
+		return
+	}
+
+	if err := json.NewDecoder(respEval.Body).Decode(&quizData); err != nil {
+		log.Printf("GetQuestionStatistics: Error decoding quiz data: %v", err)
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Error decoding quiz data", http.StatusInternalServerError)
+		return
+	}
+
+	// Create a map of question IDs to text for later use
+	questionTexts := make(map[primitive.ObjectID]string)
+	for _, q := range quizData.Questions {
+		questionTexts[q.ID] = q.Text
+	}
+
+	// Use MongoDB aggregation to calculate statistics
+	pipeline := []bson.M{
+		// Match users who have attempted this quiz
+		{
+			"$match": bson.M{
+				"quiz_results": bson.M{
+					"$elemMatch": bson.M{
+						"quiz_id": quizOID,
+					},
+				},
+			},
+		},
+		// Unwind the quiz_results array
+		{
+			"$unwind": "$quiz_results",
+		},
+		// Match only results for this quiz
+		{
+			"$match": bson.M{
+				"quiz_results.quiz_id": quizOID,
+			},
+		},
+		// Project only the fields we need
+		{
+			"$project": bson.M{
+				"score":                "$quiz_results.score",
+				"max_score":            "$quiz_results.max_score",
+				"incorrectly_answered": "$quiz_results.incorrectly_answered_questions",
+				"timestamp":            "$quiz_results.timestamp",
+			},
+		},
+	}
+
+	cursor, err := db.UserCollection.Aggregate(ctx, pipeline)
+	if err != nil {
+		log.Printf("GetQuestionStatistics: Error in aggregation: %v", err)
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Error calculating statistics", http.StatusInternalServerError)
+		return
+	}
+	defer cursor.Close(ctx)
+
+	// Process the aggregation results
+	type AggResult struct {
+		Score               int                  `bson:"score"`
+		MaxScore            int                  `bson:"max_score"`
+		IncorrectlyAnswered []primitive.ObjectID `bson:"incorrectly_answered"`
+		Timestamp           time.Time            `bson:"timestamp"`
+	}
+
+	var results []AggResult
+	if err := cursor.All(ctx, &results); err != nil {
+		log.Printf("GetQuestionStatistics: Error decoding aggregation results: %v", err)
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Error processing statistics", http.StatusInternalServerError)
+		return
+	}
+
+	// Calculate statistics for each question
+	questionStats := make(map[primitive.ObjectID]struct {
+		TotalAttempts     int
+		IncorrectAttempts int
+		QuestionText      string
+	})
+
+	// Initialize stats for all questions
+	for _, q := range quizData.Questions {
+		questionStats[q.ID] = struct {
+			TotalAttempts     int
+			IncorrectAttempts int
+			QuestionText      string
+		}{
+			QuestionText: q.Text,
+		}
+	}
+
+	// Process each quiz attempt
+	for _, result := range results {
+		log.Printf("GetQuestionStatistics: Processing attempt - Score: %d/%d, Timestamp: %v, IncorrectlyAnswered: %v",
+			result.Score, result.MaxScore, result.Timestamp, result.IncorrectlyAnswered)
+
+		// If we have a valid score, increment total attempts for all questions
+		if result.MaxScore > 0 {
+			for qid := range questionStats {
+				stats := questionStats[qid]
+				stats.TotalAttempts++
+				questionStats[qid] = stats
+			}
+		}
+
+		// Process incorrectly answered questions
+		if result.IncorrectlyAnswered != nil {
+			for _, qid := range result.IncorrectlyAnswered {
+				if stats, exists := questionStats[qid]; exists {
+					stats.IncorrectAttempts++
+					questionStats[qid] = stats
+					log.Printf("GetQuestionStatistics: Incremented IncorrectAttempts for question %s: %d",
+						stats.QuestionText, stats.IncorrectAttempts)
+				}
+			}
+		}
+	}
+
+	// Convert to response format
+	var questionStatsList []struct {
+		Question          string  `json:"question"`
+		IncorrectRate     float64 `json:"incorrect_rate"`
+		TotalAttempts     int     `json:"total_attempts"`
+		IncorrectAttempts int     `json:"incorrect_attempts"`
+	}
+
+	for _, stats := range questionStats {
+		if stats.TotalAttempts > 0 {
+			incorrectRate := float64(stats.IncorrectAttempts) / float64(stats.TotalAttempts) * 100
+			questionStatsList = append(questionStatsList, struct {
+				Question          string  `json:"question"`
+				IncorrectRate     float64 `json:"incorrect_rate"`
+				TotalAttempts     int     `json:"total_attempts"`
+				IncorrectAttempts int     `json:"incorrect_attempts"`
+			}{
+				Question:          stats.QuestionText,
+				IncorrectRate:     incorrectRate,
+				TotalAttempts:     stats.TotalAttempts,
+				IncorrectAttempts: stats.IncorrectAttempts,
+			})
+		}
+	}
+
+	// Sort by incorrect rate in descending order
+	sort.Slice(questionStatsList, func(i, j int) bool {
+		return questionStatsList[i].IncorrectRate > questionStatsList[j].IncorrectRate
+	})
+
+	// Take top 5 most challenging questions
+	if len(questionStatsList) > 5 {
+		questionStatsList = questionStatsList[:5]
+	}
+
+	log.Printf("GetQuestionStatistics: Returning statistics for %d questions", len(questionStatsList))
+	metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "200").Inc()
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(questionStatsList)
 }

@@ -35,6 +35,13 @@ interface QuizStats {
   }[]
 }
 
+interface QuestionStatistics {
+  question: string
+  incorrect_rate: number
+  total_attempts: number
+  incorrect_attempts: number
+}
+
 interface ChallengingQuestion {
   question: string
   incorrect_rate: number
@@ -52,6 +59,7 @@ const QuizStatsCard = () => {
   const [quizListOptions, setQuizListOptions] = useState<QuizOption[]>([{ id: 'all', name: 'Toate Quiz-urile' }])
   const [selectedQuizId, setSelectedQuizId] = useState('all')
   const [challengingQuestionsData, setChallengingQuestionsData] = useState<ChallengingQuestion[]>([])
+  const [questionStatistics, setQuestionStatistics] = useState<QuestionStatistics[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const token = localStorage.getItem('token')
@@ -99,6 +107,29 @@ const QuizStatsCard = () => {
     }
 
     fetchChallengingQuestions()
+  }, [selectedQuizId, token])
+
+  useEffect(() => {
+    const fetchQuestionStatistics = async () => {
+      if (selectedQuizId === 'all') {
+        setQuestionStatistics([])
+        return
+      }
+
+      try {
+        const response = await axios.get(`http://localhost:8000/user/quiz/${selectedQuizId}/question-statistics`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        setQuestionStatistics(response.data || [])
+      } catch (err: any) {
+        console.error('Error fetching question statistics:', err)
+        setQuestionStatistics([])
+      }
+    }
+
+    fetchQuestionStatistics()
   }, [selectedQuizId, token])
 
   const currentQuizStats = overallStats.find(quiz => quiz.id === selectedQuizId)
@@ -243,7 +274,7 @@ const QuizStatsCard = () => {
       <div className="bg-white p-4 rounded-xl border border-gray-100">
         <h3 className="font-semibold mb-4 flex items-center gap-2">
           <AlertCircleIcon size={18} className="text-[#AE847E]" />
-          <span>Cele Mai Dificile Întrebări</span>
+          <span>Statistici Detaliate pentru Întrebări</span>
         </h3>
         <div className="overflow-x-auto">
           <table className="min-w-full">
@@ -255,10 +286,19 @@ const QuizStatsCard = () => {
                 <th className="px-4 py-3 text-left text-sm font-medium text-[#888888]">
                   RATĂ GREȘELI
                 </th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-[#888888]">
+                  TOTAL ÎNCERCĂRI
+                </th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-[#888888]">
+                  GREȘELI
+                </th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-[#888888]">
+                  RĂSPUNSURI CORECTE
+                </th>
               </tr>
             </thead>
             <tbody>
-              {(selectedQuizId === 'all' ? [] : challengingQuestionsData).map((item, index) => (
+              {(selectedQuizId === 'all' ? [] : questionStatistics).map((item, index) => (
                 <tr
                   key={index}
                   className="border-b border-gray-100 hover:bg-[#f3e8ff]"
@@ -279,19 +319,34 @@ const QuizStatsCard = () => {
                       </span>
                     </div>
                   </td>
+                  <td className="px-4 py-4 text-center">
+                    <span className="font-medium text-[#4f46e5]">
+                      {item.total_attempts}
+                    </span>
+                  </td>
+                  <td className="px-4 py-4 text-center">
+                    <span className="font-medium text-[#AE847E]">
+                      {item.incorrect_attempts}
+                    </span>
+                  </td>
+                  <td className="px-4 py-4 text-center">
+                    <span className="font-medium text-green-600">
+                      {item.total_attempts - item.incorrect_attempts}
+                    </span>
+                  </td>
                 </tr>
               ))}
               {selectedQuizId === 'all' && (
                 <tr>
-                  <td colSpan={2} className="px-4 py-4 text-center text-gray-500">
-                    Selectați un quiz pentru a vedea întrebările dificile.
+                  <td colSpan={5} className="px-4 py-4 text-center text-gray-500">
+                    Selectați un quiz pentru a vedea statisticile detaliate ale întrebărilor.
                   </td>
                 </tr>
               )}
-              {selectedQuizId !== 'all' && challengingQuestionsData.length === 0 && (
+              {selectedQuizId !== 'all' && questionStatistics.length === 0 && (
                 <tr>
-                  <td colSpan={2} className="px-4 py-4 text-center text-gray-500">
-                    Nu există întrebări dificile pentru acest quiz încă.
+                  <td colSpan={5} className="px-4 py-4 text-center text-gray-500">
+                    Nu există statistici disponibile pentru acest quiz încă.
                   </td>
                 </tr>
               )}
@@ -299,6 +354,46 @@ const QuizStatsCard = () => {
           </table>
         </div>
       </div>
+
+      {selectedQuizId !== 'all' && questionStatistics.length > 0 && (
+        <div className="bg-white p-4 rounded-xl border border-gray-100">
+          <h3 className="font-semibold mb-4 flex items-center gap-2">
+            <BarChart2Icon size={18} className="text-[#4f46e5]" />
+            <span>Distribuția Răspunsurilor pe Întrebări</span>
+          </h3>
+          <div className="h-96">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={questionStatistics.map(q => ({
+                  name: q.question.length > 30 ? q.question.substring(0, 30) + '...' : q.question,
+                  corecte: q.total_attempts - q.incorrect_attempts,
+                  gresite: q.incorrect_attempts,
+                }))}
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 20,
+                  bottom: 100,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="name"
+                  angle={-45}
+                  textAnchor="end"
+                  height={100}
+                  interval={0}
+                />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="corecte" name="Răspunsuri Corecte" fill="#4f46e5" stackId="a" />
+                <Bar dataKey="gresite" name="Răspunsuri Greșite" fill="#AE847E" stackId="a" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

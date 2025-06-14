@@ -611,6 +611,15 @@ type SubmitAttemptResponse struct {
 	StreakBonus                  int64                `json:"streakBonus"`
 }
 
+// Helper pentru conversie []primitive.ObjectID -> []string
+func convertObjectIDsToHex(ids []primitive.ObjectID) []string {
+	out := make([]string, len(ids))
+	for i, id := range ids {
+		out[i] = id.Hex()
+	}
+	return out
+}
+
 // POST /evaluation/quiz/attempt/{quiz_id}
 func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
@@ -784,15 +793,21 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 			userDataURL = "http://user-data-service:8080"
 		}
 
+		log.Printf("[SubmitAttempt] User %s, Quiz %s: Incorrectly answered questions: %v", userOID.Hex(), quizOID.Hex(), convertObjectIDsToHex(incorrectlyAnsweredQuestions))
+
 		pointsReq := struct {
-			QuizID   string `json:"quiz_id"`
-			Score    int    `json:"score"`
-			MaxScore int    `json:"max_score"`
+			QuizID                       string   `json:"quiz_id"`
+			Score                        int      `json:"score"`
+			MaxScore                     int      `json:"max_score"`
+			IncorrectlyAnsweredQuestions []string `json:"incorrectly_answered_questions"`
 		}{
-			QuizID:   req.QuizID,
-			Score:    score,
-			MaxScore: len(quiz.Questions),
+			QuizID:                       req.QuizID,
+			Score:                        score,
+			MaxScore:                     len(quiz.Questions),
+			IncorrectlyAnsweredQuestions: convertObjectIDsToHex(incorrectlyAnsweredQuestions),
 		}
+
+		log.Printf("[SubmitAttempt] Sending to user-data-service: QuizID=%s, Score=%d, MaxScore=%d, IncorrectlyAnsweredQuestions=%v", req.QuizID, score, len(quiz.Questions), convertObjectIDsToHex(incorrectlyAnsweredQuestions))
 
 		jsonData, _ := json.Marshal(pointsReq)
 		http.Post(userDataURL+"/user/quiz/result", "application/json", bytes.NewBuffer(jsonData))
@@ -1240,13 +1255,15 @@ func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 		}
 
 		pointsReq := struct {
-			QuizID   string `json:"quiz_id"`
-			Score    int    `json:"score"`
-			MaxScore int    `json:"max_score"`
+			QuizID                       string   `json:"quiz_id"`
+			Score                        int      `json:"score"`
+			MaxScore                     int      `json:"max_score"`
+			IncorrectlyAnsweredQuestions []string `json:"incorrectly_answered_questions"`
 		}{
-			QuizID:   req.QuizID,
-			Score:    score,
-			MaxScore: len(quiz.Questions),
+			QuizID:                       req.QuizID,
+			Score:                        score,
+			MaxScore:                     len(quiz.Questions),
+			IncorrectlyAnsweredQuestions: convertObjectIDsToHex(incorrectlyAnsweredQuestions),
 		}
 
 		jsonData, _ := json.Marshal(pointsReq)
