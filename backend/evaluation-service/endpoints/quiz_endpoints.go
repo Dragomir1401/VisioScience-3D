@@ -92,7 +92,7 @@ func GetAllQuizzes(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(quizzes)
 }
 
-// GET /evaluation/quiz/{quiz_id}
+// GET /evaluation/quiz/{id}
 func GetQuizByID(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
 	path := utils.NormalizePath(r.URL.Path)
@@ -100,28 +100,43 @@ func GetQuizByID(w http.ResponseWriter, r *http.Request) {
 		metrics.EvaluationDuration.WithLabelValues(path).Observe(time.Since(start).Seconds())
 	}()
 
-	idStr := mux.Vars(r)["quiz_id"]
+	// Try both id and quiz_id parameters
+	idStr := mux.Vars(r)["id"]
+	quizIDStr := mux.Vars(r)["quiz_id"]
+
+	// Use whichever parameter is not empty
+	if idStr == "" && quizIDStr != "" {
+		idStr = quizIDStr
+	}
+
+	log.Printf("GetQuizByID: Received request for quiz ID: %s", idStr)
+
 	quizID, err := primitive.ObjectIDFromHex(idStr)
 	if err != nil {
+		log.Printf("GetQuizByID: Invalid quiz ID format: %s, error: %v", idStr, err)
 		metrics.EvaluationOperations.WithLabelValues(path, "error").Inc()
 		http.Error(w, "Invalid quiz ID", http.StatusBadRequest)
 		return
 	}
 
+	log.Printf("GetQuizByID: Looking up quiz with ID: %s", quizID.Hex())
 	var quiz models.Quiz
 	collection := helpers.Client.Database("data-feed-db").Collection("quizzes")
 	err = collection.FindOne(context.Background(), bson.M{"_id": quizID}).Decode(&quiz)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
+			log.Printf("GetQuizByID: Quiz not found with ID: %s", quizID.Hex())
 			metrics.EvaluationOperations.WithLabelValues(path, "not_found").Inc()
 			http.Error(w, "Quiz not found", http.StatusNotFound)
 			return
 		}
+		log.Printf("GetQuizByID: Database error for quiz ID %s: %v", quizID.Hex(), err)
 		metrics.EvaluationOperations.WithLabelValues(path, "error").Inc()
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	log.Printf("GetQuizByID: Successfully found quiz with ID: %s, title: %s", quizID.Hex(), quiz.Title)
 	metrics.EvaluationOperations.WithLabelValues(path, "success").Inc()
 	json.NewEncoder(w).Encode(quiz)
 }

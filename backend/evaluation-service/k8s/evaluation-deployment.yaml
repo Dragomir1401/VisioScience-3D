@@ -22,3 +22,5 @@ spec:
           env:
             - name: MONGO_URI
               value: "mongodb://mongo-evaluation-service:27017"
+            - name: PORT
+              value: "8080"

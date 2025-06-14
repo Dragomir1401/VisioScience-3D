@@ -19,4 +19,4 @@ spec:
             - containerPort: 8081
           env:
             - name: EVAL_SERVICE_URL
-              value: "http://evaluation-service:8000"
+              value: "http://evaluation-service:8080"
