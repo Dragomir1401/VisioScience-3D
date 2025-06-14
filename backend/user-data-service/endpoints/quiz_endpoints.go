@@ -685,24 +685,7 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 				questionMap[q.ID] = q.Text
 			}
 
-			// Update statistics for each question
-			for _, qid := range qr.IncorrectlyAnsweredQuestions {
-				stats, exists := questionStats[qid]
-				if !exists {
-					stats = struct {
-						TotalAttempts     int
-						IncorrectAttempts int
-						QuestionText      string
-					}{
-						QuestionText: questionMap[qid],
-					}
-				}
-				stats.TotalAttempts++
-				stats.IncorrectAttempts++
-				questionStats[qid] = stats
-			}
-
-			// Update total attempts for all questions
+			// First, increment TotalAttempts for all questions
 			for _, q := range quizData.Questions {
 				stats, exists := questionStats[q.ID]
 				if !exists {
@@ -716,6 +699,13 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 				}
 				stats.TotalAttempts++
 				questionStats[q.ID] = stats
+			}
+
+			// Then, increment IncorrectAttempts only for incorrect questions
+			for _, qid := range qr.IncorrectlyAnsweredQuestions {
+				stats := questionStats[qid]
+				stats.IncorrectAttempts++
+				questionStats[qid] = stats
 			}
 		}
 	}

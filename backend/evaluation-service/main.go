@@ -69,23 +69,23 @@ func main() {
 	r.Handle("/metrics", metrics.GetHandler()).Methods("GET")
 
 	// Quiz routes
-	r.HandleFunc("/evaluation/quiz", handlers.CreateQuiz).Methods("POST")
-	r.HandleFunc("/evaluation/quiz", handlers.GetAllQuizzes).Methods("GET")
-	r.HandleFunc("/evaluation/quiz/{id}", handlers.GetQuizByID).Methods("GET")
-	r.HandleFunc("/evaluation/quiz/{id}", handlers.UpdateQuiz).Methods("PUT")
-	r.HandleFunc("/evaluation/quiz/{id}", handlers.DeleteQuiz).Methods("DELETE")
-	r.HandleFunc("/evaluation/quiz/class/{class_id}", handlers.GetQuizzesByClass).Methods("GET")
-	r.HandleFunc("/evaluation/quiz/meta/{quiz_id}", handlers.GetQuizMeta).Methods("GET")
-	r.HandleFunc("/evaluation/quiz/{quizId}/result/{userId}", handlers.GetLastResult).Methods("GET")
-	r.HandleFunc("/evaluation/quiz/attempt/{quizId}", handlers.GetQuizForAttempt).Methods("GET")
-	r.HandleFunc("/evaluation/quiz/attempt/{quizId}", handlers.SubmitAttempt).Methods("POST")
-	r.HandleFunc("/evaluation/quiz/{quizId}/results", handlers.GetQuizResults).Methods("GET")
-	r.HandleFunc("/evaluation/quiz/{id}/status", handlers.SetQuizStatus).Methods("PUT")
-	r.HandleFunc("/evaluation/quiz/{id}/statistics", handlers.UpdateQuizStatistics).Methods("POST")
-	r.HandleFunc("/evaluation/quiz/update-question-ids", handlers.UpdateQuestionIDs).Methods("POST", "GET")
+	r.Handle("/evaluation/quiz", middleware.JWTAuth(http.HandlerFunc(handlers.CreateQuiz))).Methods("POST")
+	r.Handle("/evaluation/quiz", middleware.JWTAuth(http.HandlerFunc(handlers.GetAllQuizzes))).Methods("GET")
+	r.Handle("/evaluation/quiz/{quiz_id}", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizByID))).Methods("GET")
+	r.Handle("/evaluation/quiz/{quiz_id}", middleware.JWTAuth(http.HandlerFunc(handlers.UpdateQuiz))).Methods("PUT")
+	r.Handle("/evaluation/quiz/{quiz_id}", middleware.JWTAuth(http.HandlerFunc(handlers.DeleteQuiz))).Methods("DELETE")
+	r.Handle("/evaluation/quiz/class/{class_id}", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizzesByClass))).Methods("GET")
+	r.Handle("/evaluation/quiz/meta/{quiz_id}", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizMeta))).Methods("GET")
+	r.Handle("/evaluation/quiz/{quiz_id}/result/{user_id}", middleware.JWTAuth(http.HandlerFunc(handlers.GetLastResult))).Methods("GET")
+	r.Handle("/evaluation/quiz/attempt/{quiz_id}", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizForAttempt))).Methods("GET")
+	r.Handle("/evaluation/quiz/attempt/{quiz_id}", middleware.JWTAuth(http.HandlerFunc(handlers.SubmitAttempt))).Methods("POST")
+	r.Handle("/evaluation/quiz/{quiz_id}/results", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizResults))).Methods("GET")
+	r.Handle("/evaluation/quiz/{quiz_id}/status", middleware.JWTAuth(http.HandlerFunc(handlers.SetQuizStatus))).Methods("PUT")
+	r.Handle("/evaluation/quiz/update-question-ids", middleware.JWTAuth(http.HandlerFunc(handlers.UpdateQuestionIDs))).Methods("POST")
+	r.Handle("/evaluation/quiz/add-mock-answers", middleware.JWTAuth(http.HandlerFunc(handlers.AddMockAnswers))).Methods("POST")
 
 	// Protected routes
-	r.Handle("/evaluation/quiz/{id}/statistics", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizStatistics))).Methods("GET")
+	r.Handle("/evaluation/quiz/{quiz_id}/statistics", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizStatistics))).Methods("GET")
 	r.Handle("/evaluation/quiz/submit", middleware.JWTAuth(http.HandlerFunc(handlers.SubmitQuizResult))).Methods("POST")
 
 	corsObj := gorillaHandlers.CORS(

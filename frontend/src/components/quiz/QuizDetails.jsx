@@ -80,19 +80,23 @@ const QuizDetails = () => {
               </div>
             )}
 
-            <ul className="list-disc list-inside text-sm text-gray-800 space-y-1">
-              {q.choices.map((choice, cIdx) => (
-                <li
-                  key={cIdx}
-                  className={
-                    q.answer.includes(cIdx) ? "font-medium text-green-600" : ""
-                  }
-                >
-                  {choice}
-                  {q.answer.includes(cIdx) && " ✔"}
-                </li>
-              ))}
-            </ul>
+            {q.choices && Array.isArray(q.choices) && q.choices.length > 0 && (
+              <ul className="list-disc list-inside text-sm text-gray-800 space-y-1">
+                {q.choices.map((choice, cIdx) => (
+                  <li
+                    key={cIdx}
+                    className={
+                      q.answer && Array.isArray(q.answer) && q.answer.includes(cIdx) 
+                        ? "font-medium text-green-600" 
+                        : ""
+                    }
+                  >
+                    {choice}
+                    {q.answer && Array.isArray(q.answer) && q.answer.includes(cIdx) && " ✔"}
+                  </li>
+                ))}
+              </ul>
+            )}
 
             <p className="text-xs text-gray-500">Puncte: {q.points || 1}</p>
           </div>

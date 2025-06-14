@@ -20,7 +20,6 @@ const QuizCreation = () => {
 
   const handleAddQuestion = () => {
     const newQuestion = {
-      id: crypto.randomUUID(),
       text: '',
       choices: ['', '', '', ''],
       answer: [],
@@ -100,11 +99,14 @@ const QuizCreation = () => {
       return;
     }
 
+    // Remove IDs from questions before sending
+    const questionsWithoutIds = questions.map(({ id, ...q }) => q);
+
     const payload = {
       title,
       class_id: classId,
       owner_id,
-      questions,
+      questions: questionsWithoutIds,
       ...quizConfig
     };
 
