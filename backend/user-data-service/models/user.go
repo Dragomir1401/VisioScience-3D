@@ -53,27 +53,28 @@ type PerformanceMetrics struct {
 }
 
 type QuizResultMeta struct {
-	QuizID             primitive.ObjectID `bson:"quiz_id" json:"quiz_id"`
-	ClassID            primitive.ObjectID `bson:"class_id" json:"class_id"`
-	Score              int                `bson:"score" json:"score"`
-	MaxScore           int                `bson:"max_score" json:"max_score"`
-	Points             int64              `bson:"points" json:"points"`
-	Timestamp          time.Time          `bson:"timestamp" json:"timestamp"`
-	TimeTaken          int                `bson:"time_taken" json:"time_taken"`
-	PerfectScore       bool               `bson:"perfect_score" json:"perfect_score"`
-	QuestionsTotal     int                `bson:"questions_total" json:"questions_total"`
-	QuestionsCorrect   int                `bson:"questions_correct" json:"questions_correct"`
-	QuestionsIncorrect int                `bson:"questions_incorrect" json:"questions_incorrect"`
-	DifficultyLevel    string             `bson:"difficulty_level" json:"difficulty_level"`
-	CompletionTime     int                `bson:"completion_time" json:"completion_time"`
-	StreakBonus        int                `bson:"streak_bonus" json:"streak_bonus"`
-	TimeBonus          int                `bson:"time_bonus" json:"time_bonus"`
-	PerfectBonus       int                `bson:"perfect_bonus" json:"perfect_bonus"`
-	QuizTitle          string             `bson:"quiz_title" json:"quiz_title"`
-	QuizType           string             `bson:"quiz_type" json:"quiz_type"`
-	AttemptNumber      int                `bson:"attempt_number" json:"attempt_number"`
-	CompletionDate     string             `bson:"completion_date" json:"completion_date"`
-	PerformanceMetrics PerformanceMetrics `bson:"performance_metrics" json:"performance_metrics"`
+	QuizID                       primitive.ObjectID   `bson:"quiz_id" json:"quiz_id"`
+	ClassID                      primitive.ObjectID   `bson:"class_id" json:"class_id"`
+	Score                        int                  `bson:"score" json:"score"`
+	MaxScore                     int                  `bson:"max_score" json:"max_score"`
+	Points                       int64                `bson:"points" json:"points"`
+	Timestamp                    time.Time            `bson:"timestamp" json:"timestamp"`
+	TimeTaken                    int                  `bson:"time_taken" json:"time_taken"`
+	PerfectScore                 bool                 `bson:"perfect_score" json:"perfect_score"`
+	QuestionsTotal               int                  `bson:"questions_total" json:"questions_total"`
+	QuestionsCorrect             int                  `bson:"questions_correct" json:"questions_correct"`
+	QuestionsIncorrect           int                  `bson:"questions_incorrect" json:"questions_incorrect"`
+	DifficultyLevel              string               `bson:"difficulty_level" json:"difficulty_level"`
+	CompletionTime               int                  `bson:"completion_time" json:"completion_time"`
+	StreakBonus                  int                  `bson:"streak_bonus" json:"streak_bonus"`
+	TimeBonus                    int                  `bson:"time_bonus" json:"time_bonus"`
+	PerfectBonus                 int                  `bson:"perfect_bonus" json:"perfect_bonus"`
+	QuizTitle                    string               `bson:"quiz_title" json:"quiz_title"`
+	QuizType                     string               `bson:"quiz_type" json:"quiz_type"`
+	AttemptNumber                int                  `bson:"attempt_number" json:"attempt_number"`
+	CompletionDate               string               `bson:"completion_date" json:"completion_date"`
+	IncorrectlyAnsweredQuestions []primitive.ObjectID `bson:"incorrectly_answered_questions" json:"incorrectly_answered_questions"`
+	PerformanceMetrics           PerformanceMetrics   `bson:"performance_metrics" json:"performance_metrics"`
 }
 
 type QuizPerformanceTrendEntry struct {

@@ -19,7 +19,7 @@ interface ClassFilter {
   name: string
 }
 
-export const LeaderboardCard = () => {
+const LeaderboardCard = () => {
   const [filter, setFilter] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
@@ -196,4 +196,6 @@ export const LeaderboardCard = () => {
       </div>
     </div>
   )
-} 
+}
+
+export default LeaderboardCard; 

@@ -19,16 +19,15 @@ const QuizCreation = () => {
   });
 
   const handleAddQuestion = () => {
-    setQuestions([
-      ...questions,
-      {
-        text: "",
-        choices: ["", "", "", ""],
-        answer: [],
-        image: null,
-        points: 1,
-      },
-    ]);
+    const newQuestion = {
+      id: crypto.randomUUID(),
+      text: '',
+      choices: ['', '', '', ''],
+      answer: [],
+      points: 10,
+      images: null
+    };
+    setQuestions([...questions, newQuestion]);
   };
 
   const handleDeleteQuestion = (index) => {

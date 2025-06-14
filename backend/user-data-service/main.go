@@ -115,6 +115,10 @@ func main() {
 	// GET /user/classes/{classId}/most-improved-students
 	r.Handle("/user/classes/{classId}/most-improved-students", middleware.JWTAuth(http.HandlerFunc(handlers.GetMostImprovedStudentsInClass))).Methods("GET")
 
+	// Quiz routes
+	r.Handle("/user/quiz/statistics", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizStatistics))).Methods("GET")
+	r.Handle("/user/quiz/{quizId}/challenging-questions", middleware.JWTAuth(http.HandlerFunc(handlers.GetChallengingQuestions))).Methods("GET")
+
 	corsObj := gorillaHandlers.CORS(
 		gorillaHandlers.AllowedOrigins([]string{"*"}),
 		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),

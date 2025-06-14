@@ -60,17 +60,23 @@ type Question struct {
 }
 
 type QuizResult struct {
-	ID           primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
-	QuizID       primitive.ObjectID `bson:"quiz_id" json:"quiz_id"`
-	UserID       primitive.ObjectID `bson:"user_id" json:"user_id"`
-	Answers      []int              `bson:"answers" json:"answers"`
-	Score        int                `bson:"score" json:"score"`
-	Points       int64              `bson:"points" json:"points"`               // Points earned
-	TimeBonus    int64              `bson:"time_bonus" json:"time_bonus"`       // Bonus points for quick completion
-	PerfectBonus int64              `bson:"perfect_bonus" json:"perfect_bonus"` // Bonus for perfect score
-	StreakBonus  int64              `bson:"streak_bonus" json:"streak_bonus"`   // Bonus for consecutive perfect scores
-	SubmittedAt  time.Time          `bson:"submitted_at" json:"submitted_at"`
-	TimeTaken    int64              `bson:"time_taken" json:"time_taken"` // Time taken in seconds
+	ID                           primitive.ObjectID   `bson:"_id,omitempty" json:"id,omitempty"`
+	QuizID                       primitive.ObjectID   `bson:"quiz_id" json:"quiz_id"`
+	UserID                       primitive.ObjectID   `bson:"user_id" json:"user_id"`
+	Answers                      []int                `bson:"answers" json:"answers"`
+	Score                        int                  `bson:"score" json:"score"`
+	Points                       int64                `bson:"points" json:"points"`               // Points earned
+	TimeBonus                    int64                `bson:"time_bonus" json:"time_bonus"`       // Bonus points for quick completion
+	PerfectBonus                 int64                `bson:"perfect_bonus" json:"perfect_bonus"` // Bonus for perfect score
+	StreakBonus                  int64                `bson:"streak_bonus" json:"streak_bonus"`   // Bonus for consecutive perfect scores
+	SubmittedAt                  time.Time            `bson:"submitted_at" json:"submitted_at"`
+	TimeTaken                    int64                `bson:"time_taken" json:"time_taken"` // Time taken in seconds
+	IncorrectlyAnsweredQuestions []primitive.ObjectID `bson:"incorrectly_answered_questions" json:"incorrectly_answered_questions"`
+	PerformanceMetrics           struct {
+		Accuracy    float64 `bson:"accuracy" json:"accuracy"`
+		Speed       float64 `bson:"speed" json:"speed"`
+		Consistency string  `bson:"consistency" json:"consistency"`
+	} `bson:"performance_metrics" json:"performance_metrics"`
 }
 
 // QuizStatistics holds aggregated statistics for a quiz

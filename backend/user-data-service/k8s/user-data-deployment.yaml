@@ -17,3 +17,6 @@ spec:
           image: dragomir1401/user-data:latest
           ports:
             - containerPort: 8081
+          env:
+            - name: EVAL_SERVICE_URL
+              value: "http://evaluation-service:8000"

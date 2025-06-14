@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 
-export const ImprovementCard = () => {
+const ImprovementCard = () => {
   const token = localStorage.getItem('token');
   const [timeRange, setTimeRange] = useState('8-weeks')
   const [selectedClass, setSelectedClass] = useState('')
@@ -340,4 +340,6 @@ export const ImprovementCard = () => {
       </div>
     </div>
   )
-} 
+}
+
+export default ImprovementCard; 

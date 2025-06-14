@@ -30,46 +30,31 @@ func CreateQuiz(w http.ResponseWriter, r *http.Request) {
 		metrics.EvaluationDuration.WithLabelValues(path).Observe(time.Since(start).Seconds())
 	}()
 
-	var input models.QuizInput
-	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+	var quiz models.Quiz
+	if err := json.NewDecoder(r.Body).Decode(&quiz); err != nil {
 		metrics.EvaluationOperations.WithLabelValues(path, "error").Inc()
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
 
-	classID, err := primitive.ObjectIDFromHex(input.ClassID)
+	// Ensure each question has an ID
+	for i := range quiz.Questions {
+		if quiz.Questions[i].ID.IsZero() {
+			quiz.Questions[i].ID = primitive.NewObjectID()
+		}
+	}
+
+	quiz.ID = primitive.NewObjectID()
+	quiz.CreatedAt = time.Now()
+	quiz.IsOpen = true
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	_, err := helpers.Client.Database("data-feed-db").Collection("quizzes").InsertOne(ctx, quiz)
 	if err != nil {
 		metrics.EvaluationOperations.WithLabelValues(path, "error").Inc()
-		http.Error(w, "Invalid class_id", http.StatusBadRequest)
-		return
-	}
-
-	ownerID, err := primitive.ObjectIDFromHex(input.OwnerID)
-	if err != nil {
-		metrics.EvaluationOperations.WithLabelValues(path, "error").Inc()
-		http.Error(w, "Invalid owner_id", http.StatusBadRequest)
-		return
-	}
-
-	quiz := models.Quiz{
-		ID:          primitive.NewObjectID(),
-		Title:       input.Title,
-		ClassID:     classID,
-		OwnerID:     ownerID,
-		Questions:   input.Questions,
-		IsOpen:      false,
-		CreatedAt:   time.Now(),
-		QuizResults: []models.QuizResult{},
-	}
-
-	if input.IsOpen != nil {
-		quiz.IsOpen = *input.IsOpen
-	}
-
-	collection := helpers.Client.Database("data-feed-db").Collection("quizzes")
-	if _, err := collection.InsertOne(context.Background(), quiz); err != nil {
-		metrics.EvaluationOperations.WithLabelValues(path, "error").Inc()
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Failed to create quiz", http.StatusInternalServerError)
 		return
 	}
 
@@ -292,13 +277,16 @@ func GetQuizMeta(w http.ResponseWriter, r *http.Request) {
 	}
 
 	proj := bson.M{
-		"_id":              1,
-		"title":            1,
-		"class_id":         1,
-		"created_at":       1,
-		"questions.text":   1,
-		"questions.points": 1,
-		"is_open":          1,
+		"_id":                  1,
+		"title":                1,
+		"class_id":             1,
+		"created_at":           1,
+		"questions._id":        1,
+		"questions.text":       1,
+		"questions.points":     1,
+		"questions.type":       1,
+		"questions.difficulty": 1,
+		"is_open":              1,
 	}
 
 	var meta struct {
@@ -307,8 +295,11 @@ func GetQuizMeta(w http.ResponseWriter, r *http.Request) {
 		ClassID   primitive.ObjectID `bson:"class_id"    json:"class_id"`
 		CreatedAt time.Time          `bson:"created_at"  json:"created_at"`
 		Questions []struct {
-			Text   string `bson:"text"   json:"text"`
-			Points int    `bson:"points" json:"points"`
+			ID         primitive.ObjectID `bson:"_id"        json:"id"`
+			Text       string             `bson:"text"       json:"text"`
+			Points     int                `bson:"points"     json:"points"`
+			Type       string             `bson:"type"       json:"type"`
+			Difficulty string             `bson:"difficulty" json:"difficulty"`
 		} `bson:"questions" json:"questions"`
 		IsOpen bool `bson:"is_open" json:"is_open"`
 	}
@@ -555,7 +546,19 @@ func GetQuizResults(w http.ResponseWriter, r *http.Request) {
 	var quiz models.Quiz
 	if err := coll.FindOne(r.Context(),
 		bson.M{"_id": quizID},
-		options.FindOne().SetProjection(bson.M{"quiz_results": 1}),
+		options.FindOne().SetProjection(bson.M{
+			"quiz_results": 1,
+			"questions": bson.M{
+				"$map": bson.M{
+					"input": "$questions",
+					"as":    "q",
+					"in": bson.M{
+						"id":   "$$q._id",
+						"text": "$$q.text",
+					},
+				},
+			},
+		}),
 	).Decode(&quiz); err != nil {
 		if err == mongo.ErrNoDocuments {
 			metrics.EvaluationOperations.WithLabelValues(path, "not_found").Inc()
@@ -567,8 +570,46 @@ func GetQuizResults(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Enhance results with question details
+	type EnhancedResult struct {
+		UserID                       primitive.ObjectID   `json:"user_id"`
+		Score                        int                  `json:"score"`
+		Points                       int64                `json:"points"`
+		TimeTaken                    int64                `json:"time_taken"`
+		SubmittedAt                  time.Time            `json:"submitted_at"`
+		IncorrectlyAnsweredQuestions []primitive.ObjectID `json:"incorrectly_answered_questions"`
+		PerformanceMetrics           struct {
+			Accuracy    float64 `json:"accuracy"`
+			Speed       float64 `json:"speed"`
+			Consistency string  `json:"consistency"`
+		} `json:"performance_metrics"`
+	}
+
+	var enhancedResults []EnhancedResult
+	for _, result := range quiz.QuizResults {
+		enhanced := EnhancedResult{
+			UserID:                       result.UserID,
+			Score:                        result.Score,
+			Points:                       result.Points,
+			TimeTaken:                    result.TimeTaken,
+			SubmittedAt:                  result.SubmittedAt,
+			IncorrectlyAnsweredQuestions: result.IncorrectlyAnsweredQuestions,
+			PerformanceMetrics: struct {
+				Accuracy    float64 `json:"accuracy"`
+				Speed       float64 `json:"speed"`
+				Consistency string  `json:"consistency"`
+			}{
+				Accuracy:    result.PerformanceMetrics.Accuracy,
+				Speed:       result.PerformanceMetrics.Speed,
+				Consistency: result.PerformanceMetrics.Consistency,
+			},
+		}
+		enhancedResults = append(enhancedResults, enhanced)
+	}
+
 	metrics.EvaluationOperations.WithLabelValues(path, "success").Inc()
-	json.NewEncoder(w).Encode(quiz.QuizResults)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(enhancedResults)
 }
 
 // PUT /evaluation/quiz/{id}/status
@@ -888,23 +929,48 @@ func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Calculate score
+	// Calculate score and track incorrectly answered questions
 	score := 0
+	var incorrectlyAnsweredQuestions []primitive.ObjectID
 	for i, answer := range req.Answers {
-		if i < len(quiz.Questions) && containsInt(quiz.Questions[i].Answer, answer) {
-			score++
+		if i < len(quiz.Questions) {
+			if containsInt(quiz.Questions[i].Answer, answer) {
+				score++
+			} else {
+				incorrectlyAnsweredQuestions = append(incorrectlyAnsweredQuestions, quiz.Questions[i].ID)
+			}
 		}
+	}
+
+	// Calculate performance metrics
+	accuracy := float64(score) / float64(len(quiz.Questions))
+	speed := float64(req.TimeTaken) / float64(len(quiz.Questions)) // Average time per question
+	consistency := "low"
+	if accuracy >= 0.8 {
+		consistency = "high"
+	} else if accuracy >= 0.6 {
+		consistency = "medium"
 	}
 
 	// Create result
 	result := models.QuizResult{
-		ID:          primitive.NewObjectID(),
-		QuizID:      quizOID,
-		UserID:      userOID,
-		Answers:     req.Answers,
-		Score:       score,
-		TimeTaken:   req.TimeTaken,
-		SubmittedAt: time.Now(),
+		ID:                           primitive.NewObjectID(),
+		QuizID:                       quizOID,
+		UserID:                       userOID,
+		Answers:                      req.Answers,
+		Score:                        score,
+		TimeTaken:                    req.TimeTaken,
+		SubmittedAt:                  time.Now(),
+		IncorrectlyAnsweredQuestions: incorrectlyAnsweredQuestions,
+		PerformanceMetrics: struct {
+			Accuracy    float64 `bson:"accuracy" json:"accuracy"`
+			Speed       float64 `bson:"speed" json:"speed"`
+			Consistency string  `bson:"consistency" json:"consistency"`
+		}{
+			Accuracy:    accuracy,
+			Speed:       speed,
+			Consistency: consistency,
+		},
 	}
 
 	// Calculate points
@@ -975,17 +1041,8 @@ func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "201").Inc()
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"message": "Result saved",
-		"score":   score,
-		"points":  result.Points,
-		"bonuses": map[string]int64{
-			"time_bonus":    result.TimeBonus,
-			"perfect_bonus": result.PerfectBonus,
-			"streak_bonus":  result.StreakBonus,
-		},
-	})
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(result)
 }
 
 // GET /quiz/{id}/statistics
@@ -1007,4 +1064,78 @@ func GetQuizStatistics(w http.ResponseWriter, r *http.Request) {
 	metrics.HTTPRequestsTotal.WithLabelValues("GET", "/quiz/{id}/statistics", "200").Inc()
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(quiz.Statistics)
+}
+
+// POST /evaluation/quiz/update-question-ids
+func UpdateQuestionIDs(w http.ResponseWriter, r *http.Request) {
+	log.Printf("UpdateQuestionIDs: Received request from %s", r.RemoteAddr)
+	log.Printf("UpdateQuestionIDs: Request method: %s", r.Method)
+	log.Printf("UpdateQuestionIDs: Request headers: %v", r.Header)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	collection := helpers.Client.Database("data-feed-db").Collection("quizzes")
+	log.Printf("UpdateQuestionIDs: Connected to database")
+
+	cursor, err := collection.Find(ctx, bson.M{})
+	if err != nil {
+		log.Printf("UpdateQuestionIDs: Error fetching quizzes: %v", err)
+		http.Error(w, "Failed to fetch quizzes", http.StatusInternalServerError)
+		return
+	}
+	defer cursor.Close(ctx)
+
+	updatedCount := 0
+	quizCount := 0
+	for cursor.Next(ctx) {
+		quizCount++
+		var quiz struct {
+			ID        primitive.ObjectID `bson:"_id"`
+			Questions []struct {
+				ID     primitive.ObjectID `bson:"_id,omitempty"`
+				Text   string             `bson:"text"`
+				Points int                `bson:"points"`
+			} `bson:"questions"`
+		}
+
+		if err := cursor.Decode(&quiz); err != nil {
+			log.Printf("UpdateQuestionIDs: Error decoding quiz: %v", err)
+			continue
+		}
+
+		log.Printf("UpdateQuestionIDs: Processing quiz %s with %d questions", quiz.ID.Hex(), len(quiz.Questions))
+
+		modified := false
+		for i := range quiz.Questions {
+			if quiz.Questions[i].ID.IsZero() {
+				quiz.Questions[i].ID = primitive.NewObjectID()
+				modified = true
+				log.Printf("UpdateQuestionIDs: Added ID to question %d in quiz %s", i, quiz.ID.Hex())
+			}
+		}
+
+		if modified {
+			_, err := collection.UpdateOne(
+				ctx,
+				bson.M{"_id": quiz.ID},
+				bson.M{"$set": bson.M{"questions": quiz.Questions}},
+			)
+			if err != nil {
+				log.Printf("UpdateQuestionIDs: Error updating quiz %s: %v", quiz.ID.Hex(), err)
+			} else {
+				updatedCount++
+				log.Printf("UpdateQuestionIDs: Successfully updated quiz %s", quiz.ID.Hex())
+			}
+		}
+	}
+
+	log.Printf("UpdateQuestionIDs: Processed %d quizzes, updated %d quizzes", quizCount, updatedCount)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"message":         "Question IDs update completed",
+		"updated_quizzes": updatedCount,
+		"total_quizzes":   quizCount,
+	})
 }

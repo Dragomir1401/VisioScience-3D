@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Paper, Grid } from '@mui/material';
-import { ClassPerformanceCard } from '../components/dashboard/ClassPerformanceCard';
-import { ImprovementCard } from '../components/dashboard/ImprovementCard';
-import { LeaderboardCard } from '../components/dashboard/LeaderboardCard';
-import { QuizStatsCard } from '../components/dashboard/QuizStatsCard';
+import ClassPerformanceCard from '../components/dashboard/ClassPerformanceCard';
+import ImprovementCard from '../components/dashboard/ImprovementCard';
+import LeaderboardCard from '../components/dashboard/LeaderboardCard';
+import QuizStatsCard from '../components/dashboard/QuizStatsCard';
 import { MetricsSelector } from '../components/dashboard/MetricsSelector';
 
 const Analytics = () => {

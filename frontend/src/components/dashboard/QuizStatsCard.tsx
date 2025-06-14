@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   BarChart2Icon,
   ClipboardListIcon,
@@ -18,110 +18,122 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts'
-// Mock data for quiz statistics
-const quizList = [
-  {
-    id: 1,
-    name: 'Introducere în Biologie',
-    completed: 32,
-    avg: 85,
-    difficulty: 'Mediu',
-  },
-  {
-    id: 2,
-    name: 'Structura Celulei',
-    completed: 30,
-    avg: 78,
-    difficulty: 'Dificil',
-  },
-  {
-    id: 3,
-    name: 'Bazele Geneticii',
-    completed: 28,
-    avg: 82,
-    difficulty: 'Mediu',
-  },
-  {
-    id: 4,
-    name: 'Teoria Evoluției',
-    completed: 31,
-    avg: 75,
-    difficulty: 'Dificil',
-  },
-  {
-    id: 5,
-    name: 'Fundamentele Ecologiei',
-    completed: 29,
-    avg: 88,
-    difficulty: 'Ușor',
-  },
-]
-// Mock data for quiz completion rate
-const completionRateData = [
-  {
-    name: 'Completate',
-    value: 85,
-  },
-  {
-    name: 'Neîncepute',
-    value: 10,
-  },
-  {
-    name: 'În Progres',
-    value: 5,
-  },
-]
-// Mock data for difficulty distribution
-const difficultyData = [
-  {
-    name: 'Ușor',
-    count: 12,
-  },
-  {
-    name: 'Mediu',
-    count: 25,
-  },
-  {
-    name: 'Dificil',
-    count: 18,
-  },
-]
-// Mock data for challenging questions
-const challengingQuestions = [
-  {
-    id: 1,
-    quiz: 'Structura Celulei',
-    question: 'Explicați funcția mitocondriilor în respirația celulară',
-    incorrectRate: 65,
-  },
-  {
-    id: 2,
-    quiz: 'Teoria Evoluției',
-    question: 'Descrieți conceptul de selecție naturală',
-    incorrectRate: 58,
-  },
-  {
-    id: 3,
-    quiz: 'Bazele Geneticii',
-    question: 'Explicați Legea Segregării Independente a lui Mendel',
-    incorrectRate: 52,
-  },
-  {
-    id: 4,
-    quiz: 'Structura Celulei',
-    question: 'Descrieți structura și funcția aparatului Golgi',
-    incorrectRate: 48,
-  },
-  {
-    id: 5,
-    quiz: 'Teoria Evoluției',
-    question: 'Comparați și contrastați structurile omoloage și analoage',
-    incorrectRate: 45,
-  },
-]
+import axios from 'axios'
+
+interface QuizStats {
+  id: string
+  title: string
+  completed: number
+  avg: number
+  difficulty: string
+  total_users: number
+  in_progress: number
+  not_started: number
+  challenging_questions: {
+    question: string
+    incorrect_rate: number
+  }[]
+}
+
+interface ChallengingQuestion {
+  question: string
+  incorrect_rate: number
+}
+
+interface QuizOption {
+  id: string
+  name: string
+}
+
 const COLORS = ['#4f46e5', '#AE847E', '#888888']
-export const QuizStatsCard = () => {
-  const [selectedQuiz, setSelectedQuiz] = useState('all')
+
+const QuizStatsCard = () => {
+  const [overallStats, setOverallStats] = useState<QuizStats[]>([])
+  const [quizListOptions, setQuizListOptions] = useState<QuizOption[]>([{ id: 'all', name: 'Toate Quiz-urile' }])
+  const [selectedQuizId, setSelectedQuizId] = useState('all')
+  const [challengingQuestionsData, setChallengingQuestionsData] = useState<ChallengingQuestion[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const token = localStorage.getItem('token')
+
+  useEffect(() => {
+    const fetchOverallStats = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/user/quiz/statistics', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        setOverallStats(response.data || [])
+        const options = response.data.map((quiz: QuizStats) => ({ id: quiz.id, name: quiz.title }))
+        setQuizListOptions([{ id: 'all', name: 'Toate Quiz-urile' }, ...options])
+      } catch (err: any) {
+        setError('Failed to load overall quiz statistics: ' + err.message)
+        console.error('Error fetching overall quiz stats:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchOverallStats()
+  }, [token])
+
+  useEffect(() => {
+    const fetchChallengingQuestions = async () => {
+      if (selectedQuizId === 'all') {
+        setChallengingQuestionsData([])
+        return
+      }
+
+      try {
+        const response = await axios.get(`http://localhost:8000/user/quiz/${selectedQuizId}/challenging-questions`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        setChallengingQuestionsData(response.data || [])
+      } catch (err: any) {
+        console.error('Error fetching challenging questions:', err)
+        setChallengingQuestionsData([])
+      }
+    }
+
+    fetchChallengingQuestions()
+  }, [selectedQuizId, token])
+
+  const currentQuizStats = overallStats.find(quiz => quiz.id === selectedQuizId)
+
+  // Prepare data for completion rate Pie Chart
+  const completionRateData = selectedQuizId === 'all'
+    ? [
+        { name: 'Completate', value: overallStats.reduce((sum, q) => sum + q.completed, 0) },
+        { name: 'Neîncepute', value: overallStats.reduce((sum, q) => sum + q.not_started, 0) },
+        { name: 'În Progres', value: overallStats.reduce((sum, q) => sum + q.in_progress, 0) },
+      ]
+    : [
+        { name: 'Completate', value: currentQuizStats?.completed || 0 },
+        { name: 'Neîncepute', value: currentQuizStats?.not_started || 0 },
+        { name: 'În Progres', value: currentQuizStats?.in_progress || 0 },
+      ];
+
+  // Prepare data for difficulty distribution Bar Chart
+  const difficultyDataMap = overallStats.reduce((acc, quiz) => {
+    acc[quiz.difficulty] = (acc[quiz.difficulty] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  const difficultyData = Object.keys(difficultyDataMap).map(difficulty => ({
+    name: difficulty,
+    count: difficultyDataMap[difficulty]
+  }));
+
+  if (loading) {
+    return <p className="pt-24 text-center text-mulberry">Se încarcă statisticile quiz-urilor...</p>
+  }
+
+  if (error) {
+    return <p className="pt-24 text-center text-red-600">Eroare: {error}</p>
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -132,11 +144,10 @@ export const QuizStatsCard = () => {
         <div className="flex gap-4">
           <select
             className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#4f46e5]"
-            value={selectedQuiz}
-            onChange={(e) => setSelectedQuiz(e.target.value)}
+            value={selectedQuizId}
+            onChange={(e) => setSelectedQuizId(e.target.value)}
           >
-            <option value="all">Toate Quiz-urile</option>
-            {quizList.map((quiz) => (
+            {quizListOptions.map((quiz) => (
               <option key={quiz.id} value={quiz.id}>
                 {quiz.name}
               </option>
@@ -208,13 +219,13 @@ export const QuizStatsCard = () => {
             <span>Scoruri Medii Quiz-uri</span>
           </h3>
           <div className="space-y-4">
-            {quizList.map((quiz) => (
+            {overallStats.map((quiz) => (
               <div key={quiz.id}>
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-[#888888] truncate pr-2">
-                    {quiz.name}
+                    {quiz.title}
                   </span>
-                  <span className="font-semibold">{quiz.avg}%</span>
+                  <span className="font-semibold">{quiz.avg.toFixed(1)}%</span>
                 </div>
                 <div className="w-full bg-gray-100 rounded-full h-2.5">
                   <div
@@ -239,9 +250,6 @@ export const QuizStatsCard = () => {
             <thead>
               <tr className="border-b border-gray-200">
                 <th className="px-4 py-3 text-left text-sm font-medium text-[#888888]">
-                  QUIZ
-                </th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-[#888888]">
                   ÎNTREBARE
                 </th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-[#888888]">
@@ -250,12 +258,11 @@ export const QuizStatsCard = () => {
               </tr>
             </thead>
             <tbody>
-              {challengingQuestions.map((item) => (
+              {(selectedQuizId === 'all' ? [] : challengingQuestionsData).map((item, index) => (
                 <tr
-                  key={item.id}
+                  key={index}
                   className="border-b border-gray-100 hover:bg-[#f3e8ff]"
                 >
-                  <td className="px-4 py-4 font-medium">{item.quiz}</td>
                   <td className="px-4 py-4">{item.question}</td>
                   <td className="px-4 py-4">
                     <div className="flex items-center">
@@ -263,21 +270,37 @@ export const QuizStatsCard = () => {
                         <div
                           className="bg-[#AE847E] h-2.5 rounded-full"
                           style={{
-                            width: `${item.incorrectRate}%`,
+                            width: `${item.incorrect_rate}%`,
                           }}
                         ></div>
                       </div>
                       <span className="ml-3 font-semibold text-[#AE847E]">
-                        {item.incorrectRate}%
+                        {item.incorrect_rate.toFixed(1)}%
                       </span>
                     </div>
                   </td>
                 </tr>
               ))}
+              {selectedQuizId === 'all' && (
+                <tr>
+                  <td colSpan={2} className="px-4 py-4 text-center text-gray-500">
+                    Selectați un quiz pentru a vedea întrebările dificile.
+                  </td>
+                </tr>
+              )}
+              {selectedQuizId !== 'all' && challengingQuestionsData.length === 0 && (
+                <tr>
+                  <td colSpan={2} className="px-4 py-4 text-center text-gray-500">
+                    Nu există întrebări dificile pentru acest quiz încă.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
       </div>
     </div>
   )
-} 
+}
+
+export default QuizStatsCard; 

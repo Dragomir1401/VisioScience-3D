@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { DashboardLayout } from '../components/layout/DashboardLayout'
 import { MetricsSelector } from '../components/dashboard/MetricsSelector'
-import { LeaderboardCard } from '../components/dashboard/LeaderboardCard'
-import { ClassPerformanceCard } from '../components/dashboard/ClassPerformanceCard'
-import { ImprovementCard } from '../components/dashboard/ImprovementCard'
-import { QuizStatsCard } from '../components/dashboard/QuizStatsCard'
+import LeaderboardCard from '../components/dashboard/LeaderboardCard'
+import ClassPerformanceCard from '../components/dashboard/ClassPerformanceCard'
+import ImprovementCard from '../components/dashboard/ImprovementCard'
+import QuizStatsCard from '../components/dashboard/QuizStatsCard'
 
 export const Dashboard = () => {
   const [selectedMetric, setSelectedMetric] = useState('leaderboard')

@@ -3,8 +3,13 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"sort"
+	"strings"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -159,26 +164,27 @@ func updateUserRankings(ctx context.Context, userID primitive.ObjectID) error {
 }
 
 type QuizResultRequest struct {
-	QuizID             string `json:"quiz_id"`
-	Score              int    `json:"score"`
-	MaxScore           int    `json:"max_score"`
-	TimeTaken          int    `json:"time_taken"`
-	PerfectScore       bool   `json:"perfect_score"`
-	QuestionsTotal     int    `json:"questions_total"`
-	QuestionsCorrect   int    `json:"questions_correct"`
-	QuestionsIncorrect int    `json:"questions_incorrect"`
-	DifficultyLevel    string `json:"difficulty_level"`
-	CompletionTime     int    `json:"completion_time"`
-	StreakBonus        int    `json:"streak_bonus"`
-	TimeBonus          int    `json:"time_bonus"`
-	PerfectBonus       int    `json:"perfect_bonus"`
-	TotalPoints        int    `json:"total_points"`
-	ClassID            string `json:"class_id"`
-	QuizTitle          string `json:"quiz_title"`
-	QuizType           string `json:"quiz_type"`
-	AttemptNumber      int    `json:"attempt_number"`
-	CompletionDate     string `json:"completion_date"`
-	PerformanceMetrics struct {
+	QuizID                       string   `json:"quiz_id"`
+	Score                        int      `json:"score"`
+	MaxScore                     int      `json:"max_score"`
+	TimeTaken                    int      `json:"time_taken"`
+	PerfectScore                 bool     `json:"perfect_score"`
+	QuestionsTotal               int      `json:"questions_total"`
+	QuestionsCorrect             int      `json:"questions_correct"`
+	QuestionsIncorrect           int      `json:"questions_incorrect"`
+	DifficultyLevel              string   `json:"difficulty_level"`
+	CompletionTime               int      `json:"completion_time"`
+	StreakBonus                  int      `json:"streak_bonus"`
+	TimeBonus                    int      `json:"time_bonus"`
+	PerfectBonus                 int      `json:"perfect_bonus"`
+	TotalPoints                  int      `json:"total_points"`
+	ClassID                      string   `json:"class_id"`
+	QuizTitle                    string   `json:"quiz_title"`
+	QuizType                     string   `json:"quiz_type"`
+	AttemptNumber                int      `json:"attempt_number"`
+	CompletionDate               string   `json:"completion_date"`
+	IncorrectlyAnsweredQuestions []string `json:"incorrectly_answered_questions"`
+	PerformanceMetrics           struct {
 		Accuracy    float64 `json:"accuracy"`
 		Speed       float64 `json:"speed"`
 		Consistency string  `json:"consistency"`
@@ -199,6 +205,21 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
 		http.Error(w, "Bad payload", http.StatusBadRequest)
+		return
+	}
+
+	// Validate required fields
+	if req.QuizTitle == "" {
+		log.Printf("SubmitUserQuizResult: Warning - Empty quiz title received for quiz ID: %s", req.QuizID)
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Quiz title is required", http.StatusBadRequest)
+		return
+	}
+
+	if req.DifficultyLevel == "" {
+		log.Printf("SubmitUserQuizResult: Warning - Empty difficulty level received for quiz ID: %s", req.QuizID)
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Difficulty level is required", http.StatusBadRequest)
 		return
 	}
 
@@ -223,31 +244,43 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Convert incorrectly answered questions from string IDs to ObjectID
+	var incorrectQuestionOIDs []primitive.ObjectID
+	for _, qid := range req.IncorrectlyAnsweredQuestions {
+		oid, err := primitive.ObjectIDFromHex(qid)
+		if err != nil {
+			log.Printf("Warning: Invalid question ID in request: %s, error: %v", qid, err)
+			continue
+		}
+		incorrectQuestionOIDs = append(incorrectQuestionOIDs, oid)
+	}
+
 	// Calculate points with safety checks
 	points := calculatePoints(req.Score, req.MaxScore, req.TimeBonus, req.StreakBonus, req.PerfectBonus)
 	now := time.Now()
 
 	meta := models.QuizResultMeta{
-		QuizID:             quizOID,
-		ClassID:            classOID,
-		Score:              req.Score,
-		MaxScore:           req.MaxScore,
-		Points:             points,
-		Timestamp:          now,
-		TimeTaken:          req.TimeTaken,
-		PerfectScore:       req.PerfectScore,
-		QuestionsTotal:     req.QuestionsTotal,
-		QuestionsCorrect:   req.QuestionsCorrect,
-		QuestionsIncorrect: req.QuestionsIncorrect,
-		DifficultyLevel:    req.DifficultyLevel,
-		CompletionTime:     req.CompletionTime,
-		StreakBonus:        req.StreakBonus,
-		TimeBonus:          req.TimeBonus,
-		PerfectBonus:       req.PerfectBonus,
-		QuizTitle:          req.QuizTitle,
-		QuizType:           req.QuizType,
-		AttemptNumber:      req.AttemptNumber,
-		CompletionDate:     req.CompletionDate,
+		QuizID:                       quizOID,
+		ClassID:                      classOID,
+		Score:                        req.Score,
+		MaxScore:                     req.MaxScore,
+		Points:                       points,
+		Timestamp:                    now,
+		TimeTaken:                    req.TimeTaken,
+		PerfectScore:                 req.PerfectScore,
+		QuestionsTotal:               req.QuestionsTotal,
+		QuestionsCorrect:             req.QuestionsCorrect,
+		QuestionsIncorrect:           req.QuestionsIncorrect,
+		DifficultyLevel:              req.DifficultyLevel,
+		CompletionTime:               req.CompletionTime,
+		StreakBonus:                  req.StreakBonus,
+		TimeBonus:                    req.TimeBonus,
+		PerfectBonus:                 req.PerfectBonus,
+		QuizTitle:                    req.QuizTitle,
+		QuizType:                     req.QuizType,
+		AttemptNumber:                req.AttemptNumber,
+		CompletionDate:               req.CompletionDate,
+		IncorrectlyAnsweredQuestions: incorrectQuestionOIDs,
 		PerformanceMetrics: models.PerformanceMetrics{
 			Accuracy:    req.PerformanceMetrics.Accuracy,
 			Speed:       req.PerformanceMetrics.Speed,
@@ -255,7 +288,8 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	log.Printf("SubmitUserQuizResult: Attempting to save meta object with MaxScore: %d, QuizID: %s, Score: %d", meta.MaxScore, meta.QuizID.Hex(), meta.Score)
+	log.Printf("SubmitUserQuizResult: Saving quiz result - QuizID: %s, Title: %s, Score: %d/%d, Difficulty: %s",
+		meta.QuizID.Hex(), meta.QuizTitle, meta.Score, meta.MaxScore, meta.DifficultyLevel)
 
 	pointsEntry := models.PointsEntry{
 		Points:      points,
@@ -286,16 +320,17 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Fetch the updated user document to inspect the saved quiz result
+	// Fetch the updated user document to verify the save
 	var updatedUser models.User
 	err = db.UserCollection.FindOne(ctx, bson.M{"_id": userOID}).Decode(&updatedUser)
 	if err != nil {
-		log.Printf("Error fetching updated user for logging: %v", err)
+		log.Printf("Error fetching updated user for verification: %v", err)
 	} else {
 		// Find the newly added quiz result
 		for _, qr := range updatedUser.QuizResults {
-			if qr.QuizID == quizOID && qr.Timestamp.Equal(now) { // Assuming timestamp is unique enough for this log
-				log.Printf("Successfully saved QuizResultMeta with MaxScore: %d for QuizID: %s", qr.MaxScore, qr.QuizID.Hex())
+			if qr.QuizID == quizOID && qr.Timestamp.Equal(now) {
+				log.Printf("Successfully saved QuizResultMeta - QuizID: %s, Title: %s, Score: %d/%d, Difficulty: %s",
+					qr.QuizID.Hex(), qr.QuizTitle, qr.Score, qr.MaxScore, qr.DifficultyLevel)
 				break
 			}
 		}
@@ -414,4 +449,302 @@ func GetLeaderboard(w http.ResponseWriter, r *http.Request) {
 	metrics.HTTPRequestsTotal.WithLabelValues("GET", "/user/leaderboard", "200").Inc()
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(entries)
+}
+
+func containsInt(slice []int, val int) bool {
+	for _, item := range slice {
+		if item == val {
+			return true
+		}
+	}
+	return false
+}
+
+// GET /user/quiz/statistics
+func GetQuizStatistics(w http.ResponseWriter, r *http.Request) {
+	claims := r.Context().Value("claims").(*utils.CustomClaims)
+	if claims.Role != string(models.RoleTeacher) && claims.Role != string(models.RoleAdmin) {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "403").Inc()
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	log.Printf("GetQuizStatistics: Starting to fetch all users")
+	// Get all users
+	cursor, err := db.UserCollection.Find(ctx, bson.M{})
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to fetch users", http.StatusInternalServerError)
+		return
+	}
+	defer cursor.Close(ctx)
+
+	var users []models.User
+	if err := cursor.All(ctx, &users); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to decode users", http.StatusInternalServerError)
+		return
+	}
+
+	log.Printf("GetQuizStatistics: Found %d users", len(users))
+
+	// Aggregate statistics
+	type QuizStats struct {
+		ID                   primitive.ObjectID `json:"id"`
+		Title                string             `json:"title"`
+		Completed            int                `json:"completed"`
+		Avg                  float64            `json:"avg"`
+		Difficulty           string             `json:"difficulty"`
+		TotalUsers           int                `json:"total_users"`
+		InProgress           int                `json:"in_progress"`
+		NotStarted           int                `json:"not_started"`
+		ChallengingQuestions []struct {
+			Question      string  `json:"question"`
+			IncorrectRate float64 `json:"incorrect_rate"`
+		} `json:"challenging_questions"`
+	}
+
+	quizStats := make(map[primitive.ObjectID]*QuizStats)
+
+	// Process each user's quiz results
+	for _, user := range users {
+		log.Printf("GetQuizStatistics: Processing user %s with %d quiz results", user.Email, len(user.QuizResults))
+		for _, result := range user.QuizResults {
+			log.Printf("GetQuizStatistics: Processing quiz result - QuizID: %s, Title: %s, Score: %d/%d, Difficulty: %s",
+				result.QuizID.Hex(), result.QuizTitle, result.Score, result.MaxScore, result.DifficultyLevel)
+
+			stats, exists := quizStats[result.QuizID]
+			if !exists {
+				stats = &QuizStats{
+					ID:         result.QuizID,
+					Title:      result.QuizTitle,
+					Difficulty: result.DifficultyLevel,
+				}
+				quizStats[result.QuizID] = stats
+				log.Printf("GetQuizStatistics: Created new stats entry for quiz %s with title '%s'",
+					result.QuizID.Hex(), result.QuizTitle)
+			}
+
+			stats.Completed++
+			if result.MaxScore > 0 {
+				scorePercentage := float64(result.Score) / float64(result.MaxScore) * 100
+				stats.Avg = (stats.Avg*float64(stats.Completed-1) + scorePercentage) / float64(stats.Completed)
+				log.Printf("GetQuizStatistics: Updated average for quiz %s to %.2f%%",
+					result.QuizID.Hex(), stats.Avg)
+			}
+		}
+	}
+
+	// Calculate completion rates
+	totalUsers := len(users)
+	for quizID, stats := range quizStats {
+		stats.TotalUsers = totalUsers
+		stats.NotStarted = totalUsers - stats.Completed
+		log.Printf("GetQuizStatistics: Final stats for quiz %s - Title: '%s', Completed: %d, Not Started: %d, Avg: %.2f%%",
+			quizID.Hex(), stats.Title, stats.Completed, stats.NotStarted, stats.Avg)
+	}
+
+	// Convert map to slice
+	var statsList []QuizStats
+	for _, stats := range quizStats {
+		statsList = append(statsList, *stats)
+	}
+
+	// Sort by title
+	sort.Slice(statsList, func(i, j int) bool {
+		return statsList[i].Title < statsList[j].Title
+	})
+
+	metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "200").Inc()
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(statsList)
+}
+
+// GET /user/quiz/{quizId}/challenging-questions
+func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
+	claims := r.Context().Value("claims").(*utils.CustomClaims)
+	if claims.Role != string(models.RoleTeacher) && claims.Role != string(models.RoleAdmin) {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "403").Inc()
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
+	quizID := mux.Vars(r)["quizId"]
+	quizOID, err := primitive.ObjectIDFromHex(quizID)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Invalid quiz ID", http.StatusBadRequest)
+		return
+	}
+
+	log.Printf("GetChallengingQuestions: Starting to fetch challenging questions for quiz %s", quizID)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Get all users who attempted this quiz
+	cursor, err := db.UserCollection.Find(ctx, bson.M{
+		"quiz_results.quiz_id": quizOID,
+	})
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to fetch users", http.StatusInternalServerError)
+		return
+	}
+	defer cursor.Close(ctx)
+
+	var users []models.User
+	if err := cursor.All(ctx, &users); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to decode users", http.StatusInternalServerError)
+		return
+	}
+
+	log.Printf("GetChallengingQuestions: Found %d users who attempted quiz %s", len(users), quizID)
+
+	// Get quiz details from evaluation service
+	evalServiceURL := os.Getenv("EVAL_SERVICE_URL")
+	if evalServiceURL == "" {
+		log.Printf("GetChallengingQuestions: EVAL_SERVICE_URL environment variable is not set")
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Evaluation service URL not configured", http.StatusInternalServerError)
+		return
+	}
+
+	// Ensure the URL has the correct format
+	if !strings.HasPrefix(evalServiceURL, "http://") && !strings.HasPrefix(evalServiceURL, "https://") {
+		evalServiceURL = "http://" + evalServiceURL
+	}
+
+	evalURL := fmt.Sprintf("%s/evaluation/quiz/meta/%s", evalServiceURL, quizID)
+	log.Printf("GetChallengingQuestions: Fetching quiz meta from %s", evalURL)
+
+	reqEval, err := http.NewRequestWithContext(ctx, "GET", evalURL, nil)
+	if err != nil {
+		log.Printf("GetChallengingQuestions: Error creating request: %v", err)
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to create request to evaluation service", http.StatusInternalServerError)
+		return
+	}
+
+	reqEval.Header.Set("Authorization", r.Header.Get("Authorization"))
+	respEval, err := http.DefaultClient.Do(reqEval)
+	if err != nil {
+		log.Printf("GetChallengingQuestions: Error fetching quiz meta: %v", err)
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to get quiz details from evaluation service", http.StatusInternalServerError)
+		return
+	}
+	defer respEval.Body.Close()
+
+	if respEval.StatusCode != http.StatusOK {
+		body, _ := ioutil.ReadAll(respEval.Body)
+		log.Printf("GetChallengingQuestions: Evaluation service returned status %d: %s", respEval.StatusCode, string(body))
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, fmt.Sprintf("Evaluation service returned status %d", respEval.StatusCode), http.StatusInternalServerError)
+		return
+	}
+
+	var quizMeta struct {
+		Questions []struct {
+			ID   primitive.ObjectID `json:"id"`
+			Text string             `json:"text"`
+		} `json:"questions"`
+	}
+	if err := json.NewDecoder(respEval.Body).Decode(&quizMeta); err != nil {
+		log.Printf("GetChallengingQuestions: Error decoding quiz meta: %v", err)
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to decode quiz details", http.StatusInternalServerError)
+		return
+	}
+
+	log.Printf("GetChallengingQuestions: Found %d questions in quiz meta", len(quizMeta.Questions))
+
+	// Calculate incorrect rates for each question
+	questionStats := make(map[primitive.ObjectID]struct {
+		TotalAttempts int
+		Incorrect     int
+		Text          string
+	})
+
+	for _, q := range quizMeta.Questions {
+		questionStats[q.ID] = struct {
+			TotalAttempts int
+			Incorrect     int
+			Text          string
+		}{Text: q.Text}
+		log.Printf("GetChallengingQuestions: Added question %s with text: %s", q.ID.Hex(), q.Text)
+	}
+
+	for _, user := range users {
+		for _, result := range user.QuizResults {
+			if result.QuizID == quizOID {
+				log.Printf("GetChallengingQuestions: Processing results for user %s", user.Email)
+				// For each question in the quiz
+				for _, q := range quizMeta.Questions {
+					stats := questionStats[q.ID]
+					stats.TotalAttempts++
+
+					// If the question was answered incorrectly
+					if containsObjectID(result.IncorrectlyAnsweredQuestions, q.ID) {
+						stats.Incorrect++
+						log.Printf("GetChallengingQuestions: Question %s was answered incorrectly by user %s",
+							q.ID.Hex(), user.Email)
+					}
+
+					questionStats[q.ID] = stats
+				}
+			}
+		}
+	}
+
+	// Convert to response format
+	var challengingQuestions []struct {
+		Question      string  `json:"question"`
+		IncorrectRate float64 `json:"incorrect_rate"`
+	}
+
+	for qID, stats := range questionStats {
+		if stats.TotalAttempts > 0 {
+			incorrectRate := float64(stats.Incorrect) / float64(stats.TotalAttempts) * 100
+			log.Printf("GetChallengingQuestions: Question %s - Total attempts: %d, Incorrect: %d, Rate: %.2f%%",
+				qID.Hex(), stats.TotalAttempts, stats.Incorrect, incorrectRate)
+
+			challengingQuestions = append(challengingQuestions, struct {
+				Question      string  `json:"question"`
+				IncorrectRate float64 `json:"incorrect_rate"`
+			}{
+				Question:      stats.Text,
+				IncorrectRate: incorrectRate,
+			})
+		}
+	}
+
+	// Sort by incorrect rate descending
+	sort.Slice(challengingQuestions, func(i, j int) bool {
+		return challengingQuestions[i].IncorrectRate > challengingQuestions[j].IncorrectRate
+	})
+
+	// Take top 5 most challenging questions
+	if len(challengingQuestions) > 5 {
+		challengingQuestions = challengingQuestions[:5]
+	}
+
+	log.Printf("GetChallengingQuestions: Returning %d challenging questions", len(challengingQuestions))
+
+	metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "200").Inc()
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(challengingQuestions)
+}
+
+func containsObjectID(slice []primitive.ObjectID, val primitive.ObjectID) bool {
+	for _, item := range slice {
+		if item == val {
+			return true
+		}
+	}
+	return false
 }

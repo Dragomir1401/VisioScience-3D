@@ -32,7 +32,7 @@ interface ClassFilter {
   name: string
 }
 
-export const ClassPerformanceCard = () => {
+const ClassPerformanceCard = () => {
   const [selectedClass, setSelectedClass] = useState('all')
   const [selectedClassForGraph, setSelectedClassForGraph] = useState('all')
   const [classPerformanceData, setClassPerformanceData] = useState<ClassPerformanceSummary[]>([])
@@ -280,4 +280,6 @@ export const ClassPerformanceCard = () => {
       </div>
     </div>
   )
-} 
+}
+
+export default ClassPerformanceCard; 
