@@ -13,7 +13,6 @@ import (
 	"net/http"
 	"os"
 	"sort"
-	"strconv"
 	"time"
 
 	"evaluation-service/utils"
@@ -593,6 +592,25 @@ func GetQuizForAttempt(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(quiz)
 }
 
+type SubmitAttemptRequest struct {
+	QuizID    string `json:"quiz_id"`
+	Answers   []int  `json:"answers"`
+	TimeTaken int    `json:"timeTaken"`
+	MaxScore  int    `json:"maxScore"`
+	ClassID   string `json:"class_id"`
+}
+
+type SubmitAttemptResponse struct {
+	Score                        int                  `json:"score"`
+	MaxScore                     int                  `json:"maxScore"`
+	CorrectAnswers               []bool               `json:"correctAnswers"`
+	IncorrectlyAnsweredQuestions []primitive.ObjectID `json:"incorrectlyAnsweredQuestions"`
+	Points                       int64                `json:"points"`
+	TimeBonus                    int64                `json:"timeBonus"`
+	PerfectBonus                 int64                `json:"perfectBonus"`
+	StreakBonus                  int64                `json:"streakBonus"`
+}
+
 // POST /evaluation/quiz/attempt/{quiz_id}
 func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
@@ -603,16 +621,7 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var req struct {
-		QuizID     string   `json:"quiz_id"`
-		Answers    []string `json:"answers"`
-		TimeTaken  int      `json:"time_taken"`
-		ClassID    string   `json:"class_id"`
-		QuizTitle  string   `json:"quiz_title"`
-		QuizType   string   `json:"quiz_type"`
-		Difficulty string   `json:"difficulty"`
-	}
-
+	var req SubmitAttemptRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
 		http.Error(w, "Bad payload", http.StatusBadRequest)
@@ -643,31 +652,58 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	score := 0
+	// Validate answers length matches questions length
+	if len(req.Answers) != len(quiz.Questions) {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Number of answers doesn't match number of questions", http.StatusBadRequest)
+		return
+	}
+
+	var score int
+	var correctAnswers []bool
 	var incorrectlyAnsweredQuestions []primitive.ObjectID
 
+	// Check each answer
 	for i, q := range quiz.Questions {
-		if i >= len(req.Answers) {
-			break
-		}
-
-		userAnswer := req.Answers[i]
-		correctAnswer := q.Answer
-
-		userAnswerInt, err := strconv.Atoi(userAnswer)
-		if err != nil {
-			log.Printf("SubmitAttempt: Error converting user answer to integer: %v", err)
-			continue
-		}
-
-		if containsInt(correctAnswer, userAnswerInt) {
-			score += q.Points
+		isCorrect := false
+		if containsInt(q.Answer, req.Answers[i]) {
+			score++
+			isCorrect = true
 		} else {
 			incorrectlyAnsweredQuestions = append(incorrectlyAnsweredQuestions, q.ID)
 		}
+		correctAnswers = append(correctAnswers, isCorrect)
 	}
 
-	log.Printf("SubmitAttempt: Incorrectly answered questions: %v", incorrectlyAnsweredQuestions)
+	// Calculate bonuses
+	timeBonus := int64(0)
+	if quiz.TimeBonus {
+		timeBonus = calculateTimeBonus(req.TimeTaken)
+	}
+
+	perfectBonus := int64(0)
+	if quiz.PerfectBonus > 0 && score == len(quiz.Questions) {
+		perfectBonus = int64(quiz.PerfectBonus)
+	}
+
+	streakBonus := int64(0)
+	if quiz.StreakBonus {
+		streakBonus = calculateStreakBonus(correctAnswers)
+	}
+
+	// Calculate total points
+	points := calculatePoints(&quiz, score, int(timeBonus), int(perfectBonus), int(streakBonus))
+
+	response := SubmitAttemptResponse{
+		Score:                        score,
+		MaxScore:                     len(quiz.Questions),
+		CorrectAnswers:               correctAnswers,
+		IncorrectlyAnsweredQuestions: incorrectlyAnsweredQuestions,
+		Points:                       points,
+		TimeBonus:                    timeBonus,
+		PerfectBonus:                 perfectBonus,
+		StreakBonus:                  streakBonus,
+	}
 
 	now := time.Now()
 	result := models.QuizResult{
@@ -681,16 +717,91 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		IncorrectlyAnsweredQuestions: incorrectlyAnsweredQuestions,
 	}
 
-	_, err = helpers.Client.Database("data-feed-db").Collection("quiz_results").InsertOne(ctx, result)
+	// Update user stats
+	var userStats models.UserQuizStats
+	err = helpers.Client.Database("data-feed-db").Collection("user_quiz_stats").FindOne(ctx, bson.M{
+		"user_id": userOID,
+		"quiz_id": quizOID,
+	}).Decode(&userStats)
+
+	if err == mongo.ErrNoDocuments {
+		userStats = models.UserQuizStats{
+			UserID: userOID,
+			QuizID: quizOID,
+		}
+	} else if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to get user stats", http.StatusInternalServerError)
+		return
+	}
+
+	userStats.TotalAttempts++
+	userStats.AverageScore = (userStats.AverageScore*float64(userStats.TotalAttempts-1) + float64(score)) / float64(userStats.TotalAttempts)
+	userStats.AverageTime = (userStats.AverageTime*float64(userStats.TotalAttempts-1) + float64(req.TimeTaken)) / float64(userStats.TotalAttempts)
+
+	if score == len(quiz.Questions) {
+		userStats.ConsecutivePerfect++
+	} else {
+		userStats.ConsecutivePerfect = 0
+	}
+
+	// Update quiz with new result
+	_, err = helpers.Client.Database("data-feed-db").Collection("quizzes").UpdateOne(
+		ctx,
+		bson.M{"_id": quizOID},
+		bson.M{"$push": bson.M{"quiz_results": result}},
+	)
 	if err != nil {
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
 		http.Error(w, "Failed to save result", http.StatusInternalServerError)
 		return
 	}
 
+	// Update user stats
+	_, err = helpers.Client.Database("data-feed-db").Collection("user_quiz_stats").UpdateOne(
+		ctx,
+		bson.M{"user_id": userOID, "quiz_id": quizOID},
+		bson.M{"$set": userStats},
+		options.Update().SetUpsert(true),
+	)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to update user stats", http.StatusInternalServerError)
+		return
+	}
+
+	// Update quiz statistics
+	if err := updateQuizStatistics(ctx, quizOID); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to update quiz statistics", http.StatusInternalServerError)
+		return
+	}
+
+	// Notify user-data-service about points earned
+	go func() {
+		userDataURL := os.Getenv("USER_DATA_SERVICE_URL")
+		if userDataURL == "" {
+			userDataURL = "http://user-data-service:8080"
+		}
+
+		pointsReq := struct {
+			QuizID   string `json:"quiz_id"`
+			Score    int    `json:"score"`
+			MaxScore int    `json:"max_score"`
+		}{
+			QuizID:   req.QuizID,
+			Score:    score,
+			MaxScore: len(quiz.Questions),
+		}
+
+		jsonData, _ := json.Marshal(pointsReq)
+		http.Post(userDataURL+"/user/quiz/result", "application/json", bytes.NewBuffer(jsonData))
+	}()
+
 	metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "201").Inc()
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(map[string]string{"message": "Result saved"})
+	json.NewEncoder(w).Encode(response)
 }
 
 // GET /evaluation/quiz/{quiz_id}/results
@@ -855,46 +966,9 @@ func containsInt(arr []int, v int) bool {
 }
 
 // calculatePoints calculates the total points for a quiz result
-func calculatePoints(quiz *models.Quiz, result *models.QuizResult, userStats *models.UserQuizStats) int64 {
-	var totalPoints int64
-
-	// Base points from correct answers
-	basePoints := int64(float64(result.Score) / float64(len(quiz.Questions)) * float64(quiz.MaxPoints))
-	totalPoints += basePoints
-
-	// Perfect score bonus
-	if result.Score == len(quiz.Questions) && quiz.PerfectBonus > 0 {
-		totalPoints += quiz.PerfectBonus
-		result.PerfectBonus = quiz.PerfectBonus
-	}
-
-	// Time bonus
-	if quiz.TimeBonus {
-		// Calculate time bonus based on average completion time
-		// More bonus for faster completion
-		avgTime := float64(userStats.AverageTime)
-		if avgTime > 0 {
-			timeRatio := float64(result.TimeTaken) / avgTime
-			if timeRatio < 0.5 { // Completed in less than half the average time
-				timeBonus := int64(float64(quiz.MaxPoints) * 0.2) // 20% bonus
-				totalPoints += timeBonus
-				result.TimeBonus = timeBonus
-			} else if timeRatio < 0.75 { // Completed in less than 75% of average time
-				timeBonus := int64(float64(quiz.MaxPoints) * 0.1) // 10% bonus
-				totalPoints += timeBonus
-				result.TimeBonus = timeBonus
-			}
-		}
-	}
-
-	// Streak bonus
-	if quiz.StreakBonus && userStats.ConsecutivePerfect > 0 {
-		streakBonus := int64(float64(quiz.MaxPoints) * 0.05 * float64(userStats.ConsecutivePerfect)) // 5% per streak
-		totalPoints += streakBonus
-		result.StreakBonus = streakBonus
-	}
-
-	return totalPoints
+func calculatePoints(quiz *models.Quiz, score int, timeBonus int, perfectBonus int, streakBonus int) int64 {
+	basePoints := int64(score * 10) // 10 points per correct answer
+	return basePoints + int64(timeBonus) + int64(perfectBonus) + int64(streakBonus)
 }
 
 // updateQuizStatistics updates the statistics for a quiz
@@ -1113,7 +1187,7 @@ func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Calculate points
-	result.Points = calculatePoints(&quiz, &result, &userStats)
+	result.Points = calculatePoints(&quiz, score, 0, 0, 0)
 
 	// Update user stats
 	userStats.TotalAttempts++
@@ -1355,4 +1429,31 @@ func AddMockAnswers(w http.ResponseWriter, r *http.Request) {
 		"updated_quizzes": updatedCount,
 		"total_quizzes":   quizCount,
 	})
+}
+
+func calculateTimeBonus(timeTaken int) int64 {
+	// Bonus points for completing quickly
+	// Example: 10 points if completed under 30 seconds
+	if timeTaken < 30 {
+		return 10
+	}
+	return 0
+}
+
+func calculateStreakBonus(correctAnswers []bool) int64 {
+	// Bonus points for consecutive correct answers
+	var streak int
+	var maxStreak int
+	for _, correct := range correctAnswers {
+		if correct {
+			streak++
+			if streak > maxStreak {
+				maxStreak = streak
+			}
+		} else {
+			streak = 0
+		}
+	}
+	// Example: 5 points per correct answer in the longest streak
+	return int64(maxStreak * 5)
 }

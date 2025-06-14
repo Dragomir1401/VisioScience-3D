@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const dbg = (...a) => console.debug("[QuizAttempt]", ...a);
@@ -14,6 +14,9 @@ const QuizAttempt = () => {
   const [error, setError] = useState("");
   const [result, setResult] = useState(null);
   const [timeStarted, setTimeStarted] = useState(null);
+  const startTime = useRef(Date.now());
+  const [timeTaken, setTimeTaken] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setTimeStarted(Date.now());
@@ -58,35 +61,34 @@ const QuizAttempt = () => {
     })();
   }, [quizId, token]);
 
-  const choose = (qIdx, cIdx) =>
+  const choose = (qIdx, cIdx) => {
     setAnswers((prev) => {
-      const cp = [...prev];
-      cp[qIdx] = cIdx;
-      return cp;
+      const newAnswers = [...prev];
+      newAnswers[qIdx] = cIdx;
+      return newAnswers;
     });
+  };
 
   const handleSubmit = async () => {
-    if (answers.includes(null)) {
-      alert("Răspunde la toate întrebările înainte de trimitere!");
-      return;
-    }
-  
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    setError(null);
+
     try {
-      const timeTaken = Math.floor((Date.now() - timeStarted) / 1000); // in seconds
-      const maxScore = quiz.questions.reduce((sum, q) => sum + q.points, 0);
-  
-      const evaluationPayload = { 
-        quiz_id: quizId, // Modifică aici pentru a corespunde cu backend-ul
-        answers: answers.map((answer) => answer.toString()), // Asigură-te că răspunsurile sunt trimise ca stringuri
-        timeTaken: timeTaken,
-        maxScore: maxScore,
-        class_id: quiz.classId, 
+      const timeSpent = Math.floor((Date.now() - startTime.current) / 1000);
+      setTimeTaken(timeSpent);
+
+      const payload = {
+        quiz_id: quizId,
+        answers: answers.map(a => parseInt(a, 10)),
+        timeTaken: timeSpent,
+        maxScore: quiz.questions.length,
+        class_id: quiz.classId,
       };
-  
-      console.log('Evaluation Payload:', evaluationPayload);
-  
-      // Trimite cererea la backend
-      const evaluationResponse = await fetch(
+
+      console.log('Evaluation Payload:', payload);
+
+      const response = await fetch(
         `http://localhost:8000/evaluation/quiz/attempt/${quizId}`,
         {
           method: "POST",
@@ -94,23 +96,38 @@ const QuizAttempt = () => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(evaluationPayload),
+          body: JSON.stringify(payload),
         }
       );
-  
-      if (!evaluationResponse.ok) {
-        throw new Error(`${evaluationResponse.status} – ${await evaluationResponse.text()}`);
+
+      if (!response.ok) {
+        throw new Error("Failed to submit quiz");
       }
-  
-      const evaluationResult = await evaluationResponse.json();
-      setResult(evaluationResult);
+
+      const data = await response.json();
+      setResult(data);
+
+      console.log('Rezultate quiz-uri:', {
+        score: data.score,
+        maxScore: data.maxScore,
+        correctAnswers: data.correctAnswers,
+        points: data.points,
+        bonuses: {
+          time: data.timeBonus,
+          perfect: data.perfectBonus,
+          streak: data.streakBonus
+        }
+      });
+
       setStage("sent");
-    } catch (e) {
-      console.error('Quiz Attempt Error:', e);
-      alert(`Eroare la trimitere: ${e.message}`);
+    } catch (err) {
+      console.error('Error submitting quiz:', err);
+      setError(err.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
-    
+
   if (stage === "loading")
     return <p className="pt-24 text-center text-mulberry">Se încarcă…</p>;
   if (error)
@@ -121,18 +138,83 @@ const QuizAttempt = () => {
     );
   if (!quiz) return null;
 
-  // const maxPoints = quiz.questions.reduce((sum, q) => sum + q.points, 0);
-  // const pct = result ? Math.round((result.score / maxPoints) * 100) : 0;
+  if (result) {
+    return (
+      <div className="p-6 max-w-4xl mx-auto">
+        <div className="bg-white rounded-xl shadow-md p-8">
+          <h2 className="text-2xl font-bold mb-6">Rezultate quiz-uri</h2>
+          
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-semibold text-gray-700">Scor</h3>
+              <p className="text-3xl font-bold text-blue-600">
+                {result.score} / {result.maxScore}
+              </p>
+              <p className="text-sm text-gray-500">
+                {((result.score / result.maxScore) * 100).toFixed(1)}%
+              </p>
+            </div>
+            
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-semibold text-gray-700">Total Puncte</h3>
+              <p className="text-3xl font-bold text-green-600">
+                {result.points}
+              </p>
+            </div>
+          </div>
 
-  const maxPoints = quiz.questions.reduce((sum, q) => sum + q.points, 0);
-  console.log('Max Points:', maxPoints);  // Verifică această valoare
+          {result.timeBonus > 0 && (
+            <div className="mb-4 p-3 bg-green-50 rounded-lg">
+              <p className="text-green-700">
+                Bonus timp: +{result.timeBonus} puncte
+              </p>
+            </div>
+          )}
 
-  const score = result ? result.score : 0;
-  console.log('Score:', score);  // Verifică această valoare
+          {result.perfectBonus > 0 && (
+            <div className="mb-4 p-3 bg-blue-50 rounded-lg">
+              <p className="text-blue-700">
+                Bonus scor perfect: +{result.perfectBonus} puncte
+              </p>
+            </div>
+          )}
 
-  const pct = maxPoints > 0 ? Math.round((score / maxPoints) * 100) : 0;
-  console.log('Percentage:', pct);  // Verifică valoarea procentajului
+          {result.streakBonus > 0 && (
+            <div className="mb-4 p-3 bg-purple-50 rounded-lg">
+              <p className="text-purple-700">
+                Bonus streak: +{result.streakBonus} puncte
+              </p>
+            </div>
+          )}
 
+          <div className="mt-8">
+            <h3 className="font-semibold mb-4">Rezultate întrebări</h3>
+            {quiz.questions.map((q, idx) => (
+              <div key={q.id} className={`p-4 mb-3 rounded-lg ${
+                result.correctAnswers[idx] ? 'bg-green-50' : 'bg-red-50'
+              }`}>
+                <p className="font-medium">{q.text}</p>
+                <p className="text-sm mt-1">
+                  {result.correctAnswers[idx] 
+                    ? '✓ Corect' 
+                    : '✗ Incorect'}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 flex justify-end">
+            <button
+              onClick={() => navigate(-1)}
+              className="px-6 py-2 bg-mulberry text-white rounded-lg hover:bg-mulberry-dark transition-colors duration-200 font-medium shadow-sm"
+            >
+              Înapoi la Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-24 px-6 bg-gradient-to-b from-[#fff0f5] via-[#f3e8ff] to-[#fff7ed]">
@@ -187,16 +269,18 @@ const QuizAttempt = () => {
             <div className="bg-white p-6 rounded-xl shadow-md border border-purple-200 space-y-4">
               <div className="text-center">
                 <p className="text-lg font-semibold text-mulberry">
-                  Ai obținut {result.score} / {maxPoints} puncte
+                  Ai obținut {result.score} / {quiz.maxPoints} puncte
                 </p>
-                <p className="text-sm text-gray-600">({pct}%)</p>
+                <p className="text-sm text-gray-600">
+                  {((result.score / quiz.maxPoints) * 100).toFixed(1)}%
+                </p>
               </div>
 
               {result.points > result.score && (
                 <div className="bg-green-50 p-4 rounded-lg border border-green-200">
                   <h3 className="font-semibold text-green-800 mb-2">Bonusuri obținute:</h3>
                   <ul className="space-y-2">
-                    {result.perfectScore && (
+                    {result.perfectBonus > 0 && (
                       <li className="flex items-center gap-2 text-green-700">
                         <span>✨</span> Bonus scor perfect: +{quiz.perfectBonus} puncte
                       </li>
