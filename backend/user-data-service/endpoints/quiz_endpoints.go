@@ -252,6 +252,8 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		incorrectQuestionOIDs = append(incorrectQuestionOIDs, oid)
 	}
 
+	log.Printf("SubmitUserQuizResult: Incorrectly answered questions: %v", incorrectQuestionOIDs)
+
 	// Calculate points with safety checks
 	points := calculatePoints(req.Score, req.MaxScore, req.TimeBonus, req.StreakBonus, req.PerfectBonus)
 	now := time.Now()
@@ -618,94 +620,92 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
+	// Get question details from evaluation service
+	var quizData struct {
+		Questions []struct {
+			ID   primitive.ObjectID `json:"id"`
+			Text string             `json:"text"`
+		} `json:"questions"`
+	}
+
+	maxRetries := 3
+	for retry := 0; retry < maxRetries; retry++ {
+		evalURL := fmt.Sprintf("%s/evaluation/quiz/%s", utils.GetEnv("EVAL_SERVICE_URL", "http://localhost:8000"), quizOID.Hex())
+		log.Printf("GetChallengingQuestions: Attempting to fetch quiz data from %s (attempt %d/%d)", evalURL, retry+1, maxRetries)
+
+		reqEval, err := http.NewRequestWithContext(ctx, "GET", evalURL, nil)
+		if err != nil {
+			log.Printf("GetChallengingQuestions: Error creating request to evaluation service: %v", err)
+			continue
+		}
+		reqEval.Header.Set("Authorization", r.Header.Get("Authorization"))
+
+		respEval, err := client.Do(reqEval)
+		if err != nil {
+			log.Printf("GetChallengingQuestions: Error contacting evaluation service (attempt %d/%d): %v", retry+1, maxRetries, err)
+			if retry < maxRetries-1 {
+				backoff := time.Duration(retry+1) * time.Second
+				log.Printf("GetChallengingQuestions: Retrying in %v...", backoff)
+				time.Sleep(backoff)
+				continue
+			}
+			break
+		}
+		defer respEval.Body.Close()
+
+		if respEval.StatusCode != http.StatusOK {
+			log.Printf("GetChallengingQuestions: Evaluation service returned status %d (attempt %d/%d)", respEval.StatusCode, retry+1, maxRetries)
+			if retry < maxRetries-1 {
+				backoff := time.Duration(retry+1) * time.Second
+				log.Printf("GetChallengingQuestions: Retrying in %v...", backoff)
+				time.Sleep(backoff)
+				continue
+			}
+			break
+		}
+
+		if err := json.NewDecoder(respEval.Body).Decode(&quizData); err != nil {
+			log.Printf("GetChallengingQuestions: Error decoding quiz data: %v", err)
+			break
+		}
+
+		log.Printf("GetChallengingQuestions: Successfully fetched quiz data with %d questions", len(quizData.Questions))
+		break
+	}
+
+	// Initialize question stats with text from quiz data
+	for _, q := range quizData.Questions {
+		questionStats[q.ID] = struct {
+			TotalAttempts     int
+			IncorrectAttempts int
+			QuestionText      string
+		}{
+			QuestionText: q.Text,
+		}
+	}
+
 	// Process each user's quiz results
 	for _, user := range users {
 		for _, qr := range user.QuizResults {
 			if qr.QuizID != quizOID {
 				continue
 			}
-			log.Printf("GetChallengingQuestions: Processing quiz result for user %s, quiz ID: %s", user.Email, qr.QuizID.Hex())
 
-			// Get question details from evaluation service with retries
-			var quizData struct {
-				Questions []struct {
-					ID   primitive.ObjectID `json:"id"`
-					Text string             `json:"text"`
-				} `json:"questions"`
-			}
-
-			maxRetries := 3
-			for retry := 0; retry < maxRetries; retry++ {
-				evalURL := fmt.Sprintf("%s/evaluation/quiz/%s", utils.GetEnv("EVAL_SERVICE_URL", "http://localhost:8000"), quizOID.Hex())
-				log.Printf("GetChallengingQuestions: Attempting to fetch quiz data from %s (attempt %d/%d)", evalURL, retry+1, maxRetries)
-
-				reqEval, err := http.NewRequestWithContext(ctx, "GET", evalURL, nil)
-				if err != nil {
-					log.Printf("GetChallengingQuestions: Error creating request to evaluation service: %v", err)
-					continue
-				}
-				reqEval.Header.Set("Authorization", r.Header.Get("Authorization"))
-
-				respEval, err := client.Do(reqEval)
-				if err != nil {
-					log.Printf("GetChallengingQuestions: Error contacting evaluation service (attempt %d/%d): %v", retry+1, maxRetries, err)
-					if retry < maxRetries-1 {
-						backoff := time.Duration(retry+1) * time.Second
-						log.Printf("GetChallengingQuestions: Retrying in %v...", backoff)
-						time.Sleep(backoff)
-						continue
-					}
-					break
-				}
-				defer respEval.Body.Close()
-
-				if respEval.StatusCode != http.StatusOK {
-					log.Printf("GetChallengingQuestions: Evaluation service returned status %d (attempt %d/%d)", respEval.StatusCode, retry+1, maxRetries)
-					if retry < maxRetries-1 {
-						backoff := time.Duration(retry+1) * time.Second
-						log.Printf("GetChallengingQuestions: Retrying in %v...", backoff)
-						time.Sleep(backoff)
-						continue
-					}
-					break
-				}
-
-				if err := json.NewDecoder(respEval.Body).Decode(&quizData); err != nil {
-					log.Printf("GetChallengingQuestions: Error decoding quiz data: %v", err)
-					break
-				}
-
-				log.Printf("GetChallengingQuestions: Successfully fetched quiz data with %d questions", len(quizData.Questions))
-				break
-			}
-
-			// Create a map of question IDs to text
-			questionMap := make(map[primitive.ObjectID]string)
+			// Increment total attempts for all questions
 			for _, q := range quizData.Questions {
-				questionMap[q.ID] = q.Text
-			}
-
-			// First, increment TotalAttempts for all questions
-			for _, q := range quizData.Questions {
-				stats, exists := questionStats[q.ID]
-				if !exists {
-					stats = struct {
-						TotalAttempts     int
-						IncorrectAttempts int
-						QuestionText      string
-					}{
-						QuestionText: q.Text,
-					}
-				}
+				stats := questionStats[q.ID]
 				stats.TotalAttempts++
 				questionStats[q.ID] = stats
+				log.Printf("GetChallengingQuestions: Incremented TotalAttempts for question %s: %d", q.Text, stats.TotalAttempts)
 			}
 
-			// Then, increment IncorrectAttempts only for incorrect questions
+			// Increment incorrect attempts for incorrectly answered questions
 			for _, qid := range qr.IncorrectlyAnsweredQuestions {
-				stats := questionStats[qid]
-				stats.IncorrectAttempts++
-				questionStats[qid] = stats
+				if stats, exists := questionStats[qid]; exists {
+					stats.IncorrectAttempts++
+					questionStats[qid] = stats
+					log.Printf("GetChallengingQuestions: Incremented IncorrectAttempts for question ID %s: %d", qid.Hex(), stats.IncorrectAttempts)
+				}
 			}
 		}
 	}
@@ -719,6 +719,7 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 	for _, stats := range questionStats {
 		if stats.TotalAttempts > 0 {
 			incorrectRate := float64(stats.IncorrectAttempts) / float64(stats.TotalAttempts) * 100
+			log.Printf("GetChallengingQuestions: Question: %s, TotalAttempts: %d, IncorrectAttempts: %d, Incorrect Rate: %.2f%%", stats.QuestionText, stats.TotalAttempts, stats.IncorrectAttempts, incorrectRate)
 			challengingQuestions = append(challengingQuestions, struct {
 				Question      string  `json:"question"`
 				IncorrectRate float64 `json:"incorrect_rate"`

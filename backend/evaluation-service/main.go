@@ -88,6 +88,9 @@ func main() {
 	r.Handle("/evaluation/quiz/{quiz_id}/statistics", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizStatistics))).Methods("GET")
 	r.Handle("/evaluation/quiz/submit", middleware.JWTAuth(http.HandlerFunc(handlers.SubmitQuizResult))).Methods("POST")
 
+	// POST /evaluation/quiz/{quizId}/statistics
+	r.Handle("/evaluation/quiz/{quiz_id}/statistics", middleware.JWTAuth(http.HandlerFunc(handlers.UpdateQuizStatistics))).Methods("POST")
+
 	corsObj := gorillaHandlers.CORS(
 		gorillaHandlers.AllowedOrigins([]string{"*"}),
 		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),

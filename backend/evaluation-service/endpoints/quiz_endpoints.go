@@ -10,10 +10,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"sort"
+	"strconv"
 	"time"
 
 	"evaluation-service/utils"
@@ -595,92 +595,102 @@ func GetQuizForAttempt(w http.ResponseWriter, r *http.Request) {
 
 // POST /evaluation/quiz/attempt/{quiz_id}
 func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
-	start := time.Now()
-	path := utils.NormalizePath(r.URL.Path)
-	defer func() {
-		metrics.EvaluationDuration.WithLabelValues(path).Observe(time.Since(start).Seconds())
-	}()
-
-	quizID, err := getQuizIDFromParams(r)
-	if err != nil {
-		metrics.EvaluationOperations.WithLabelValues(path, "error").Inc()
-		http.Error(w, "invalid quiz id", http.StatusBadRequest)
-		return
-	}
-
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
-	userID, _ := primitive.ObjectIDFromHex(claims.UserID)
-
-	var body struct {
-		Answers []int `json:"answers"`
-	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		metrics.EvaluationOperations.WithLabelValues(path, "error").Inc()
-		http.Error(w, "bad body", http.StatusBadRequest)
+	userOID, err := primitive.ObjectIDFromHex(claims.UserID)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Invalid user ID", http.StatusBadRequest)
 		return
 	}
+
+	var req struct {
+		QuizID     string   `json:"quiz_id"`
+		Answers    []string `json:"answers"`
+		TimeTaken  int      `json:"time_taken"`
+		ClassID    string   `json:"class_id"`
+		QuizTitle  string   `json:"quiz_title"`
+		QuizType   string   `json:"quiz_type"`
+		Difficulty string   `json:"difficulty"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Bad payload", http.StatusBadRequest)
+		return
+	}
+
+	quizOID, err := primitive.ObjectIDFromHex(req.QuizID)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Invalid quiz ID", http.StatusBadRequest)
+		return
+	}
+
+	classOID, err := primitive.ObjectIDFromHex(req.ClassID)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Invalid class ID", http.StatusBadRequest)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 
 	var quiz models.Quiz
-	coll := helpers.Client.Database("data-feed-db").Collection("quizzes")
-	if err := coll.FindOne(r.Context(), bson.M{"_id": quizID}).Decode(&quiz); err != nil {
-		if err == mongo.ErrNoDocuments {
-			metrics.EvaluationOperations.WithLabelValues(path, "not_found").Inc()
-			http.Error(w, "quiz not found", http.StatusNotFound)
-		} else {
-			metrics.EvaluationOperations.WithLabelValues(path, "error").Inc()
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
+	if err := helpers.Client.Database("data-feed-db").Collection("quizzes").FindOne(ctx, bson.M{"_id": quizOID}).Decode(&quiz); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "404").Inc()
+		http.Error(w, "Quiz not found", http.StatusNotFound)
 		return
 	}
 
 	score := 0
+	var incorrectlyAnsweredQuestions []primitive.ObjectID
+
 	for i, q := range quiz.Questions {
-		if i >= len(body.Answers) {
+		if i >= len(req.Answers) {
+			break
+		}
+
+		userAnswer := req.Answers[i]
+		correctAnswer := q.Answer
+
+		userAnswerInt, err := strconv.Atoi(userAnswer)
+		if err != nil {
+			log.Printf("SubmitAttempt: Error converting user answer to integer: %v", err)
 			continue
 		}
-		if q.Points == 0 {
-			q.Points = 1
-		}
-		if containsInt(q.Answer, body.Answers[i]) {
-			score++
+
+		if containsInt(correctAnswer, userAnswerInt) {
+			score += q.Points
+		} else {
+			incorrectlyAnsweredQuestions = append(incorrectlyAnsweredQuestions, q.ID)
 		}
 	}
 
+	log.Printf("SubmitAttempt: Incorrectly answered questions: %v", incorrectlyAnsweredQuestions)
+
+	now := time.Now()
 	result := models.QuizResult{
-		ID:          primitive.NewObjectID(),
-		QuizID:      quizID,
-		UserID:      userID,
-		Answers:     body.Answers,
-		Score:       score,
-		SubmittedAt: time.Now(),
+		UserID:                       userOID,
+		QuizID:                       quizOID,
+		ClassID:                      classOID,
+		Score:                        score,
+		MaxScore:                     quiz.MaxPoints,
+		TimeTaken:                    int64(req.TimeTaken),
+		SubmittedAt:                  now,
+		IncorrectlyAnsweredQuestions: incorrectlyAnsweredQuestions,
 	}
 
-	upd, err := coll.UpdateByID(
-		r.Context(),
-		quizID,
-		bson.M{"$push": bson.M{"quiz_results": result}},
-	)
+	_, err = helpers.Client.Database("data-feed-db").Collection("quiz_results").InsertOne(ctx, result)
 	if err != nil {
-		metrics.EvaluationOperations.WithLabelValues(path, "error").Inc()
-		log.Printf("SubmitAttempt ERROR pushing result: %v", err)
-		http.Error(w, "Failed to save result: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-	if upd.ModifiedCount == 0 {
-		metrics.EvaluationOperations.WithLabelValues(path, "error").Inc()
-		log.Printf("SubmitAttempt WARNING: no documents modified for quiz %s", quizID.Hex())
-		http.Error(w, "Quiz not found or not updated", http.StatusNotFound)
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to save result", http.StatusInternalServerError)
 		return
 	}
 
-	metrics.EvaluationOperations.WithLabelValues(path, "success").Inc()
-	log.Printf(
-		"SubmitAttempt OK: quiz=%s user=%s score=%d modified=%d",
-		quizID.Hex(), claims.UserID, score, upd.ModifiedCount,
-	)
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(bson.M{"score": score})
+	metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "201").Inc()
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Result saved"})
 }
 
 // GET /evaluation/quiz/{quiz_id}/results
@@ -1092,35 +1102,14 @@ func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Calculate performance metrics
-	accuracy := float64(score) / float64(len(quiz.Questions))
-	speed := float64(req.TimeTaken) / float64(len(quiz.Questions)) // Average time per question
-	consistency := "low"
-	if accuracy >= 0.8 {
-		consistency = "high"
-	} else if accuracy >= 0.6 {
-		consistency = "medium"
-	}
-
 	// Create result
 	result := models.QuizResult{
-		ID:                           primitive.NewObjectID(),
-		QuizID:                       quizOID,
 		UserID:                       userOID,
-		Answers:                      req.Answers,
+		QuizID:                       quizOID,
 		Score:                        score,
-		TimeTaken:                    req.TimeTaken,
+		TimeTaken:                    int64(req.TimeTaken),
 		SubmittedAt:                  time.Now(),
 		IncorrectlyAnsweredQuestions: incorrectlyAnsweredQuestions,
-		PerformanceMetrics: struct {
-			Accuracy    float64 `bson:"accuracy" json:"accuracy"`
-			Speed       float64 `bson:"speed" json:"speed"`
-			Consistency string  `bson:"consistency" json:"consistency"`
-		}{
-			Accuracy:    accuracy,
-			Speed:       speed,
-			Consistency: consistency,
-		},
 	}
 
 	// Calculate points
@@ -1336,36 +1325,10 @@ func AddMockAnswers(w http.ResponseWriter, r *http.Request) {
 
 		modified := false
 		for i := range quiz.Questions {
-			// Check if the question needs mock answers
-			if quiz.Questions[i].Choices == nil || len(quiz.Questions[i].Choices) == 0 {
-				// Add 4 mock choices
-				quiz.Questions[i].Choices = []string{
-					"Răspuns 1 mock",
-					"Răspuns 2 mock",
-					"Răspuns 3 mock",
-					"Răspuns 4 mock",
-				}
-
-				// Randomly select 1-2 correct answers
-				numCorrect := 1
-				if rand.Float32() < 0.5 { // 50% chance for 2 correct answers
-					numCorrect = 2
-				}
-
-				// Generate random indices for correct answers
-				correctIndices := make([]int, 0, numCorrect)
-				for len(correctIndices) < numCorrect {
-					idx := rand.Intn(4)
-					if !containsInt(correctIndices, idx) {
-						correctIndices = append(correctIndices, idx)
-					}
-				}
-				sort.Ints(correctIndices)
-				quiz.Questions[i].Answer = correctIndices
-
+			if quiz.Questions[i].ID.IsZero() {
+				quiz.Questions[i].ID = primitive.NewObjectID()
 				modified = true
-				questionsUpdated++
-				log.Printf("AddMockAnswers: Added mock answers to question %d in quiz %s", i, quiz.ID.Hex())
+				log.Printf("AddMockAnswers: Added ID to question %d in quiz %s", i, quiz.ID.Hex())
 			}
 		}
 
@@ -1384,14 +1347,12 @@ func AddMockAnswers(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	log.Printf("AddMockAnswers: Processed %d quizzes, updated %d quizzes, modified %d questions",
-		quizCount, updatedCount, questionsUpdated)
+	log.Printf("AddMockAnswers: Processed %d quizzes, updated %d questions", quizCount, questionsUpdated)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"message":           "Mock answers added successfully",
-		"updated_quizzes":   updatedCount,
-		"total_quizzes":     quizCount,
-		"questions_updated": questionsUpdated,
+		"message":         "Question IDs update completed",
+		"updated_quizzes": updatedCount,
+		"total_quizzes":   quizCount,
 	})
 }
