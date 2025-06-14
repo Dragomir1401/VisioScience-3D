@@ -691,7 +691,7 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 				continue
 			}
 
-			// Increment total attempts for all questions
+			// Increment total attempts for all questions in this attempt
 			for _, q := range quizData.Questions {
 				stats := questionStats[q.ID]
 				stats.TotalAttempts++
@@ -704,7 +704,8 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 				if stats, exists := questionStats[qid]; exists {
 					stats.IncorrectAttempts++
 					questionStats[qid] = stats
-					log.Printf("GetChallengingQuestions: Incremented IncorrectAttempts for question ID %s: %d", qid.Hex(), stats.IncorrectAttempts)
+					log.Printf("GetChallengingQuestions: Incremented IncorrectAttempts for question ID %s (text: %s): %d",
+						qid.Hex(), stats.QuestionText, stats.IncorrectAttempts)
 				}
 			}
 		}
@@ -719,14 +720,19 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 	for _, stats := range questionStats {
 		if stats.TotalAttempts > 0 {
 			incorrectRate := float64(stats.IncorrectAttempts) / float64(stats.TotalAttempts) * 100
-			log.Printf("GetChallengingQuestions: Question: %s, TotalAttempts: %d, IncorrectAttempts: %d, Incorrect Rate: %.2f%%", stats.QuestionText, stats.TotalAttempts, stats.IncorrectAttempts, incorrectRate)
-			challengingQuestions = append(challengingQuestions, struct {
-				Question      string  `json:"question"`
-				IncorrectRate float64 `json:"incorrect_rate"`
-			}{
-				Question:      stats.QuestionText,
-				IncorrectRate: incorrectRate,
-			})
+			log.Printf("GetChallengingQuestions: Question: %s, TotalAttempts: %d, IncorrectAttempts: %d, Incorrect Rate: %.2f%%",
+				stats.QuestionText, stats.TotalAttempts, stats.IncorrectAttempts, incorrectRate)
+
+			// Only include questions that have been attempted at least once
+			if stats.TotalAttempts > 0 {
+				challengingQuestions = append(challengingQuestions, struct {
+					Question      string  `json:"question"`
+					IncorrectRate float64 `json:"incorrect_rate"`
+				}{
+					Question:      stats.QuestionText,
+					IncorrectRate: incorrectRate,
+				})
+			}
 		}
 	}
 
