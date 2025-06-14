@@ -1001,44 +1001,43 @@ func GetMostImprovedStudentsInClass(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var improvedStudents []models.MostImprovedStudent
+	var improvedStudents = make([]models.MostImprovedStudent, 0)
 
 	for _, student := range students {
-		if len(student.QuizResults) < 2 {
-			continue // Need at least two quizzes to determine improvement
-		}
-
-		// Sort quiz results by timestamp to find initial and current scores
-		sort.Slice(student.QuizResults, func(i, j int) bool {
-			return student.QuizResults[i].Timestamp.Before(student.QuizResults[j].Timestamp)
-		})
-
-		// Find the first and last valid quiz results (MaxScore > 0)
-		var initialValidQuiz *models.QuizResultMeta
-		var currentValidQuiz *models.QuizResultMeta
-
+		log.Printf("Processing student %s (%s) for most improved.", student.Email, student.ID.Hex())
+		var validQuizResults []models.QuizResultMeta
 		for _, qr := range student.QuizResults {
 			if qr.MaxScore > 0 {
-				if initialValidQuiz == nil {
-					initialValidQuiz = &qr
-				}
-				currentValidQuiz = &qr // Always update to the latest valid quiz
+				validQuizResults = append(validQuizResults, qr)
 			}
 		}
 
-		if initialValidQuiz == nil || currentValidQuiz == nil || initialValidQuiz.QuizID == currentValidQuiz.QuizID {
-			continue // Not enough valid quizzes to determine improvement
+		if len(validQuizResults) < 2 {
+			log.Printf("  Student %s (%s): Not enough valid quiz results (%d) to determine improvement. Skipping.", student.Email, student.ID.Hex(), len(validQuizResults))
+			continue
 		}
 
-		initialScorePercentage := (float64(initialValidQuiz.Score) / float64(initialValidQuiz.MaxScore)) * 100
-		currentScorePercentage := (float64(currentValidQuiz.Score) / float64(currentValidQuiz.MaxScore)) * 100
+		// Sort valid quiz results by timestamp
+		sort.Slice(validQuizResults, func(i, j int) bool {
+			return validQuizResults[i].Timestamp.Before(validQuizResults[j].Timestamp)
+		})
+
+		// Use the first and last valid quiz result to calculate improvement
+		initialQuiz := validQuizResults[0]
+		currentQuiz := validQuizResults[len(validQuizResults)-1]
+
+		initialScorePercentage := (float64(initialQuiz.Score) / float64(initialQuiz.MaxScore)) * 100
+		currentScorePercentage := (float64(currentQuiz.Score) / float64(currentQuiz.MaxScore)) * 100
 
 		improvementValue := currentScorePercentage - initialScorePercentage
+
+		log.Printf("  Student %s (%s): Initial Score: %.2f%% (QuizID: %s), Current Score: %.2f%% (QuizID: %s), Improvement: %.2f%%",
+			student.Email, student.ID.Hex(), initialScorePercentage, initialQuiz.QuizID.Hex(), currentScorePercentage, currentQuiz.QuizID.Hex(), improvementValue)
 
 		if improvementValue > 0 { // Only consider positive improvement
 			improvedStudents = append(improvedStudents, models.MostImprovedStudent{
 				ID:           student.ID,
-				Name:         student.Email, // Use email as name for now, as User model doesn't have FirstName/LastName
+				Name:         student.Email,
 				Email:        student.Email,
 				InitialScore: initialScorePercentage,
 				CurrentScore: currentScorePercentage,
@@ -1056,6 +1055,8 @@ func GetMostImprovedStudentsInClass(w http.ResponseWriter, r *http.Request) {
 	if len(improvedStudents) > 5 {
 		improvedStudents = improvedStudents[:5]
 	}
+
+	log.Printf("GetMostImprovedStudentsInClass: Returning %d improved students. Data: %+v", len(improvedStudents), improvedStudents)
 
 	metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "200").Inc()
 	w.Header().Set("Content-Type", "application/json")

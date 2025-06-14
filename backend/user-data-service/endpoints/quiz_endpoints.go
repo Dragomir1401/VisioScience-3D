@@ -255,6 +255,8 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
+	log.Printf("SubmitUserQuizResult: Attempting to save meta object with MaxScore: %d, QuizID: %s, Score: %d", meta.MaxScore, meta.QuizID.Hex(), meta.Score)
+
 	pointsEntry := models.PointsEntry{
 		Points:      points,
 		Source:      "quiz",
