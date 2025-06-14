@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sort"
 	"time"
 
 	"user-data-service/metrics"
@@ -360,7 +361,63 @@ type ClassPerformanceSummary struct {
 	AverageScore  float64            `json:"average_score"`
 	TotalStudents int                `json:"total_students"`
 	QuizzesTaken  int                `json:"quizzes_taken"`
-	Improvement   string             `json:"improvement"` // Placeholder, needs actual calculation logic
+	Improvement   string             `json:"improvement"`
+}
+
+// Funcție helper pentru calcularea îmbunătățirii
+func calculateImprovement(quizResults []models.QuizResultMeta) string {
+	if len(quizResults) < 2 {
+		return "N/A"
+	}
+
+	// Sortăm rezultatele după timestamp
+	sort.Slice(quizResults, func(i, j int) bool {
+		return quizResults[i].Timestamp.Before(quizResults[j].Timestamp)
+	})
+
+	// Împărțim rezultatele în două grupuri: primele 50% și ultimele 50%
+	midPoint := len(quizResults) / 2
+	firstHalf := quizResults[:midPoint]
+	secondHalf := quizResults[midPoint:]
+
+	// Calculăm media pentru fiecare grup
+	var firstHalfTotal, secondHalfTotal float64
+	var firstHalfCount, secondHalfCount int
+
+	for _, qr := range firstHalf {
+		if qr.MaxScore > 0 {
+			scorePercentage := float64(qr.Score) / float64(qr.MaxScore) * 100
+			firstHalfTotal += scorePercentage
+			firstHalfCount++
+		}
+	}
+
+	for _, qr := range secondHalf {
+		if qr.MaxScore > 0 {
+			scorePercentage := float64(qr.Score) / float64(qr.MaxScore) * 100
+			secondHalfTotal += scorePercentage
+			secondHalfCount++
+		}
+	}
+
+	if firstHalfCount == 0 || secondHalfCount == 0 {
+		return "N/A"
+	}
+
+	firstHalfAvg := firstHalfTotal / float64(firstHalfCount)
+	secondHalfAvg := secondHalfTotal / float64(secondHalfCount)
+
+	// Calculăm diferența procentuală
+	improvement := ((secondHalfAvg - firstHalfAvg) / firstHalfAvg) * 100
+
+	// Determinăm tendința
+	if improvement > 5 {
+		return fmt.Sprintf("↑ %.1f%%", improvement)
+	} else if improvement < -5 {
+		return fmt.Sprintf("↓ %.1f%%", -improvement)
+	} else {
+		return "Stabil"
+	}
 }
 
 // GET /user/classes/performance
@@ -414,28 +471,32 @@ func GetClassPerformance(w http.ResponseWriter, r *http.Request) {
 		studentCursor.Close(ctx)
 
 		totalScore := 0
-		totalMaxPossibleScore := 0 // Added to sum up max possible scores
+		totalMaxPossibleScore := 0
 		totalQuizzesTaken := 0
 		totalStudents := len(students)
 
 		log.Printf("--- Class: %s (ID: %s) ---", class.Name, class.ID.Hex())
 		log.Printf("Total students in class: %d", totalStudents)
 
+		// Colectăm toate rezultatele quiz-urilor pentru calcularea îmbunătățirii
+		var allQuizResults []models.QuizResultMeta
+
 		for _, student := range students {
 			studentQuizzesTaken := 0
 			studentCurrentScore := 0
-			studentCurrentMaxScore := 0 // Added to track student's max score for quizzes taken
+			studentCurrentMaxScore := 0
 			for _, qr := range student.QuizResults {
-				if qr.MaxScore > 0 { // Only include results with a valid MaxScore
+				if qr.MaxScore > 0 {
 					studentQuizzesTaken++
 					studentCurrentScore += qr.Score
 					studentCurrentMaxScore += qr.MaxScore
+					allQuizResults = append(allQuizResults, qr)
 				} else {
 					log.Printf("  Skipping quiz result %s for student %s due to MaxScore being 0.", qr.QuizID.Hex(), student.Email)
 				}
 			}
 			totalScore += studentCurrentScore
-			totalMaxPossibleScore += studentCurrentMaxScore // Accumulate total max possible score
+			totalMaxPossibleScore += studentCurrentMaxScore
 
 			log.Printf("  Student %s (ID: %s): Quizzes with valid MaxScore: %d, Total score for valid quizzes: %d, Total max score for valid quizzes: %d", student.Email, student.ID.Hex(), studentQuizzesTaken, studentCurrentScore, studentCurrentMaxScore)
 		}
@@ -446,10 +507,13 @@ func GetClassPerformance(w http.ResponseWriter, r *http.Request) {
 
 		avgScore := 0.0
 		if totalMaxPossibleScore > 0 {
-			avgScore = float64(totalScore) / float64(totalMaxPossibleScore) * 100 // Corrected calculation
+			avgScore = float64(totalScore) / float64(totalMaxPossibleScore) * 100
 		}
 
 		log.Printf("Calculated average score for class %s: %.2f%%", class.Name, avgScore)
+
+		// Calculăm îmbunătățirea
+		improvement := calculateImprovement(allQuizResults)
 
 		performanceData = append(performanceData, ClassPerformanceSummary{
 			ClassID:       class.ID,
@@ -457,10 +521,104 @@ func GetClassPerformance(w http.ResponseWriter, r *http.Request) {
 			AverageScore:  avgScore,
 			TotalStudents: totalStudents,
 			QuizzesTaken:  totalQuizzesTaken,
-			Improvement:   "N/A", // Placeholder
+			Improvement:   improvement,
 		})
 	}
 
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(performanceData)
+}
+
+// Structura pentru performanța per quiz
+type QuizPerformance struct {
+	QuizID        primitive.ObjectID `json:"quiz_id"`
+	QuizTitle     string             `json:"quiz_title"`
+	AverageScore  float64            `json:"average_score"`
+	TotalAttempts int                `json:"total_attempts"`
+}
+
+// GET /user/classes/{classId}/quiz-performance
+func GetClassQuizPerformance(w http.ResponseWriter, r *http.Request) {
+	claims := r.Context().Value("claims").(*utils.CustomClaims)
+	if claims.Role != string(models.RoleTeacher) && claims.Role != string(models.RoleAdmin) {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "403").Inc()
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
+	classID := mux.Vars(r)["classId"]
+	classOID, err := primitive.ObjectIDFromHex(classID)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Invalid class ID", http.StatusBadRequest)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Get all students in the class
+	var class models.Class
+	if err := db.ClassCollection.FindOne(ctx, bson.M{"_id": classOID}).Decode(&class); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "404").Inc()
+		http.Error(w, "Class not found", http.StatusNotFound)
+		return
+	}
+
+	// Get all students' quiz results
+	cursor, err := db.UserCollection.Find(ctx, bson.M{"_id": bson.M{"$in": class.Students}})
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to fetch students", http.StatusInternalServerError)
+		return
+	}
+	defer cursor.Close(ctx)
+
+	var students []models.User
+	if err := cursor.All(ctx, &students); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to decode students", http.StatusInternalServerError)
+		return
+	}
+
+	// Map to store quiz performance data
+	quizPerformance := make(map[primitive.ObjectID]*QuizPerformance)
+
+	// Process each student's quiz results
+	for _, student := range students {
+		for _, qr := range student.QuizResults {
+			if qr.MaxScore > 0 { // Only include results with valid MaxScore
+				perf, exists := quizPerformance[qr.QuizID]
+				if !exists {
+					perf = &QuizPerformance{
+						QuizID:        qr.QuizID,
+						QuizTitle:     qr.QuizTitle,
+						AverageScore:  0,
+						TotalAttempts: 0,
+					}
+					quizPerformance[qr.QuizID] = perf
+				}
+
+				// Calculate score percentage
+				scorePercentage := float64(qr.Score) / float64(qr.MaxScore) * 100
+				perf.AverageScore = (perf.AverageScore*float64(perf.TotalAttempts) + scorePercentage) / float64(perf.TotalAttempts+1)
+				perf.TotalAttempts++
+			}
+		}
+	}
+
+	// Convert map to slice for response
+	var performanceData []QuizPerformance
+	for _, perf := range quizPerformance {
+		performanceData = append(performanceData, *perf)
+	}
+
+	// Sort by quiz title
+	sort.Slice(performanceData, func(i, j int) bool {
+		return performanceData[i].QuizTitle < performanceData[j].QuizTitle
+	})
+
+	metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "200").Inc()
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(performanceData)
 }
@@ -661,4 +819,245 @@ func DeleteClass(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "Class successfully deleted",
 	})
+}
+
+// GET /user/classes/{classId}/performance-trends
+func GetClassPerformanceTrends(w http.ResponseWriter, r *http.Request) {
+	claims := r.Context().Value("claims").(*utils.CustomClaims)
+	if claims.Role != string(models.RoleTeacher) && claims.Role != string(models.RoleAdmin) {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "403").Inc()
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
+	classID := mux.Vars(r)["classId"]
+	classOID, err := primitive.ObjectIDFromHex(classID)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Invalid class ID", http.StatusBadRequest)
+		return
+	}
+
+	timeRange := r.URL.Query().Get("timeRange") // e.g., "4-weeks", "8-weeks", "12-weeks", "semester"
+	if timeRange == "" {
+		timeRange = "8-weeks" // Default
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var class models.Class
+	if err := db.ClassCollection.FindOne(ctx, bson.M{"_id": classOID}).Decode(&class); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "404").Inc()
+		http.Error(w, "Class not found", http.StatusNotFound)
+		return
+	}
+
+	cursor, err := db.UserCollection.Find(ctx, bson.M{"_id": bson.M{"$in": class.Students}})
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to fetch students", http.StatusInternalServerError)
+		return
+	}
+	defer cursor.Close(ctx)
+
+	var students []models.User
+	if err := cursor.All(ctx, &students); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to decode students", http.StatusInternalServerError)
+		return
+	}
+
+	type PeriodData struct {
+		Scores []float64
+	}
+	performanceByPeriod := make(map[string]*PeriodData)
+
+	now := time.Now()
+	var startTime time.Time
+
+	switch timeRange {
+	case "4-weeks":
+		startTime = now.AddDate(0, 0, -28) // 4 weeks ago
+	case "8-weeks":
+		startTime = now.AddDate(0, 0, -56) // 8 weeks ago
+	case "12-weeks":
+		startTime = now.AddDate(0, 0, -84) // 12 weeks ago
+	case "semester": // Assuming a semester is roughly 16-18 weeks, use 18 weeks as a placeholder
+		startTime = now.AddDate(0, 0, -126) // 18 weeks ago
+	default:
+		startTime = now.AddDate(0, 0, -56) // Default to 8 weeks
+	}
+
+	for _, student := range students {
+		for _, qr := range student.QuizResults {
+			if qr.MaxScore > 0 && qr.Timestamp.After(startTime) && qr.Timestamp.Before(now) {
+				scorePercentage := float64(qr.Score) / float64(qr.MaxScore) * 100
+
+				// Determine the period string
+				periodString := ""
+				if timeRange == "semester" {
+					// Group by month for semester
+					periodString = qr.Timestamp.Format("Jan 2006") // e.g., "Jan 2023"
+				} else {
+					// Group by week for other ranges
+					_, week := qr.Timestamp.ISOWeek()
+					year := qr.Timestamp.Year()
+					periodString = fmt.Sprintf("Săptămâna %d-%d", week, year)
+				}
+
+				if _, ok := performanceByPeriod[periodString]; !ok {
+					performanceByPeriod[periodString] = &PeriodData{}
+				}
+				performanceByPeriod[periodString].Scores = append(performanceByPeriod[periodString].Scores, scorePercentage)
+			}
+		}
+	}
+
+	var trendData []models.QuizPerformanceTrendEntry
+
+	// Sort periods
+	var periods []string
+	for p := range performanceByPeriod {
+		periods = append(periods, p)
+	}
+	// A more robust chronological sort for week/month periods would be needed here if labels are not simple numbers
+	sort.Strings(periods)
+
+	for _, period := range periods {
+		data := performanceByPeriod[period]
+		if len(data.Scores) == 0 {
+			continue
+		}
+
+		totalScore := 0.0
+		minScore := 101.0 // Greater than max possible score (100)
+		maxScore := -1.0  // Less than min possible score (0)
+
+		for _, s := range data.Scores {
+			totalScore += s
+			if s < minScore {
+				minScore = s
+			}
+			if s > maxScore {
+				maxScore = s
+			}
+		}
+
+		avg := totalScore / float64(len(data.Scores))
+
+		trendData = append(trendData, models.QuizPerformanceTrendEntry{
+			Period:          period,
+			Average:         avg,
+			TopPerformer:    maxScore,
+			LowestPerformer: minScore,
+		})
+	}
+
+	metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "200").Inc()
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(trendData)
+}
+
+// GET /user/classes/{classId}/most-improved-students
+func GetMostImprovedStudentsInClass(w http.ResponseWriter, r *http.Request) {
+	claims := r.Context().Value("claims").(*utils.CustomClaims)
+	if claims.Role != string(models.RoleTeacher) && claims.Role != string(models.RoleAdmin) {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "403").Inc()
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
+	classID := mux.Vars(r)["classId"]
+	classOID, err := primitive.ObjectIDFromHex(classID)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Invalid class ID", http.StatusBadRequest)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var class models.Class
+	if err := db.ClassCollection.FindOne(ctx, bson.M{"_id": classOID}).Decode(&class); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "404").Inc()
+		http.Error(w, "Class not found", http.StatusNotFound)
+		return
+	}
+
+	cursor, err := db.UserCollection.Find(ctx, bson.M{"_id": bson.M{"$in": class.Students}})
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to fetch students", http.StatusInternalServerError)
+		return
+	}
+	defer cursor.Close(ctx)
+
+	var students []models.User
+	if err := cursor.All(ctx, &students); err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to decode students", http.StatusInternalServerError)
+		return
+	}
+
+	var improvedStudents []models.MostImprovedStudent
+
+	for _, student := range students {
+		if len(student.QuizResults) < 2 {
+			continue // Need at least two quizzes to determine improvement
+		}
+
+		// Sort quiz results by timestamp to find initial and current scores
+		sort.Slice(student.QuizResults, func(i, j int) bool {
+			return student.QuizResults[i].Timestamp.Before(student.QuizResults[j].Timestamp)
+		})
+
+		// Find the first and last valid quiz results (MaxScore > 0)
+		var initialValidQuiz *models.QuizResultMeta
+		var currentValidQuiz *models.QuizResultMeta
+
+		for _, qr := range student.QuizResults {
+			if qr.MaxScore > 0 {
+				if initialValidQuiz == nil {
+					initialValidQuiz = &qr
+				}
+				currentValidQuiz = &qr // Always update to the latest valid quiz
+			}
+		}
+
+		if initialValidQuiz == nil || currentValidQuiz == nil || initialValidQuiz.QuizID == currentValidQuiz.QuizID {
+			continue // Not enough valid quizzes to determine improvement
+		}
+
+		initialScorePercentage := (float64(initialValidQuiz.Score) / float64(initialValidQuiz.MaxScore)) * 100
+		currentScorePercentage := (float64(currentValidQuiz.Score) / float64(currentValidQuiz.MaxScore)) * 100
+
+		improvementValue := currentScorePercentage - initialScorePercentage
+
+		if improvementValue > 0 { // Only consider positive improvement
+			improvedStudents = append(improvedStudents, models.MostImprovedStudent{
+				ID:           student.ID,
+				Name:         student.Email, // Use email as name for now, as User model doesn't have FirstName/LastName
+				Email:        student.Email,
+				InitialScore: initialScorePercentage,
+				CurrentScore: currentScorePercentage,
+				Improvement:  improvementValue,
+			})
+		}
+	}
+
+	// Sort by improvement in descending order
+	sort.Slice(improvedStudents, func(i, j int) bool {
+		return improvedStudents[i].Improvement > improvedStudents[j].Improvement
+	})
+
+	// Limit to top 5 most improved students
+	if len(improvedStudents) > 5 {
+		improvedStudents = improvedStudents[:5]
+	}
+
+	metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "200").Inc()
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(improvedStudents)
 }

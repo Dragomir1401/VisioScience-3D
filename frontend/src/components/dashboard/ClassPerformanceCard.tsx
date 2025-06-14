@@ -20,6 +20,13 @@ interface ClassPerformanceSummary {
   improvement: string
 }
 
+interface QuizPerformance {
+  quiz_id: string
+  quiz_title: string
+  average_score: number
+  total_attempts: number
+}
+
 interface ClassFilter {
   id: string
   name: string
@@ -27,7 +34,9 @@ interface ClassFilter {
 
 export const ClassPerformanceCard = () => {
   const [selectedClass, setSelectedClass] = useState('all')
+  const [selectedClassForGraph, setSelectedClassForGraph] = useState('all')
   const [classPerformanceData, setClassPerformanceData] = useState<ClassPerformanceSummary[]>([])
+  const [quizPerformanceData, setQuizPerformanceData] = useState<QuizPerformance[]>([])
   const [classFilters, setClassFilters] = useState<ClassFilter[]>([
     { id: 'all', name: 'Toate Clasele' },
   ])
@@ -89,22 +98,63 @@ export const ClassPerformanceCard = () => {
     fetchClassPerformance()
   }, [token])
 
+  useEffect(() => {
+    const fetchQuizPerformance = async () => {
+      if (selectedClassForGraph === 'all') {
+        setQuizPerformanceData([])
+        return
+      }
+
+      try {
+        const url = `http://localhost:8000/user/classes/${selectedClassForGraph}/quiz-performance`
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        const data: QuizPerformance[] = await response.json()
+        setQuizPerformanceData(data || [])
+      } catch (e: any) {
+        console.error('Failed to fetch quiz performance:', e)
+        setQuizPerformanceData([])
+      }
+    }
+
+    fetchQuizPerformance()
+  }, [selectedClassForGraph, token])
+
   // Filter for display based on selectedClass
   const filteredClassPerformance = selectedClass === 'all'
     ? classPerformanceData
     : classPerformanceData.filter(cls => cls.class_id === selectedClass);
 
-  // Mock data for charts - this will need to be replaced with real data from a new backend endpoint
-  // For now, it will use a simplified structure based on fetched class names
-  const quizScoresByClass = filteredClassPerformance.length > 0 ? [
+  // Transform quiz performance data for the chart
+  const quizScoresByClass = quizPerformanceData.length > 0 ? [
     {
-      name: 'Exemplu Quiz',
-      ...filteredClassPerformance.reduce((acc, cls) => {
-        acc[cls.class_name] = cls.average_score; // Using average score as a placeholder
+      name: 'Performanța Quiz-urilor',
+      ...quizPerformanceData.reduce((acc, quiz) => {
+        acc[quiz.quiz_title] = quiz.average_score;
         return acc;
-      }, {})
+      }, {} as Record<string, number>)
     }
   ] : [];
+
+  // Adaugă această funcție helper după interfețe
+  const getImprovementColor = (improvement: string) => {
+    if (improvement.startsWith('↑')) {
+      return 'text-green-500';
+    } else if (improvement.startsWith('↓')) {
+      return 'text-red-500';
+    } else if (improvement === 'Stabil') {
+      return 'text-yellow-500';
+    }
+    return 'text-gray-500';
+  };
 
   if (loading) {
     return <p className="pt-24 text-center text-mulberry">Se încarcă performanța claselor...</p>
@@ -154,7 +204,7 @@ export const ClassPerformanceCard = () => {
                   {classData.total_students} studenți
                 </p>
               </div>
-              <div className="bg-[#f3e8ff] text-[#690375] font-medium px-3 py-1.5 rounded-md text-base">
+              <div className={`bg-[#f3e8ff] text-[#690375] font-medium px-3 py-1.5 rounded-md text-base ${getImprovementColor(classData.improvement)}`}>
                 {classData.improvement}
               </div>
             </div>
@@ -176,32 +226,56 @@ export const ClassPerformanceCard = () => {
         ))}
       </div>
       <div className="bg-white p-6 rounded-xl border border-gray-100">
-        <div className="flex items-center gap-3 mb-6">
-          <BarChart2Icon size={24} className="text-[#4f46e5]" />
-          <h3 className="font-semibold text-xl">Performanța Quiz-urilor pe Clasă</h3>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <BarChart2Icon size={24} className="text-[#4f46e5]" />
+            <h3 className="font-semibold text-xl">Performanța Quiz-urilor pe Clasă</h3>
+          </div>
+          <select
+            className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#4f46e5] text-base"
+            value={selectedClassForGraph}
+            onChange={(e) => setSelectedClassForGraph(e.target.value)}
+          >
+            {classFilters.map((classData) => (
+              <option key={classData.id} value={classData.id}>
+                {classData.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="h-[500px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={quizScoresByClass}
-              margin={{
-                top: 20,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis domain={[0, 100]} />
-              <Tooltip />
-              <Legend />
-              {/* Dynamically add Bars based on available classes */}
-              {Object.keys(quizScoresByClass.length > 0 ? quizScoresByClass[0] : {}).filter(key => key !== 'name').map((className, index) => (
-                <Bar key={className} dataKey={className} fill={["#4f46e5", "#AE847E", "#690375", "#888888"][index % 4]} />
-              ))}
-            </BarChart>
-          </ResponsiveContainer>
+          {quizPerformanceData.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={quizScoresByClass}
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis domain={[0, 100]} />
+                <Tooltip />
+                <Legend />
+                {Object.keys(quizScoresByClass[0]).filter(key => key !== 'name').map((quizTitle, index) => (
+                  <Bar 
+                    key={quizTitle} 
+                    dataKey={quizTitle} 
+                    fill={["#4f46e5", "#AE847E", "#690375", "#888888"][index % 4]} 
+                  />
+                ))}
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="h-full flex items-center justify-center text-gray-500">
+              {selectedClassForGraph === 'all' 
+                ? 'Selectați o clasă pentru a vedea performanța quiz-urilor'
+                : 'Nu există date de performanță pentru această clasă'}
+            </div>
+          )}
         </div>
       </div>
     </div>

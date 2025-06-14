@@ -106,6 +106,15 @@ func main() {
 	// GET /user/leaderboard
 	r.Handle("/user/leaderboard", middleware.JWTAuth(http.HandlerFunc(handlers.GetLeaderboard))).Methods("GET")
 
+	// GET /user/classes/{classId}/quiz-performance
+	r.Handle("/user/classes/{classId}/quiz-performance", middleware.JWTAuth(http.HandlerFunc(handlers.GetClassQuizPerformance))).Methods("GET")
+
+	// GET /user/classes/{classId}/performance-trends
+	r.Handle("/user/classes/{classId}/performance-trends", middleware.JWTAuth(http.HandlerFunc(handlers.GetClassPerformanceTrends))).Methods("GET")
+
+	// GET /user/classes/{classId}/most-improved-students
+	r.Handle("/user/classes/{classId}/most-improved-students", middleware.JWTAuth(http.HandlerFunc(handlers.GetMostImprovedStudentsInClass))).Methods("GET")
+
 	corsObj := gorillaHandlers.CORS(
 		gorillaHandlers.AllowedOrigins([]string{"*"}),
 		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),

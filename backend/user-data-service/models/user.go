@@ -75,3 +75,19 @@ type QuizResultMeta struct {
 	CompletionDate     string             `bson:"completion_date" json:"completion_date"`
 	PerformanceMetrics PerformanceMetrics `bson:"performance_metrics" json:"performance_metrics"`
 }
+
+type QuizPerformanceTrendEntry struct {
+	Period          string  `json:"period"`
+	Average         float64 `json:"average"`
+	TopPerformer    float64 `json:"topPerformer"`
+	LowestPerformer float64 `json:"lowestPerformer"`
+}
+
+type MostImprovedStudent struct {
+	ID           primitive.ObjectID `json:"id"`
+	Name         string             `json:"name"`
+	Email        string             `json:"email"`
+	InitialScore float64            `json:"initialScore"`
+	CurrentScore float64            `json:"currentScore"`
+	Improvement  float64            `json:"improvement"`
+}
