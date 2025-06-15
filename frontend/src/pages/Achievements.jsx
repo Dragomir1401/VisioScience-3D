@@ -160,7 +160,7 @@ export default function Achievements() {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-black/20 backdrop-blur-sm rounded-xl p-4 border border-indigo-200/20 shadow-lg h-[600px] relative overflow-hidden"
+            className="bg-[#1a0b2e] rounded-xl p-4 border border-indigo-200/20 shadow-lg h-[600px] relative overflow-hidden"
           >
             <BalloonMascot 
               badges={mockBadges.map(badge => ({
@@ -168,7 +168,7 @@ export default function Achievements() {
                 title: badge.title,
                 type: badge.type,
                 earned: badge.earned,
-                color: badge.color
+                color: badge.color || '#FF69B4' // Fallback color if none provided
               }))}
               onBadgeClick={(badgeId) => {
                 const badge = mockBadges.find(b => b.id === badgeId);
