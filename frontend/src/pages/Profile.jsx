@@ -72,7 +72,7 @@ const Profile = () => {
               onClick={handleViewAchievements}
               className="w-full mt-4 px-6 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:from-indigo-700 hover:to-violet-700"
             >
-              View Achievements & Badges
+              Vezi Recompense și Badge-uri
             </motion.button>
           )}
         </div>

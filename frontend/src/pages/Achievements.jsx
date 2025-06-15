@@ -129,9 +129,9 @@ function Achievements() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <h1 className="text-4xl font-bold text-indigo-900 mb-8 text-center">Achievements & Badges</h1>
+          <h1 className="text-4xl font-bold text-indigo-900 mb-8 text-center">Recompense și Badge-uri</h1>
           <p className="text-indigo-300" style={{ textShadow: '0 0 5px rgba(99,102,241,0.5)' }}>
-            Complete challenges to earn badges and unlock rewards!
+            Completează quiz-urile pentru a câștiga recompense!
           </p>
         </motion.div>
 
@@ -143,7 +143,7 @@ function Achievements() {
             className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-indigo-200 shadow-sm"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-indigo-900">Total Badges</h3>
+              <h3 className="text-lg font-semibold text-indigo-900">Total Badge-uri</h3>
               <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
                 <span className="text-2xl">🏆</span>
               </div>
@@ -152,7 +152,7 @@ function Achievements() {
               {earnedBadges}/{badges.length}
             </div>
             <div className="mt-2 text-sm text-indigo-600">
-              {Math.round((earnedBadges / badges.length) * 100)}% Complete
+              {Math.round((earnedBadges / badges.length) * 100)}% Completate
             </div>
           </motion.div>
 
@@ -163,7 +163,7 @@ function Achievements() {
             className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-indigo-200 shadow-sm"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-indigo-900">Active Challenges</h3>
+              <h3 className="text-lg font-semibold text-indigo-900">Challenge-uri Active</h3>
               <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
                 <span className="text-2xl">🎯</span>
               </div>
@@ -172,7 +172,7 @@ function Achievements() {
               {activeChallenges}
             </div>
             <div className="mt-2 text-sm text-purple-600">
-              {activeChallenges} In Progress
+              {activeChallenges} În Progres
             </div>
           </motion.div>
 
@@ -183,7 +183,7 @@ function Achievements() {
             className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-indigo-200 shadow-sm"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-indigo-900">Perfect Scores</h3>
+              <h3 className="text-lg font-semibold text-indigo-900">Scor perfect</h3>
               <div className="w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center">
                 <span className="text-2xl">⭐</span>
               </div>
@@ -192,7 +192,7 @@ function Achievements() {
               {perfectScores}
             </div>
             <div className="mt-2 text-sm text-violet-600">
-              Perfect achievements unlocked
+              Recompensele perfecte
             </div>
           </motion.div>
         </div>
@@ -216,7 +216,7 @@ function Achievements() {
             animate={{ opacity: 1, x: 0 }}
             className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-indigo-200"
           >
-            <h2 className="text-2xl font-semibold text-indigo-900 mb-6">Active Challenges</h2>
+            <h2 className="text-2xl font-semibold text-indigo-900 mb-6">Challenge-uri Active</h2>
             <div className="space-y-4">
               {badges
                 .filter(badge => !badge.earned && badge.progress > 0)
@@ -296,7 +296,7 @@ function Achievements() {
           className="mt-8 px-6 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-lg shadow-lg transition-all duration-200 hover:from-indigo-700 hover:to-violet-700"
           style={{ boxShadow: '0 0 15px rgba(99,102,241,0.3)' }}
         >
-          Back to Profile
+          Înapoi la Profil
         </motion.button>
       </div>
     </div>
