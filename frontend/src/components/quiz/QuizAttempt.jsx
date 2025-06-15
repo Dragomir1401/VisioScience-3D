@@ -78,7 +78,8 @@ const QuizAttempt = () => {
       const timeSpent = Math.floor((Date.now() - startTime.current) / 1000);
       setTimeTaken(timeSpent);
 
-      const payload = {
+      // First submit to evaluation service
+      const evaluationPayload = {
         quiz_id: quizId,
         answers: answers.map(a => parseInt(a, 10)),
         timeTaken: timeSpent,
@@ -86,9 +87,9 @@ const QuizAttempt = () => {
         class_id: quiz.classId,
       };
 
-      console.log('Evaluation Payload:', payload);
+      console.log('Evaluation Payload:', evaluationPayload);
 
-      const response = await fetch(
+      const evaluationResponse = await fetch(
         `http://localhost:8000/evaluation/quiz/attempt/${quizId}`,
         {
           method: "POST",
@@ -96,27 +97,80 @@ const QuizAttempt = () => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(evaluationPayload),
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to submit quiz");
+      if (!evaluationResponse.ok) {
+        throw new Error("Failed to submit quiz to evaluation service");
       }
 
-      const data = await response.json();
-      setResult(data);
+      const evaluationData = await evaluationResponse.json();
+      setResult(evaluationData);
 
-      console.log('Rezultate quiz-uri:', {
-        score: data.score,
-        maxScore: data.maxScore,
-        correctAnswers: data.correctAnswers,
-        points: data.points,
-        bonuses: {
-          time: data.timeBonus,
-          perfect: data.perfectBonus,
-          streak: data.streakBonus
+      // Now submit to user-data-service with detailed statistics
+      const incorrectlyAnsweredQuestions = quiz.questions
+        .filter((_, index) => !evaluationData.correctAnswers[index])
+        .map(q => q.id);
+
+      const userDataPayload = {
+        quiz_id: quizId,
+        class_id: quiz.classId,
+        quiz_title: quiz.title,
+        score: evaluationData.score,
+        max_score: evaluationData.maxScore,
+        time_taken: timeSpent,
+        perfect_score: evaluationData.score === evaluationData.maxScore,
+        questions_total: quiz.questions.length,
+        questions_correct: evaluationData.score,
+        questions_incorrect: quiz.questions.length - evaluationData.score,
+        difficulty_level: "medium", // This should come from the quiz data
+        completion_time: timeSpent,
+        streak_bonus: evaluationData.streakBonus,
+        time_bonus: evaluationData.timeBonus,
+        perfect_bonus: evaluationData.perfectBonus,
+        total_points: evaluationData.points,
+        quiz_type: "standard", // This should come from the quiz data
+        attempt_number: 1, // This should be tracked per user
+        completion_date: new Date().toISOString(),
+        incorrectly_answered_questions: incorrectlyAnsweredQuestions,
+        performance_metrics: {
+          accuracy: (evaluationData.score / evaluationData.maxScore) * 100,
+          speed: evaluationData.timeBonus > 0 ? 100 : 50, // Convert to numeric values
+          consistency: evaluationData.streakBonus > 0 ? "high" : "normal"
         }
+      };
+
+      console.log('User Data Payload:', userDataPayload);
+
+      const userDataResponse = await fetch(
+        `http://localhost:8000/user/quiz/result`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userDataPayload),
+        }
+      );
+
+      if (!userDataResponse.ok) {
+        console.error('Failed to save detailed quiz statistics:', await userDataResponse.text());
+        // Don't throw here, as the quiz was already evaluated successfully
+      }
+
+      console.log('Quiz results saved:', {
+        score: evaluationData.score,
+        maxScore: evaluationData.maxScore,
+        correctAnswers: evaluationData.correctAnswers,
+        points: evaluationData.points,
+        bonuses: {
+          time: evaluationData.timeBonus,
+          perfect: evaluationData.perfectBonus,
+          streak: evaluationData.streakBonus
+        },
+        incorrectlyAnsweredQuestions
       });
 
       setStage("sent");

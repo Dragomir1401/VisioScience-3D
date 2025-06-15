@@ -365,7 +365,7 @@ const QuizStatsCard = () => {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={questionStatistics.map(q => ({
-                  name: q.question.length > 30 ? q.question.substring(0, 30) + '...' : q.question,
+                  name: q.question.length > 20 ? q.question.substring(0, 20) + '...' : q.question,
                   corecte: q.total_attempts - q.incorrect_attempts,
                   gresite: q.incorrect_attempts,
                 }))}
