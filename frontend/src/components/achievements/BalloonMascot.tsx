@@ -405,7 +405,7 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+            className="absolute top-[60%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 
                      px-6 py-3 rounded-full bg-black/30 
                      backdrop-blur-sm border border-white/20
                      flex items-center gap-3
@@ -424,7 +424,7 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
             >
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
-                className="h-6 w-6" 
+                className="h-5 w-5" 
                 fill="none" 
                 viewBox="0 0 24 24" 
                 stroke="currentColor"
