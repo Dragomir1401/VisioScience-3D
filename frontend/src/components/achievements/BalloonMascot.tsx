@@ -1,4 +1,4 @@
-import { Canvas, useFrame, useThree, ThreeElements } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Text, Float, Environment, PerspectiveCamera, Html } from '@react-three/drei';
 import { useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
@@ -10,14 +10,17 @@ import { extend } from '@react-three/fiber';
 extend(THREE);
 
 // Type declarations for Three.js elements
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      group: ThreeElements['group'];
-      mesh: ThreeElements['mesh'];
-      sphereGeometry: ThreeElements['sphereGeometry'];
-      meshPhongMaterial: ThreeElements['meshPhongMaterial'];
-    }
+declare module '@react-three/fiber' {
+  interface ThreeElements {
+    group: JSX.IntrinsicElements['group'];
+    mesh: JSX.IntrinsicElements['mesh'];
+    sphereGeometry: JSX.IntrinsicElements['sphereGeometry'];
+    meshPhongMaterial: JSX.IntrinsicElements['meshPhongMaterial'];
+    cylinderGeometry: JSX.IntrinsicElements['cylinderGeometry'];
+    circleGeometry: JSX.IntrinsicElements['circleGeometry'];
+    ringGeometry: JSX.IntrinsicElements['ringGeometry'];
+    boxGeometry: JSX.IntrinsicElements['boxGeometry'];
+    torusGeometry: JSX.IntrinsicElements['torusGeometry'];
   }
 }
 
@@ -44,24 +47,44 @@ interface BalloonProps {
   isEarned?: boolean;
 }
 
-const ACCENTS = {
-  bronze: "#690375",
-  silver: "#AE847E",
-  gold: "#4f46e5",
-  perfect: "#f3e8ff",
-  default: "#4f46e5"
-};
+// Unify color definitions
+const BADGE_COLORS = {
+  BronzeBadge: {
+    accent: "#690375",
+    default: "#CD7F32"
+  },
+  SilverBadge: {
+    accent: "#AE847E",
+    default: "#C0C0C0"
+  },
+  GoldBadge: {
+    accent: "#4f46e5",
+    default: "#FFD700"
+  },
+  PerfectBadge: {
+    accent: "#f3e8ff",
+    default: "#FF69B4"
+  }
+} as const;
+
+// Helper function to get colors based on badge type
+function getBadgeColors(type: string) {
+  return BADGE_COLORS[type as keyof typeof BADGE_COLORS] || {
+    accent: "#4f46e5",
+    default: "#4f46e5"
+  };
+}
 
 function Balloon({ position, color, scale = 1, animationState, onClick, isEarned = false }: BalloonProps) {
   const balloonRef = useRef<THREE.Mesh>(null);
   const stringRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
 
-  // More subtle neon colors
-  const accent = ACCENTS[color as keyof typeof ACCENTS] || ACCENTS.default;
-  const neonColor = new THREE.Color(accent);
-  const glowColor = new THREE.Color(accent).multiplyScalar(1.2); // Reduced glow intensity
-  const edgeColor = new THREE.Color(accent).multiplyScalar(1.4); // Reduced edge intensity
+  // Get colors based on badge type
+  const colors = getBadgeColors(color);
+  const neonColor = new THREE.Color(colors.accent);
+  const glowColor = new THREE.Color(colors.accent).multiplyScalar(1.2);
+  const edgeColor = new THREE.Color(colors.accent).multiplyScalar(1.4);
 
   useFrame((state) => {
     if (balloonRef.current) {
@@ -356,14 +379,11 @@ function Scene({
           const x = Math.sin(angle) * radius;
           const z = Math.cos(angle) * radius;
           
-          // Get the appropriate color based on badge type
-          const badgeColor = badge.color || getDefaultColor(badge.type);
-          
           return (
-            <group key={badge.id} position={[x, 0, z]}>
+            <group key={badge.id || badge.type} position={[x, 0, z]}>
               <Balloon
-                position={[0, 0, 0]} // Position relative to group
-                color={badgeColor}
+                position={[0, 0, 0]}
+                color={badge.type}
                 scale={1.5}
                 animationState={
                   selectedBadge === badge.id ? 'selected' :
@@ -380,22 +400,6 @@ function Scene({
   );
 }
 
-// Helper function to get default colors based on badge type
-function getDefaultColor(type: string): string {
-  switch (type) {
-    case 'BronzeBadge':
-      return '#CD7F32';
-    case 'SilverBadge':
-      return '#C0C0C0';
-    case 'GoldBadge':
-      return '#FFD700';
-    case 'PerfectBadge':
-      return '#FF69B4';
-    default:
-      return '#4f46e5';
-  }
-}
-
 export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
   const [selectedBadge, setSelectedBadge] = useState<string | null>(null);
   const [hoveredBadge, setHoveredBadge] = useState<string | null>(null);
@@ -403,10 +407,25 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
   const [targetRotation, setTargetRotation] = useState(0);
   const [showHint, setShowHint] = useState(true);
 
-  console.log('BalloonMascot received badges:', badges);
+  // Filter out duplicate badges by type
+  const uniqueBadges = badges.reduce((acc, badge) => {
+    // Check if we already have a badge of this type
+    const existingBadge = acc.find(b => b.type === badge.type);
+    if (!existingBadge) {
+      // If no badge of this type exists, add it
+      acc.push(badge);
+    } else if (badge.earned && !existingBadge.earned) {
+      // If we have a duplicate but the new one is earned and the existing one isn't,
+      // replace the existing one
+      acc[acc.indexOf(existingBadge)] = badge;
+    }
+    return acc;
+  }, [] as Badge[]);
+
+  console.log('BalloonMascot received badges:', uniqueBadges);
 
   // Render loading, error, or empty state outside of Canvas
-  if (!badges || badges.length === 0) {
+  if (!uniqueBadges || uniqueBadges.length === 0) {
     return (
       <div className="relative w-full h-full flex items-center justify-center bg-black/5 rounded-lg">
         <div className="text-mulberry text-lg">No badges available yet.</div>
@@ -414,11 +433,13 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
     );
   }
 
-  const handleBadgeClick = (badge: Badge) => {
-    if (badge.earned) {
-      setSelectedBadge(badge.id);
+  const handleBadgeClick = (badgeId: string) => {
+    const badge = uniqueBadges.find(b => b.id === badgeId);
+    if (badge) {
+      console.log('Badge clicked:', badge);
+      setSelectedBadge(badgeId);
       if (onBadgeClick) {
-        onBadgeClick(badge.id);
+        onBadgeClick(badgeId);
       }
     }
   };
@@ -437,7 +458,7 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
         style={{ cursor: 'grab' }}
       >
         <Scene 
-          badges={badges}
+          badges={uniqueBadges}
           selectedBadge={selectedBadge}
           hoveredBadge={hoveredBadge}
           onBadgeClick={handleBadgeClick}

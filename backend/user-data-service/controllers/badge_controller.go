@@ -182,7 +182,7 @@ func (bc *BadgeController) CheckAndUpdateBadges(ctx context.Context, userID stri
 		switch badge.Type {
 		case "BronzeBadge":
 			// Bronze: Complete 1 quiz
-			progress = float64(len(user.QuizResults)) * 100
+			progress = math.Min(float64(len(user.QuizResults))*100, 100)
 			currentValue = float64(len(user.QuizResults))
 			log.Printf("   🥉 Bronze badge calculation:")
 			log.Printf("      - Total quizzes completed: %d", len(user.QuizResults))

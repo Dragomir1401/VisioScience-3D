@@ -10,6 +10,24 @@ const ACCENTS = {
   perfect: "#FF69B4" // Pink neon
 };
 
+// Helper pentru a obține badge-ul cu progresul maxim sau câștigat pentru fiecare tip
+function getUniqueBadgesByType(badges) {
+  const map = {};
+  badges.forEach(badge => {
+    if (!map[badge.type]) {
+      map[badge.type] = badge;
+    } else {
+      // Preferă badge-ul câștigat, apoi progresul cel mai mare
+      if (badge.earned && !map[badge.type].earned) {
+        map[badge.type] = badge;
+      } else if (badge.progress > map[badge.type].progress) {
+        map[badge.type] = badge;
+      }
+    }
+  });
+  return Object.values(map);
+}
+
 function Achievements() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
@@ -55,14 +73,14 @@ function Achievements() {
 
         // Transform badge data to match the expected format
         const transformedBadges = badgesData.map(badge => ({
-          id: badge.badge._id,
+          id: badge.badge.id,
           title: badge.badge.title,
           description: badge.badge.description,
-          type: badge.badge.type.toLowerCase(),
+          type: badge.badge.type,
           icon: badge.badge.icon,
           earned: badge.earned,
-          progress: badge.progress,
-          color: ACCENTS[badge.badge.type.toLowerCase()] || ACCENTS.perfect
+          progress: Math.min(badge.progress, 100),
+          color: ACCENTS[badge.badge.type?.toLowerCase()] || ACCENTS.perfect
         }));
 
         console.log('Transformed badges:', transformedBadges);
@@ -79,9 +97,7 @@ function Achievements() {
   }, [navigate]);
 
   const handleBadgeClick = (badgeId) => {
-    console.log('Badge clicked:', badgeId);
     const badge = badges.find(b => b.id === badgeId);
-    console.log('Found badge:', badge);
     if (badge) {
       setSelectedBadge(badge);
     }
@@ -189,7 +205,7 @@ function Achievements() {
             className="bg-[#1a0b2e] rounded-xl p-4 border border-indigo-200/20 shadow-lg h-[600px] relative overflow-hidden"
           >
             <BalloonMascot 
-              badges={badges}
+              badges={getUniqueBadgesByType(badges.filter(b => b.earned || b.progress === 100))}
               onBadgeClick={handleBadgeClick}
             />
           </motion.div>
@@ -206,7 +222,7 @@ function Achievements() {
                 .filter(badge => !badge.earned && badge.progress > 0)
                 .map((badge) => (
                   <motion.div
-                    key={badge.id}
+                    key={badge.id || badge.type}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white/50 rounded-lg p-4 border border-indigo-100 shadow-sm hover:shadow-md transition-shadow"
@@ -226,13 +242,13 @@ function Achievements() {
                       <div
                         className="h-2 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500"
                         style={{ 
-                          width: `${badge.progress}%`,
+                          width: `${Math.min(badge.progress, 100)}%`,
                           boxShadow: '0 0 10px rgba(99,102,241,0.3)'
                         }}
                       />
                     </div>
                     <p className="text-sm text-indigo-600 mt-2">
-                      Progress: {Math.round(badge.progress)}%
+                      Progress: {Math.round(Math.min(badge.progress, 100))}%
                     </p>
                   </motion.div>
                 ))}
@@ -256,13 +272,13 @@ function Achievements() {
                   <div 
                     className="h-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500"
                     style={{ 
-                      width: `${selectedBadge.progress}%`,
+                      width: `${Math.min(selectedBadge.progress, 100)}%`,
                       boxShadow: '0 0 10px rgba(99,102,241,0.3)'
                     }}
                   />
                 </div>
                 <p className="text-sm text-indigo-600">
-                  Progress: {Math.round(selectedBadge.progress)}%
+                  Progress: {Math.round(Math.min(selectedBadge.progress, 100))}%
                   {selectedBadge.earned && " (Completed!)"}
                 </p>
               </motion.div>
