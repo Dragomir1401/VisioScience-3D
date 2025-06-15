@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import TeacherDashboard from "../components/teacher/TeacherDashboard";
 import InvitesPanel from "../components/user/InvitePanel";
 import StudentQuizDetails from "../components/quiz/StudentQuizDetails";
+import { motion } from "framer-motion";
 
 const Profile = () => {
   const [user, setUser]       = useState(null);
@@ -58,6 +59,16 @@ const Profile = () => {
           >
             Deconectează-te
           </button>
+          {user.role === "ELEV" && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => navigate('/achievements')}
+              className="w-full mt-4 px-6 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:from-indigo-700 hover:to-violet-700"
+            >
+              View Achievements & Badges
+            </motion.button>
+          )}
         </div>
 
         {/* Invitații + Dashboard / Quiz-uri */}

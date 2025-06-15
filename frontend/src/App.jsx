@@ -30,6 +30,7 @@ import QuizAttempt from "./components/quiz/QuizAttempt";
 import QuizMeta from "./components/quiz/QuizMeta";
 import QuizResults from "./components/quiz/QuizResults";
 import Analytics from "./pages/Analytics";
+import Achievements from './pages/Achievements';
 
 import PrivateRoute from "./pages/PrivateRoute";
 
@@ -53,6 +54,7 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
           <Route path="analytics" element={<Analytics />} />
+          <Route path="achievements" element={<Achievements />} />
 
           <Route path="classes/:id" element={<ClassDetails />} />
           <Route path="classes/:id/quiz/create" element={<QuizCreation />} />
