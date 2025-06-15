@@ -1,20 +1,38 @@
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Text, Float, Environment, PerspectiveCamera } from '@react-three/drei';
+import { Canvas, useFrame, useThree, ThreeElements } from '@react-three/fiber';
+import { OrbitControls, Text, Float, Environment, PerspectiveCamera, Html } from '@react-three/drei';
 import { useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSpring } from "@react-spring/three";
+import { extend } from '@react-three/fiber';
+
+// Extend Three.js elements to be recognized by JSX
+extend(THREE);
+
+// Type declarations for Three.js elements
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      group: ThreeElements['group'];
+      mesh: ThreeElements['mesh'];
+      sphereGeometry: ThreeElements['sphereGeometry'];
+      meshPhongMaterial: ThreeElements['meshPhongMaterial'];
+    }
+  }
+}
 
 interface Badge {
   id: string;
   title: string;
-  type: 'bronze' | 'silver' | 'gold' | 'perfect';
+  type: 'BronzeBadge' | 'SilverBadge' | 'GoldBadge' | 'PerfectBadge';
   earned: boolean;
   progress: number;
   earnedAt?: string;
   color: string;
   icon: string;
   description: string;
+  currentValue?: number;
+  updatedAt?: string;
 }
 
 interface BalloonProps {
@@ -160,8 +178,8 @@ function Balloon({ position, color, scale = 1, animationState, onClick, isEarned
 }
 
 interface BalloonMascotProps {
-  userId: string;
-  onBadgeClick?: (badge: Badge) => void;
+  badges: Badge[];
+  onBadgeClick?: (badgeId: string) => void;
 }
 
 function CameraController({ 
@@ -290,7 +308,7 @@ function Scene({
   badges: Badge[],
   selectedBadge: string | null,
   hoveredBadge: string | null,
-  onBadgeClick: (badge: Badge) => void,
+  onBadgeClick: (badgeId: string) => void,
   targetRotation: number,
   isRotating: boolean
 }) {
@@ -338,17 +356,20 @@ function Scene({
           const x = Math.sin(angle) * radius;
           const z = Math.cos(angle) * radius;
           
+          // Get the appropriate color based on badge type
+          const badgeColor = badge.color || getDefaultColor(badge.type);
+          
           return (
             <group key={badge.id} position={[x, 0, z]}>
               <Balloon
-                position={[x, 0, z]}
-                color={badge.type}
+                position={[0, 0, 0]} // Position relative to group
+                color={badgeColor}
                 scale={1.5}
                 animationState={
                   selectedBadge === badge.id ? 'selected' :
                   hoveredBadge === badge.id ? 'hover' : 'idle'
                 }
-                onClick={() => onBadgeClick(badge)}
+                onClick={() => onBadgeClick(badge.id)}
                 isEarned={badge.earned}
               />
             </group>
@@ -359,100 +380,52 @@ function Scene({
   );
 }
 
-export function BalloonMascot({ userId, onBadgeClick }: BalloonMascotProps) {
-  const [badges, setBadges] = useState<Badge[]>([]);
+// Helper function to get default colors based on badge type
+function getDefaultColor(type: string): string {
+  switch (type) {
+    case 'BronzeBadge':
+      return '#CD7F32';
+    case 'SilverBadge':
+      return '#C0C0C0';
+    case 'GoldBadge':
+      return '#FFD700';
+    case 'PerfectBadge':
+      return '#FF69B4';
+    default:
+      return '#4f46e5';
+  }
+}
+
+export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
   const [selectedBadge, setSelectedBadge] = useState<string | null>(null);
   const [hoveredBadge, setHoveredBadge] = useState<string | null>(null);
   const [isRotating, setIsRotating] = useState(false);
   const [targetRotation, setTargetRotation] = useState(0);
   const [showHint, setShowHint] = useState(true);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchBadges = async () => {
-      try {
-        setLoading(true);
-        const token = localStorage.getItem('token');
-        const response = await fetch(
-          `http://localhost:8000/api/badges/user/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+  console.log('BalloonMascot received badges:', badges);
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch badges');
-        }
-
-        const data = await response.json();
-        setBadges(data.map((badge: any) => ({
-          id: badge.badge.id,
-          title: badge.badge.title,
-          type: badge.badge.type,
-          earned: badge.earned,
-          progress: badge.progress,
-          earnedAt: badge.earnedAt,
-          color: badge.badge.color,
-          icon: badge.badge.icon,
-          description: badge.badge.description
-        })));
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching badges:', err);
-        setError('Failed to load badges. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (userId) {
-      fetchBadges();
-    }
-  }, [userId]);
-
-  // Hide hint after 5 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowHint(false);
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  // Render loading, error, or empty state outside of Canvas
+  if (!badges || badges.length === 0) {
+    return (
+      <div className="relative w-full h-full flex items-center justify-center bg-black/5 rounded-lg">
+        <div className="text-mulberry text-lg">No badges available yet.</div>
+      </div>
+    );
+  }
 
   const handleBadgeClick = (badge: Badge) => {
-    setSelectedBadge(badge.id);
-    onBadgeClick?.(badge);
+    if (badge.earned) {
+      setSelectedBadge(badge.id);
+      if (onBadgeClick) {
+        onBadgeClick(badge.id);
+      }
+    }
   };
-
-  if (loading) {
-    return (
-      <div className="relative w-full h-full flex items-center justify-center">
-        <div className="text-white/80 text-lg">Loading badges...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="relative w-full h-full flex items-center justify-center">
-        <div className="text-red-400 text-lg">{error}</div>
-      </div>
-    );
-  }
-
-  if (!badges.length) {
-    return (
-      <div className="relative w-full h-full flex items-center justify-center">
-        <div className="text-white/80 text-lg">No badges available yet.</div>
-      </div>
-    );
-  }
 
   return (
     <div className="relative w-full h-full">
+      {/* Canvas for 3D scene */}
       <Canvas
         shadows
         camera={{ position: [0, 0, 35], fov: 30 }}
@@ -463,8 +436,6 @@ export function BalloonMascot({ userId, onBadgeClick }: BalloonMascotProps) {
         }}
         style={{ cursor: 'grab' }}
       >
-        <fog attach="fog" args={['#000000', 25, 50]} />
-        
         <Scene 
           badges={badges}
           selectedBadge={selectedBadge}
@@ -475,48 +446,17 @@ export function BalloonMascot({ userId, onBadgeClick }: BalloonMascotProps) {
         />
       </Canvas>
 
-      {/* Drag hint animation */}
+      {/* Hint overlay */}
       <AnimatePresence>
         {showHint && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="absolute top-[60%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                     px-6 py-3 rounded-full bg-black/30 
-                     backdrop-blur-sm border border-white/20
-                     flex items-center gap-3
-                     pointer-events-none"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full text-sm"
+            onClick={() => setShowHint(false)}
           >
-            <motion.div
-              animate={{
-                x: [-10, 10, -10],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="text-white/80"
-            >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-5 w-5" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" 
-                />
-              </svg>
-            </motion.div>
-            <span className="text-white/80 text-sm font-medium">
-              Drag to explore
-            </span>
+            Click and drag to rotate • Click a balloon to view details
           </motion.div>
         )}
       </AnimatePresence>

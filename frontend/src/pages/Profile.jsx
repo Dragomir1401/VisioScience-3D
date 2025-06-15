@@ -37,6 +37,12 @@ const Profile = () => {
     navigate("/login");
   };
 
+  const handleViewAchievements = () => {
+    if (user) {
+      navigate('/achievements', { state: { user } });
+    }
+  };
+
   if (loading)
     return <div className="text-center mt-12 text-mulberry">Se încarcă...</div>;
   if (error)
@@ -63,7 +69,7 @@ const Profile = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => navigate('/achievements')}
+              onClick={handleViewAchievements}
               className="w-full mt-4 px-6 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:from-indigo-700 hover:to-violet-700"
             >
               View Achievements & Badges

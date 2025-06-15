@@ -21,8 +21,8 @@ func NewBadgeController(db *mongo.Database) *BadgeController {
 	return &BadgeController{db: db}
 }
 
-// ensureBadgesExist checks if all required badges exist and creates them if they don't
-func (bc *BadgeController) ensureBadgesExist(ctx context.Context) error {
+// EnsureBadgesExist checks if all required badges exist and creates them if they don't
+func (bc *BadgeController) EnsureBadgesExist(ctx context.Context) error {
 	// Define default badges
 	defaultBadges := []models.Badge{
 		{
@@ -107,7 +107,7 @@ func (bc *BadgeController) CheckAndUpdateBadges(ctx context.Context, userID stri
 
 	// First ensure all badges exist
 	log.Printf("🔍 Ensuring all badges exist in the system...")
-	if err := bc.ensureBadgesExist(ctx); err != nil {
+	if err := bc.EnsureBadgesExist(ctx); err != nil {
 		log.Printf("❌ Error ensuring badges exist: %v", err)
 		return nil, err
 	}
@@ -141,13 +141,19 @@ func (bc *BadgeController) CheckAndUpdateBadges(ctx context.Context, userID stri
 	// Get user's current badge progress
 	log.Printf("🏆 Fetching current badge progress for user %s...", userID)
 	var userBadges []models.UserBadge
-	err = bc.db.Collection("user_badges").FindOne(ctx, bson.M{"user_id": userID}).Decode(&userBadges)
-	if err != nil && err != mongo.ErrNoDocuments {
+	cursor, err := bc.db.Collection("user_badges").Find(ctx, bson.M{"user_id": userID})
+	if err != nil {
 		log.Printf("❌ Error getting user badges: %v", err)
 		return nil, err
 	}
+	defer cursor.Close(ctx)
 
-	if err == mongo.ErrNoDocuments {
+	if err := cursor.All(ctx, &userBadges); err != nil {
+		log.Printf("❌ Error decoding user badges: %v", err)
+		return nil, err
+	}
+
+	if len(userBadges) == 0 {
 		log.Printf("ℹ️ No existing badges found for user %s, will create new progress", userID)
 		userBadges = make([]models.UserBadge, 0)
 	} else {

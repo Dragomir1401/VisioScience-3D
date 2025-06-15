@@ -6,13 +6,15 @@ import * as THREE from 'three';
 interface Badge {
   id: string;
   title: string;
-  type: 'bronze' | 'silver' | 'gold' | 'perfect';
+  type: 'BronzeBadge' | 'SilverBadge' | 'GoldBadge' | 'PerfectBadge';
   earned: boolean;
   progress: number;
   earnedAt?: string;
   color: string;
   icon: string;
   description: string;
+  currentValue?: number;
+  updatedAt?: string;
 }
 
 interface BadgeDisplayProps {
@@ -27,10 +29,26 @@ export function BadgeDisplay({ badge, position, onClick }: BadgeDisplayProps) {
   useCursor(hovered);
 
   const colors = {
-    badge: badge.color,
-    glow: new THREE.Color(badge.color).multiplyScalar(2).getHexString(),
-    text: new THREE.Color(badge.color).multiplyScalar(1.2).getHexString()
+    badge: badge.color || getDefaultColor(badge.type),
+    glow: new THREE.Color(badge.color || getDefaultColor(badge.type)).multiplyScalar(2).getHexString(),
+    text: new THREE.Color(badge.color || getDefaultColor(badge.type)).multiplyScalar(1.2).getHexString()
   };
+
+  // Helper function to get default colors based on badge type
+  function getDefaultColor(type: string): string {
+    switch (type) {
+      case 'BronzeBadge':
+        return '#CD7F32';
+      case 'SilverBadge':
+        return '#C0C0C0';
+      case 'GoldBadge':
+        return '#FFD700';
+      case 'PerfectBadge':
+        return '#FF69B4';
+      default:
+        return '#4f46e5';
+    }
+  }
 
   useFrame((state) => {
     if (badgeRef.current) {

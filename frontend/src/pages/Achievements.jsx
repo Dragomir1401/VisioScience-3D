@@ -1,10 +1,7 @@
-import { Suspense, useState, useEffect, useRef } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import { BadgeDisplay } from '../components/achievements/BadgeDisplay';
+import React, { useState, useEffect } from 'react';
 import { BalloonMascot } from '../components/achievements/BalloonMascot';
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const ACCENTS = {
   bronze: "#FFD700", // Gold neon
@@ -13,71 +10,100 @@ const ACCENTS = {
   perfect: "#FF69B4" // Pink neon
 };
 
-// Updated mock data with neon colors
-const mockBadges = [
-  { id: 1, type: 'bronze', title: 'First Quiz', earned: true, position: [-6, 0, 0], color: ACCENTS.bronze },
-  { id: 2, type: 'silver', title: 'Perfect Score', earned: true, position: [-3, 0, 0], color: ACCENTS.silver },
-  { id: 3, type: 'gold', title: 'Quick Learner', earned: false, position: [0, 0, 0], color: ACCENTS.gold },
-  { id: 4, type: 'perfect', title: 'Master Student', earned: false, position: [3, 0, 0], color: ACCENTS.perfect },
-  { id: 5, type: 'bronze', title: 'Consistent', earned: false, position: [6, 0, 0], color: ACCENTS.bronze },
-  { id: 6, type: 'silver', title: 'Team Player', earned: false, position: [9, 0, 0], color: ACCENTS.silver },
-  { id: 7, type: 'gold', title: 'Perfect Week', earned: false, position: [12, 0, 0], color: ACCENTS.gold },
-  { id: 8, type: 'perfect', title: 'Knowledge Master', earned: false, position: [15, 0, 0], color: ACCENTS.perfect },
-];
-
-const mockChallenges = [
-  { id: 1, title: 'Complete 5 Quizzes', progress: 3, total: 5, reward: 'bronze' },
-  { id: 2, title: 'Get 3 Perfect Scores', progress: 1, total: 3, reward: 'silver' },
-  { id: 3, title: 'Complete 10 Quizzes in Under 5 Minutes', progress: 0, total: 10, reward: 'gold' },
-];
-
-export default function Achievements() {
+function Achievements() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [badges, setBadges] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
   const [selectedBadge, setSelectedBadge] = useState(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const containerRef = useRef(null);
-
-  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch('http://localhost:8000/user/me', {
-          headers: { Authorization: `Bearer ${token}` },
+        // Fetch user data
+        const userResponse = await fetch('http://localhost:8000/user/me', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
         });
-        if (!res.ok) throw new Error('Nu s-au putut obține datele utilizatorului.');
-        const userData = await res.json();
-        setUser(userData);
         
+        if (!userResponse.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        
+        const userData = await userResponse.json();
+        setUserData(userData);
+
         if (userData.role === 'PROFESOR') {
           navigate('/profile');
         }
+
+        // Fetch badges
+        const badgesResponse = await fetch(`http://localhost:8000/user/badges/${userData.id}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+
+        if (!badgesResponse.ok) {
+          throw new Error('Failed to fetch badges');
+        }
+
+        const badgesData = await badgesResponse.json();
+        console.log('Raw badge data:', badgesData);
+
+        // Transform badge data to match the expected format
+        const transformedBadges = badgesData.map(badge => ({
+          id: badge.badge._id,
+          title: badge.badge.title,
+          description: badge.badge.description,
+          type: badge.badge.type.toLowerCase(),
+          icon: badge.badge.icon,
+          earned: badge.earned,
+          progress: badge.progress,
+          color: ACCENTS[badge.badge.type.toLowerCase()] || ACCENTS.perfect
+        }));
+
+        console.log('Transformed badges:', transformedBadges);
+        setBadges(transformedBadges);
+        setLoading(false);
       } catch (err) {
+        console.error('Error fetching data:', err);
         setError(err.message);
-      } finally {
         setLoading(false);
       }
-    })();
-  }, [token, navigate]);
+    };
 
-  if (loading) return <div className="text-center mt-12 text-mulberry">Se încarcă...</div>;
-  if (error) return <div className="text-red-600 mt-12 text-center">{error}</div>;
-  if (user?.role === 'PROFESOR') return null;
+    fetchData();
+  }, [navigate]);
 
-  const handleBadgeClick = (badge) => {
-    if (badge.earned) {
+  const handleBadgeClick = (badgeId) => {
+    console.log('Badge clicked:', badgeId);
+    const badge = badges.find(b => b.id === badgeId);
+    console.log('Found badge:', badge);
+    if (badge) {
       setSelectedBadge(badge);
     }
   };
 
-  const handleScroll = (e) => {
-    const container = e.target;
-    const scrollPercentage = container.scrollLeft / (container.scrollWidth - container.clientWidth);
-    setScrollPosition(scrollPercentage);
-  };
+  if (loading) return (
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-violet-50 flex items-center justify-center">
+      <div className="text-indigo-900 text-xl">Loading achievements...</div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-violet-50 flex items-center justify-center">
+      <div className="text-red-600 text-xl">Error: {error}</div>
+    </div>
+  );
+
+  if (userData?.role === 'PROFESOR') return null;
+
+  const earnedBadges = badges.filter(badge => badge.earned).length;
+  const activeChallenges = badges.filter(badge => !badge.earned && badge.progress > 0).length;
+  const perfectScores = badges.filter(badge => badge.type === 'perfect' && badge.earned).length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-violet-50 pt-20">
@@ -107,10 +133,10 @@ export default function Achievements() {
               </div>
             </div>
             <div className="text-3xl font-bold text-indigo-700">
-              {mockBadges.filter(b => b.earned).length}/{mockBadges.length}
+              {earnedBadges}/{badges.length}
             </div>
             <div className="mt-2 text-sm text-indigo-600">
-              {Math.round((mockBadges.filter(b => b.earned).length / mockBadges.length) * 100)}% Complete
+              {Math.round((earnedBadges / badges.length) * 100)}% Complete
             </div>
           </motion.div>
 
@@ -127,10 +153,10 @@ export default function Achievements() {
               </div>
             </div>
             <div className="text-3xl font-bold text-purple-700">
-              {mockChallenges.length}
+              {activeChallenges}
             </div>
             <div className="mt-2 text-sm text-purple-600">
-              {mockChallenges.filter(c => c.progress > 0).length} In Progress
+              {activeChallenges} In Progress
             </div>
           </motion.div>
 
@@ -147,7 +173,7 @@ export default function Achievements() {
               </div>
             </div>
             <div className="text-3xl font-bold text-violet-700">
-              {mockBadges.filter(b => b.type === 'perfect' && b.earned).length}
+              {perfectScores}
             </div>
             <div className="mt-2 text-sm text-violet-600">
               Perfect achievements unlocked
@@ -163,19 +189,8 @@ export default function Achievements() {
             className="bg-[#1a0b2e] rounded-xl p-4 border border-indigo-200/20 shadow-lg h-[600px] relative overflow-hidden"
           >
             <BalloonMascot 
-              badges={mockBadges.map(badge => ({
-                id: badge.id,
-                title: badge.title,
-                type: badge.type,
-                earned: badge.earned,
-                color: badge.color || '#FF69B4' // Fallback color if none provided
-              }))}
-              onBadgeClick={(badgeId) => {
-                const badge = mockBadges.find(b => b.id === badgeId);
-                if (badge) {
-                  setSelectedBadge(badge);
-                }
-              }}
+              badges={badges}
+              onBadgeClick={handleBadgeClick}
             />
           </motion.div>
 
@@ -187,37 +202,40 @@ export default function Achievements() {
           >
             <h2 className="text-2xl font-semibold text-indigo-900 mb-6">Active Challenges</h2>
             <div className="space-y-4">
-              {mockChallenges.map((challenge) => (
-                <motion.div
-                  key={challenge.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-white/50 rounded-lg p-4 border border-indigo-100 shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <div className="flex justify-between items-center mb-2">
-                    <h3 className="font-medium text-indigo-900">{challenge.title}</h3>
-                    <span className={`px-2 py-1 rounded-full text-sm ${
-                      challenge.reward === 'bronze' ? 'bg-amber-100 text-amber-700' :
-                      challenge.reward === 'silver' ? 'bg-slate-100 text-slate-700' :
-                      'bg-yellow-100 text-yellow-700'
-                    }`}>
-                      {challenge.reward.charAt(0).toUpperCase() + challenge.reward.slice(1)} Badge
-                    </span>
-                  </div>
-                  <div className="w-full bg-indigo-100 rounded-full h-2">
-                    <div
-                      className="h-2 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500"
-                      style={{ 
-                        width: `${(challenge.progress / challenge.total) * 100}%`,
-                        boxShadow: '0 0 10px rgba(99,102,241,0.3)'
-                      }}
-                    />
-                  </div>
-                  <p className="text-sm text-indigo-600 mt-2">
-                    Progress: {challenge.progress}/{challenge.total}
-                  </p>
-                </motion.div>
-              ))}
+              {badges
+                .filter(badge => !badge.earned && badge.progress > 0)
+                .map((badge) => (
+                  <motion.div
+                    key={badge.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-white/50 rounded-lg p-4 border border-indigo-100 shadow-sm hover:shadow-md transition-shadow"
+                    onClick={() => handleBadgeClick(badge.id)}
+                  >
+                    <div className="flex justify-between items-center mb-2">
+                      <h3 className="font-medium text-indigo-900">{badge.title}</h3>
+                      <span className={`px-2 py-1 rounded-full text-sm ${
+                        badge.type === 'bronze' ? 'bg-amber-100 text-amber-700' :
+                        badge.type === 'silver' ? 'bg-slate-100 text-slate-700' :
+                        'bg-yellow-100 text-yellow-700'
+                      }`}>
+                        {badge.type.charAt(0).toUpperCase() + badge.type.slice(1)} Badge
+                      </span>
+                    </div>
+                    <div className="w-full bg-indigo-100 rounded-full h-2">
+                      <div
+                        className="h-2 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500"
+                        style={{ 
+                          width: `${badge.progress}%`,
+                          boxShadow: '0 0 10px rgba(99,102,241,0.3)'
+                        }}
+                      />
+                    </div>
+                    <p className="text-sm text-indigo-600 mt-2">
+                      Progress: {Math.round(badge.progress)}%
+                    </p>
+                  </motion.div>
+                ))}
             </div>
 
             {/* Selected Badge Details */}
@@ -227,10 +245,25 @@ export default function Achievements() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mt-6 bg-white/50 rounded-lg p-4 border border-indigo-100 shadow-sm"
               >
-                <h3 className="font-semibold text-indigo-900 mb-2">Badge Details</h3>
-                <p className="text-indigo-700">
-                  You earned the {selectedBadge.title} badge! This badge represents your achievement
-                  in completing quizzes and mastering the content. Keep up the great work!
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="text-4xl">{selectedBadge.icon}</div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-indigo-900">{selectedBadge.title}</h3>
+                    <p className="text-indigo-700">{selectedBadge.description}</p>
+                  </div>
+                </div>
+                <div className="w-full bg-indigo-100 rounded-full h-2.5 mb-2">
+                  <div 
+                    className="h-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500"
+                    style={{ 
+                      width: `${selectedBadge.progress}%`,
+                      boxShadow: '0 0 10px rgba(99,102,241,0.3)'
+                    }}
+                  />
+                </div>
+                <p className="text-sm text-indigo-600">
+                  Progress: {Math.round(selectedBadge.progress)}%
+                  {selectedBadge.earned && " (Completed!)"}
                 </p>
               </motion.div>
             )}
@@ -252,4 +285,6 @@ export default function Achievements() {
       </div>
     </div>
   );
-} 
+}
+
+export default Achievements; 
