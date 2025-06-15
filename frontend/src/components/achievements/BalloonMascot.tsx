@@ -25,11 +25,11 @@ function Balloon({ position, color, scale = 1, animationState, onClick, isEarned
   const stringRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
 
-  // Enhanced neon colors with periodic table style
+  // More subtle neon colors
   const accent = ACCENTS[color as keyof typeof ACCENTS] || ACCENTS.default;
   const neonColor = new THREE.Color(accent);
-  const glowColor = new THREE.Color(accent).multiplyScalar(2.2);
-  const edgeColor = new THREE.Color(accent).multiplyScalar(2.5);
+  const glowColor = new THREE.Color(accent).multiplyScalar(1.2); // Reduced glow intensity
+  const edgeColor = new THREE.Color(accent).multiplyScalar(1.4); // Reduced edge intensity
 
   useFrame((state) => {
     if (balloonRef.current) {
@@ -71,7 +71,7 @@ function Balloon({ position, color, scale = 1, animationState, onClick, isEarned
   return (
     <group>
       <Float speed={2} rotationIntensity={0.2} floatIntensity={0.3}>
-        {/* Main balloon with enhanced 3D effect */}
+        {/* Main balloon with more realistic material */}
         <mesh 
           ref={balloonRef} 
           position={position} 
@@ -84,43 +84,45 @@ function Balloon({ position, color, scale = 1, animationState, onClick, isEarned
           <meshPhongMaterial 
             color={neonColor}
             emissive={glowColor}
-            emissiveIntensity={hovered ? 1.5 : 0.8}
-            shininess={200}
+            emissiveIntensity={hovered ? 0.8 : 0.4} // Reduced emissive intensity
+            shininess={100} // Reduced shininess
             transparent
-            opacity={isEarned ? 0.95 : 0.4}
+            opacity={isEarned ? 0.9 : 0.7} // More opaque
+            specular={new THREE.Color(0xffffff)} // Added specular highlight
+            reflectivity={0.5} // Added reflectivity
           />
         </mesh>
 
-        {/* Enhanced outer glow ring */}
-        <mesh position={position} scale={[scale * 1.2, scale * 1.2, scale * 1.2]}>
+        {/* Subtle outer glow */}
+        <mesh position={position} scale={[scale * 1.1, scale * 1.1, scale * 1.1]}>
           <sphereGeometry args={[1, 64, 64]} />
           <meshPhongMaterial
             color={edgeColor}
             transparent
-            opacity={hovered ? 0.6 : 0.25}
+            opacity={hovered ? 0.3 : 0.15} // Reduced opacity
             side={THREE.BackSide}
           />
         </mesh>
 
-        {/* Additional glow effects */}
+        {/* Minimal hover effects */}
         {hovered && (
           <>
-            <mesh position={position} scale={[scale * 1.4, scale * 1.4, scale * 1.4]}>
+            <mesh position={position} scale={[scale * 1.15, scale * 1.15, scale * 1.15]}>
               <sphereGeometry args={[1, 64, 64]} />
               <meshPhongMaterial
                 color={glowColor}
                 transparent
-                opacity={0.4}
+                opacity={0.2} // Reduced opacity
                 side={THREE.BackSide}
               />
             </mesh>
-            {/* Ground glow */}
+            {/* Subtle ground shadow */}
             <mesh position={[position[0], position[1], position[2] - 0.1]}>
-              <circleGeometry args={[scale * 1.6, 64]} />
+              <circleGeometry args={[scale * 1.2, 64]} />
               <meshBasicMaterial
                 color={glowColor}
                 transparent
-                opacity={0.3}
+                opacity={0.15} // Reduced opacity
                 side={THREE.DoubleSide}
               />
             </mesh>
@@ -128,15 +130,15 @@ function Balloon({ position, color, scale = 1, animationState, onClick, isEarned
         )}
       </Float>
       
-      {/* Enhanced string with glow */}
+      {/* More realistic string */}
       <mesh ref={stringRef} position={[position[0], position[1] - 1.8, position[2]]}>
-        <cylinderGeometry args={[0.02, 0.02, 2.5, 8]} />
+        <cylinderGeometry args={[0.015, 0.015, 2.5, 8]} /> {/* Thinner string */}
         <meshPhongMaterial 
           color="#ffffff"
           emissive="#ffffff"
-          emissiveIntensity={0.5}
+          emissiveIntensity={0.2} // Reduced glow
           transparent
-          opacity={0.95}
+          opacity={0.8} // More opaque
         />
       </mesh>
     </group>
@@ -157,6 +159,7 @@ interface BalloonMascotProps {
 export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
   const [selectedBadge, setSelectedBadge] = useState<string | null>(null);
   const [hoveredBadge, setHoveredBadge] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleBadgeClick = (badgeId: string) => {
     setSelectedBadge(selectedBadge === badgeId ? null : badgeId);
@@ -165,99 +168,113 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
 
   return (
     <div className="h-full w-full relative">
-      <Canvas 
-        camera={{ position: [0, 0, 10], fov: 55 }}
-        style={{ background: '#1a0b2e' }}
+      {/* Scrollable container */}
+      <div 
+        ref={containerRef}
+        className="absolute inset-0 overflow-x-auto overflow-y-hidden"
+        style={{
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#4f46e5 #1a0b2e',
+        }}
       >
-        <color attach="background" args={['#1a0b2e']} />
-        <fog attach="fog" args={['#1a0b2e', 5, 20]} />
-        <Environment preset="sunset" />
-        
-        {/* Enhanced scene lighting */}
-        <ambientLight intensity={6} />
-        <pointLight position={[10, 10, 10]} intensity={4.5} color="#FF69B4" />
-        <pointLight position={[-10, -10, -10]} intensity={3.0} color="#4B0082" />
-        <pointLight position={[0, 5, 5]} intensity={4} color="#FF1493" />
-        
-        {/* Additional accent lights */}
-        <pointLight position={[5, -5, 5]} intensity={5} color="#00FFFF" />
-        <pointLight position={[-5, 5, -5]} intensity={5} color="#FF00FF" />
-        
-        {/* Debug info */}
-        <Text
-          position={[0, 3, 0]}
-          fontSize={0.2}
-          color="white"
-          anchorX="center"
-          anchorY="middle"
-        >
-          {`Badges: ${badges.length}`}
-        </Text>
-        
-        {/* Badge balloons */}
-        {badges && badges.length > 0 && badges.map((badge, index) => {
-          const angle = (index / badges.length) * Math.PI * 2;
-          const radius = 4;
-          const x = Math.cos(angle) * radius;
-          const y = Math.sin(angle) * radius;
-          const z = Math.sin(angle * 2) * 0.5;
-          
-          return (
-            <Balloon
-              key={badge.id}
-              position={[x, y, z]}
-              color={badge.type}
-              scale={1.2}
-              animationState={
-                selectedBadge === badge.id ? 'selected' :
-                hoveredBadge === badge.id ? 'hover' : 'idle'
-              }
-              onClick={() => handleBadgeClick(badge.id)}
-              isEarned={badge.earned}
-            />
-          );
-        })}
-
-        {/* Enhanced badge title display */}
-        {selectedBadge && (
-          <group position={[0, 0, 0]}>
-            {/* Background glow */}
-            <mesh position={[0, -2, -0.1]}>
-              <planeGeometry args={[4, 1]} />
-              <meshBasicMaterial 
-                color="#000000" 
-                transparent 
-                opacity={0.4}
-              />
-            </mesh>
+        <div className="h-full" style={{ minWidth: `${badges?.length * 300}px` }}>
+          <Canvas 
+            camera={{ position: [0, 0, 15], fov: 45 }}
+            style={{ 
+              background: '#1a0b2e',
+              height: '100%',
+              width: '100%'
+            }}
+          >
+            <color attach="background" args={['#1a0b2e']} />
+            <fog attach="fog" args={['#1a0b2e', 8, 25]} />
+            <Environment preset="sunset" />
             
-            {/* Title with glow effect */}
-            <Float speed={1.5} rotationIntensity={0.05} floatIntensity={0.2}>
-              <Text
-                position={[0, -2, 0]}
-                fontSize={0.4}
-                color="#ffffff"
-                anchorX="center"
-                anchorY="middle"
-                outlineWidth={0.04}
-                outlineColor={ACCENTS[badges.find(b => b.id === selectedBadge)?.type as keyof typeof ACCENTS] || ACCENTS.default}
-              >
-                {badges.find(b => b.id === selectedBadge)?.title}
-              </Text>
-            </Float>
-          </group>
-        )}
-        
-        <OrbitControls 
-          enableZoom={true}
-          enablePan={true}
-          minDistance={8}
-          maxDistance={15}
-          rotateSpeed={0.5}
-          minPolarAngle={Math.PI / 4}
-          maxPolarAngle={Math.PI / 2}
-        />
-      </Canvas>
+            {/* Adjusted lighting for more realistic look */}
+            <ambientLight intensity={4} /> {/* Reduced ambient light */}
+            <pointLight position={[10, 10, 10]} intensity={2} color="#FF69B4" /> {/* Reduced intensity */}
+            <pointLight position={[-10, -10, -10]} intensity={1.5} color="#4B0082" />
+            <pointLight position={[0, 5, 5]} intensity={2} color="#FF1493" />
+            
+            {/* Subtle accent lights */}
+            <pointLight position={[5, -5, 5]} intensity={1.5} color="#00FFFF" />
+            <pointLight position={[-5, 5, -5]} intensity={1.5} color="#FF00FF" />
+            
+            {/* Badge balloons in horizontal line with increased spacing */}
+            {badges && badges.length > 0 && badges.map((badge, index) => {
+              const x = (index - (badges.length - 1) / 2) * 3.5; // Increased spacing between balloons
+              return (
+                <Balloon
+                  key={badge.id}
+                  position={[x, 0, 0]}
+                  color={badge.type}
+                  scale={1.2}
+                  animationState={
+                    selectedBadge === badge.id ? 'selected' :
+                    hoveredBadge === badge.id ? 'hover' : 'idle'
+                  }
+                  onClick={() => handleBadgeClick(badge.id)}
+                  isEarned={badge.earned}
+                />
+              );
+            })}
+
+            {/* Badge title display - adjusted position for new camera distance */}
+            {selectedBadge && (
+              <group position={[0, -3, 0]}>
+                {/* Background glow */}
+                <mesh position={[0, 0, -0.1]}>
+                  <planeGeometry args={[5, 1.2]} />
+                  <meshBasicMaterial 
+                    color="#000000" 
+                    transparent 
+                    opacity={0.4}
+                  />
+                </mesh>
+                
+                {/* Title with glow effect */}
+                <Float speed={1.5} rotationIntensity={0.05} floatIntensity={0.2}>
+                  <Text
+                    position={[0, 0, 0]}
+                    fontSize={0.5}
+                    color="#ffffff"
+                    anchorX="center"
+                    anchorY="middle"
+                    outlineWidth={0.04}
+                    outlineColor={ACCENTS[badges.find(b => b.id === selectedBadge)?.type as keyof typeof ACCENTS] || ACCENTS.default}
+                  >
+                    {badges.find(b => b.id === selectedBadge)?.title}
+                  </Text>
+                </Float>
+              </group>
+            )}
+            
+            {/* Disable orbit controls for horizontal scroll */}
+            <OrbitControls 
+              enableZoom={false}
+              enablePan={false}
+              enableRotate={false}
+            />
+          </Canvas>
+        </div>
+      </div>
+
+      {/* Custom scrollbar styling */}
+      <style jsx global>{`
+        .overflow-x-auto::-webkit-scrollbar {
+          height: 8px;
+        }
+        .overflow-x-auto::-webkit-scrollbar-track {
+          background: #1a0b2e;
+        }
+        .overflow-x-auto::-webkit-scrollbar-thumb {
+          background: #4f46e5;
+          border-radius: 4px;
+        }
+        .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+          background: #6366f1;
+        }
+      `}</style>
     </div>
   );
 } 
