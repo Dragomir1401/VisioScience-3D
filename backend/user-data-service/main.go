@@ -120,6 +120,15 @@ func main() {
 	r.Handle("/user/quiz/{quizId}/challenging-questions", middleware.JWTAuth(http.HandlerFunc(handlers.GetChallengingQuestions))).Methods("GET")
 	r.Handle("/user/quiz/{quizId}/question-statistics", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuestionStatistics))).Methods("GET")
 
+	// Badge routes
+	badgeHandler := handlers.NewBadgeHandler(mongo.DB)
+	badgeRoutes := r.Group("/api/badges")
+	{
+		badgeRoutes.GET("/user/:userId", badgeHandler.GetUserBadges)
+		badgeRoutes.GET("/:badgeId/user/:userId", badgeHandler.GetBadgeDetails)
+		badgeRoutes.PUT("/:badgeId/user/:userId/progress", badgeHandler.UpdateBadgeProgress)
+	}
+
 	corsObj := gorillaHandlers.CORS(
 		gorillaHandlers.AllowedOrigins([]string{"*"}),
 		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
