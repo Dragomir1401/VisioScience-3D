@@ -179,7 +179,7 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
       >
         <div className="h-full" style={{ minWidth: `${badges?.length * 300}px` }}>
           <Canvas 
-            camera={{ position: [0, 0, 15], fov: 45 }}
+            camera={{ position: [0, 0, 25], fov: 40 }}
             style={{ 
               background: '#1a0b2e',
               height: '100%',
@@ -187,28 +187,28 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
             }}
           >
             <color attach="background" args={['#1a0b2e']} />
-            <fog attach="fog" args={['#1a0b2e', 8, 25]} />
+            <fog attach="fog" args={['#1a0b2e', 15, 35]} />
             <Environment preset="sunset" />
             
-            {/* Adjusted lighting for more realistic look */}
-            <ambientLight intensity={4} /> {/* Reduced ambient light */}
-            <pointLight position={[10, 10, 10]} intensity={2} color="#FF69B4" /> {/* Reduced intensity */}
-            <pointLight position={[-10, -10, -10]} intensity={1.5} color="#4B0082" />
-            <pointLight position={[0, 5, 5]} intensity={2} color="#FF1493" />
+            {/* Adjusted lighting for new camera distance */}
+            <ambientLight intensity={4} />
+            <pointLight position={[15, 15, 15]} intensity={2} color="#FF69B4" />
+            <pointLight position={[-15, -15, -15]} intensity={1.5} color="#4B0082" />
+            <pointLight position={[0, 10, 10]} intensity={2} color="#FF1493" />
             
-            {/* Subtle accent lights */}
-            <pointLight position={[5, -5, 5]} intensity={1.5} color="#00FFFF" />
-            <pointLight position={[-5, 5, -5]} intensity={1.5} color="#FF00FF" />
+            {/* Adjusted accent lights */}
+            <pointLight position={[10, -10, 10]} intensity={1.5} color="#00FFFF" />
+            <pointLight position={[-10, 10, -10]} intensity={1.5} color="#FF00FF" />
             
             {/* Badge balloons in horizontal line with increased spacing */}
             {badges && badges.length > 0 && badges.map((badge, index) => {
-              const x = (index - (badges.length - 1) / 2) * 3.5; // Increased spacing between balloons
+              const x = (index - (badges.length - 1) / 2) * 4;
               return (
                 <Balloon
                   key={badge.id}
                   position={[x, 0, 0]}
                   color={badge.type}
-                  scale={1.2}
+                  scale={1.5}
                   animationState={
                     selectedBadge === badge.id ? 'selected' :
                     hoveredBadge === badge.id ? 'hover' : 'idle'
@@ -219,12 +219,12 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
               );
             })}
 
-            {/* Badge title display - adjusted position for new camera distance */}
+            {/* Badge title display - adjusted for new camera distance */}
             {selectedBadge && (
-              <group position={[0, -3, 0]}>
+              <group position={[0, -4, 0]}>
                 {/* Background glow */}
                 <mesh position={[0, 0, -0.1]}>
-                  <planeGeometry args={[5, 1.2]} />
+                  <planeGeometry args={[6, 1.5]} />
                   <meshBasicMaterial 
                     color="#000000" 
                     transparent 
@@ -236,7 +236,7 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
                 <Float speed={1.5} rotationIntensity={0.05} floatIntensity={0.2}>
                   <Text
                     position={[0, 0, 0]}
-                    fontSize={0.5}
+                    fontSize={0.7}
                     color="#ffffff"
                     anchorX="center"
                     anchorY="middle"
