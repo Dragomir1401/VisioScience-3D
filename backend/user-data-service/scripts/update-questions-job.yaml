@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: init-badges
+spec:
+  template:
+    spec:
+      containers:
+      - name: init-badges
+        image: user-data-service-init-badges:latest
+        imagePullPolicy: Never
+        env:
+        - name: MONGODB_URI
+          value: "mongodb://mongodb:27017"
+      restartPolicy: OnFailure 

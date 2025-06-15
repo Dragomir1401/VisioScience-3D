@@ -27,12 +27,14 @@ type Badge struct {
 }
 
 type UserBadge struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	UserID    string             `bson:"userId" json:"userId"`
-	BadgeID   primitive.ObjectID `bson:"badgeId" json:"badgeId"`
-	EarnedAt  time.Time          `bson:"earnedAt" json:"earnedAt"`
-	Progress  float64            `bson:"progress" json:"progress"` // 0-100 for progress tracking
-	Completed bool               `bson:"completed" json:"completed"`
+	ID           primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	UserID       string             `bson:"user_id" json:"user_id"`
+	BadgeID      primitive.ObjectID `bson:"badge_id" json:"badge_id"`
+	Progress     float64            `bson:"progress" json:"progress"`
+	CurrentValue float64            `bson:"current_value" json:"current_value"`
+	Completed    bool               `bson:"completed" json:"completed"`
+	EarnedAt     time.Time          `bson:"earned_at,omitempty" json:"earned_at,omitempty"`
+	UpdatedAt    time.Time          `bson:"updated_at" json:"updated_at"`
 }
 
 type BadgeWithProgress struct {

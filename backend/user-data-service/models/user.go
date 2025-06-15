@@ -38,14 +38,6 @@ type PointsEntry struct {
 	Timestamp   time.Time `bson:"timestamp" json:"timestamp"`
 }
 
-type Badge struct {
-	ID          primitive.ObjectID `bson:"_id" json:"id"`
-	Name        string             `bson:"name" json:"name"`
-	Description string             `bson:"description" json:"description"`
-	Icon        string             `bson:"icon" json:"icon"`
-	EarnedAt    time.Time          `bson:"earned_at" json:"earned_at"`
-}
-
 type PerformanceMetrics struct {
 	Accuracy    float64 `bson:"accuracy" json:"accuracy"`
 	Speed       float64 `bson:"speed" json:"speed"`
@@ -91,4 +83,45 @@ type MostImprovedStudent struct {
 	InitialScore float64            `json:"initialScore"`
 	CurrentScore float64            `json:"currentScore"`
 	Improvement  float64            `json:"improvement"`
+}
+
+type Claims struct {
+	UserID    string `json:"user_id"`
+	Email     string `json:"email"`
+	Role      string `json:"role"`
+	ExpiresAt int64  `json:"exp"`
+}
+
+type QuizResult struct {
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	UserID      string             `bson:"user_id" json:"user_id"`
+	QuizID      primitive.ObjectID `bson:"quiz_id" json:"quiz_id"`
+	ClassID     primitive.ObjectID `bson:"class_id" json:"class_id"`
+	Score       float64            `bson:"score" json:"score"`
+	MaxScore    float64            `bson:"max_score" json:"max_score"`
+	SubmittedAt time.Time          `bson:"submitted_at" json:"submitted_at"`
+	Answers     []Answer           `bson:"answers" json:"answers"`
+}
+
+type Answer struct {
+	QuestionID primitive.ObjectID `bson:"question_id" json:"question_id"`
+	Answer     string             `bson:"answer" json:"answer"`
+	IsCorrect  bool               `bson:"is_correct" json:"is_correct"`
+}
+
+type ClassPerformance struct {
+	ClassID       primitive.ObjectID `json:"class_id"`
+	ClassName     string             `json:"class_name"`
+	AverageScore  float64            `json:"average_score"`
+	TotalQuizzes  int                `json:"total_quizzes"`
+	TotalStudents int                `json:"total_students"`
+}
+
+type StudentPerformance struct {
+	UserID       string  `json:"user_id"`
+	FirstName    string  `json:"first_name"`
+	LastName     string  `json:"last_name"`
+	AverageScore float64 `json:"average_score"`
+	TotalQuizzes int     `json:"total_quizzes"`
+	Improvement  float64 `json:"improvement"`
 }

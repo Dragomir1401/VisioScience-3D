@@ -13,6 +13,7 @@ var MongoClient *mongo.Client
 var UserCollection *mongo.Collection
 var ClassCollection *mongo.Collection
 var InviteCollection *mongo.Collection
+var BadgeCollection *mongo.Collection
 var mongoUri = "mongodb://root:root@mongo-user-data-service:27017/?authSource=admin"
 
 func InitDB() {
@@ -36,4 +37,5 @@ func InitDB() {
 	UserCollection = client.Database("userdata").Collection("users")
 	ClassCollection = client.Database("userdata").Collection("classes")
 	InviteCollection = client.Database("visioscience").Collection("invites")
+	BadgeCollection = client.Database("visioscience").Collection("badges")
 }

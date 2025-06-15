@@ -5,6 +5,18 @@ import * as THREE from 'three';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSpring } from "@react-spring/three";
 
+interface Badge {
+  id: string;
+  title: string;
+  type: 'bronze' | 'silver' | 'gold' | 'perfect';
+  earned: boolean;
+  progress: number;
+  earnedAt?: string;
+  color: string;
+  icon: string;
+  description: string;
+}
+
 interface BalloonProps {
   position: [number, number, number];
   color: string;
@@ -148,14 +160,8 @@ function Balloon({ position, color, scale = 1, animationState, onClick, isEarned
 }
 
 interface BalloonMascotProps {
-  badges: Array<{
-    id: string;
-    title: string;
-    type: string;
-    earned: boolean;
-    color: string;
-  }>;
-  onBadgeClick?: (badgeId: string) => void;
+  userId: string;
+  onBadgeClick?: (badge: Badge) => void;
 }
 
 function CameraController({ 
@@ -284,7 +290,7 @@ function Scene({
   badges: Badge[],
   selectedBadge: string | null,
   hoveredBadge: string | null,
-  onBadgeClick: (id: string) => void,
+  onBadgeClick: (badge: Badge) => void,
   targetRotation: number,
   isRotating: boolean
 }) {
@@ -342,7 +348,7 @@ function Scene({
                   selectedBadge === badge.id ? 'selected' :
                   hoveredBadge === badge.id ? 'hover' : 'idle'
                 }
-                onClick={() => onBadgeClick(badge.id)}
+                onClick={() => onBadgeClick(badge)}
                 isEarned={badge.earned}
               />
             </group>
@@ -353,12 +359,59 @@ function Scene({
   );
 }
 
-export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
+export function BalloonMascot({ userId, onBadgeClick }: BalloonMascotProps) {
+  const [badges, setBadges] = useState<Badge[]>([]);
   const [selectedBadge, setSelectedBadge] = useState<string | null>(null);
   const [hoveredBadge, setHoveredBadge] = useState<string | null>(null);
   const [isRotating, setIsRotating] = useState(false);
   const [targetRotation, setTargetRotation] = useState(0);
   const [showHint, setShowHint] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchBadges = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem('token');
+        const response = await fetch(
+          `http://localhost:8000/api/badges/user/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch badges');
+        }
+
+        const data = await response.json();
+        setBadges(data.map((badge: any) => ({
+          id: badge.badge.id,
+          title: badge.badge.title,
+          type: badge.badge.type,
+          earned: badge.earned,
+          progress: badge.progress,
+          earnedAt: badge.earnedAt,
+          color: badge.badge.color,
+          icon: badge.badge.icon,
+          description: badge.badge.description
+        })));
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching badges:', err);
+        setError('Failed to load badges. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userId) {
+      fetchBadges();
+    }
+  }, [userId]);
 
   // Hide hint after 5 seconds
   useEffect(() => {
@@ -369,10 +422,34 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleBadgeClick = (id: string) => {
-    setSelectedBadge(id);
-    onBadgeClick?.(id);
+  const handleBadgeClick = (badge: Badge) => {
+    setSelectedBadge(badge.id);
+    onBadgeClick?.(badge);
   };
+
+  if (loading) {
+    return (
+      <div className="relative w-full h-full flex items-center justify-center">
+        <div className="text-white/80 text-lg">Loading badges...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="relative w-full h-full flex items-center justify-center">
+        <div className="text-red-400 text-lg">{error}</div>
+      </div>
+    );
+  }
+
+  if (!badges.length) {
+    return (
+      <div className="relative w-full h-full flex items-center justify-center">
+        <div className="text-white/80 text-lg">No badges available yet.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-full">

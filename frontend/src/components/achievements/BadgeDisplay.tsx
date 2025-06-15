@@ -3,28 +3,33 @@ import { useFrame } from '@react-three/fiber';
 import { Text, Float, useCursor } from '@react-three/drei';
 import * as THREE from 'three';
 
-interface BadgeDisplayProps {
-  position: [number, number, number];
+interface Badge {
+  id: string;
+  title: string;
   type: 'bronze' | 'silver' | 'gold' | 'perfect';
   earned: boolean;
-  title: string;
-  onClick?: () => void;
-  color?: string;
+  progress: number;
+  earnedAt?: string;
+  color: string;
+  icon: string;
+  description: string;
 }
 
-export function BadgeDisplay({ position, type, earned, title, onClick, color }: BadgeDisplayProps) {
+interface BadgeDisplayProps {
+  badge: Badge;
+  position: [number, number, number];
+  onClick?: () => void;
+}
+
+export function BadgeDisplay({ badge, position, onClick }: BadgeDisplayProps) {
   const badgeRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
   useCursor(hovered);
 
-  const colors = color ? {
-    badge: color,
-    glow: new THREE.Color(color).multiplyScalar(2).getHexString(),
-    text: new THREE.Color(color).multiplyScalar(1.2).getHexString()
-  } : {
-    badge: '#FF69B4', // Roz neon
-    glow: '#FFB6C1', // Roz deschis neon
-    text: '#FFC0CB'  // Roz foarte deschis neon
+  const colors = {
+    badge: badge.color,
+    glow: new THREE.Color(badge.color).multiplyScalar(2).getHexString(),
+    text: new THREE.Color(badge.color).multiplyScalar(1.2).getHexString()
   };
 
   useFrame((state) => {
@@ -52,7 +57,7 @@ export function BadgeDisplay({ position, type, earned, title, onClick, color }: 
       position={position}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
-      onClick={earned ? onClick : undefined}
+      onClick={badge.earned ? onClick : undefined}
     >
       {/* Badge with enhanced neon effect */}
       <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
@@ -62,7 +67,7 @@ export function BadgeDisplay({ position, type, earned, title, onClick, color }: 
             color={colors.badge}
             shininess={150}
             transparent
-            opacity={earned ? 0.95 : 0.4}
+            opacity={badge.earned ? 0.95 : 0.4}
             emissive={new THREE.Color(colors.glow)}
             emissiveIntensity={hovered ? 1.2 : 0.6}
           />
@@ -75,14 +80,14 @@ export function BadgeDisplay({ position, type, earned, title, onClick, color }: 
             color={colors.badge}
             shininess={150}
             transparent
-            opacity={earned ? 0.95 : 0.4}
+            opacity={badge.earned ? 0.95 : 0.4}
             emissive={new THREE.Color(colors.glow)}
             emissiveIntensity={hovered ? 1 : 0.5}
           />
         </mesh>
 
         {/* Additional glow effect */}
-        {hovered && earned && (
+        {hovered && badge.earned && (
           <mesh position={[0, 0, -0.1]}>
             <circleGeometry args={[1.4, 32]} />
             <meshBasicMaterial 
@@ -99,7 +104,7 @@ export function BadgeDisplay({ position, type, earned, title, onClick, color }: 
         <Text
           position={[0, -1.5, 0]}
           fontSize={0.3}
-          color={earned ? colors.text : "#666"}
+          color={badge.earned ? colors.text : "#666"}
           anchorX="center"
           anchorY="middle"
           outlineWidth={0.03}
@@ -107,12 +112,25 @@ export function BadgeDisplay({ position, type, earned, title, onClick, color }: 
           strokeWidth={0.02}
           strokeColor={colors.glow}
         >
-          {title}
+          {badge.title}
         </Text>
       )}
 
+      {/* Progress indicator */}
+      {!badge.earned && badge.progress > 0 && (
+        <mesh position={[0, 0, 0.5]}>
+          <ringGeometry args={[0.7, 0.8, 32, 1, 0, Math.PI * 2 * (badge.progress / 100)]} />
+          <meshPhongMaterial 
+            color={colors.badge}
+            transparent
+            opacity={0.8}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      )}
+
       {/* Lock icon with neon effect */}
-      {!earned && (
+      {!badge.earned && badge.progress === 0 && (
         <group position={[0, 0, 0.5]}>
           <mesh>
             <boxGeometry args={[0.3, 0.3, 0.1]} />

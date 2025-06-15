@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import BadgeNotification from '../common/BadgeNotification';
+import { jwtDecode } from 'jwt-decode';
 
 const dbg = (...a) => console.debug("[QuizAttempt]", ...a);
 
@@ -17,6 +19,8 @@ const QuizAttempt = () => {
   const startTime = useRef(Date.now());
   const [timeTaken, setTimeTaken] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [newBadges, setNewBadges] = useState([]);
+  const [showBadgeNotification, setShowBadgeNotification] = useState(false);
 
   useEffect(() => {
     setTimeStarted(Date.now());
@@ -72,9 +76,16 @@ const QuizAttempt = () => {
   const handleSubmit = async () => {
     if (isSubmitting) return;
     setIsSubmitting(true);
-    setError(null);
+    const startTime = Date.now();
 
     try {
+      // Get claims from token
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+      const claims = jwtDecode(token);
+
       const timeSpent = Math.floor((Date.now() - startTime.current) / 1000);
       setTimeTaken(timeSpent);
 
@@ -124,14 +135,14 @@ const QuizAttempt = () => {
         questions_total: quiz.questions.length,
         questions_correct: evaluationData.score,
         questions_incorrect: quiz.questions.length - evaluationData.score,
-        difficulty_level: "medium", // This should come from the quiz data
+        difficulty_level: quiz.difficulty || 'medium',
         completion_time: timeSpent,
         streak_bonus: evaluationData.streakBonus,
         time_bonus: evaluationData.timeBonus,
         perfect_bonus: evaluationData.perfectBonus,
         total_points: evaluationData.points,
-        quiz_type: "standard", // This should come from the quiz data
-        attempt_number: 1, // This should be tracked per user
+        quiz_type: quiz.type || 'standard',
+        attempt_number: 1,
         completion_date: new Date().toISOString(),
         incorrectly_answered_questions: incorrectlyAnsweredQuestions,
         performance_metrics: {
@@ -158,6 +169,57 @@ const QuizAttempt = () => {
       if (!userDataResponse.ok) {
         console.error('Failed to save detailed quiz statistics:', await userDataResponse.text());
         // Don't throw here, as the quiz was already evaluated successfully
+      }
+
+      // Update badge progress using the new endpoint
+      try {
+        const badgeProgressResponse = await fetch(
+          `http://localhost:8000/user/badges/quiz-progress`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              quiz_result: userDataPayload
+            }),
+          }
+        );
+
+        if (!badgeProgressResponse.ok) {
+          console.warn('Failed to update badge progress:', await badgeProgressResponse.text());
+        }
+      } catch (badgeProgressError) {
+        console.warn('Error updating badge progress:', badgeProgressError);
+      }
+
+      // Check for new badges after quiz completion
+      try {
+        const badgesResponse = await fetch(
+          `http://localhost:8000/user/badges/${claims.user_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (badgesResponse.ok) {
+          const badges = await badgesResponse.json();
+          const newlyEarnedBadges = badges.filter(
+            badge => badge.completed && (!badge.earnedAt || new Date(badge.earnedAt) > new Date(Date.now() - 5000))
+          );
+          
+          if (newlyEarnedBadges.length > 0) {
+            setNewBadges(newlyEarnedBadges);
+            setShowBadgeNotification(true);
+          }
+        } else {
+          console.warn('Failed to fetch badges:', badgesResponse.status, await badgesResponse.text());
+        }
+      } catch (badgeError) {
+        console.warn('Error checking badges:', badgeError);
       }
 
       console.log('Quiz results saved:', {
@@ -365,6 +427,13 @@ const QuizAttempt = () => {
           </>
         )}
       </div>
+
+      {showBadgeNotification && (
+        <BadgeNotification
+          badges={newBadges}
+          onClose={() => setShowBadgeNotification(false)}
+        />
+      )}
     </div>
   );
 };
