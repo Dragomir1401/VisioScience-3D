@@ -124,7 +124,7 @@ func main() {
 	r.Handle("/user/badges/{userId}", middleware.JWTAuth(http.HandlerFunc(handlers.GetUserBadges))).Methods("GET")
 	r.Handle("/user/badges/{badgeId}/user/{userId}", middleware.JWTAuth(http.HandlerFunc(handlers.GetBadgeDetails))).Methods("GET")
 	r.Handle("/user/badges/{badgeId}/user/{userId}/progress", middleware.JWTAuth(http.HandlerFunc(handlers.UpdateBadgeProgress))).Methods("PUT")
-	r.Handle("/user/badges/quiz-progress", middleware.JWTAuth(http.HandlerFunc(handlers.UpdateBadgeProgress))).Methods("POST")
+	r.Handle("/user/badges/quiz-progress", middleware.JWTAuth(http.HandlerFunc(handlers.UpdateBadgeProgressFromQuiz))).Methods("POST")
 
 	corsObj := gorillaHandlers.CORS(
 		gorillaHandlers.AllowedOrigins([]string{"*"}),

@@ -124,8 +124,14 @@ func (bc *BadgeController) CheckAndUpdateBadges(ctx context.Context, userID stri
 
 	// Get user's quiz history
 	log.Printf("👤 Fetching user %s quiz history...", userID)
+	userOID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		log.Printf("❌ Error converting user ID to ObjectID: %v", err)
+		return nil, err
+	}
+
 	var user models.User
-	err = bc.db.Collection("users").FindOne(ctx, bson.M{"_id": userID}).Decode(&user)
+	err = bc.db.Collection("users").FindOne(ctx, bson.M{"_id": userOID}).Decode(&user)
 	if err != nil {
 		log.Printf("❌ Error finding user %s: %v", userID, err)
 		return nil, err

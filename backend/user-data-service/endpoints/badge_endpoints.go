@@ -277,7 +277,7 @@ func UpdateBadgeProgressFromQuiz(w http.ResponseWriter, r *http.Request) {
 
 	// Calculate and update badge progress
 	log.Printf("🔄 Starting badge progress calculation for user %s", claims.UserID)
-	bc := controllers.NewBadgeController(db.BadgeCollection.Database())
+	bc := controllers.NewBadgeController(db.MongoClient.Database("userdata"))
 	updatedBadges, err := bc.CheckAndUpdateBadges(r.Context(), claims.UserID, req.QuizResult)
 	if err != nil {
 		log.Printf("❌ Error updating badge progress for user %s: %v", claims.UserID, err)
