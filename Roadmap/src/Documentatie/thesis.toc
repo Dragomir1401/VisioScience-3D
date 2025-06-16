@@ -82,39 +82,39 @@
 \contentsline {subsection}{\numberline {6.2.1}Configurare front-end}{54}{subsection.6.2.1}%
 \contentsline {subsection}{\numberline {6.2.2}Dezvoltare front-end}{54}{subsection.6.2.2}%
 \contentsline {subsection}{\numberline {6.2.3}Conectivitate}{55}{subsection.6.2.3}%
-\contentsline {chapter}{\numberline {7}Scenarii de utilizare}{56}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Înregistrare si autentificare utilizator}{56}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Explorarea meniul principal}{57}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Accesarea secțiunilor educaționale}{58}{section.7.3}%
-\contentsline {section}{\numberline {7.4}Interacțiunea cu scenele 3D educaționale}{60}{section.7.4}%
-\contentsline {section}{\numberline {7.5}Gestionarea profilului de profesor}{61}{section.7.5}%
-\contentsline {subsection}{\numberline {7.5.1}Crearea de clase și gestionarea elevilor}{61}{subsection.7.5.1}%
-\contentsline {subsection}{\numberline {7.5.2}Crearea de teste și gestionarea lor}{62}{subsection.7.5.2}%
-\contentsline {subsection}{\numberline {7.5.3}Vizualizarea rezultatelor}{62}{subsection.7.5.3}%
-\contentsline {section}{\numberline {7.6}Gestionarea contului de elev}{63}{section.7.6}%
-\contentsline {subsection}{\numberline {7.6.1}Intrarea în clasele profesorului}{63}{subsection.7.6.1}%
-\contentsline {subsection}{\numberline {7.6.2}Accesarea testelor și vizualizarea rezultatelor}{64}{subsection.7.6.2}%
-\contentsline {subsection}{\numberline {7.6.3}Compilatorul interactiv de cod}{64}{subsection.7.6.3}%
-\contentsline {subsection}{\numberline {7.6.4}Tabloul de elemente interactiv}{66}{subsection.7.6.4}%
-\contentsline {chapter}{\numberline {8}Evaluarea implementării}{67}{chapter.8}%
-\contentsline {section}{\numberline {8.1}Introducere}{67}{section.8.1}%
-\contentsline {section}{\numberline {8.2}Evaluarea back-endului}{67}{section.8.2}%
-\contentsline {subsection}{\numberline {8.2.1}Testarea back-endului}{67}{subsection.8.2.1}%
-\contentsline {subsection}{\numberline {8.2.2}Monitorizarea back-endului}{67}{subsection.8.2.2}%
-\contentsline {subsection}{\numberline {8.2.3}Evaluarea performanței back-endului}{68}{subsection.8.2.3}%
-\contentsline {section}{\numberline {8.3}Evaluarea front-endului}{69}{section.8.3}%
-\contentsline {subsection}{\numberline {8.3.1}Testarea front-endului}{69}{subsection.8.3.1}%
-\contentsline {subsection}{\numberline {8.3.2}Monitorizarea front-endului}{69}{subsection.8.3.2}%
-\contentsline {subsection}{\numberline {8.3.3}Evaluarea performanței front-endului}{69}{subsection.8.3.3}%
-\contentsline {section}{\numberline {8.4}Testarea infrastructurii / Platformei}{69}{section.8.4}%
-\contentsline {section}{\numberline {8.5}Probleme întâmpinate}{70}{section.8.5}%
-\contentsline {subsection}{\numberline {8.5.1}Backend \& Kubernetes Ingress}{70}{subsection.8.5.1}%
-\contentsline {subsection}{\numberline {8.5.2}CI/CD Build \& Rollout Workflow accesibilitate}{70}{subsection.8.5.2}%
-\contentsline {subsection}{\numberline {8.5.3}Epuizarea memoriei GPU din cauza texturilor masive}{70}{subsection.8.5.3}%
-\contentsline {subsection}{\numberline {8.5.4}Crearea fluxului de parsare a codului C++}{70}{subsection.8.5.4}%
-\contentsline {section}{\numberline {8.6}Analiză comparativă pe metrici}{71}{section.8.6}%
-\contentsline {section}{\numberline {8.7}Statistici de dezvoltare}{71}{section.8.7}%
-\contentsline {chapter}{\numberline {9}Concluzii și perspective}{73}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Concluzii}{73}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Dezvoltare viitoare}{73}{section.9.2}%
-\contentsline {chapter}{\numberline {A}Anexe}{75}{appendix.A}%
+\contentsline {chapter}{\numberline {7}Scenarii de utilizare}{57}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Înregistrare si autentificare utilizator}{57}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Explorarea meniul principal}{58}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Accesarea secțiunilor educaționale}{59}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Interacțiunea cu scenele 3D educaționale}{61}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Gestionarea profilului de profesor}{62}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}Crearea de clase și gestionarea elevilor}{62}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}Crearea de teste și gestionarea lor}{63}{subsection.7.5.2}%
+\contentsline {subsection}{\numberline {7.5.3}Vizualizarea rezultatelor}{63}{subsection.7.5.3}%
+\contentsline {section}{\numberline {7.6}Gestionarea contului de elev}{64}{section.7.6}%
+\contentsline {subsection}{\numberline {7.6.1}Intrarea în clasele profesorului}{64}{subsection.7.6.1}%
+\contentsline {subsection}{\numberline {7.6.2}Accesarea testelor și vizualizarea rezultatelor}{65}{subsection.7.6.2}%
+\contentsline {subsection}{\numberline {7.6.3}Compilatorul interactiv de cod}{65}{subsection.7.6.3}%
+\contentsline {subsection}{\numberline {7.6.4}Tabloul de elemente interactiv}{67}{subsection.7.6.4}%
+\contentsline {chapter}{\numberline {8}Evaluarea implementării}{68}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Introducere}{68}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Evaluarea back-endului}{68}{section.8.2}%
+\contentsline {subsection}{\numberline {8.2.1}Testarea back-endului}{68}{subsection.8.2.1}%
+\contentsline {subsection}{\numberline {8.2.2}Monitorizarea back-endului}{68}{subsection.8.2.2}%
+\contentsline {subsection}{\numberline {8.2.3}Evaluarea performanței back-endului}{69}{subsection.8.2.3}%
+\contentsline {section}{\numberline {8.3}Evaluarea front-endului}{70}{section.8.3}%
+\contentsline {subsection}{\numberline {8.3.1}Testarea front-endului}{70}{subsection.8.3.1}%
+\contentsline {subsection}{\numberline {8.3.2}Monitorizarea front-endului}{70}{subsection.8.3.2}%
+\contentsline {subsection}{\numberline {8.3.3}Evaluarea performanței front-endului}{70}{subsection.8.3.3}%
+\contentsline {section}{\numberline {8.4}Testarea infrastructurii / Platformei}{70}{section.8.4}%
+\contentsline {section}{\numberline {8.5}Probleme întâmpinate}{71}{section.8.5}%
+\contentsline {subsection}{\numberline {8.5.1}Backend \& Kubernetes Ingress}{71}{subsection.8.5.1}%
+\contentsline {subsection}{\numberline {8.5.2}CI/CD Build \& Rollout Workflow accesibilitate}{71}{subsection.8.5.2}%
+\contentsline {subsection}{\numberline {8.5.3}Epuizarea memoriei GPU din cauza texturilor masive}{71}{subsection.8.5.3}%
+\contentsline {subsection}{\numberline {8.5.4}Crearea fluxului de parsare a codului C++}{71}{subsection.8.5.4}%
+\contentsline {section}{\numberline {8.6}Analiză comparativă pe metrici}{72}{section.8.6}%
+\contentsline {section}{\numberline {8.7}Statistici de dezvoltare}{72}{section.8.7}%
+\contentsline {chapter}{\numberline {9}Concluzii și perspective}{74}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Concluzii}{74}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Dezvoltare viitoare}{74}{section.9.2}%
+\contentsline {chapter}{\numberline {A}Anexe}{76}{appendix.A}%

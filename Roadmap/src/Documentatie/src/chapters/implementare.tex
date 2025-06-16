@@ -219,6 +219,23 @@ poate fi rotită cu mouse-ul în anexa \ref{lst:react-island}. Aceasta foloseșt
 \texttt{useRef} pentru a manipula direct obiectele Three.js și a aplica rotații în funcție
 de mișcarea mouse-ului.
 
+În alte zone componentele sunt implementate după modelul de carduri, cum ar fi în zona
+panoului de metrici la care are access profesorul bazate pe rezultatele obținute de elevi
+la diferitele quiz-uri. Se folosesc și componente deja existente precum containere responsive
+și adaptive la dimensiunile ecranului. Unele componente fac și validări de date sau agregări
+scurte pe datele pe care le primesc, procesările și agregările importante fiind realizate
+în backend.
+
+Majoritatea componentelor urmează o structură clară, întâi în definiția componentei fiind
+state-urile și funcțiile de manipulare a acestora, apoi hook-urile React pentru
+efecte secundare, apoi filtre sau efecte care nu sunt principale și în final 
+returnarea JSX-ului care definește interfața grafică.
+
+Unele scene 3D încep cu interfețe de declarare de elemente, precum geometria unor obiecte,
+materiale sau chiar și animații. Componentele au logica de animare în general în useFrame, iar
+state-urile sunt legate cu useRef sau useState pentru a permite actualizarea lor în timp real.
+După acestea apar funcțiile de procesare sau utilitare, iar componentele se termină cu 
+returnarea JSX-ului care definește structura vizuală a scenei.
 
 \subsection{Conectivitate}
 \label{subsec:conectivitate-frontend}
@@ -238,7 +255,7 @@ plus, au fost dezvoltate formulare pentru inserarea, ștergerea și actualizarea
 datelor pe server, iar răspunsurile și validările sunt gestionate vizual în frontend
 pentru o experiență de utilizator intuitivă.
 
-  
+
 Un exemplu de componentă React care face fetch pentru informațți pentru planeta Mercur se 
 oservă în anexa \ref{lst:react-mercury-formulas}. Ea folosește useEffect pentru a chema
 callback-urille de JavaScript care iau datele de la backend și le afișează în interfață.
