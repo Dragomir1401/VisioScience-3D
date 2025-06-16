@@ -130,8 +130,8 @@ Pentru a vizualiza stările fiecărui container \textit{la runtime} s-au parcurs
   \item Inserăm antetul \verb|tracer.h| şi instanţa globală a tracer-ului în fişierul C++.
   \item Funcţia Go \lstinline{TransformCode} parcurge sursa linie cu linie şi:
         \begin{itemize}
-          \item detectează declaraţii de containere STL (\texttt{vector}, \texttt{map}, \texttt{stack} ș.a.);
-          \item generează pentru fiecare un \lstinline{ContainerTracer} cu \lstinline{makeTracedContainer()};
+          \item detectează declaraţii de containere STL (\texttt{vector}, \texttt{map}, \texttt{stack}, etc.);
+          \item generează pentru fiecare un ContainerTracer cu makeTracedContainer();
           \item inserează apeluri \lstinline{traceOperation()} după operaţiile semnificative (\lstinline{push_back}, \lstinline{insert}, \lstinline{erase}, etc.).;
           \item adaugă \lstinline{Tracer::getInstance().snapshot()} înainte de \lstinline{return} şi după structuri de control.
         \end{itemize}
@@ -181,7 +181,7 @@ Această combinație a permis crearea unei interfețe interactive cu multiple vi
 \label{subsec:implementare-frontend}
 
 Mediul de dezvoltare a fost configurat cu Node.js\footnote{https://nodejs.org/} și 
-npm\footnote{https://www.npmjs.com/}, folosind Vite\footnote{https://vitejs.dev/} ca bundler și server de dezvoltare rapidă.
+npm\footnote{https://www.npmjs.com/}, folosind Vite\footnote{https://vitejs.dev/} ca agregator și server de dezvoltare rapidă.
 În directorul proiectului, pachetele relevante instalate includ \texttt{react}, \texttt{react-router-dom}, 
 \texttt{@react-three/fiber}, \texttt{@react-three/drei} și alte dependențe utile pentru animații și stilizare.
 Tehnologiile menționate se îmbină cu folosirea Tailwind CSS\footnote{https://tailwindcss.com/} 
@@ -195,19 +195,18 @@ Pentru vizualizările 3D s-au folosit componente R3F, cu suport Drei pentru faci
 \texttt{useGLTF} pentru importul modelelor 3D, \texttt{useSpring} pentru animații și \texttt{Canvas}
 pentru spațiul 3D.
 
-Exemple de componente dezvoltate includ:
-\begin{itemize}
-  \item \textbf{Landing Pages} pentru materii (Astronomie, Chimie, Informatică) cu descrieri și elemente interactive.
-  \item \textbf{Formulare} (ex: \texttt{ChemistryAddForm}) pentru adăugarea moleculelor cu 
-  încărcare fișiere și validări.
-  \item \textbf{Vizualizări 3D} (ex: \texttt{ChemistryBaloon}, \texttt{Drone}, \texttt{Island},
-   \texttt{SpaceBackground}) animate și controlate interactiv.
-  \item \textbf{Componente educaționale} pentru structuri de date și concepte de programare, 
-  cu vizualizări grafice.
-  \item \textbf{Dashboard-uri} și pagini pentru quiz-uri, clase, invitații, etc. cu apeluri către API-ul din backend.
-\end{itemize}
-
-Câteva exemple relevante de cod sunt prezentate mai jos:
+Exemple de componente dezvoltate în cadrul proiectului includ \textbf{Landing Pages} 
+pentru materii precum Astronomie, Chimie și Informatică, fiecare cu descrieri detaliate și
+elemente interactive. De asemenea, s-au dezvoltat \textbf{formulare},
+precum \texttt{ChemistryAddForm}, care permit adăugarea moleculelor cu încărcare
+de fișiere și validări. În ceea ce privește vizualizările 3D, s-au creat componente
+precum \texttt{ChemistryBaloon}, \texttt{Drone}, \texttt{Island} și \texttt{SpaceBackground},
+care sunt animate și controlate de utilizator. Alte componente includ elemente 
+\textbf{educaționale} pentru structuri de date și concepte de programare, 
+completate cu vizualizări grafice. În plus, s-au dezvoltat panouri de control și 
+pagini pentru quiz-uri, clase, invitații și alte funcționalități, toate 
+acestea având apeluri către API-ul backend-ului pentru a asigura robustețe în 
+aducerea datelor.
 
 Un exemplu de componentă standard React care utilizează Three.js pentru a crea un balon animat se află
 la zona de anexe \ref{lst:react-baloon}. Această componentă folosește \texttt{useSpring} pentru a anima 
@@ -224,18 +223,22 @@ de mișcarea mouse-ului.
 \subsection{Conectivitate}
 \label{subsec:conectivitate-frontend}
 
-Aplicația comunică cu backend-ul prin fetch API, efectuând cereri REST către serverul local pe portul 8000 datorită
-mediului de dezvoltare în care s-a lucrat. S-au implementat următoarele pattern-uri:
-\begin{itemize}
-  \item Obținerea datelor dinamice (ex: formule, molecule, quiz-uri) în componente React folosind \texttt{useEffect}.
-  \item Gestionarea token-ului JWT pentru autentificare, salvat în \texttt{localStorage} și folosit 
-  în header-ul \texttt{Authorization}.
-  \item Tratarea erorilor și afișarea mesajelor relevante utilizatorului.
-  \item Formulare pentru inserare, ștergere și actualizare date pe server, cu răspunsuri și validări 
-  vizuale în frontend.
-\end{itemize}
+Aplicația comunică cu backend-ul prin intermediul fetch API, efectuând cereri REST
+către serverul local pe portul 8000, în contextul mediului de dezvoltare utilizat.
+În implementarea acesteia, s-au adoptat mai multe pattern-uri. De exemplu, pentru
+obținerea datelor dinamice, precum formulele, moleculele sau quiz-urile, aplicația
+utilizează hook-ul \texttt{useEffect} în componentele React, pentru a asigura 
+actualizarea datelor în mod eficient. În ceea ce privește autentificarea, token-ul
+JWT este gestionat și salvat în \texttt{localStorage}, fiind folosit ulterior 
+în header-ul \texttt{Authorization} al cererilor API.
 
+De asemenea, s-a implementat un sistem de tratare a erorilor, care afișează mesaje 
+relevante utilizatorului atunci când apar probleme în comunicarea cu serverul. În
+plus, au fost dezvoltate formulare pentru inserarea, ștergerea și actualizarea 
+datelor pe server, iar răspunsurile și validările sunt gestionate vizual în frontend
+pentru o experiență de utilizator intuitivă.
 
+  
 Un exemplu de componentă React care face fetch pentru informațți pentru planeta Mercur se 
 oservă în anexa \ref{lst:react-mercury-formulas}. Ea folosește useEffect pentru a chema
 callback-urille de JavaScript care iau datele de la backend și le afișează în interfață.

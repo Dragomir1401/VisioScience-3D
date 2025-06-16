@@ -48,13 +48,17 @@ gestionarea eficientă a acestora.
 Pentru fiecare componentă a backend‐ului—\texttt{Deployment}, \texttt{Service}, 
 \texttt{Ingress}, \texttt{ConfigMap}, \texttt{PersistentVolumeClaim} — s-au creat fişiere YAML
 separate în directoarele \file{./k8s/} ale fiecărui serviciu. Denumirea fișierelor corespunde resursei Kubernetes:
-\begin{itemize}
-  \item \file{*-deployment.yaml} pentru \texttt{kind: Deployment}
-  \item \file{*-service.yaml}   pentru \texttt{kind: Service}
-  \item \file{*-ingress.yaml}   pentru \texttt{kind: Ingress}
-  \item \file{*-configmap.yaml} pentru \texttt{kind: ConfigMap}
-  \item \file{*-pvc.yaml}       pentru \texttt{kind: PersistentVolumeClaim}
-\end{itemize}
+
+\file{*-deployment.yaml} pentru \texttt{kind: Deployment}
+
+\file{*-service.yaml}   pentru \texttt{kind: Service}
+
+\file{*-ingress.yaml}   pentru \texttt{kind: Ingress}
+
+\file{*-configmap.yaml} pentru \texttt{kind: ConfigMap}
+
+\file{*-pvc.yaml}       pentru \texttt{kind: PersistentVolumeClaim}
+
 Au fost aplicate toate manifesturile cu:
 \begin{lstlisting}[style=yamlstyle]
 kubectl apply -f ./k8s/
@@ -96,8 +100,7 @@ conectarea la baza de date. Este unul dintre exemplele simple de manifest Kubern
 \newpage
 \subsubsection*{Tipuri de resurse şi rolurile lor}
 
-\begin{itemize}
-  \item \textbf{Service} (\texttt{kind:Service}): expune pod-urile pe un IP intern al clusterului:
+\textbf{Service} (\texttt{kind:Service}): expune pod-urile pe un IP intern al clusterului:
   \begin{lstlisting}[style=yamlstyle]
 apiVersion: v1
 kind: Service
@@ -112,7 +115,7 @@ spec:
       targetPort: 8080
   \end{lstlisting}
 
-  \item \textbf{Ingress} (\texttt{kind:Ingress}): defineşte rutare HTTP/S prin controller-ul folosit (Kong):
+  \textbf{Ingress} (\texttt{kind:Ingress}): defineşte rutare HTTP/S prin controller-ul folosit (Kong):
   \begin{lstlisting}[style=yamlstyle]
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -135,7 +138,7 @@ spec:
 
 \newpage
 
-  \item \textbf{ConfigMap \& PVC}: ConfigMap pentru configurări (de ex. pentru serviciul de provizionare
+\textbf{ConfigMap \& PVC}: ConfigMap pentru configurări (de ex. pentru serviciul de provizionare
 \texttt{prometheus.yml}) şi PVC pentru volumul serviciului de vizualizare a metricilor în
 Grafana\footnote{Unealtă de vizualizare a metricilor și a datelor de monitorizare}:
   \begin{lstlisting}[style=yamlstyle]
@@ -159,7 +162,6 @@ spec:
     requests:
       storage: 1Gi
   \end{lstlisting}
-\end{itemize}
 
 Fiecărei resurse îi corespunde un singur fişier YAML – conţinând \texttt{apiVersion}, tipul \texttt{kind},
 metadatele şi \texttt{spec} – care poate fi aplicat cu \cmd{kubectl apply -f <fișier>}, sau
@@ -230,46 +232,55 @@ fi testate rapid în legătură cu serviciile din cluster fără configurări su
 În continuare sunt listate serviciile care alcătuiesc backend-ul aplicației, fiecare având roluri și responsabilități specifice
 în cadrul arhitecturii microservicii.
 
-\begin{itemize}
-  \item \texttt{evaluation-service} – Serviciul pentru gestionarea logicii de creare, monitorizare, deschide/închidere,
+  \texttt{evaluation-service} – Serviciul pentru gestionarea logicii de creare, monitorizare, deschide/închidere,
   ștergere, gestionare de teste și evaluări. Funcționează ca un controller REST API care preia datele din bazele de date,
   le modelează pentru a fi transmise către frontend și încapsulează și logica de calculare și trimitere către stocarea
   persistentă de punctaje, scoruri, clasamente și alte statistici.
-  \item \texttt{feed-data} – Serviciul care se ocupă de gestionarea datelor legate de secțiunile educaționale și 
+
+   \texttt{feed-data} – Serviciul care se ocupă de gestionarea datelor legate de secțiunile educaționale și 
   accesarea motorului de generare a moleculelor de chimie. Datele brute din fișierele .mol\footnote{Fișiere de descriere a
   moleculelor chimice} ajung în acest serviciu și sunt parsate linie cu linie pentru a identifica poziția atomilor,
   legăturile chimice dintre ele și tipul lor și mai dimensiunile și tipul moleculelor de asemenea. Datele sunt apoi
   transmise către routerul serviciului pentru a fi accesibile prin API-ul REST către frontend.
-  \item \texttt{cpp-compiler-service} – Serviciul care încapsulează logica de gestionare a compilării codului C++
+
+   \texttt{cpp-compiler-service} – Serviciul care încapsulează logica de gestionare a compilării codului C++
   inserat în editorul interactiv și îl împarte în capturi de status a structurilor de date ce apar în cod. codul
   este primit din frontend și trece prin mai multe etape de procesare. Se trece linie cu linie prin el pentru a identifica
   structurile de date folosite și a le extrage. Al doilea pas este de creare și adăugare a unui header de urmărire a
   fiecărei structuri de date capabil să înregistreze și raporteze statusul la fiecare operație. La ultimul pas 
   aceste statusuri sunt adnotate cu metadatele necesare și inserate cronologic într-o listă de evenimente ca să personalizată
   fi trimisă către frontend.
-  \item \texttt{grafana} – Utilitar pentru vizualizarea metricilor și a datelor de monitorizare. Practic este gazdă pentru
+
+   \texttt{grafana} – Utilitar pentru vizualizarea metricilor și a datelor de monitorizare. Practic este gazdă pentru
   rularea imaginii de Grafana\footnote{https://grafana.com/} care primește metricile colectate de Prometheus{https://prometheus.io/} 
   și le vizualizează într-o interfață web.
-  \item \texttt{kong-kong} – Controller Kong pentru gestionarea rutării și a API-urilor despre care s-a discutat anterior.
-  \item \texttt{mongo-express-feed-data} – Interfață web pentru gestionarea bazei de date a feed-urilor educaționale. oferă
+
+   \texttt{kong-kong} – Controller Kong pentru gestionarea rutării și a API-urilor despre care s-a discutat anterior.
+  m \texttt{mongo-express-feed-data} – Interfață web pentru gestionarea bazei de date a feed-urilor educaționale. oferă
   o interfață grafică pentru vizualizarea și manipularea datelor din baza de date MongoDB asociată cu serviciul de feed-uri.
-  \item \texttt{mongo-express-user-data} – Interfață web pentru gestionarea bazei de date a utilizatorilor. Oferă ca și cea
+   
+  \texttt{mongo-express-user-data} – Interfață web pentru gestionarea bazei de date a utilizatorilor. Oferă ca și cea
   anterior menționată o interfață grafică pentru vizualizarea și manipularea datelor din baza de date MongoDB asociată
   cu serviciul de utilizatori.
-  \item \texttt{mongo-feed-data-service} – Baza de date MongoDB pentru serviciul de feed-uri educaționale.
-  \item \texttt{mongo-user-data-service} – Baza de date MongoDB pentru serviciul de utilizatori.
-  \item \texttt{monitoring-service} – Serviciul de monitorizare care colectează și expune metrici. Practic aici se încapsulează
+
+   \texttt{mongo-feed-data-service} – Baza de date MongoDB pentru serviciul de feed-uri educaționale.
+   
+   \texttt{mongo-user-data-service} – Baza de date MongoDB pentru serviciul de utilizatori.
+   
+   \texttt{monitoring-service} – Serviciul de monitorizare care colectează și expune metrici. Practic aici se încapsulează
   partea de cod care folosesc instrumentarea oferită de Prometheus pentru a crea interfețe reutilizabile ce vor fi inserate
   în zonele din celelalte servicii unde dorim să colectăm metrici.
-  \item \texttt{portainer} – Interfață de administrare a clusterului Kubernetes. Oferă toate operațiile posibile pentru
+   
+  \texttt{portainer} – Interfață de administrare a clusterului Kubernetes. Oferă toate operațiile posibile pentru
   gestiune a resurselor din cluster.
-  \item \texttt{prometheus} – Serviciul care este gazdă pentru imaginea de Prometheus\footnote{https://prometheus.io/} 
+   
+  \texttt{prometheus} – Serviciul care este gazdă pentru imaginea de Prometheus\footnote{https://prometheus.io/} 
   folosită în seriviciul de monitorizare.
-  \item \texttt{user-data} – Serviciul pentru gestionarea datelor utilizatorilor, 
+  
+  \texttt{user-data} – Serviciul pentru gestionarea datelor utilizatorilor, 
   inclusiv autentificare și autorizare. El funcționeză ca un router REST API care are mai multe straturi prin care trec datele.
   Primul este cel de validare a token-ului de autentificare în middleware-ul \texttt{JWTAuth}, apoi prin parsarea datelor,
   stocarea lor persistentă în baza de date MongoDB și apoi prin reexpunerea lor către frontend prin API-ul REST.
-\end{itemize}
 
 Mai jos putem observa și arhitectura principală de comunicare între serviciile din back-end, cpp-compiler-service ne fiind
 inclus pentru că funcționează pe un flux diferit și nu interacționează direct cu celelalte servicii, ci doar cu 
@@ -347,12 +358,13 @@ crea panourile de vizualizare direct prin configurări externe.
 
 \subsection{Colectare Prometheus}  
 În fiecare serviciu Go am folosit clientul official Prometheus:
-\begin{itemize}
-  \item \texttt{github.com/prometheus/client\_golang/prometheus} pentru definirea contorilor, 
-  histogramei şi gauge-urilor.
-  \item \texttt{github.com/prometheus/client\_golang/prometheus/promhttp} pentru expunerea 
-  endpoint-ului \texttt{/\$SERVICIU/metrics}.
-\end{itemize}
+
+\texttt{github.com/prometheus/client\_golang/prometheus} pentru definirea contorilor, 
+histogramei şi gauge-urilor.
+
+\texttt{github.com/prometheus/client\_golang/prometheus/promhttp} pentru expunerea 
+endpoint-ului \texttt{/\$SERVICIU/metrics}.
+
 De exemplu, în \texttt{evaluation-service} în metrics/metrics.go:
 \begin{lstlisting}[style=yamlstyle]
 registry := prometheus.NewRegistry()
@@ -365,10 +377,11 @@ http.Handle("/evaluation/metrics", promhttp.HandlerFor(registry, promhttp.Handle
 De exemplu după ce Prometheus trece prin \texttt{evaluation\_service\_http\_requests\_total}, se crează un dashboard 
 persistent prin volumele Kubernetes. Dashboard-ul Grafana are în general două tipuri de panouri pentru metrici 
 similare. De exemplu pentru metrica de cereri și evaluări active din serviciul de evaluare:
-\begin{itemize}
-  \item \emph{Timeseries(serie temporală de date)} pentru \texttt{evaluation\_service\_http\_requests\_total}
-  \item \emph{Gauge(serie de valori)} pentru \texttt{evaluation\_service\_active\_evaluations}
-\end{itemize}
+
+\emph{Timeseries(serie temporală de date)} pentru \texttt{evaluation\_service\_http\_requests\_total}.
+
+\emph{Gauge(serie de valori)} pentru \texttt{evaluation\_service\_active\_evaluations}.
+
 Un fragment din JSON-ul dashboard-ului Grafana arată astfel:
 \begin{lstlisting}[style=yamlstyle]
   "panels":[
@@ -383,28 +396,29 @@ Un fragment din JSON-ul dashboard-ului Grafana arată astfel:
     }
   ]
 \end{lstlisting}
-Aceste panouri sunt importate în Grafana sub \texttt{Evaluation Service Dashboard} şi actualizate
+Aceste panouri sunt importate în Grafana în \texttt{Evaluation Service Dashboard} şi actualizate
 la fiecare 5s (configurabil).
 
-Așadar există trei panouri principale în Grafana pentru trei servicii cu logică de produs existente:
-\begin{itemize}
-  \item \texttt{Evaluation Service Dashboard} pentru \texttt{evaluation-service}
+Așadar există trei panouri principale în Grafana pentru trei servicii de logică de produs existente:
+  
+  \texttt{Evaluation Service Dashboard} pentru \texttt{evaluation-service}
   \fig[width=0.9\textwidth]{imgs/evaluationdashboard.png}{fig:evaluation-dashboard}{Dashboard-ul pentru evaluări în Grafana}
   
   Se poate observa logarea numărului de cereri HTTP din serviciul, latența și durata medie a lor, numărul de evaluări
   active și rata operațiilor pe evaluări.
-  \item \texttt{Feed Data Service Dashboard} pentru \texttt{feed-data}
+
+  \texttt{Feed Data Service Dashboard} pentru \texttt{feed-data}
   
   În panou se pot vedea numărul de cereri HTTP, latența și durata medie a lor, numărul de feed-uri active, numărul de molecule
   active, rata operațiilor asupra feed-urilor și moleculelor, precum și numărul de molecule generate.
 
-  \item \texttt{User Data Service Dashboard} pentru \texttt{user-data}
+  \texttt{User Data Service Dashboard} pentru \texttt{user-data}
+
   \fig[width=0.9\textwidth]{imgs/userdashboard.png}{fig:user-data-dashboard}{Dashboard-ul pentru metrici de utilizator în Grafana}
   \fig[width=0.9\textwidth]{imgs/feeddashboard.png}{fig:feed-data-dashboard}{Dashboard-ul pentru metrici de feed-uri în Grafana}
 
   În panoul pentru metricile din serviciul de utilizatori apar numărul, latența și durata cererilor HTTP,
   numărul utilizatorilor și al claselor active.
-\end{itemize}
 
 \newpage
 \section{Soluția de baze de date}
