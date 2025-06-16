@@ -13,54 +13,47 @@ am concentrat atenția pe criterii precum maturitatea ecosistemului, performanț
 flexibilitate în personalizare şi capacitatea de integrare cu biblioteci 3D. Dintre principalele
 opțiuni (Vue.js, Angular, Svelte), React s-a impus datorită următoarelor avantaje:
 
-\begin{itemize}
-\item
-  \textbf{Ecosistem matur și susținere largă}:
-    React are o comunitate activă de milioane de dezvoltatori,
-    cu un număr impresionant de librării, tutoriale și un suport consistent din partea Meta. 
-    Această resursă ne-a permis să adoptăm rapid bune practici și să găsim soluții la provocări 
-    specifice dezvoltării 3D.
-\item
-  \textbf{Model declarativ și component-driven}:
-    React oferă un mod de declarare detaliată în descrierea interfeței, ideal pentru scene 3D
-    complexe, unde starea se propagă predictibil prin componente. Aceasta ușurează managementul 
-    ciclului de viață al obiectelor din biblioteca 3D, reducând riscul de actualizări inconsistente.
+\textbf{Ecosistem matur și susținere largă}:
+  React are o comunitate activă de milioane de dezvoltatori,
+  cu un număr impresionant de librării, tutoriale și un suport consistent din partea Meta. 
+  Această resursă ne-a permis să adoptăm rapid bune practici și să găsim soluții la provocări 
+  specifice dezvoltării 3D.
+\textbf{Model declarativ și component-driven}:
+  React oferă un mod de declarare detaliată în descrierea interfeței, ideal pentru scene 3D
+  complexe, unde starea se propagă predictibil prin componente. Aceasta ușurează managementul 
+  ciclului de viață al obiectelor din biblioteca 3D, reducând riscul de actualizări inconsistente.
 
-\item
-  \textbf{React Router DOM}:
-    Pentru că oferă o soluție de rutare foarte ușoara în navigarea între diferitele
-    secţiuni ale platformei (fizică, chimie, astronomie etc.) prin React Router DOM 
-    ce oferă simplitate în definirea rutelor şi suportul pentru incărcare întârziată de module.
-    Alternativele (Vue Router, Angular Router) sunt la fel de capabile, însă integrarea lor cu
-    React Three Fiber, care vom vedea este baza în simulările 3D, ar fi impus un strat suplimentar
-    de interoperabilitate.
-\end{itemize}
+\textbf{React Router DOM}:
+  Pentru că oferă o soluție de rutare foarte ușoara în navigarea între diferitele
+  secţiuni ale platformei (fizică, chimie, astronomie etc.) prin React Router DOM 
+  ce oferă simplitate în definirea rutelor şi suportul pentru incărcare întârziată de module.
+  Alternativele (Vue Router, Angular Router) sunt la fel de capabile, însă integrarea lor cu
+  React Three Fiber, care vom vedea este baza în simulările 3D, ar fi impus un strat suplimentar
+  de interoperabilitate.
 
 
 Pe zona de stilizare a interfeței, am optat pentru Tailwind CSS\footnote{https://tailwindcss.com/}, un framework CSS utilitar 
 care ne-a permis să creăm un design personalizat. Am comparat framework-uri clasice de CSS
 (Bootstrap, Material UI) cu Tailwind CSS și am observat următoarele avantaje:
-\begin{itemize}
-\item
-  \textbf{Prioritatea pe utilitare și JIT}:
-    Tailwind oferă clase utilitare care permit definirea rapidă a
-    layout-urilor şi a stilurilor unice, fără a scrie sutele de linii de CSS personalizat. Motorul
-    JIT (Just-In-Time) generează doar clasele folosite, menținând pachetul final mai mic ca dimensiune.
-\item
-  \textbf{Consistență și flexibilitate}:
-    În loc să se încărce aplicația cu componente predefinite,
-    s-a putut construi o interfață în mod granular respectând paleta de culori şi spațierile dorite,
-    dar fără a rescrie componente UI complexe.
-\item
-  \textbf{Integrare bună cu React}:
-    Utilizarea className din JSX se potrivește în mod natural cu framework-ul Tailwind.
-    Mai ales plugin-urile pe care le oferă precum @tailwindcss/forms facilitează configurarea unui stil constant pentru
-    toate formularele.
-\item
-  \textbf{Extensibilitate}:
-    Tailwind permite personalizarea simplă a temelor, adăugarea ușoară de plugin-uri externe și crearea de 
-    componente reutilizabile în UI, fără a sacrifica viteza de dezvoltare.
-\end{itemize}
+
+\textbf{Prioritatea pe utilitare și JIT}:
+  Tailwind oferă clase utilitare care permit definirea rapidă a
+  layout-urilor şi a stilurilor unice, fără a scrie sutele de linii de CSS personalizat. Motorul
+  JIT (Just-In-Time) generează doar clasele folosite, menținând pachetul final mai mic ca dimensiune.
+
+\textbf{Consistență și flexibilitate}:
+  În loc să se încărce aplicația cu componente predefinite,
+  s-a putut construi o interfață în mod granular respectând paleta de culori şi spațierile dorite,
+  dar fără a rescrie componente UI complexe.
+
+\textbf{Integrare bună cu React}:
+  Utilizarea className din JSX se potrivește în mod natural cu framework-ul Tailwind.
+  Mai ales plugin-urile pe care le oferă precum @tailwindcss/forms facilitează configurarea unui stil constant pentru
+  toate formularele.
+
+\textbf{Extensibilitate}:
+  Tailwind permite personalizarea simplă a temelor, adăugarea ușoară de plugin-uri externe și crearea de 
+  componente reutilizabile în UI, fără a sacrifica viteza de dezvoltare.
 
 Bibliotecile de creare și gestionare a graficii 3D sunt esențiale pentru platforma noastră,
 iar pentru a crea simulări interactive, am ales Three.js\footnote{https://threejs.org/}, o bibliotecă JavaScript populară.
@@ -73,24 +66,21 @@ procesului de dezvoltare, oferind soluții gata făcute pentru anumite probleme 
 Câteva dintre beneficiile integrării cu Three.js prin React Three Fiber și Drei care au făcut 
 alegerea justificată sunt:
 
-\begin{itemize}
-\item
-  \textbf{Abstracție declarativă}:
-    R3F “împachetează” API-ul imperativ Three.js într-un DSL\footnote{Limbaj specific de domeniu} React, 
-    permițându-ne să definim scene, obiecte și materiale în JSX\footnote{Format de JavaScript pentru limbajul de marcare}, 
-    sub formă de componente. 
-    Astfel, putem folosi hook-uri (useFrame, useLoader) pentru a sincroniza animațiile și 
-    resursele fără prea mult cod duplicat.
-\item
-  \textbf{Ecosistem Drei}:
-    Biblioteca Drei aduce peste 100 de componente existente (OrbitControls,
-    Text, etc.), accelerate de comunitate, care au economisit timp de
-    implementare.
-\item
-  \textbf{Optimizări de performanță}:
-    Datorită reconciler-ului React, R3F actualizează doar părțile
-    din scenă care se schimbă.
-\end{itemize}
+\textbf{Abstracție declarativă}:
+  R3F “împachetează” API-ul imperativ Three.js într-un DSL\footnote{Limbaj specific de domeniu} React, 
+  permițându-ne să definim scene, obiecte și materiale în JSX\footnote{Format de JavaScript pentru limbajul de marcare}, 
+  sub formă de componente. 
+  Astfel, putem folosi hook-uri (useFrame, useLoader) pentru a sincroniza animațiile și 
+  resursele fără prea mult cod duplicat.
+
+\textbf{Ecosistem Drei}:
+  Biblioteca Drei aduce peste 100 de componente existente (OrbitControls,
+  Text, etc.), accelerate de comunitate, care au economisit timp de
+  implementare.
+
+\textbf{Optimizări de performanță}:
+  Datorită reconciler-ului React, R3F actualizează doar părțile
+  din scenă care se schimbă.
 
 Așadar, combinația React + React Router DOM + Tailwind CSS + React Three Fiber + Drei ne-a oferit un
 stack unificat, performant și ușor de întreținut, bine adaptat
@@ -102,38 +92,25 @@ arhitectura simplificată a frontend-ului platformei.
 
 \subsection{Framework 3D}
 
-După cum am discutat anterior, frameworkul 3D ales este React Three Fiber, care
-este o bibliotecă care integrează Three.js cu React, permițându-ne să creăm scene 3D
-într-un mod declarativ și reactiv. Aceasta se bazează pe principii de WebGL combinate
-cu ce poate oferi React, cum ar fi componentizarea și gestionarea stării. R3F ne permite să
-creăm scene 3D complexe folosind JSX și să integrăm hook-uri ca:
+După cum am discutat anterior, frameworkul 3D ales pentru acest proiect este React Three Fiber (R3F).
+Această bibliotecă integrează Three.js cu React, permițându-ne să creăm scene 3D într-un mod declarativ 
+și reactiv. R3F combină principiile WebGL cu capabilitățile oferite de React, precum componentizarea și
+gestionarea stării, ceea ce facilitează dezvoltarea unor scene 3D complexe folosind JSX.
 
-\begin{itemize}
-\item
-  \textbf{useFrame}:
-    Acesta permite să actualizăm scena la fiecare cadru, facilitând animațiile și interacțiunile
-    în timp real.
-\item
-  \textbf{useLoader}:
-    Acesta ajută să încărcăm resurse externe (texturi, modele 3D) într-un mod eficient,
-    folosind promisiuni pentru a gestiona încărcarea asincronă.
-\item
-  \textbf{useThree}:
-    Acesta oferă acces la obiectul Three.js curent, permițându-ne să interacționăm direct
-    cu scena, camera și renderer-ul.
-\item
-  \textbf{useRef}:
-    Acesta permite să creăm referințe la obiectele din scenă, facilitând manipularea lor
-    direct în timpul animațiilor sau interacțiunilor.
-\item
-  \textbf{useState}:
-    Acesta permite să gestionăm starea componentelor, facilitând actualizarea și redarea
-    dinamică a obiectelor din scenă.
-\item
-  \textbf{useEffect}:
-    Acesta permite să gestionăm efectele secundare, cum ar fi adăugarea de evenimente sau
-    actualizarea stării în funcție de modificările din scenă.
-\end{itemize}
+Unul dintre avantajele principale ale R3F este că ne permite să integrăm hook-uri, care îmbunătățesc
+eficiența și interactivitatea aplicației. De exemplu, hook-ul \textbf{useFrame} permite actualizarea 
+scenei la fiecare cadru, ajutând animațiile și interacțiunile în timp real. \textbf{useLoader} este
+folosit pentru încărcarea resurselor externe, precum texturi sau modele 3D, într-un mod eficient,
+prin gestionarea încărcării asincrone folosind promisiuni.
+
+Un alt hook important este \textbf{useThree}, care oferă acces direct la obiectul Three.js curent, 
+permițându-ne să interacționăm cu scena, camera și renderer-ul. De asemenea, \textbf{useRef} este
+util pentru crearea de referințe la obiectele din scenă, facilitând manipularea acestora în timpul 
+animațiilor sau interacțiunilor.
+
+Pentru gestionarea stării componentelor, folosim \textbf{useState}, care permite actualizarea și 
+redarea dinamică a obiectelor din scenă. În plus, \textbf{useEffect} ne ajută să gestionăm efectele 
+secundare, cum ar fi adăugarea de evenimente sau actualizarea stării în funcție de modificările din scenă.
 
 Pentru integrarea obiectelor cu extensia .glb am folosit un convertor GLTF\footnote{https://gltf.pmnd.rs/} care
 ne permite să convertim modele .glb în componente React Three Fiber oferind grupuri de meshe-uri și
