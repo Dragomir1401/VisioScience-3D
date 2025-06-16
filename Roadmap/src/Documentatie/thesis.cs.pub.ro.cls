@@ -226,7 +226,7 @@
 
 \newenvironment{frontmatter}{\pagenumbering{roman}}{\newpage \pagenumbering{arabic}}
 
-\renewenvironment{abstract}{\null\vfil\prefacesection{Abstract}}{\par\vfill\null}
+\renewenvironment{abstract}{\null\vfil\prefacesection{Sinopsis}}{\par\vfill\null}
 
 \def\prefacesection#1{%
 	\chapter*{#1}

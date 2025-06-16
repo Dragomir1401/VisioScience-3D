@@ -401,11 +401,11 @@ INPUT .\src\base\multumiri.tex
 INPUT src\base\multumiri.tex
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\ntx-Regular-tlf-t1.tfm
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\ntx-Bold-tlf-t1.tfm
-INPUT .\src\base\abstract.tex
-INPUT .\src\base\abstract.tex
-INPUT .\src\base\abstract.tex
-INPUT .\src\base\abstract.tex
-INPUT src\base\abstract.tex
+INPUT .\src\base\sinopsis.tex
+INPUT .\src\base\sinopsis.tex
+INPUT .\src\base\sinopsis.tex
+INPUT .\src\base\sinopsis.tex
+INPUT src\base\sinopsis.tex
 INPUT .\template\contents.pages.tex
 INPUT .\template\contents.pages.tex
 INPUT template\contents.pages.tex

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  16 JUN 2025 22:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  16 JUN 2025 22:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1064,6 +1064,11 @@ File: src/img/branding/cs.png Graphic file (type png)
 Package pdftex.def Info: src/img/branding/cs.png  used on input line 14.
 (pdftex.def)             Requested size: 123.77074pt x 54.65146pt.
 
+Overfull \hbox (60.08894pt too wide) in paragraph at lines 26--31
+ [] 
+ []
+
+
 pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
@@ -1079,7 +1084,7 @@ l.17 \begin{abstract}
                       [1]
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
 (Font)              scaled to size 24.88pt on input line 17.
- (src/base/abstract.tex) (template/contents.pages.tex [2
+ (src/base/sinopsis.tex) (template/contents.pages.tex [2
 
 ] (thesis.toc
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
@@ -1989,11 +1994,11 @@ L3 programming layer <2020/03/25>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: B8699D9B286C916C04A6D0B7B69AF6F4;22592.
+(rerunfilecheck)             Checksum: 46FC05DFB43E4706F56D799AD69FA4D3;22602.
  ) 
 Here is how much of TeX's memory you used:
- 23390 strings out of 474486
- 381419 string characters out of 5743754
+ 23391 strings out of 474486
+ 381427 string characters out of 5743754
  2165542 words of memory out of 5000000
  44511 multiletter control sequences out of 15000+600000
  696911 words of font info for 219 fonts, out of 8000000 for 9000
@@ -2009,7 +2014,7 @@ pdfTeX warning (dest): name{Hfootnote.37} has been referenced but does not exist
 pdfTeX warning (dest): name{Hfootnote.36} has been referenced but does not exist, replaced by a fixed one
 
 <C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/NewTXMI.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qhvr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qtmr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xbtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/txsys.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmb.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmri.pfb>
-Output written on thesis.pdf (89 pages, 20238687 bytes).
+Output written on thesis.pdf (89 pages, 20238726 bytes).
 PDF statistics:
  1791 PDF objects out of 2073 (max. 8388607)
  684 named destinations out of 1000 (max. 500000)
