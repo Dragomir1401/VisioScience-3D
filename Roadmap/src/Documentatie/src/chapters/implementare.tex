@@ -104,6 +104,134 @@ Pentru interacțiunea cu MongoDB, structurile Go sunt mapate la documente BSON, 
 serializare/deserializarea datelor și trimitea lor între servicii și front-end. Se poate observa
 un exemplu generare și parsare a token-ului în structuri de date in anexa \ref{lst:jwt-token}.
 
+\subsection{Implementarea serviciilor}
+\label{subsec:implementare-servicii}
+
+\textbf{cpp-compiler-service}
+
+Este serviciul responsabil pentru compilarea și executarea 
+codului C++ transmis de către utilizatori în secțiunea de informatică.
+Acesta utilizează un server HTTP implementat în Go 
+pentru a primi cereri de compilare și a trimite rezultatele înapoi 
+către front-end. Serviciul primește un \texttt{CodeExecutionRequest} 
+ce conține codul C++ al utilizatorului și inputul necesar execuției, 
+transformându-l pentru a include un sistem de urmărire a execuției.
+
+După validarea cererii, serviciul creează un director temporar pe server 
+în care sunt plasate fișierele necesare, inclusiv fișierele de \textit{tracing}, 
+care permit urmărirea pașilor executați în timpul rulării codului. Utilizând 
+compilatorul \texttt{g++}, codul este compilat, iar eventualele erori sunt gestionate 
+și trimise înapoi utilizatorului. În continuare, executabilul generat este rulat 
+și rezultatele sunt colectate, inclusiv pașii de execuție detaliați, care sunt 
+apoi transformați într-un format ușor de procesat pentru a fi prezentate în 
+platformă.
+
+Serviciul este construit pentru a gestiona atât erorile de compilare, cât și 
+erorile de execuție, fiind capabil să returneze informații detaliate despre 
+fiecare pas al execuției, precum și statistici de performanță, pentru a ajuta 
+utilizatorii să își optimizeze soluțiile. De asemenea, timpul de execuție 
+este limitat pentru a evita blocarea back-endului.
+
+\texttt{Cpp-compiler-service} este implementat scalabil și poate fi extins 
+pentru a include noi funcționalități, cum ar fi analiza codului pentru optimizări 
+automate sau integrarea cu alte platforme externe.
+
+\textbf{evaluation-service}
+
+Serviciul gestionează întreaga funcționalitate 
+legată de testele din aplicație, inclusiv crearea, actualizarea și obținerea
+de quizuri. Datele pentru fiecare quiz sunt stocate în MongoDB. Fiecare quiz conține un 
+set de întrebări, fiecare întrebare având un text, opțiuni multiple de
+răspuns și indicarea răspunsului corect. Atunci când un student trimite
+răspunsurile pentru un quiz, acestea sunt validate, iar scorul final
+este calculat în funcție de corectitudinea răspunsurilor, aplicând
+eventual bonusuri pentru timp sau performanță perfectă.
+
+Modelele de date, cum ar fi \texttt{Quiz}, \texttt{Question} și 
+\texttt{QuizResult}, sunt definite folosind structuri în Go. De exemplu,
+pentru fiecare quiz, este creat un document \texttt{Quiz} care conține 
+informații despre titlu, ID-ul clasei și al profesorului, întrebările 
+asociate și rezultatele obținute de studenți. Datele sunt manipulate 
+prin interogări și operații de modificare folosind driverul de MongoDB.
+Atunci când se creează un quiz, datele sunt validate pentru a se 
+asigura că fiecare întrebare conține opțiuni și răspunsuri corecte. 
+În cazul în care datele nu sunt valide, răspunsurile eronate sunt
+gestionate prin returnarea unui mesaj de eroare corespunzător.
+
+Pe măsură ce studenții completează quizurile, rezultatele acestora sunt 
+stocate în colecția de rezultate ale quiz-urilor, iar scorurile sunt actualizate
+în timp real. Fiecare rezultat al unui student este legat de un quiz specific, 
+iar înregistrările sunt modificate folosind operații MongoDB de tip \texttt{Update} 
+sau \texttt{Insert}. În plus, statisticile de performanță, precum scorul mediu,
+timpul mediu de completare și numărul de scoruri perfecte, sunt calculate periodic 
+și actualizate în cadrul fiecărui quiz. Aceste statistici sunt esențiale pentru
+analiza performanței generale a quizurilor. Datele sunt structurate într-un model
+flexibil care permite adăugarea
+de noi întrebări, actualizarea acestora și modificarea criteriilor de evaluare în mod eficient.
+
+\textbf{feed-data-service}
+
+Serviciul gestionează datele educaționale din platformă (formulele de la toate materiile),
+incluzând arii, volume, formule fizice, formulele chimice, statistici despre planetelor
+și elementele din tabelul periodic. Acesta
+interacționează cu frontend-ul, expunând endpoint-uri pentru manipularea și
+vizualizarea datelor, procesând fișierele \texttt{mol} și realizând
+conversii între diferite formate de date. Modelele utilizate în acest serviciu
+includ \texttt{Molecule}, \texttt{Feed}, \texttt{Formula} și \texttt{PeriodicElement},
+care sunt stocate și gestionate în baza de date MongoDB. 
+
+Pentru gestionarea moleculelor, serviciul procesează fișierele \texttt{mol} încărcate, 
+folosind funcții precum \texttt{ParseMolFile} din pachetul \texttt{prettifier},
+care extrage informații despre atomi și legături chimice. Aceste date sunt
+salvate într-un obiect \texttt{Molecule}, care conține atât informațiile 
+brute (cum ar fi formula și descrierea), cât și datele prelucrate (atomii
+și legăturile). Partea de procesare include verificarea și completarea valorilor
+lipsă, validarea tipurilor de date și gestionarea erorilor în cazul fișierelor
+invalide. De asemenea, fiecare moleculă are un ID unic generat automat, iar
+toate modificările sunt stocate în colecțiile MongoDB.
+
+În plus, \texttt{feed-data-service} se ocupă și cu gestionarea formulelor 
+chimice și a elementelor din tabelul periodic, oferind funcționalități 
+de creare, actualizare și ștergere a acestora. Datele elementelor, cum 
+ar fi simbolul, numărul atomic, grupa și perioada, sunt stocate în structura 
+\texttt{PeriodicElement}, iar pentru fiecare feed se asociază un set de 
+formule chimice, care sunt actualizate și procesate pentru a asigura 
+integrarea corectă cu celelalte componente ale platformei. În acest mod,
+serviciul asigură că toate datele educaționale sunt actualizate și
+disponibile pentru utilizatorii finali, permițând o gestionare eficientă 
+a informațiilor științifice în cadrul platformei educaționale.
+
+\textbf{user-data-service}
+
+Serviciul de gestionare a datelor utilizatorilor se ocupă cu stocarea și 
+procesarea tutoror datelor care sunt introduse sau pot fi extrase legate
+de utilizatorii platformei.
+
+Aici apar structuri complexe ca User care stochează ID, email, hash parolă, rol, clase,  
+quiz\_results, total\_points, points\_history, badges, ranguri.  
+Badge-urile au ID, titlu, descriere, tip, iconiţă, timestamp.  
+UserBadge salvează progres, valoare curentă, completare, timestamp.  
+
+Recompensele și badge-urile sunt gestionate de un controler separat ce 
+expune metode ca 
+\texttt{EnsureBadgesExist} ce defineşte badge-uri implicite şi le inserează  
+dacă nu există. Altă metodă expusă este \texttt{CheckAndUpdateBadges} care preia 
+user\_quiz\_history şi badge-uri şi calculează progresul, crează sau actualizează badge-urile utilizatorului.  
+
+Gestionare utilizatori şi autentificarea se face prin endpoint-uri REST,
+cum ar fi \texttt{Register}, \texttt{Login} şi \texttt{GetMe}.  
+\texttt{Register} validează JSON, face hash-ul parolei cu bcrypt, inserează user-ul în baza de date  
+şi incrementează metoda utilizatori activi.  
+\texttt{Login} verifică hash-ul parolei, generează JWT care încapsulează rolul şi email-ul.  
+\texttt{GetMe} decodează token-ul, returnează datele profilului fără parolă desigur.  
+
+Fluxul de recompense și badge-uri este gestionat printr-un sistem de evenimente.
+La primirea quiz\_result din \texttt{evaluation-service}, handlerul decodifică câmpul
+\texttt{QuizResultMeta} și salvează datele în baza de date \texttt{users-data}.  
+Punctele calculate (base, time, streak, perfect) se adaugă  
+în istoricul de punctaj şi la punctele totale.  
+\texttt{UpdateUserRankings} recalculează rangurile globale şi pe clase.  
+
 \subsection{Conectivitate}
 \label{subsec:implementare-backend}
 
