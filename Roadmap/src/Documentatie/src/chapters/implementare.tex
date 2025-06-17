@@ -244,8 +244,10 @@ cu ajutorul Kong Ingress Controller, care asigură rutarea traficului HTTP cătr
 care primește datele de la front-end, le validează și le inserează în baza de date MongoDB, iar apoi răspunde 
 cu codul HTTP corespunzător.
 
-Anexa \ref{lst:routes-jwt} arată cum se configurează rutele tipice în routerul unui microserviciu,
-inclusiv aplicarea middleware-ului JWT pentru protejarea endpoint-urilor sensibile.
+Rutele tipice sunt configurate în routerul fiecărui microserviciu,
+peste care se aplică middleware-ului JWT pentru protejarea endpoint-urilor sensibile.
+Accesul la endpointuri gestionat prin CORS este relaxat în mediul de dezvoltare
+pentru a permite testarea fără restricții de origine.
 
 \subsection{Procesarea codului în editorul interactiv}
 \label{subsec:procesare-cod}
@@ -422,9 +424,10 @@ datelor pe server, iar răspunsurile și validările sunt gestionate vizual în 
 pentru o experiență de utilizator intuitivă.
 
 
-Un exemplu de componentă React care face fetch pentru informațți pentru planeta Mercur se 
-oservă în anexa \ref{lst:react-mercury-formulas}. Ea folosește useEffect pentru a chema
+Se folosește useEffect pentru a chema
 callback-urille de JavaScript care iau datele de la backend și le afișează în interfață.
+Acest lucru permite ca datele să fie actualizate în mod dinamic, fără a fi nevoie 
+de reîncărcarea paginii.
 
 
 Iar o secțiune importantă este vizualizarea 3D a moleculelor, care primește datele de la backend și crează o reprezentare
@@ -436,6 +439,11 @@ Crearea unei scene dinamice ca cele din secțiunea de informatică pentru struct
 simularea lor în cod manual pentru
 a vedea rezultatul operaţiilor și conținutul lor la un moment dat. Apoi se crează o scenă 3D
 demo care afișează nodurile și conexiunile lor folosind Three.js și React Three Fiber.
-Un exemplu de implementare a unei cozi cu priorități 3D folosind React Three Fiber 
-se află în anexa \ref{lst:react-priority-queue}.
+Diferitele structuri de date sunt construite sub diferite forme sugestive pentru
+particularitățile lor. De exemplu, cele care păstrează ordinea elementelor sunt afișate
+ca arbore de căutare cu auto echilibrare deoarece așa sunt implementate în biblioteca
+standard din C++. Acestea sunt reprezentate cu noduri și conexiuni între ele care
+se ajustează automat în funcție de operațiile efectuate. Alte structuri sunt afișate
+liniar dacă e cazul saui cu forme specifice ca bucket-urile pentru hash table-uri
+sau stivă sau coadă cu formele lor specifice.
 
