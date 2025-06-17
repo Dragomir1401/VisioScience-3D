@@ -157,7 +157,6 @@ mov la mulberry (\#690375).
 
 \fig[width=0.5\textwidth]{imgs/logo.png}{fig:fediagram}{Logo-ul platformei}
 
-\newpage
 \subsubsection{Mascota platformei}
 Mascota proiectului este un balon care se apropie de paleta de culori a platformei
 și care simbolizează explorarea și învățarea. Balonul apare în toate paginile importante ale platformei
@@ -169,17 +168,10 @@ insule pentru a ajunge la diferitele materii.
 
 \fig[width=0.35\textwidth]{imgs/mascota.png}{fig:fediagram}{Mascota platformei}
 
-Se poate observa și o captură în timpul animației facută la succesul la înregistrare.
-
-\fig[width=0.4\textwidth]{imgs/animatieregister.png}{fig:fediagram}{Captură de ecran a mascotei la înregistrare}
+Mascota apare în paginile platformei și are animații diferite în funcție de acțiunile utilizatorului.
+Ea apare la înregistrare, autentificare, în paginile principale și adiționale.
 
 \subsection{Experiența utilizatorului}
-
-\subsubsection{Navigarea în platformă}
-Navigarea în platformă este realizată printr-un meniu principal situat în partea de sus a paginii,
-iar în meniul 3D prin rotirea balonului mascotă în jurul insulelor pentru a ajunge la diferitele materii.
-În profil meniul funcționează pe bază de stări și se schimbă în funcție de pagina curentă.
-\fig[width=0.6\textwidth]{imgs/navdiagram (2).png}{fig:navdiagram}{Diagrama de navigare a platformei}
 
 \subsubsection{Gestionarea stărilor}
 Gestionarea stărilor legate de autentificare şi profilul utilizatorului se realizează prin 
@@ -200,18 +192,24 @@ Acest model este simplu dar se poate extinde cu \emph{React Context}
 sau librării dedicate (Redux, Zustand) atunci când numărul de componente care împart aceleași stări
 crește semnificativ.
 
+\subsubsection{Navigarea în platformă}
+
+Navigarea în platformă este realizată printr-un meniu principal situat în partea de sus a paginii,
+iar în meniul 3D prin rotirea balonului mascotă în jurul insulelor pentru a ajunge la diferitele materii.
+În profil meniul funcționează pe bază de stări și se schimbă în funcție de pagina curentă.
+\fig[width=1\textwidth]{imgs/navdiagram (2).png}{fig:navdiagram}{Diagrama de navigare a platformei}
+
+\newpage
 \subsubsection{Designul interfeței utilizatorului}
 
 Interfața păstrează un design simplu cu meniul plasat sus și în stânga pentru selecția materiilor
-după rotire.
-\fig[width=0.2\textwidth]{imgs/interfata.png}{fig:interfata}{Interfața meniului principal}
+după rotire la fiecare insulă în particular care reprezintă o materie. Navigare prin materii
+reprezintă o rotație de 360 de grade a camerei în jurul insulei principale, iar după o rotație
+se revine la instanța inițială a castelului insulei principale.
 
 Panoul profilului este simplu și ușor de folosit, având elemente care ies ușor în evidență
 și care sunt ușor de accesat cu acțiuni simple de tipul selecție, drag-and-drop sau butoane de toggle.
 De exemplu în imagine de mai jos se poate observa interfața profilului elevului.
-
-\fig[width=1\textwidth]{imgs/profile.png}{fig:interfata}{Interfața profilului elevului}
-
 
 \section{Soluția de creare a scenelor 3D}
 \label{sec:proj-3d}

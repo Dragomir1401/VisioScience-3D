@@ -580,13 +580,6 @@ INPUT .\imgs\mozaweb.png
 INPUT .\imgs\mozaweb.png
 INPUT .\imgs\mozaweb.png
 INPUT .\imgs\mozaweb.png
-INPUT .\imgs\mozawebplugin.png
-INPUT .\imgs\mozawebplugin.png
-INPUT .\imgs\mozawebplugin.png
-INPUT .\imgs\mozawebplugin.png
-INPUT .\imgs\mozawebplugin.png
-INPUT .\imgs\mozawebplugin.png
-INPUT .\imgs\mozawebplugin.png
 INPUT .\imgs\iqboard.png
 INPUT .\imgs\iqboard.png
 INPUT .\imgs\iqboard.png
@@ -649,38 +642,17 @@ INPUT .\imgs\mascota.png
 INPUT .\imgs\mascota.png
 INPUT .\imgs\mascota.png
 INPUT .\imgs\mascota.png
-INPUT .\imgs\animatieregister.png
-INPUT .\imgs\animatieregister.png
-INPUT .\imgs\animatieregister.png
-INPUT .\imgs\animatieregister.png
-INPUT .\imgs\animatieregister.png
-INPUT .\imgs\animatieregister.png
-INPUT .\imgs\animatieregister.png
-INPUT .\imgs\navdiagram (2).png
-INPUT .\imgs\navdiagram (2).png
-INPUT .\imgs\navdiagram (2).png
-INPUT .\imgs\navdiagram (2).png
-INPUT .\imgs\navdiagram (2).png
-INPUT .\imgs\navdiagram (2).png
-INPUT .\imgs\navdiagram (2).png
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\newtx\t1ntxtt.fd
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\newtx\t1ntxtt.fd
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\newtx\t1ntxtt.fd
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\txfonts\t1xtt.tfm
-INPUT .\imgs\interfata.png
-INPUT .\imgs\interfata.png
-INPUT .\imgs\interfata.png
-INPUT .\imgs\interfata.png
-INPUT .\imgs\interfata.png
-INPUT .\imgs\interfata.png
-INPUT .\imgs\interfata.png
-INPUT .\imgs\profile.png
-INPUT .\imgs\profile.png
-INPUT .\imgs\profile.png
-INPUT .\imgs\profile.png
-INPUT .\imgs\profile.png
-INPUT .\imgs\profile.png
-INPUT .\imgs\profile.png
+INPUT .\imgs\navdiagram (2).png
+INPUT .\imgs\navdiagram (2).png
+INPUT .\imgs\navdiagram (2).png
+INPUT .\imgs\navdiagram (2).png
+INPUT .\imgs\navdiagram (2).png
+INPUT .\imgs\navdiagram (2).png
+INPUT .\imgs\navdiagram (2).png
 INPUT .\src\chapters\tehnologiiBe.tex
 INPUT .\src\chapters\tehnologiiBe.tex
 OUTPUT src\chapters\tehnologiiBe.aux
