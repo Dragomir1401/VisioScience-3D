@@ -71,7 +71,6 @@ Au fost aplicate toate manifesturile cu:
 kubectl apply -f ./k8s/
 \end{lstlisting}
 
-\newpage
 Un exemplu de \emph{Deployment} pentru serviciul de evaluare:
 \begin{lstlisting}[style=yamlstyle]
 apiVersion: apps/v1
@@ -325,9 +324,9 @@ se va face activarea criptării TLS\footnote{https://www.mongodb.com/docs/manual
 \subsection{Port forwarding}
 
 În mediul de dezvoltare, pentru a testa rapid Ingress‐ul Kong fără LoadBalancer extern, se folosește port‐forwarding:
-\begin{lstlisting}[style=yamlstyle]
-kubectl port-forward svc/kong-kong-proxy 8000:80
-\end{lstlisting}
+
+\func{kubectl port-forward svc/kong-kong-proxy 8000:80}.
+
 Apelurile la \url{http://localhost:8000} trec prin Kong şi pot fi rutate către microservicii.
 
 \subsection{Deployment}
@@ -454,14 +453,23 @@ aspect important pentru aplicații aflate în dezvoltare continuă și extindere
 \subsubsection{Gestionarea datelor}
 
 Datele sunt organizate în colecții care corespund entităților sistemului:
-quiz-uri, formule, molecule, utilizatori, clase și invitații. Fiecare colecție conține documente ce
+quiz-uri, formule, molecule, utilizatori, clase, invitații, etc. Fiecare colecție conține documente ce
 respectă structurile definite în codul backend-ului, folosind driverul oficial MongoDB pentru
 Go (\textit{go.mongodb.org/mongo-driver}).
 
 De exemplu, un document din colecția \texttt{quizzes} conține câmpuri precum \texttt{Title},
-\texttt{ClassID} și \texttt{OwnerID} (reprezentate prin \texttt{ObjectID} MongoDB), un array de
+\texttt{ClassID} și \texttt{OwnerID} (reprezentate prin \texttt{ObjectID} din MongoDB), un array de
 \texttt{Questions} cu întrebări, răspunsuri și punctaje, și un array \texttt{QuizResults} pentru
 stocarea scorurilor utilizatorilor.
+
+Tabelele sunt separate încât să aibă minimă interacțiune între ele, relaționând maxim prin câteva
+câmpuri, de obicei id-urile obiectelor din altă colecție. De exemplu, colecția \texttt{quizzes} are
+câmpul \texttt{ClassID} care face referire la colecția \texttt{classes}, iar colecția
+\texttt{users} are câmpul \texttt{ClassID} pentru a lega utilizatorii de clasele lor.
+Arhitectura principală a tabelelor din cele două baze de date folosite se poate observa în figura
+următoare.
+
+\fig[width=1\textwidth]{imgs/dbdiagram.png}{fig:mongodb-structure}{Structura principală a tabelelor din MongoDB}
 
 Se folosesc structuri Go care reflectă aceste modele, permițând deserializarea și serializarea 
 automată între BSON\footnote{https://www.mongodb.com/resources/basics/json-and-bson} și

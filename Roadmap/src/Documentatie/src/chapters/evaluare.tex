@@ -138,6 +138,23 @@ primitive. Nu în ultimul rând, menţinerea consistenţei între operaţiile de
 cerut testare repetată, deoarece o singură pierdere (de exemplu
 \lstinline{deque::shrink_to_fit}) genera stări incoerente.
 
+\subsection{Dimensiunea clusterului Kubernetes}
+
+Un alt obstacol a fost dimensiunea clusterului Kubernetes care este practic stocat 
+prin imagini și volume Docker. Fără curățare constantă s-au ajuns la dimensiuni de aproape
+60GB, ceea ce a dus la probleme de spațiu pe disc și la dificultăți în gestionarea
+resurselor. Soluția a fost curățarea imaginilor nefolosite și compresarea volumelor Docker, iar
+apoi compresarea întregii imagini de stocare wsl\footnote{https://learn.microsoft.com/en-us/windows/wsl/}
+de mai multe ori pentru a putea continua dezvoltarea.
+
+\subsection{Popularea și accesul extern la intrările in baza de date}
+Pentru a crea entități noi sau a adauga date educaționale în MongoDB într-un pod
+de Kubernetes, a fost necesară crearea unui job dedicat care să aibă acces în interiorul
+clusterului, deoarece nu se poate accesa direct din afara clusterului cu cereri
+directe. Asta a însemnat crearea unui fișier de configurare YAML pentru jobul respectiv și 
+crearea unui pod dedicat pentru rularea acestuia.
+
+
 \section{Analiză comparativă pe metrici}
 \label{subsec:analiza-metrici}
 
@@ -178,10 +195,10 @@ consumului de memorie sub 150 MB.
 \section{Statistici de dezvoltare}
 Din punct de vedere al dezvoltării software proiectul a conținut:
 \begin{itemize}
-  \item \textbf{Dimensiune back-end}: peste 6000 de linii de cod.
-  \item \textbf{Dimensiune front-end}: peste 20000 de linii de cod.
+  \item \textbf{Dimensiune back-end}: peste 8500 de linii de cod.
+  \item \textbf{Dimensiune front-end}: peste 24500 de linii de cod.
   \item \textbf{Dimensiune fișiere de configurare}: peste 800 de linii.
-  \item \textbf{Dimensiune cod LaTeX}: peste 2500 de linii.
-  \item \textbf{Număr de commituri}: peste 300 de commituri în GitHub.
+  \item \textbf{Dimensiune cod LaTeX}: peste 2900 de linii.
+  \item \textbf{Număr de commituri}: peste 340 de commituri în repositoriul GitHub.
 \end{itemize}
 

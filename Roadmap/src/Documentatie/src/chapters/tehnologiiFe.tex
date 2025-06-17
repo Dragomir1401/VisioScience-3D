@@ -18,6 +18,7 @@ opțiuni (Vue.js, Angular, Svelte), React s-a impus datorită următoarelor avan
   cu un număr impresionant de librării, tutoriale și un suport consistent din partea Meta. 
   Această resursă ne-a permis să adoptăm rapid bune practici și să găsim soluții la provocări 
   specifice dezvoltării 3D.
+
 \textbf{Model declarativ și component-driven}:
   React oferă un mod de declarare detaliată în descrierea interfeței, ideal pentru scene 3D
   complexe, unde starea se propagă predictibil prin componente. Aceasta ușurează managementul 
@@ -98,18 +99,18 @@ Această bibliotecă integrează Three.js cu React, permițându-ne să creăm s
 gestionarea stării, ceea ce facilitează dezvoltarea unor scene 3D complexe folosind JSX.
 
 Unul dintre avantajele principale ale R3F este că ne permite să integrăm hook-uri, care îmbunătățesc
-eficiența și interactivitatea aplicației. De exemplu, hook-ul \textbf{useFrame} permite actualizarea 
-scenei la fiecare cadru, ajutând animațiile și interacțiunile în timp real. \textbf{useLoader} este
+eficiența și interactivitatea aplicației. De exemplu, hook-ul useFrame permite actualizarea 
+scenei la fiecare cadru, ajutând animațiile și interacțiunile în timp real. UseLoader este
 folosit pentru încărcarea resurselor externe, precum texturi sau modele 3D, într-un mod eficient,
 prin gestionarea încărcării asincrone folosind promisiuni.
 
-Un alt hook important este \textbf{useThree}, care oferă acces direct la obiectul Three.js curent, 
-permițându-ne să interacționăm cu scena, camera și renderer-ul. De asemenea, \textbf{useRef} este
+Un alt hook important este UseThree, care oferă acces direct la obiectul Three.js curent, 
+permițându-ne să interacționăm cu scena, camera și renderer-ul. De asemenea, useRef este
 util pentru crearea de referințe la obiectele din scenă, facilitând manipularea acestora în timpul 
 animațiilor sau interacțiunilor.
 
-Pentru gestionarea stării componentelor, folosim \textbf{useState}, care permite actualizarea și 
-redarea dinamică a obiectelor din scenă. În plus, \textbf{useEffect} ne ajută să gestionăm efectele 
+Pentru gestionarea stării componentelor, folosim useState, care permite actualizarea și 
+redarea dinamică a obiectelor din scenă. În plus, useEffect ne ajută să gestionăm efectele 
 secundare, cum ar fi adăugarea de evenimente sau actualizarea stării în funcție de modificările din scenă.
 
 Pentru integrarea obiectelor cu extensia .glb am folosit un convertor GLTF\footnote{https://gltf.pmnd.rs/} care
@@ -239,10 +240,11 @@ preventDefault pentru a preveni comportamentele implicite.
 
 Pentru a optimiza performanța graficii 3D pe framework-ul bazat pe WebGL\footnote{Framework de bază pentru grafică 3D în browsere, https://webglfundamentals.org/}, se abordează câteva tehnici generale:
 \begin{itemize}
-  \item \textbf{Reducerea numărului de draw calls:}
+  \item \textbf{Reducerea numărului de draw calls\footnote{Draw calls reprezintă apelurile efectuate de CPU către GPU pentru a desena obiecte.}:}
     Combinăm obiectele similare folosind \texttt{BufferGeometry} 
     pentru a limita costul fiecărui cadru.
-  \item \textbf{Frustum culling şi occlusion culling:} 
+  \item \textbf{Frustum culling\footnote{Frustum culling reprezintă tehnica de eliminare a obiectelor care nu sunt vizibile în câmpul de vedere al camerei.} 
+  şi occlusion culling\footnote{Occlusion culling reprezintă tehnica de eliminare a obiectelor care sunt blocate de alte obiecte.}:} 
     WebGL elimină automat obiectele aflate în afara câmpului vizual, 
     iar React Three Fiber expune aceste mecanisme nativ, astfel încât
     obiectele invizibile nu sunt trimise GPU–ului.
@@ -250,7 +252,8 @@ Pentru a optimiza performanța graficii 3D pe framework-ul bazat pe WebGL\footno
 
 React Three Fiber (\texttt{@react-three/fiber}) și Drei (\texttt{@react-three/drei}) oferă setări și hook-uri
 dedicate pentru performanță, care sunt esențiale pentru optimizarea scenelor 3D. De exemplu, setarea
-\texttt{<Canvas dpr={[1,1]} />} limitează \emph{device pixel ratio} la un interval controlat, prevenind 
+\texttt{<Canvas dpr={[1,1]} />} limitează \emph{device pixel ratio}\footnote{DPR reprezintă raportul dintre pixelii fizici și pixelii logici, afectând claritatea graficii.}
+la un interval controlat, prevenind 
 supraîncărcarea GPU-ului pe ecranele cu densitate mare. De asemenea, proprietatea \texttt{performance={min:0.5, max:1}}
 ajustează dinamic rata de reîmprospătare a canvas-ului în funcție de activitate, reducând numărul de 
 cadre atunci când scena este statică. Un alt hook important din Drei este \texttt{useTexture}, care 

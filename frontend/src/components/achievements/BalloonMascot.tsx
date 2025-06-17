@@ -1,33 +1,40 @@
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Text, Float, Environment, PerspectiveCamera, Html } from '@react-three/drei';
-import { useRef, useState, useEffect } from 'react';
-import * as THREE from 'three';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import {
+  OrbitControls,
+  Text,
+  Float,
+  Environment,
+  PerspectiveCamera,
+  Html,
+} from "@react-three/drei";
+import { useRef, useState, useEffect } from "react";
+import * as THREE from "three";
+import { motion, AnimatePresence } from "framer-motion";
 import { useSpring } from "@react-spring/three";
-import { extend } from '@react-three/fiber';
+import { extend } from "@react-three/fiber";
 
 // Extend Three.js elements to be recognized by JSX
 extend(THREE);
 
 // Type declarations for Three.js elements
-declare module '@react-three/fiber' {
+declare module "@react-three/fiber" {
   interface ThreeElements {
-    group: JSX.IntrinsicElements['group'];
-    mesh: JSX.IntrinsicElements['mesh'];
-    sphereGeometry: JSX.IntrinsicElements['sphereGeometry'];
-    meshPhongMaterial: JSX.IntrinsicElements['meshPhongMaterial'];
-    cylinderGeometry: JSX.IntrinsicElements['cylinderGeometry'];
-    circleGeometry: JSX.IntrinsicElements['circleGeometry'];
-    ringGeometry: JSX.IntrinsicElements['ringGeometry'];
-    boxGeometry: JSX.IntrinsicElements['boxGeometry'];
-    torusGeometry: JSX.IntrinsicElements['torusGeometry'];
+    group: JSX.IntrinsicElements["group"];
+    mesh: JSX.IntrinsicElements["mesh"];
+    sphereGeometry: JSX.IntrinsicElements["sphereGeometry"];
+    meshPhongMaterial: JSX.IntrinsicElements["meshPhongMaterial"];
+    cylinderGeometry: JSX.IntrinsicElements["cylinderGeometry"];
+    circleGeometry: JSX.IntrinsicElements["circleGeometry"];
+    ringGeometry: JSX.IntrinsicElements["ringGeometry"];
+    boxGeometry: JSX.IntrinsicElements["boxGeometry"];
+    torusGeometry: JSX.IntrinsicElements["torusGeometry"];
   }
 }
 
 interface Badge {
   id: string;
   title: string;
-  type: 'BronzeBadge' | 'SilverBadge' | 'GoldBadge' | 'PerfectBadge';
+  type: "BronzeBadge" | "SilverBadge" | "GoldBadge" | "PerfectBadge";
   earned: boolean;
   progress: number;
   earnedAt?: string;
@@ -42,7 +49,7 @@ interface BalloonProps {
   position: [number, number, number];
   color: string;
   scale?: number;
-  animationState: 'idle' | 'hover' | 'selected';
+  animationState: "idle" | "hover" | "selected";
   onClick?: () => void;
   isEarned?: boolean;
 }
@@ -51,31 +58,40 @@ interface BalloonProps {
 const BADGE_COLORS = {
   BronzeBadge: {
     accent: "#690375",
-    default: "#CD7F32"
+    default: "#CD7F32",
   },
   SilverBadge: {
     accent: "#AE847E",
-    default: "#C0C0C0"
+    default: "#C0C0C0",
   },
   GoldBadge: {
     accent: "#4f46e5",
-    default: "#FFD700"
+    default: "#FFD700",
   },
   PerfectBadge: {
     accent: "#f3e8ff",
-    default: "#FF69B4"
-  }
+    default: "#FF69B4",
+  },
 } as const;
 
 // Helper function to get colors based on badge type
 function getBadgeColors(type: string) {
-  return BADGE_COLORS[type as keyof typeof BADGE_COLORS] || {
-    accent: "#4f46e5",
-    default: "#4f46e5"
-  };
+  return (
+    BADGE_COLORS[type as keyof typeof BADGE_COLORS] || {
+      accent: "#4f46e5",
+      default: "#4f46e5",
+    }
+  );
 }
 
-function Balloon({ position, color, scale = 1, animationState, onClick, isEarned = false }: BalloonProps) {
+function Balloon({
+  position,
+  color,
+  scale = 1,
+  animationState,
+  onClick,
+  isEarned = false,
+}: BalloonProps) {
   const balloonRef = useRef<THREE.Mesh>(null);
   const stringRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
@@ -89,19 +105,19 @@ function Balloon({ position, color, scale = 1, animationState, onClick, isEarned
   useFrame((state) => {
     if (balloonRef.current) {
       const time = state.clock.getElapsedTime();
-      
+
       // Enhanced floating animation
       const baseY = position[1] + Math.sin(time * 2) * 0.15;
       const baseZ = position[2] + Math.sin(time * 1.5) * 0.1;
-      
+
       switch (animationState) {
-        case 'hover':
+        case "hover":
           balloonRef.current.position.y = baseY + 0.3;
           balloonRef.current.position.z = baseZ + 0.2;
           balloonRef.current.rotation.z = Math.sin(time * 3) * 0.15;
           balloonRef.current.scale.setScalar(scale * 1.1);
           break;
-        case 'selected':
+        case "selected":
           balloonRef.current.position.y = baseY + 0.4;
           balloonRef.current.position.z = baseZ + 0.3;
           balloonRef.current.rotation.z = Math.sin(time * 4) * 0.2;
@@ -127,16 +143,16 @@ function Balloon({ position, color, scale = 1, animationState, onClick, isEarned
     <group>
       <Float speed={2} rotationIntensity={0.2} floatIntensity={0.3}>
         {/* Main balloon with more realistic material */}
-        <mesh 
-          ref={balloonRef} 
-          position={position} 
+        <mesh
+          ref={balloonRef}
+          position={position}
           scale={scale}
           onClick={onClick}
           onPointerOver={() => setHovered(true)}
           onPointerOut={() => setHovered(false)}
         >
           <sphereGeometry args={[1, 64, 64]} />
-          <meshPhongMaterial 
+          <meshPhongMaterial
             color={neonColor}
             emissive={glowColor}
             emissiveIntensity={hovered ? 0.8 : 0.4} // Reduced emissive intensity
@@ -149,7 +165,10 @@ function Balloon({ position, color, scale = 1, animationState, onClick, isEarned
         </mesh>
 
         {/* Subtle outer glow */}
-        <mesh position={position} scale={[scale * 1.1, scale * 1.1, scale * 1.1]}>
+        <mesh
+          position={position}
+          scale={[scale * 1.1, scale * 1.1, scale * 1.1]}
+        >
           <sphereGeometry args={[1, 64, 64]} />
           <meshPhongMaterial
             color={edgeColor}
@@ -162,7 +181,10 @@ function Balloon({ position, color, scale = 1, animationState, onClick, isEarned
         {/* Minimal hover effects */}
         {hovered && (
           <>
-            <mesh position={position} scale={[scale * 1.15, scale * 1.15, scale * 1.15]}>
+            <mesh
+              position={position}
+              scale={[scale * 1.15, scale * 1.15, scale * 1.15]}
+            >
               <sphereGeometry args={[1, 64, 64]} />
               <meshPhongMaterial
                 color={glowColor}
@@ -184,11 +206,15 @@ function Balloon({ position, color, scale = 1, animationState, onClick, isEarned
           </>
         )}
       </Float>
-      
+
       {/* More realistic string */}
-      <mesh ref={stringRef} position={[position[0], position[1] - 1.8, position[2]]}>
-        <cylinderGeometry args={[0.015, 0.015, 2.5, 8]} /> {/* Thinner string */}
-        <meshPhongMaterial 
+      <mesh
+        ref={stringRef}
+        position={[position[0], position[1] - 1.8, position[2]]}
+      >
+        <cylinderGeometry args={[0.015, 0.015, 2.5, 8]} />{" "}
+        {/* Thinner string */}
+        <meshPhongMaterial
           color="#ffffff"
           emissive="#ffffff"
           emissiveIntensity={0.2} // Reduced glow
@@ -205,12 +231,12 @@ interface BalloonMascotProps {
   onBadgeClick?: (badgeId: string) => void;
 }
 
-function CameraController({ 
+function CameraController({
   targetRotation,
-  isRotating
-}: { 
-  targetRotation: number,
-  isRotating: boolean
+  isRotating,
+}: {
+  targetRotation: number;
+  isRotating: boolean;
 }) {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const rotationSpeed = useRef(0);
@@ -225,32 +251,33 @@ function CameraController({
         if (Math.abs(rotationSpeed.current) < 0.001) {
           rotationSpeed.current = 0;
         }
-        
+
         // Update camera position based on rotation
-        const currentRotation = cameraRef.current.rotation.y + rotationSpeed.current;
+        const currentRotation =
+          cameraRef.current.rotation.y + rotationSpeed.current;
         cameraRef.current.position.x = Math.sin(currentRotation) * cameraRadius;
         cameraRef.current.position.z = Math.cos(currentRotation) * cameraRadius;
         cameraRef.current.rotation.y = currentRotation;
-        
+
         // Always look at center
         cameraRef.current.lookAt(0, 0, 0);
       } else {
         // Smooth rotation to target
         const currentRotation = cameraRef.current.rotation.y;
         let rotationDiff = targetRotation - currentRotation;
-        
+
         // Normalize the rotation difference to be between -PI and PI
         while (rotationDiff > Math.PI) rotationDiff -= Math.PI * 2;
         while (rotationDiff < -Math.PI) rotationDiff += Math.PI * 2;
-        
+
         // Use a smaller factor for smoother rotation
         const newRotation = currentRotation + rotationDiff * 0.05;
-        
+
         // Update camera position based on new rotation
         cameraRef.current.position.x = Math.sin(newRotation) * cameraRadius;
         cameraRef.current.position.z = Math.cos(newRotation) * cameraRadius;
         cameraRef.current.rotation.y = newRotation;
-        
+
         // Always look at center
         cameraRef.current.lookAt(0, 0, 0);
       }
@@ -268,14 +295,14 @@ function CameraController({
 }
 
 // Component that handles mouse/touch interactions inside Canvas
-function SceneController({ 
+function SceneController({
   onRotate,
   isRotating,
-  viewport
-}: { 
-  onRotate: (delta: number) => void,
-  isRotating: boolean,
-  viewport: { width: number, height: number }
+  viewport,
+}: {
+  onRotate: (delta: number) => void;
+  isRotating: boolean;
+  viewport: { width: number; height: number };
 }) {
   const isDragging = useRef(false);
   const lastX = useRef(0);
@@ -300,19 +327,19 @@ function SceneController({
   };
 
   useEffect(() => {
-    const canvas = document.querySelector('canvas');
+    const canvas = document.querySelector("canvas");
     if (!canvas) return;
 
-    canvas.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-    window.addEventListener('mouseleave', handleMouseUp);
+    canvas.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("mouseleave", handleMouseUp);
 
     return () => {
-      canvas.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('mouseleave', handleMouseUp);
+      canvas.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mouseleave", handleMouseUp);
     };
   }, [onRotate]);
 
@@ -320,20 +347,20 @@ function SceneController({
 }
 
 // Scene component that contains all 3D elements
-function Scene({ 
+function Scene({
   badges,
   selectedBadge,
   hoveredBadge,
   onBadgeClick,
   targetRotation,
-  isRotating
+  isRotating,
 }: {
-  badges: Badge[],
-  selectedBadge: string | null,
-  hoveredBadge: string | null,
-  onBadgeClick: (badgeId: string) => void,
-  targetRotation: number,
-  isRotating: boolean
+  badges: Badge[];
+  selectedBadge: string | null;
+  hoveredBadge: string | null;
+  onBadgeClick: (badgeId: string) => void;
+  targetRotation: number;
+  isRotating: boolean;
 }) {
   const { viewport } = useThree();
   const groupRef = useRef<THREE.Group>(null);
@@ -348,21 +375,21 @@ function Scene({
 
   return (
     <>
-      <CameraController 
+      <CameraController
         targetRotation={targetRotation}
         isRotating={isRotating}
       />
-      
-      <SceneController 
+
+      <SceneController
         onRotate={handleRotate}
         isRotating={isRotating}
         viewport={viewport}
       />
 
-      <color attach="background" args={['#1a0b2e']} />
-      <fog attach="fog" args={['#1a0b2e', 15, 35]} />
+      <color attach="background" args={["#1a0b2e"]} />
+      <fog attach="fog" args={["#1a0b2e", 15, 35]} />
       <Environment preset="sunset" />
-      
+
       {/* Lighting setup */}
       <ambientLight intensity={4} />
       <pointLight position={[15, 15, 15]} intensity={2} color="#FF69B4" />
@@ -370,31 +397,36 @@ function Scene({
       <pointLight position={[0, 10, 10]} intensity={2} color="#FF1493" />
       <pointLight position={[10, -10, 10]} intensity={1.5} color="#00FFFF" />
       <pointLight position={[-10, 10, -10]} intensity={1.5} color="#FF00FF" />
-      
+
       {/* Balloons arranged in a circle */}
       <group ref={groupRef}>
-        {badges && badges.length > 0 && badges.map((badge, index) => {
-          const angle = (index / badges.length) * Math.PI * 2;
-          const radius = 7;
-          const x = Math.sin(angle) * radius;
-          const z = Math.cos(angle) * radius;
-          
-          return (
-            <group key={badge.id || badge.type} position={[x, 0, z]}>
-              <Balloon
-                position={[0, 0, 0]}
-                color={badge.type}
-                scale={1.5}
-                animationState={
-                  selectedBadge === badge.id ? 'selected' :
-                  hoveredBadge === badge.id ? 'hover' : 'idle'
-                }
-                onClick={() => onBadgeClick(badge.id)}
-                isEarned={badge.earned}
-              />
-            </group>
-          );
-        })}
+        {badges &&
+          badges.length > 0 &&
+          badges.map((badge, index) => {
+            const angle = (index / badges.length) * Math.PI * 2;
+            const radius = 7;
+            const x = Math.sin(angle) * radius;
+            const z = Math.cos(angle) * radius;
+
+            return (
+              <group key={badge.id || badge.type} position={[x, 0, z]}>
+                <Balloon
+                  position={[0, 0, 0]}
+                  color={badge.type}
+                  scale={1.5}
+                  animationState={
+                    selectedBadge === badge.id
+                      ? "selected"
+                      : hoveredBadge === badge.id
+                      ? "hover"
+                      : "idle"
+                  }
+                  onClick={() => onBadgeClick(badge.id)}
+                  isEarned={badge.earned}
+                />
+              </group>
+            );
+          })}
       </group>
     </>
   );
@@ -410,7 +442,7 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
   // Filter out duplicate badges by type
   const uniqueBadges = badges.reduce((acc, badge) => {
     // Check if we already have a badge of this type
-    const existingBadge = acc.find(b => b.type === badge.type);
+    const existingBadge = acc.find((b) => b.type === badge.type);
     if (!existingBadge) {
       // If no badge of this type exists, add it
       acc.push(badge);
@@ -422,7 +454,7 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
     return acc;
   }, [] as Badge[]);
 
-  console.log('BalloonMascot received badges:', uniqueBadges);
+  console.log("BalloonMascot received badges:", uniqueBadges);
 
   // Render loading, error, or empty state outside of Canvas
   if (!uniqueBadges || uniqueBadges.length === 0) {
@@ -434,9 +466,9 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
   }
 
   const handleBadgeClick = (badgeId: string) => {
-    const badge = uniqueBadges.find(b => b.id === badgeId);
+    const badge = uniqueBadges.find((b) => b.id === badgeId);
     if (badge) {
-      console.log('Badge clicked:', badge);
+      console.log("Badge clicked:", badge);
       setSelectedBadge(badgeId);
       if (onBadgeClick) {
         onBadgeClick(badgeId);
@@ -450,14 +482,14 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
       <Canvas
         shadows
         camera={{ position: [0, 0, 35], fov: 30 }}
-        gl={{ 
+        gl={{
           antialias: true,
           alpha: true,
-          preserveDrawingBuffer: true
+          preserveDrawingBuffer: true,
         }}
-        style={{ cursor: 'grab' }}
+        style={{ cursor: "grab" }}
       >
-        <Scene 
+        <Scene
           badges={uniqueBadges}
           selectedBadge={selectedBadge}
           hoveredBadge={hoveredBadge}
@@ -477,10 +509,11 @@ export function BalloonMascot({ badges, onBadgeClick }: BalloonMascotProps) {
             className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full text-sm"
             onClick={() => setShowHint(false)}
           >
-            Click and drag to rotate • Click a balloon to view details
+            Apasă și trage pentru a roti • Apasă pe un balon pentru a vedea
+            detalii
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
-} 
+}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import BadgeNotification from '../common/BadgeNotification';
-import { jwtDecode } from 'jwt-decode';
+import BadgeNotification from "../common/BadgeNotification";
+import { jwtDecode } from "jwt-decode";
 
 const dbg = (...a) => console.debug("[QuizAttempt]", ...a);
 
@@ -34,27 +34,27 @@ const QuizAttempt = () => {
         if (!r.ok) throw new Error(`${r.status} – ${await r.text()}`);
         const raw = await r.json();
 
-        console.log('Raw quiz attempt data:', raw);
+        console.log("Raw quiz attempt data:", raw);
 
         const questions = (raw.questions || []).map((q, index) => ({
-          id: q.id === '000000000000000000000000' ? `${raw.id}-${index}` : q.id,
+          id: q.id === "000000000000000000000000" ? `${raw.id}-${index}` : q.id,
           text: q.text,
           choices: q.choices || [],
           images: q.images || [],
           points: q.points || 1,
         }));
 
-        setQuiz({ 
-          title: raw.title, 
+        setQuiz({
+          title: raw.title,
           questions,
           maxPoints: raw.maxPoints,
           timeBonus: raw.timeBonus,
           perfectBonus: raw.perfectBonus,
           streakBonus: raw.streakBonus,
-          classId: raw.class_id
+          classId: raw.class_id,
         });
-        console.log('Quiz state after setting:', quiz);
-        console.log('Processed questions for quiz:', questions);
+        console.log("Quiz state after setting:", quiz);
+        console.log("Processed questions for quiz:", questions);
 
         setAnswers(Array(questions.length).fill(null));
         setStage("ready");
@@ -80,9 +80,9 @@ const QuizAttempt = () => {
 
     try {
       // Get claims from token
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (!token) {
-        throw new Error('No authentication token found');
+        throw new Error("No authentication token found");
       }
       const claims = jwtDecode(token);
 
@@ -92,13 +92,13 @@ const QuizAttempt = () => {
       // First submit to evaluation service
       const evaluationPayload = {
         quiz_id: quizId,
-        answers: answers.map(a => parseInt(a, 10)),
+        answers: answers.map((a) => parseInt(a, 10)),
         timeTaken: timeSpent,
         maxScore: quiz.questions.length,
         class_id: quiz.classId,
       };
 
-      console.log('Evaluation Payload:', evaluationPayload);
+      console.log("Evaluation Payload:", evaluationPayload);
 
       const evaluationResponse = await fetch(
         `http://localhost:8000/evaluation/quiz/attempt/${quizId}`,
@@ -122,7 +122,7 @@ const QuizAttempt = () => {
       // Now submit to user-data-service with detailed statistics
       const incorrectlyAnsweredQuestions = quiz.questions
         .filter((_, index) => !evaluationData.correctAnswers[index])
-        .map(q => q.id);
+        .map((q) => q.id);
 
       const userDataPayload = {
         quiz_id: quizId,
@@ -135,24 +135,24 @@ const QuizAttempt = () => {
         questions_total: quiz.questions.length,
         questions_correct: evaluationData.score,
         questions_incorrect: quiz.questions.length - evaluationData.score,
-        difficulty_level: quiz.difficulty || 'medium',
+        difficulty_level: quiz.difficulty || "medium",
         completion_time: timeSpent,
         streak_bonus: evaluationData.streakBonus,
         time_bonus: evaluationData.timeBonus,
         perfect_bonus: evaluationData.perfectBonus,
         total_points: evaluationData.points,
-        quiz_type: quiz.type || 'standard',
+        quiz_type: quiz.type || "standard",
         attempt_number: 1,
         completion_date: new Date().toISOString(),
         incorrectly_answered_questions: incorrectlyAnsweredQuestions,
         performance_metrics: {
           accuracy: (evaluationData.score / evaluationData.maxScore) * 100,
           speed: evaluationData.timeBonus > 0 ? 100 : 50, // Convert to numeric values
-          consistency: evaluationData.streakBonus > 0 ? "high" : "normal"
-        }
+          consistency: evaluationData.streakBonus > 0 ? "high" : "normal",
+        },
       };
 
-      console.log('User Data Payload:', userDataPayload);
+      console.log("User Data Payload:", userDataPayload);
 
       const userDataResponse = await fetch(
         `http://localhost:8000/user/quiz/result`,
@@ -167,7 +167,10 @@ const QuizAttempt = () => {
       );
 
       if (!userDataResponse.ok) {
-        console.error('Failed to save detailed quiz statistics:', await userDataResponse.text());
+        console.error(
+          "Failed to save detailed quiz statistics:",
+          await userDataResponse.text()
+        );
         // Don't throw here, as the quiz was already evaluated successfully
       }
 
@@ -182,16 +185,19 @@ const QuizAttempt = () => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              quiz_result: userDataPayload
+              quiz_result: userDataPayload,
             }),
           }
         );
 
         if (!badgeProgressResponse.ok) {
-          console.warn('Failed to update badge progress:', await badgeProgressResponse.text());
+          console.warn(
+            "Failed to update badge progress:",
+            await badgeProgressResponse.text()
+          );
         }
       } catch (badgeProgressError) {
-        console.warn('Error updating badge progress:', badgeProgressError);
+        console.warn("Error updating badge progress:", badgeProgressError);
       }
 
       // Check for new badges after quiz completion
@@ -208,21 +214,28 @@ const QuizAttempt = () => {
         if (badgesResponse.ok) {
           const badges = await badgesResponse.json();
           const newlyEarnedBadges = badges.filter(
-            badge => badge.completed && (!badge.earnedAt || new Date(badge.earnedAt) > new Date(Date.now() - 5000))
+            (badge) =>
+              badge.completed &&
+              (!badge.earnedAt ||
+                new Date(badge.earnedAt) > new Date(Date.now() - 5000))
           );
-          
+
           if (newlyEarnedBadges.length > 0) {
             setNewBadges(newlyEarnedBadges);
             setShowBadgeNotification(true);
           }
         } else {
-          console.warn('Failed to fetch badges:', badgesResponse.status, await badgesResponse.text());
+          console.warn(
+            "Failed to fetch badges:",
+            badgesResponse.status,
+            await badgesResponse.text()
+          );
         }
       } catch (badgeError) {
-        console.warn('Error checking badges:', badgeError);
+        console.warn("Error checking badges:", badgeError);
       }
 
-      console.log('Quiz results saved:', {
+      console.log("Quiz results saved:", {
         score: evaluationData.score,
         maxScore: evaluationData.maxScore,
         correctAnswers: evaluationData.correctAnswers,
@@ -230,14 +243,14 @@ const QuizAttempt = () => {
         bonuses: {
           time: evaluationData.timeBonus,
           perfect: evaluationData.perfectBonus,
-          streak: evaluationData.streakBonus
+          streak: evaluationData.streakBonus,
         },
-        incorrectlyAnsweredQuestions
+        incorrectlyAnsweredQuestions,
       });
 
       setStage("sent");
     } catch (err) {
-      console.error('Error submitting quiz:', err);
+      console.error("Error submitting quiz:", err);
       setError(err.message);
     } finally {
       setIsSubmitting(false);
@@ -259,7 +272,7 @@ const QuizAttempt = () => {
       <div className="p-6 max-w-4xl mx-auto">
         <div className="bg-white rounded-xl shadow-md p-8">
           <h2 className="text-2xl font-bold mb-6">Rezultate quiz-uri</h2>
-          
+
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-semibold text-gray-700">Scor</h3>
@@ -270,7 +283,7 @@ const QuizAttempt = () => {
                 {((result.score / result.maxScore) * 100).toFixed(1)}%
               </p>
             </div>
-            
+
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-semibold text-gray-700">Total Puncte</h3>
               <p className="text-3xl font-bold text-green-600">
@@ -306,14 +319,15 @@ const QuizAttempt = () => {
           <div className="mt-8">
             <h3 className="font-semibold mb-4">Rezultate întrebări</h3>
             {quiz.questions.map((q, idx) => (
-              <div key={q.id} className={`p-4 mb-3 rounded-lg ${
-                result.correctAnswers[idx] ? 'bg-green-50' : 'bg-red-50'
-              }`}>
+              <div
+                key={q.id}
+                className={`p-4 mb-3 rounded-lg ${
+                  result.correctAnswers[idx] ? "bg-green-50" : "bg-red-50"
+                }`}
+              >
                 <p className="font-medium">{q.text}</p>
                 <p className="text-sm mt-1">
-                  {result.correctAnswers[idx] 
-                    ? '✓ Corect' 
-                    : '✗ Incorect'}
+                  {result.correctAnswers[idx] ? "✓ Corect" : "✗ Incorect"}
                 </p>
               </div>
             ))}
@@ -394,16 +408,20 @@ const QuizAttempt = () => {
 
               {result.points > result.score && (
                 <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                  <h3 className="font-semibold text-green-800 mb-2">Bonusuri obținute:</h3>
+                  <h3 className="font-semibold text-green-800 mb-2">
+                    Bonusuri obținute:
+                  </h3>
                   <ul className="space-y-2">
                     {result.perfectBonus > 0 && (
                       <li className="flex items-center gap-2 text-green-700">
-                        <span>✨</span> Bonus scor perfect: +{quiz.perfectBonus} puncte
+                        <span>✨</span> Bonus scor perfect: +{quiz.perfectBonus}{" "}
+                        puncte
                       </li>
                     )}
                     {result.streakBonus > 0 && (
                       <li className="flex items-center gap-2 text-green-700">
-                        <span>🔥</span> Bonus streak: +{result.streakBonus} puncte
+                        <span>🔥</span> Bonus streak: +{result.streakBonus}{" "}
+                        puncte
                       </li>
                     )}
                     {result.timeBonus > 0 && (
