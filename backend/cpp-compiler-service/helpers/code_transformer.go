@@ -6,9 +6,7 @@ import (
 	"strings"
 )
 
-// TransformCode takes the user's code and transforms it to use our tracing system
 func TransformCode(code string) string {
-	// Add necessary includes and using statements
 	transformedCode := `#include <iostream>
 #include <vector>
 #include <string>
@@ -26,60 +24,49 @@ func TransformCode(code string) string {
 using namespace tracer;
 
 `
-	// Process the code line by line
 	lines := strings.Split(code, "\n")
-	var tracers []string    // Keep track of all tracers we create
-	inIOOperation := false  // Track if we're in a multi-line I/O operation
-	inDumpFunction := false // Track if we're in a dump function
+	var tracers []string
+	inIOOperation := false
+	inDumpFunction := false
 
 	for i, line := range lines {
-		// Skip commented lines
 		trimmedLine := strings.TrimSpace(line)
 		if strings.HasPrefix(trimmedLine, "//") {
-			lines[i] = line // Keep the original line with its indentation
+			lines[i] = line
 			continue
 		}
 
-		// Check if we're entering a dump function
 		if strings.Contains(line, "void dump") {
 			inDumpFunction = true
 		}
 
-		// Check if we're exiting a dump function
 		if inDumpFunction && strings.Contains(line, "}") {
 			inDumpFunction = false
 		}
 
-		// Skip processing if we're in a dump function
 		if inDumpFunction {
 			lines[i] = line
 			continue
 		}
 
-		// Check if this line starts a new I/O operation
 		if strings.Contains(line, "std::cout") || strings.Contains(line, "std::cin") {
 			inIOOperation = true
 		}
 
-		// Check if this line ends the I/O operation
 		if inIOOperation && strings.Contains(line, ";") {
 			inIOOperation = false
 		}
 
-		// Skip adding tracers if we're in an I/O operation
 		if inIOOperation {
 			lines[i] = line
 			continue
 		}
 
-		// Handle template function calls
 		if strings.Contains(line, "template<") && strings.Contains(line, "void dump") {
-			// Extract parameter name from the function
 			paramRegex := regexp.MustCompile(`\([^,]+,\s*const\s+(\w+)&\)`)
 			if matches := paramRegex.FindStringSubmatch(line); len(matches) > 1 {
 				varName := matches[1]
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				// Add tracer declaration at the start of the function
 				lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", const_cast<%s&>(%s));",
 					tracerVar, varName, varName, varName)
 				tracers = append(tracers, tracerVar)
@@ -87,14 +74,11 @@ using namespace tracer;
 			continue
 		}
 
-		// Handle dumpPQ function
 		if strings.Contains(line, "void dumpPQ") {
-			// Extract parameter name from the function
 			paramRegex := regexp.MustCompile(`\([^,]+,\s*(\w+)\)`)
 			if matches := paramRegex.FindStringSubmatch(line); len(matches) > 1 {
 				varName := matches[1]
 				tracerVar := fmt.Sprintf("%s_tracer", varName)
-				// Add tracer declaration at the start of the function
 				lines[i] = line + "\n" + fmt.Sprintf("auto %s = makeTracedContainer(\"%s\", %s);",
 					tracerVar, varName, varName)
 				tracers = append(tracers, tracerVar)
@@ -102,7 +86,6 @@ using namespace tracer;
 			continue
 		}
 
-		// Transform set declarations
 		if strings.Contains(line, "set<") || strings.Contains(line, "unordered_set<") ||
 			strings.Contains(line, "multiset<") || strings.Contains(line, "unordered_multiset<") {
 			re := regexp.MustCompile(`(?:std::)?(?:unordered_)?(?:multi)?set<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
@@ -116,7 +99,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform array declarations
 		if strings.Contains(line, "array<") && !strings.Contains(line, "const") && !strings.Contains(line, "&") {
 			re := regexp.MustCompile(`(?:std::)?array<(?:std::)?\w+,\s*\d+>\s+(\w+)(?:\s*(?:=|{|;))?`)
 			matches := re.FindStringSubmatch(line)
@@ -129,9 +111,7 @@ using namespace tracer;
 			}
 		}
 
-		// Transform array operations
 		if strings.Contains(line, "[") && !strings.Contains(line, "[]=") {
-			// Handle array[index] operations
 			re := regexp.MustCompile(`(\w+)\[([^]]+)\]`)
 			matches := re.FindStringSubmatch(line)
 			if len(matches) >= 3 {
@@ -1016,16 +996,13 @@ using namespace tracer;
 			}
 		}
 
-		// Add snapshot after each significant operation
 		if strings.Contains(line, "if (") || strings.Contains(line, "for (") {
 			lines[i] = line + "\n" + "Tracer::getInstance().snapshot();"
 		}
 	}
 
-	// Add final snapshot before return
 	for i, line := range lines {
 		if strings.Contains(line, "return") {
-			// Add snapshot before return
 			lines[i] = "Tracer::getInstance().snapshot();\n" + line
 			break
 		}

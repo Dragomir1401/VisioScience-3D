@@ -23,7 +23,6 @@ func NewBadgeController(db *mongo.Database) *BadgeController {
 
 // EnsureBadgesExist checks if all required badges exist and creates them if they don't
 func (bc *BadgeController) EnsureBadgesExist(ctx context.Context) error {
-	// Define default badges
 	defaultBadges := []models.Badge{
 		{
 			ID:          primitive.NewObjectID(),
@@ -59,14 +58,11 @@ func (bc *BadgeController) EnsureBadgesExist(ctx context.Context) error {
 		},
 	}
 
-	// Check each badge type
 	for _, badge := range defaultBadges {
-		// Check if badge type exists
 		var existingBadge models.Badge
 		err := bc.db.Collection("badges").FindOne(ctx, bson.M{"type": badge.Type}).Decode(&existingBadge)
 
 		if err == mongo.ErrNoDocuments {
-			// Badge type doesn't exist, create it
 			log.Printf("Creating new badge: %s (%s)", badge.Title, badge.Type)
 			_, err = bc.db.Collection("badges").InsertOne(ctx, badge)
 			if err != nil {
@@ -105,62 +101,57 @@ func (bc *BadgeController) CheckAndUpdateBadges(ctx context.Context, userID stri
 		quizResult.PerformanceMetrics.Speed,
 		quizResult.PerformanceMetrics.Consistency)
 
-	// First ensure all badges exist
-	log.Printf("🔍 Ensuring all badges exist in the system...")
+	log.Printf(" Ensuring all badges exist in the system...")
 	if err := bc.EnsureBadgesExist(ctx); err != nil {
-		log.Printf("❌ Error ensuring badges exist: %v", err)
+		log.Printf("Error ensuring badges exist: %v", err)
 		return nil, err
 	}
-	log.Printf("✅ All badges verified")
+	log.Printf("All badges verified")
 
-	// Get all badges
-	log.Printf("📥 Fetching all badges from database...")
+	log.Printf("Fetching all badges from database...")
 	badges, err := bc.GetAllBadges()
 	if err != nil {
-		log.Printf("❌ Error getting all badges: %v", err)
+		log.Printf("Error getting all badges: %v", err)
 		return nil, err
 	}
-	log.Printf("✅ Found %d badges in system", len(badges))
+	log.Printf("Found %d badges in system", len(badges))
 
-	// Get user's quiz history
-	log.Printf("👤 Fetching user %s quiz history...", userID)
+	log.Printf("Fetching user %s quiz history...", userID)
 	userOID, err := primitive.ObjectIDFromHex(userID)
 	if err != nil {
-		log.Printf("❌ Error converting user ID to ObjectID: %v", err)
+		log.Printf("Error converting user ID to ObjectID: %v", err)
 		return nil, err
 	}
 
 	var user models.User
 	err = bc.db.Collection("users").FindOne(ctx, bson.M{"_id": userOID}).Decode(&user)
 	if err != nil {
-		log.Printf("❌ Error finding user %s: %v", userID, err)
+		log.Printf("Error finding user %s: %v", userID, err)
 		return nil, err
 	}
-	log.Printf("✅ Found user with %d quiz results", len(user.QuizResults))
+	log.Printf("Found user with %d quiz results", len(user.QuizResults))
 
-	// Get user's current badge progress
-	log.Printf("🏆 Fetching current badge progress for user %s...", userID)
+	log.Printf("Fetching current badge progress for user %s...", userID)
 	var userBadges []models.UserBadge
 	cursor, err := bc.db.Collection("user_badges").Find(ctx, bson.M{"user_id": userID})
 	if err != nil {
-		log.Printf("❌ Error getting user badges: %v", err)
+		log.Printf("Error getting user badges: %v", err)
 		return nil, err
 	}
 	defer cursor.Close(ctx)
 
 	if err := cursor.All(ctx, &userBadges); err != nil {
-		log.Printf("❌ Error decoding user badges: %v", err)
+		log.Printf("Error decoding user badges: %v", err)
 		return nil, err
 	}
 
 	if len(userBadges) == 0 {
-		log.Printf("ℹ️ No existing badges found for user %s, will create new progress", userID)
+		log.Printf("No existing badges found for user %s, will create new progress", userID)
 		userBadges = make([]models.UserBadge, 0)
 	} else {
-		log.Printf("ℹ️ Found %d existing badges for user %s", len(userBadges), userID)
+		log.Printf("Found %d existing badges for user %s", len(userBadges), userID)
 	}
 
-	// Create a map of existing badges for easier lookup
 	existingBadges := make(map[string]models.UserBadge)
 	for _, badge := range userBadges {
 		existingBadges[badge.BadgeID.Hex()] = badge
@@ -168,38 +159,33 @@ func (bc *BadgeController) CheckAndUpdateBadges(ctx context.Context, userID stri
 			badge.BadgeID.Hex(), badge.Progress, badge.Completed)
 	}
 
-	// Calculate progress for each badge
-	log.Printf("🔄 Starting progress calculation for each badge...")
+	log.Printf("Starting progress calculation for each badge...")
 	var updatedBadges []models.UserBadge
 	for _, badge := range badges {
-		log.Printf("\n📌 Processing badge: %s (%s)", badge.Title, badge.Type)
-		log.Printf("   Description: %s", badge.Description)
+		log.Printf("\nProcessing badge: %s (%s)", badge.Title, badge.Type)
+		log.Printf(" Description: %s", badge.Description)
 
 		var progress float64
 		var currentValue float64
 
-		// Calculate progress based on badge type
 		switch badge.Type {
 		case "BronzeBadge":
-			// Bronze: Complete 1 quiz
 			progress = math.Min(float64(len(user.QuizResults))*100, 100)
 			currentValue = float64(len(user.QuizResults))
-			log.Printf("   🥉 Bronze badge calculation:")
+			log.Printf("	   Bronze badge calculation:")
 			log.Printf("      - Total quizzes completed: %d", len(user.QuizResults))
 			log.Printf("      - Progress: %.0f%%", progress)
 			log.Printf("      - Current value: %.0f", currentValue)
 
 		case "SilverBadge":
-			// Silver: Complete 5 quizzes
 			progress = math.Min(float64(len(user.QuizResults))/5*100, 100)
 			currentValue = float64(len(user.QuizResults))
-			log.Printf("   🥈 Silver badge calculation:")
+			log.Printf("   		Silver badge calculation:")
 			log.Printf("      - Total quizzes completed: %d/5", len(user.QuizResults))
 			log.Printf("      - Progress: %.0f%%", progress)
 			log.Printf("      - Current value: %.0f", currentValue)
 
 		case "GoldBadge":
-			// Gold: Complete 10 quizzes with score > 80%
 			highScoreQuizzes := 0
 			for _, qr := range user.QuizResults {
 				if qr.MaxScore > 0 && float64(qr.Score)/float64(qr.MaxScore) > 0.8 {
@@ -208,13 +194,12 @@ func (bc *BadgeController) CheckAndUpdateBadges(ctx context.Context, userID stri
 			}
 			progress = math.Min(float64(highScoreQuizzes)/10*100, 100)
 			currentValue = float64(highScoreQuizzes)
-			log.Printf("   🥇 Gold badge calculation:")
+			log.Printf("   		Gold badge calculation:")
 			log.Printf("      - High score quizzes (>80%%): %d/10", highScoreQuizzes)
 			log.Printf("      - Progress: %.0f%%", progress)
 			log.Printf("      - Current value: %.0f", currentValue)
 
 		case "PerfectBadge":
-			// Perfect: Get 100% on any quiz
 			hasPerfect := false
 			for _, result := range user.QuizResults {
 				if result.PerfectScore {
@@ -225,25 +210,23 @@ func (bc *BadgeController) CheckAndUpdateBadges(ctx context.Context, userID stri
 			if hasPerfect {
 				progress = 100
 				currentValue = 1
-				log.Printf("   💯 Perfect badge calculation:")
+				log.Printf("   		 Perfect badge calculation:")
 				log.Printf("      - Found perfect score: true")
 				log.Printf("      - Progress: 100%%")
 				log.Printf("      - Current value: 1")
 			} else {
 				progress = 0
 				currentValue = 0
-				log.Printf("   💯 Perfect badge calculation:")
+				log.Printf("   		Perfect badge calculation:")
 				log.Printf("      - Found perfect score: false")
 				log.Printf("      - Progress: 0%%")
 				log.Printf("      - Current value: 0")
 			}
 		}
 
-		// Check if badge already exists for user
 		existingBadge, exists := existingBadges[badge.ID.Hex()]
 		if !exists {
-			// Create new badge progress
-			log.Printf("   ➕ Creating new badge progress for badge %s", badge.ID.Hex())
+			log.Printf(" Creating new badge progress for badge %s", badge.ID.Hex())
 			userBadge := models.UserBadge{
 				UserID:       userID,
 				BadgeID:      badge.ID,
@@ -255,15 +238,14 @@ func (bc *BadgeController) CheckAndUpdateBadges(ctx context.Context, userID stri
 
 			_, err := bc.db.Collection("user_badges").InsertOne(ctx, userBadge)
 			if err != nil {
-				log.Printf("   ❌ Error inserting new badge progress: %v", err)
+				log.Printf(" Error inserting new badge progress: %v", err)
 				continue
 			}
-			log.Printf("   ✅ Created new badge progress: Progress=%.0f%%, Completed=%v",
+			log.Printf("  Created new badge progress: Progress=%.0f%%, Completed=%v",
 				progress, progress >= 100)
 			updatedBadges = append(updatedBadges, userBadge)
 		} else if existingBadge.Progress != progress {
-			// Update existing badge progress
-			log.Printf("   🔄 Updating existing badge progress for badge %s", badge.ID.Hex())
+			log.Printf("      Updating existing badge progress for badge %s", badge.ID.Hex())
 			log.Printf("      - Old progress: %.0f%%", existingBadge.Progress)
 			log.Printf("      - New progress: %.0f%%", progress)
 			log.Printf("      - Old completed: %v", existingBadge.Completed)
@@ -284,7 +266,7 @@ func (bc *BadgeController) CheckAndUpdateBadges(ctx context.Context, userID stri
 				update,
 			)
 			if err != nil {
-				log.Printf("   ❌ Error updating badge progress: %v", err)
+				log.Printf("  Error updating badge progress: %v", err)
 				continue
 			}
 
@@ -293,15 +275,15 @@ func (bc *BadgeController) CheckAndUpdateBadges(ctx context.Context, userID stri
 			existingBadge.Completed = progress >= 100
 			existingBadge.UpdatedAt = time.Now()
 			updatedBadges = append(updatedBadges, existingBadge)
-			log.Printf("   ✅ Successfully updated badge progress")
+			log.Printf("  Successfully updated badge progress")
 		} else {
-			log.Printf("   ℹ️ No change in progress for badge %s: %.0f%%",
+			log.Printf("  No change in progress for badge %s: %.0f%%",
 				badge.ID.Hex(), progress)
 		}
 	}
 
 	log.Printf("\n=== Completed badge check for user %s ===", userID)
-	log.Printf("📊 Summary of updates:")
+	log.Printf("  Summary of updates:")
 	log.Printf("   - Total badges processed: %d", len(badges))
 	log.Printf("   - Badges updated: %d", len(updatedBadges))
 	for _, badge := range updatedBadges {

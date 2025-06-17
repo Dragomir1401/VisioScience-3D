@@ -36,7 +36,7 @@ func GetUserBadges(w http.ResponseWriter, r *http.Request) {
 	log.Printf("=== Starting GetUserBadges request ===")
 	userID := mux.Vars(r)["userId"]
 	if userID == "" {
-		log.Printf("❌ No userId provided in request")
+		log.Printf(" No userId provided in request")
 		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "400").Inc()
 		http.Error(w, "userId is required", http.StatusBadRequest)
 		return
@@ -46,36 +46,32 @@ func GetUserBadges(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	// Initialize badge controller
 	badgeController := controllers.NewBadgeController(db.UserCollection.Database())
 
-	// Ensure badges exist
 	if err := badgeController.EnsureBadgesExist(ctx); err != nil {
-		log.Printf("❌ Error ensuring badges exist: %v", err)
+		log.Printf("Error ensuring badges exist: %v", err)
 		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
 		http.Error(w, "Failed to ensure badges exist", http.StatusInternalServerError)
 		return
 	}
 
-	// Get all badges using controller
-	log.Printf("📥 Fetching all badges from database...")
+	log.Printf(" Fetching all badges from database...")
 	badges, err := badgeController.GetAllBadges()
 	if err != nil {
-		log.Printf("❌ Error fetching badges: %v", err)
+		log.Printf(" Error fetching badges: %v", err)
 		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
 		http.Error(w, "Failed to fetch badges", http.StatusInternalServerError)
 		return
 	}
-	log.Printf("✅ Found %d badges in system", len(badges))
+	log.Printf(" Found %d badges in system", len(badges))
 	for _, badge := range badges {
 		log.Printf("   - Badge: %s (Type: %s)", badge.Title, badge.Type)
 	}
 
-	// Get user's badge progress
-	log.Printf("📥 Fetching badge progress for user %s...", userID)
+	log.Printf(" Fetching badge progress for user %s...", userID)
 	cursor, err := db.UserCollection.Database().Collection("user_badges").Find(ctx, bson.M{"user_id": userID})
 	if err != nil {
-		log.Printf("❌ Error fetching user badges: %v", err)
+		log.Printf(" Error fetching user badges: %v", err)
 		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
 		http.Error(w, "Failed to fetch user badges", http.StatusInternalServerError)
 		return
@@ -84,30 +80,27 @@ func GetUserBadges(w http.ResponseWriter, r *http.Request) {
 
 	var userBadges []models.UserBadge
 	if err := cursor.All(ctx, &userBadges); err != nil {
-		log.Printf("❌ Error decoding user badges: %v", err)
+		log.Printf("Error decoding user badges: %v", err)
 		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
 		http.Error(w, "Failed to decode user badges", http.StatusInternalServerError)
 		return
 	}
-	log.Printf("✅ Found %d badges for user %s", len(userBadges), userID)
+	log.Printf(" Found %d badges for user %s", len(userBadges), userID)
 	for _, badge := range userBadges {
 		log.Printf("   - User Badge: ID=%s, Progress=%.0f%%, Completed=%v, UpdatedAt=%v",
 			badge.BadgeID.Hex(), badge.Progress, badge.Completed, badge.UpdatedAt)
 	}
 
-	// Create a map of user badges for easier lookup
 	userBadgeMap := make(map[string]models.UserBadge)
 	for _, badge := range userBadges {
 		userBadgeMap[badge.BadgeID.Hex()] = badge
 	}
 
-	// Combine badges with user progress
-	log.Printf("🔄 Combining badges with user progress...")
+	log.Printf("Combining badges with user progress...")
 	var badgesWithProgress []models.BadgeWithProgress
 	for _, badge := range badges {
 		userBadge, exists := userBadgeMap[badge.ID.Hex()]
 		if !exists {
-			// If no progress exists, create a new one with 0 progress
 			userBadge = models.UserBadge{
 				UserID:    userID,
 				BadgeID:   badge.ID,
@@ -125,7 +118,7 @@ func GetUserBadges(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Printf("=== Completed GetUserBadges request for user %s ===", userID)
-	log.Printf("📊 Returning %d badges with progress", len(badgesWithProgress))
+	log.Printf(" Returning %d badges with progress", len(badgesWithProgress))
 
 	metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "200").Inc()
 	w.Header().Set("Content-Type", "application/json")
@@ -146,14 +139,12 @@ func UpdateBadgeProgress(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Validate progress value
 	if update.Progress < 0 || update.Progress > 100 {
 		metrics.HTTPRequestsTotal.WithLabelValues("PUT", utils.NormalizePath(r.URL.Path), "400").Inc()
 		http.Error(w, "Progress must be between 0 and 100", http.StatusBadRequest)
 		return
 	}
 
-	// Convert badgeID to ObjectID
 	badgeObjID, err := primitive.ObjectIDFromHex(badgeID)
 	if err != nil {
 		metrics.HTTPRequestsTotal.WithLabelValues("PUT", utils.NormalizePath(r.URL.Path), "400").Inc()
@@ -164,7 +155,6 @@ func UpdateBadgeProgress(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	// Update or insert user badge progress
 	opts := options.Update().SetUpsert(true)
 	filter := bson.M{
 		"userId":  userID,
@@ -203,7 +193,6 @@ func GetBadgeDetails(w http.ResponseWriter, r *http.Request) {
 	badgeID := mux.Vars(r)["badgeId"]
 	userID := mux.Vars(r)["userId"]
 
-	// Convert badgeID to ObjectID
 	badgeObjID, err := primitive.ObjectIDFromHex(badgeID)
 	if err != nil {
 		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "400").Inc()
@@ -214,7 +203,6 @@ func GetBadgeDetails(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	// Get badge details
 	var badge models.Badge
 	err = db.BadgeCollection.FindOne(
 		ctx,
@@ -231,7 +219,6 @@ func GetBadgeDetails(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get user's progress for this badge
 	var userBadge models.UserBadge
 	err = db.BadgeCollection.FindOne(
 		ctx,
@@ -262,29 +249,27 @@ func GetBadgeDetails(w http.ResponseWriter, r *http.Request) {
 func UpdateBadgeProgressFromQuiz(w http.ResponseWriter, r *http.Request) {
 	log.Printf("\n=== Starting badge progress update from quiz ===")
 
-	// Get user from context
 	claims := r.Context().Value("claims").(*utils.CustomClaims)
 	if claims == nil {
-		log.Printf("❌ No claims found in context")
+		log.Printf(" No claims found in context")
 		http.Error(w, "No claims found", http.StatusUnauthorized)
 		return
 	}
 
 	log.Printf("👤 Processing badge progress update for user %s", claims.UserID)
 
-	// Parse request body
 	var req struct {
 		QuizResult models.QuizResultMeta `json:"quiz_result"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		log.Printf("❌ Error binding JSON for user %s: %v", claims.UserID, err)
+		log.Printf(" Error binding JSON for user %s: %v", claims.UserID, err)
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
 
-	log.Printf("📝 Received quiz result for user %s:", claims.UserID)
+	log.Printf(" Received quiz result for user %s:", claims.UserID)
 	log.Printf("   - Quiz ID: %s", req.QuizResult.QuizID.Hex())
 	log.Printf("   - Quiz Title: %s", req.QuizResult.QuizTitle)
 	log.Printf("   - Score: %d/%d (%.2f%%)",
@@ -298,33 +283,30 @@ func UpdateBadgeProgressFromQuiz(w http.ResponseWriter, r *http.Request) {
 		req.QuizResult.QuestionsTotal)
 	log.Printf("   - Difficulty: %s", req.QuizResult.DifficultyLevel)
 
-	// Initialize badge controller
 	log.Printf("🔧 Initializing badge controller...")
 	bc := controllers.NewBadgeController(db.MongoClient.Database("userdata"))
 
-	// First ensure all badges exist in the system
-	log.Printf("🔍 Ensuring all badges exist in the system...")
+	log.Printf(" Ensuring all badges exist in the system...")
 	if err := bc.EnsureBadgesExist(r.Context()); err != nil {
-		log.Printf("❌ Error ensuring badges exist: %v", err)
+		log.Printf(" Error ensuring badges exist: %v", err)
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
 		http.Error(w, "Failed to ensure badges exist", http.StatusInternalServerError)
 		return
 	}
-	log.Printf("✅ All badges verified in system")
+	log.Printf(" All badges verified in system")
 
-	// Calculate and update badge progress
-	log.Printf("🔄 Starting badge progress calculation for user %s", claims.UserID)
+	log.Printf(" Starting badge progress calculation for user %s", claims.UserID)
 	updatedBadges, err := bc.CheckAndUpdateBadges(r.Context(), claims.UserID, req.QuizResult)
 	if err != nil {
-		log.Printf("❌ Error updating badge progress for user %s: %v", claims.UserID, err)
+		log.Printf(" Error updating badge progress for user %s: %v", claims.UserID, err)
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
 		http.Error(w, "Failed to update badge progress", http.StatusInternalServerError)
 		return
 	}
 
-	log.Printf("✅ Successfully updated badges for user %s:", claims.UserID)
+	log.Printf(" Successfully updated badges for user %s:", claims.UserID)
 	if len(updatedBadges) == 0 {
-		log.Printf("   ℹ️ No badges were updated")
+		log.Printf("  No badges were updated")
 	} else {
 		for _, badge := range updatedBadges {
 			log.Printf("   - Badge %s:", badge.BadgeID.Hex())

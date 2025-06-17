@@ -13,7 +13,6 @@ import (
 )
 
 func main() {
-	// Connect to MongoDB
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI("mongodb://mongodb:27017"))
 	if err != nil {
 		log.Fatal(err)
@@ -22,7 +21,6 @@ func main() {
 
 	db := client.Database("user-data-db")
 
-	// Define badges
 	badges := []models.Badge{
 		{
 			ID:          primitive.NewObjectID(),
@@ -58,13 +56,6 @@ func main() {
 		},
 	}
 
-	// Drop existing badges collection
-	// err = db.Collection("badges").Drop(context.Background())
-	// if err != nil {
-	// 	log.Printf("Warning: Could not drop badges collection: %v", err)
-	// }
-
-	// Insert badges
 	var badgeDocs []interface{}
 	for _, badge := range badges {
 		badgeDocs = append(badgeDocs, badge)

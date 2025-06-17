@@ -23,26 +23,20 @@ import (
 
 // calculatePoints calculates points based on quiz score and other factors
 func calculatePoints(score int, maxScore int, timeBonus int, streakBonus int, perfectBonus int) int64 {
-	// Safety check for maxScore
 	if maxScore <= 0 {
-		maxScore = 1 // Prevent division by zero
+		maxScore = 1
 	}
 
-	// Calculate base points (percentage of max score)
-	// Using float64 for more precise calculation
 	basePoints := float64(score) / float64(maxScore) * 100
 
-	// Convert bonuses to int64 and add them
 	var totalPoints int64
 	totalPoints = int64(basePoints) + int64(timeBonus) + int64(streakBonus) + int64(perfectBonus)
 
-	// Safety check for negative values
 	if totalPoints < 0 {
 		totalPoints = 0
 	}
 
-	// Safety check for maximum value
-	const maxInt64 = int64(^uint64(0) >> 1) // Maximum value for int64
+	const maxInt64 = int64(^uint64(0) >> 1)
 	if totalPoints > maxInt64 {
 		totalPoints = maxInt64
 	}
@@ -52,27 +46,24 @@ func calculatePoints(score int, maxScore int, timeBonus int, streakBonus int, pe
 
 // updateUserRankings updates the user's class and global rankings
 func updateUserRankings(ctx context.Context, userID primitive.ObjectID) error {
-	// Update class ranking
 	_, err := db.UserCollection.UpdateMany(
 		ctx,
 		bson.M{"classes": bson.M{"$in": []primitive.ObjectID{userID}}},
-		bson.M{"$set": bson.M{"class_ranking": 0}}, // Reset rankings
+		bson.M{"$set": bson.M{"class_ranking": 0}},
 	)
 	if err != nil {
 		return err
 	}
 
-	// Update global ranking
 	_, err = db.UserCollection.UpdateMany(
 		ctx,
 		bson.M{},
-		bson.M{"$set": bson.M{"global_ranking": 0}}, // Reset rankings
+		bson.M{"$set": bson.M{"global_ranking": 0}},
 	)
 	if err != nil {
 		return err
 	}
 
-	// Update class rankings
 	cursor, err := db.UserCollection.Find(ctx, bson.M{})
 	if err != nil {
 		return err
@@ -84,7 +75,6 @@ func updateUserRankings(ctx context.Context, userID primitive.ObjectID) error {
 		return err
 	}
 
-	// Group users by class and sort by points
 	classPoints := make(map[primitive.ObjectID][]struct {
 		UserID primitive.ObjectID
 		Points int64
@@ -99,9 +89,7 @@ func updateUserRankings(ctx context.Context, userID primitive.ObjectID) error {
 		}
 	}
 
-	// Update rankings for each class
 	for classID, points := range classPoints {
-		// Sort by points
 		for i := 0; i < len(points); i++ {
 			for j := i + 1; j < len(points); j++ {
 				if points[i].Points < points[j].Points {
@@ -110,7 +98,6 @@ func updateUserRankings(ctx context.Context, userID primitive.ObjectID) error {
 			}
 		}
 
-		// Update rankings
 		for i, p := range points {
 			_, err = db.UserCollection.UpdateOne(
 				ctx,
@@ -123,8 +110,6 @@ func updateUserRankings(ctx context.Context, userID primitive.ObjectID) error {
 		}
 	}
 
-	// Update global rankings
-	// Sort all users by points
 	var allUsers []struct {
 		ID     primitive.ObjectID
 		Points int64
@@ -136,7 +121,6 @@ func updateUserRankings(ctx context.Context, userID primitive.ObjectID) error {
 		}{user.ID, user.TotalPoints})
 	}
 
-	// Sort by points
 	for i := 0; i < len(allUsers); i++ {
 		for j := i + 1; j < len(allUsers); j++ {
 			if allUsers[i].Points < allUsers[j].Points {
@@ -145,7 +129,6 @@ func updateUserRankings(ctx context.Context, userID primitive.ObjectID) error {
 		}
 	}
 
-	// Update global rankings
 	for i, u := range allUsers {
 		_, err = db.UserCollection.UpdateOne(
 			ctx,
@@ -205,7 +188,6 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Validate required fields
 	if req.QuizTitle == "" {
 		log.Printf("SubmitUserQuizResult: Warning - Empty quiz title received for quiz ID: %s", req.QuizID)
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
@@ -220,7 +202,6 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Validate input values
 	if req.Score < 0 || req.MaxScore < 0 || req.TimeBonus < 0 || req.StreakBonus < 0 || req.PerfectBonus < 0 {
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
 		http.Error(w, "Invalid negative values in request", http.StatusBadRequest)
@@ -241,7 +222,6 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Convert incorrectly answered questions from string IDs to ObjectID
 	var incorrectQuestionOIDs []primitive.ObjectID
 	for _, qid := range req.IncorrectlyAnsweredQuestions {
 		oid, err := primitive.ObjectIDFromHex(qid)
@@ -254,7 +234,6 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("SubmitUserQuizResult: Incorrectly answered questions: %v", incorrectQuestionOIDs)
 
-	// Calculate points with safety checks
 	points := calculatePoints(req.Score, req.MaxScore, req.TimeBonus, req.StreakBonus, req.PerfectBonus)
 	now := time.Now()
 
@@ -301,7 +280,6 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	// Update user with quiz result and points
 	_, err = db.UserCollection.UpdateOne(
 		ctx,
 		bson.M{"_id": userOID},
@@ -319,13 +297,11 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Fetch the updated user document to verify the save
 	var updatedUser models.User
 	err = db.UserCollection.FindOne(ctx, bson.M{"_id": userOID}).Decode(&updatedUser)
 	if err != nil {
 		log.Printf("Error fetching updated user for verification: %v", err)
 	} else {
-		// Find the newly added quiz result
 		for _, qr := range updatedUser.QuizResults {
 			if qr.QuizID == quizOID && qr.Timestamp.Equal(now) {
 				log.Printf("Successfully saved QuizResultMeta - QuizID: %s, Title: %s, Score: %d/%d, Difficulty: %s",
@@ -335,7 +311,6 @@ func SubmitUserQuizResult(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Update rankings
 	if err := updateUserRankings(ctx, userOID); err != nil {
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
 		http.Error(w, "Failed to update rankings: "+err.Error(), http.StatusInternalServerError)
@@ -389,11 +364,9 @@ func GetUserQuizResult(w http.ResponseWriter, r *http.Request) {
 func GetLeaderboard(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	// Get query parameters
 	classID := r.URL.Query().Get("class_id")
-	limit := 10 // Default limit
+	limit := 10
 
-	// Build query
 	query := bson.M{}
 	if classID != "" {
 		classOID, err := primitive.ObjectIDFromHex(classID)
@@ -405,7 +378,6 @@ func GetLeaderboard(w http.ResponseWriter, r *http.Request) {
 		query["classes"] = classOID
 	}
 
-	// Find users and sort by total points
 	cursor, err := db.UserCollection.Find(
 		ctx,
 		query,
@@ -425,7 +397,6 @@ func GetLeaderboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Prepare response
 	type LeaderboardEntry struct {
 		UserID      primitive.ObjectID `json:"user_id"`
 		Email       string             `json:"email"`
@@ -486,7 +457,6 @@ func GetQuizStatistics(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Get all users
 	cursor, err := db.UserCollection.Find(ctx, bson.M{})
 	if err != nil {
 		log.Printf("GetQuizStatistics: Error fetching users: %v", err)
@@ -504,10 +474,8 @@ func GetQuizStatistics(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Map to store quiz statistics
 	quizStats := make(map[string]*QuizStats)
 
-	// Process each user's quiz results
 	for _, user := range users {
 		for _, qr := range user.QuizResults {
 			if qr.QuizTitle == "" {
@@ -535,7 +503,6 @@ func GetQuizStatistics(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Convert map to slice and filter out quizzes with empty titles
 	var statsList []QuizStats
 	for _, stats := range quizStats {
 		if stats.Title != "" {
@@ -543,7 +510,6 @@ func GetQuizStatistics(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Sort by title
 	sort.Slice(statsList, func(i, j int) bool {
 		return statsList[i].Title < statsList[j].Title
 	})
@@ -578,7 +544,6 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Get all users who attempted this quiz
 	cursor, err := db.UserCollection.Find(ctx, bson.M{
 		"quiz_results": bson.M{
 			"$elemMatch": bson.M{
@@ -586,7 +551,7 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 			},
 		},
 	}, options.Find().SetProjection(bson.M{
-		"quiz_results": 1, // Include the entire quiz_results array
+		"quiz_results": 1,
 	}))
 	if err != nil {
 		log.Printf("GetChallengingQuestions: Error fetching users: %v", err)
@@ -605,14 +570,12 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Printf("GetChallengingQuestions: Found %d users who attempted quiz %s", len(users), quizOID.Hex())
 
-	// Map to store question statistics
 	questionStats := make(map[primitive.ObjectID]struct {
 		TotalAttempts     int
 		IncorrectAttempts int
 		QuestionText      string
 	})
 
-	// Create a custom HTTP client with timeout and transport settings
 	client := &http.Client{
 		Timeout: 5 * time.Second,
 		Transport: &http.Transport{
@@ -622,7 +585,6 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	// Get question details from evaluation service
 	var quizData struct {
 		Questions []struct {
 			ID   primitive.ObjectID `json:"id"`
@@ -675,7 +637,6 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 		break
 	}
 
-	// Initialize question stats with text from quiz data
 	for _, q := range quizData.Questions {
 		questionStats[q.ID] = struct {
 			TotalAttempts     int
@@ -686,7 +647,6 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Process each user's quiz results
 	for _, user := range users {
 		log.Printf("GetChallengingQuestions: Processing user %s", user.ID.Hex())
 		for _, qr := range user.QuizResults {
@@ -697,7 +657,6 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 			log.Printf("GetChallengingQuestions: Processing quiz result - User: %s, Timestamp: %v, Score: %d/%d",
 				user.ID.Hex(), qr.Timestamp, qr.Score, qr.MaxScore)
 
-			// Log the raw incorrectly answered questions array
 			if qr.IncorrectlyAnsweredQuestions == nil {
 				log.Printf("GetChallengingQuestions: IncorrectlyAnsweredQuestions is nil for attempt at %v", qr.Timestamp)
 			} else if len(qr.IncorrectlyAnsweredQuestions) == 0 {
@@ -708,20 +667,17 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 					len(qr.IncorrectlyAnsweredQuestions), qr.Timestamp, qr.Score, qr.MaxScore, qr.IncorrectlyAnsweredQuestions)
 			}
 
-			// Get all questions that were attempted in this attempt
 			attemptedQuestions := make(map[primitive.ObjectID]bool)
 			for _, q := range quizData.Questions {
 				attemptedQuestions[q.ID] = true
 				log.Printf("GetChallengingQuestions: Question available in quiz: ID=%s, Text=%s", q.ID.Hex(), q.Text)
 			}
 
-			// Log current stats before updates
 			for qid, stats := range questionStats {
 				log.Printf("GetChallengingQuestions: Before update - Question ID %s (text: %s): TotalAttempts=%d, IncorrectAttempts=%d",
 					qid.Hex(), stats.QuestionText, stats.TotalAttempts, stats.IncorrectAttempts)
 			}
 
-			// Increment total attempts only for questions that were attempted
 			for qid := range attemptedQuestions {
 				if stats, exists := questionStats[qid]; exists {
 					stats.TotalAttempts++
@@ -733,7 +689,6 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 
-			// Increment incorrect attempts for incorrectly answered questions
 			if qr.IncorrectlyAnsweredQuestions != nil {
 				log.Printf("GetChallengingQuestions: Found %d incorrectly answered questions for this attempt", len(qr.IncorrectlyAnsweredQuestions))
 				for _, qid := range qr.IncorrectlyAnsweredQuestions {
@@ -751,7 +706,6 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 				log.Printf("GetChallengingQuestions: No incorrectly answered questions for attempt at %v", qr.Timestamp)
 			}
 
-			// Log stats after updates
 			for qid, stats := range questionStats {
 				log.Printf("GetChallengingQuestions: After update - Question ID %s (text: %s): TotalAttempts=%d, IncorrectAttempts=%d",
 					qid.Hex(), stats.QuestionText, stats.TotalAttempts, stats.IncorrectAttempts)
@@ -759,14 +713,12 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Log final stats before calculating rates
 	log.Printf("GetChallengingQuestions: Final stats before calculating rates:")
 	for qid, stats := range questionStats {
 		log.Printf("GetChallengingQuestions: Final - Question ID %s (text: %s): TotalAttempts=%d, IncorrectAttempts=%d",
 			qid.Hex(), stats.QuestionText, stats.TotalAttempts, stats.IncorrectAttempts)
 	}
 
-	// Convert to slice and calculate incorrect rates
 	var challengingQuestions []struct {
 		Question      string  `json:"question"`
 		IncorrectRate float64 `json:"incorrect_rate"`
@@ -778,7 +730,6 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 			log.Printf("GetChallengingQuestions: Calculating rate for question %s: %d incorrect out of %d total attempts = %.2f%%",
 				stats.QuestionText, stats.IncorrectAttempts, stats.TotalAttempts, incorrectRate)
 
-			// Only include questions that have been attempted at least once
 			if stats.TotalAttempts > 0 {
 				challengingQuestions = append(challengingQuestions, struct {
 					Question      string  `json:"question"`
@@ -791,12 +742,10 @@ func GetChallengingQuestions(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Sort by incorrect rate in descending order
 	sort.Slice(challengingQuestions, func(i, j int) bool {
 		return challengingQuestions[i].IncorrectRate > challengingQuestions[j].IncorrectRate
 	})
 
-	// Take top 5 most challenging questions
 	if len(challengingQuestions) > 5 {
 		challengingQuestions = challengingQuestions[:5]
 	}
@@ -839,7 +788,6 @@ func GetQuestionStatistics(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// First, get the quiz questions from evaluation service
 	client := &http.Client{
 		Timeout: 5 * time.Second,
 		Transport: &http.Transport{
@@ -889,15 +837,12 @@ func GetQuestionStatistics(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Create a map of question IDs to text for later use
 	questionTexts := make(map[primitive.ObjectID]string)
 	for _, q := range quizData.Questions {
 		questionTexts[q.ID] = q.Text
 	}
 
-	// Use MongoDB aggregation to calculate statistics
 	pipeline := []bson.M{
-		// Match users who have attempted this quiz
 		{
 			"$match": bson.M{
 				"quiz_results": bson.M{
@@ -907,17 +852,14 @@ func GetQuestionStatistics(w http.ResponseWriter, r *http.Request) {
 				},
 			},
 		},
-		// Unwind the quiz_results array
 		{
 			"$unwind": "$quiz_results",
 		},
-		// Match only results for this quiz
 		{
 			"$match": bson.M{
 				"quiz_results.quiz_id": quizOID,
 			},
 		},
-		// Project only the fields we need
 		{
 			"$project": bson.M{
 				"score":                "$quiz_results.score",
@@ -937,7 +879,6 @@ func GetQuestionStatistics(w http.ResponseWriter, r *http.Request) {
 	}
 	defer cursor.Close(ctx)
 
-	// Process the aggregation results
 	type AggResult struct {
 		Score               int                  `bson:"score"`
 		MaxScore            int                  `bson:"max_score"`
@@ -953,14 +894,12 @@ func GetQuestionStatistics(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Calculate statistics for each question
 	questionStats := make(map[primitive.ObjectID]struct {
 		TotalAttempts     int
 		IncorrectAttempts int
 		QuestionText      string
 	})
 
-	// Initialize stats for all questions
 	for _, q := range quizData.Questions {
 		questionStats[q.ID] = struct {
 			TotalAttempts     int
@@ -971,12 +910,10 @@ func GetQuestionStatistics(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Process each quiz attempt
 	for _, result := range results {
 		log.Printf("GetQuestionStatistics: Processing attempt - Score: %d/%d, Timestamp: %v, IncorrectlyAnswered: %v",
 			result.Score, result.MaxScore, result.Timestamp, result.IncorrectlyAnswered)
 
-		// If we have a valid score, increment total attempts for all questions
 		if result.MaxScore > 0 {
 			for qid := range questionStats {
 				stats := questionStats[qid]
@@ -985,7 +922,6 @@ func GetQuestionStatistics(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		// Process incorrectly answered questions
 		if result.IncorrectlyAnswered != nil {
 			for _, qid := range result.IncorrectlyAnswered {
 				if stats, exists := questionStats[qid]; exists {
@@ -998,7 +934,6 @@ func GetQuestionStatistics(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Convert to response format
 	var questionStatsList []struct {
 		Question          string  `json:"question"`
 		IncorrectRate     float64 `json:"incorrect_rate"`
@@ -1023,12 +958,10 @@ func GetQuestionStatistics(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Sort by incorrect rate in descending order
 	sort.Slice(questionStatsList, func(i, j int) bool {
 		return questionStatsList[i].IncorrectRate > questionStatsList[j].IncorrectRate
 	})
 
-	// Take top 5 most challenging questions
 	if len(questionStatsList) > 5 {
 		questionStatsList = questionStatsList[:5]
 	}

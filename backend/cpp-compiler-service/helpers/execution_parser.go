@@ -7,7 +7,6 @@ import (
 	"strings"
 )
 
-// ParseExecutionOutput takes the raw output from a C++ program and parses it into execution steps
 func ParseExecutionOutput(rawOutput string) (*models.ExecutionOutput, error) {
 	log.Printf("[ParseExecutionOutput] Raw input: %s", rawOutput)
 
@@ -15,25 +14,20 @@ func ParseExecutionOutput(rawOutput string) (*models.ExecutionOutput, error) {
 		States: make([]models.ExecutionState, 0),
 	}
 
-	// Split the output into lines
 	lines := strings.Split(rawOutput, "\n")
 
-	// Process each line
 	for _, line := range lines {
-		// Trim all whitespace (spaces and tabs) from both ends
 		line = strings.TrimSpace(line)
-		// Skip empty lines and comments (after trimming whitespace)
 		if line == "" || strings.HasPrefix(line, "//") {
 			continue
 		}
 
 		log.Printf("[ParseExecutionOutput] Processing line: %s", line)
 
-		// Parse the JSON directly since we've already removed the STATE: prefix
 		var state models.ExecutionState
 		if err := json.Unmarshal([]byte(line), &state); err != nil {
 			log.Printf("[ParseExecutionOutput] Error unmarshaling state: %v", err)
-			continue // Skip this line but continue processing others
+			continue
 		}
 
 		log.Printf("[ParseExecutionOutput] Parsed state: %+v", state)
@@ -44,7 +38,6 @@ func ParseExecutionOutput(rawOutput string) (*models.ExecutionOutput, error) {
 	return output, nil
 }
 
-// ConvertToExecutionSteps converts ExecutionOutput to ExecutionSteps
 func ConvertToExecutionSteps(output *models.ExecutionOutput) []models.ExecutionStep {
 	log.Printf("[ConvertToExecutionSteps] Input: %+v", output)
 

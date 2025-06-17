@@ -10,32 +10,26 @@ import (
 )
 
 func main() {
-	// Get the evaluation service URL from environment or use default
 	evalServiceURL := "http://localhost:8000"
 
-	// Create HTTP client with timeout
 	client := &http.Client{
 		Timeout: 30 * time.Second,
 	}
 
-	// Make the request to add mock answers
 	url := fmt.Sprintf("%s/evaluation/quiz/add-mock-answers", evalServiceURL)
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		log.Fatalf("Error creating request: %v", err)
 	}
 
-	// Add authorization header
 	req.Header.Set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxZTc4OTI4Nzg3NzI5NDJjNzA0Mzk1Iiwicm9sZSI6IkVMRVYiLCJlbWFpbCI6ImJAeWFob28uY29tIiwiZXhwIjoxNzUwMDE4NjkzLCJpYXQiOjE3NDk5MzIyOTN9.Qhpp89_-jXikUyzt_qHQzIVwYwDmViaX6nF9Pd45W74")
 
-	// Send the request
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatalf("Error making request: %v", err)
 	}
 	defer resp.Body.Close()
 
-	// Check response
 	if resp.StatusCode != http.StatusOK {
 		log.Printf("Request failed with status: %d", resp.StatusCode)
 		log.Printf("Response headers: %v", resp.Header)
@@ -44,7 +38,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Read and print the response
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalf("Error reading response: %v", err)

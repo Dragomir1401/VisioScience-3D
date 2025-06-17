@@ -30,7 +30,7 @@ import QuizAttempt from "./components/quiz/QuizAttempt";
 import QuizMeta from "./components/quiz/QuizMeta";
 import QuizResults from "./components/quiz/QuizResults";
 import Analytics from "./pages/Analytics";
-import Achievements from './pages/Achievements';
+import Achievements from "./pages/Achievements";
 
 import PrivateRoute from "./pages/PrivateRoute";
 

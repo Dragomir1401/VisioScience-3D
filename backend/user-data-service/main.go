@@ -65,7 +65,6 @@ func main() {
 	}
 	mongo.InitDB()
 
-	// Register metrics
 	metrics.RegisterMetrics()
 	initActiveUsersGauge()
 	initActiveInvitesGauge()
@@ -73,10 +72,7 @@ func main() {
 
 	r := mux.NewRouter()
 
-	// Prometheus metrics endpoint
 	r.Handle("/user/metrics", metrics.GetHandler()).Methods("GET")
-
-	// Apply Prometheus middleware to all routes
 	r.Use(prometheusMiddleware)
 
 	r.HandleFunc("/user/auth/register", handlers.Register).Methods("POST")
@@ -100,27 +96,20 @@ func main() {
 	r.Handle("/user/classes/{classId}/quiz/{quizId}/results", middleware.JWTAuth(http.HandlerFunc(handlers.GetClassQuizResults))).Methods("GET")
 	r.Handle("/user/classes/{id}", middleware.JWTAuth(http.HandlerFunc(handlers.DeleteClass))).Methods("DELETE")
 
-	// GET /user/classes/performance
 	r.Handle("/user/classes/performance", middleware.JWTAuth(http.HandlerFunc(handlers.GetClassPerformance))).Methods("GET")
 
-	// GET /user/leaderboard
 	r.Handle("/user/leaderboard", middleware.JWTAuth(http.HandlerFunc(handlers.GetLeaderboard))).Methods("GET")
 
-	// GET /user/classes/{classId}/quiz-performance
 	r.Handle("/user/classes/{classId}/quiz-performance", middleware.JWTAuth(http.HandlerFunc(handlers.GetClassQuizPerformance))).Methods("GET")
 
-	// GET /user/classes/{classId}/performance-trends
 	r.Handle("/user/classes/{classId}/performance-trends", middleware.JWTAuth(http.HandlerFunc(handlers.GetClassPerformanceTrends))).Methods("GET")
 
-	// GET /user/classes/{classId}/most-improved-students
 	r.Handle("/user/classes/{classId}/most-improved-students", middleware.JWTAuth(http.HandlerFunc(handlers.GetMostImprovedStudentsInClass))).Methods("GET")
 
-	// Quiz routes
 	r.Handle("/user/quiz/statistics", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizStatistics))).Methods("GET")
 	r.Handle("/user/quiz/{quizId}/challenging-questions", middleware.JWTAuth(http.HandlerFunc(handlers.GetChallengingQuestions))).Methods("GET")
 	r.Handle("/user/quiz/{quizId}/question-statistics", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuestionStatistics))).Methods("GET")
 
-	// Badge routes
 	r.Handle("/user/badges/{userId}", middleware.JWTAuth(http.HandlerFunc(handlers.GetUserBadges))).Methods("GET")
 	r.Handle("/user/badges/{badgeId}/user/{userId}", middleware.JWTAuth(http.HandlerFunc(handlers.GetBadgeDetails))).Methods("GET")
 	r.Handle("/user/badges/{badgeId}/user/{userId}/progress", middleware.JWTAuth(http.HandlerFunc(handlers.UpdateBadgeProgress))).Methods("PUT")

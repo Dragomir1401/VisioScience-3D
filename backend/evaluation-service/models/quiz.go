@@ -25,13 +25,12 @@ type Quiz struct {
 	IsOpen      bool               `bson:"is_open" json:"is_open"`
 	Statistics  QuizStatistics     `bson:"statistics" json:"statistics"`
 
-	// Points configuration
-	MaxPoints    int64  `bson:"max_points" json:"max_points"`       // Maximum possible points for this quiz
-	TimeBonus    bool   `bson:"time_bonus" json:"time_bonus"`       // Whether to give bonus points for quick completion
-	PerfectBonus int64  `bson:"perfect_bonus" json:"perfect_bonus"` // Bonus points for perfect score
-	StreakBonus  bool   `bson:"streak_bonus" json:"streak_bonus"`   // Whether to give bonus for consecutive perfect scores
-	Difficulty   string `bson:"difficulty" json:"difficulty"`       // Easy, Medium, Hard
-	Category     string `bson:"category" json:"category"`           // Quiz category (e.g., "Algorithms", "Data Structures")
+	MaxPoints    int64  `bson:"max_points" json:"max_points"`
+	TimeBonus    bool   `bson:"time_bonus" json:"time_bonus"`
+	PerfectBonus int64  `bson:"perfect_bonus" json:"perfect_bonus"`
+	StreakBonus  bool   `bson:"streak_bonus" json:"streak_bonus"`
+	Difficulty   string `bson:"difficulty" json:"difficulty"`
+	Category     string `bson:"category" json:"category"`
 }
 
 type QuizInput struct {
@@ -41,7 +40,6 @@ type QuizInput struct {
 	Questions []Question `json:"questions"`
 	IsOpen    *bool      `json:"is_open,omitempty"`
 
-	// Points configuration
 	MaxPoints    int64  `json:"max_points"`
 	TimeBonus    bool   `json:"time_bonus"`
 	PerfectBonus int64  `json:"perfect_bonus"`
@@ -62,11 +60,11 @@ type Question struct {
 type QuizResult struct {
 	ID                           primitive.ObjectID   `bson:"_id,omitempty" json:"id,omitempty"`
 	QuizID                       primitive.ObjectID   `bson:"quiz_id" json:"quiz_id"`
-	ClassID                      primitive.ObjectID   `bson:"class_id,omitempty" json:"class_id,omitempty"` // ADĂUGAT
+	ClassID                      primitive.ObjectID   `bson:"class_id,omitempty" json:"class_id,omitempty"`
 	UserID                       primitive.ObjectID   `bson:"user_id" json:"user_id"`
 	Answers                      []int                `bson:"answers" json:"answers"`
 	Score                        int                  `bson:"score" json:"score"`
-	MaxScore                     int64                `bson:"max_score,omitempty" json:"max_score,omitempty"` // ADĂUGAT
+	MaxScore                     int64                `bson:"max_score,omitempty" json:"max_score,omitempty"`
 	Points                       int64                `bson:"points" json:"points"`
 	TimeBonus                    int64                `bson:"time_bonus" json:"time_bonus"`
 	PerfectBonus                 int64                `bson:"perfect_bonus" json:"perfect_bonus"`
@@ -81,7 +79,6 @@ type QuizResult struct {
 	} `bson:"performance_metrics" json:"performance_metrics"`
 }
 
-// QuizStatistics holds aggregated statistics for a quiz
 type QuizStatistics struct {
 	QuizID        primitive.ObjectID `bson:"quiz_id" json:"quiz_id"`
 	TotalAttempts int                `bson:"total_attempts" json:"total_attempts"`
@@ -108,7 +105,6 @@ type QuestionStats struct {
 	AverageTime  float64            `bson:"average_time" json:"average_time"`
 }
 
-// UserQuizStats holds statistics for a user's performance on a specific quiz
 type UserQuizStats struct {
 	UserID             primitive.ObjectID `bson:"user_id" json:"user_id"`
 	QuizID             primitive.ObjectID `bson:"quiz_id" json:"quiz_id"`

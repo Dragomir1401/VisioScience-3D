@@ -354,7 +354,6 @@ func RemoveStudentFromClass(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"message": "Student removed"})
 }
 
-// Structura pentru răspunsul de performanță a clasei
 type ClassPerformanceSummary struct {
 	ClassID       primitive.ObjectID `json:"class_id"`
 	ClassName     string             `json:"class_name"`
@@ -364,23 +363,19 @@ type ClassPerformanceSummary struct {
 	Improvement   string             `json:"improvement"`
 }
 
-// Funcție helper pentru calcularea îmbunătățirii
 func calculateImprovement(quizResults []models.QuizResultMeta) string {
 	if len(quizResults) < 2 {
 		return "N/A"
 	}
 
-	// Sortăm rezultatele după timestamp
 	sort.Slice(quizResults, func(i, j int) bool {
 		return quizResults[i].Timestamp.Before(quizResults[j].Timestamp)
 	})
 
-	// Împărțim rezultatele în două grupuri: primele 50% și ultimele 50%
 	midPoint := len(quizResults) / 2
 	firstHalf := quizResults[:midPoint]
 	secondHalf := quizResults[midPoint:]
 
-	// Calculăm media pentru fiecare grup
 	var firstHalfTotal, secondHalfTotal float64
 	var firstHalfCount, secondHalfCount int
 
@@ -407,10 +402,8 @@ func calculateImprovement(quizResults []models.QuizResultMeta) string {
 	firstHalfAvg := firstHalfTotal / float64(firstHalfCount)
 	secondHalfAvg := secondHalfTotal / float64(secondHalfCount)
 
-	// Calculăm diferența procentuală
 	improvement := ((secondHalfAvg - firstHalfAvg) / firstHalfAvg) * 100
 
-	// Determinăm tendința
 	if improvement > 5 {
 		return fmt.Sprintf("↑ %.1f%%", improvement)
 	} else if improvement < -5 {
@@ -437,7 +430,6 @@ func GetClassPerformance(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Get all classes
 	cursor, err := db.ClassCollection.Find(ctx, bson.M{})
 	if err != nil {
 		metrics.HTTPRequestsTotal.WithLabelValues("GET", path, "500").Inc()
@@ -456,7 +448,6 @@ func GetClassPerformance(w http.ResponseWriter, r *http.Request) {
 	var performanceData []ClassPerformanceSummary
 
 	for _, class := range classes {
-		// Get students for the current class
 		studentCursor, err := db.UserCollection.Find(ctx, bson.M{"_id": bson.M{"$in": class.Students}})
 		if err != nil {
 			log.Printf("Error fetching students for class %s: %v", class.Name, err)
@@ -478,7 +469,6 @@ func GetClassPerformance(w http.ResponseWriter, r *http.Request) {
 		log.Printf("--- Class: %s (ID: %s) ---", class.Name, class.ID.Hex())
 		log.Printf("Total students in class: %d", totalStudents)
 
-		// Colectăm toate rezultatele quiz-urilor pentru calcularea îmbunătățirii
 		var allQuizResults []models.QuizResultMeta
 
 		for _, student := range students {
@@ -512,7 +502,6 @@ func GetClassPerformance(w http.ResponseWriter, r *http.Request) {
 
 		log.Printf("Calculated average score for class %s: %.2f%%", class.Name, avgScore)
 
-		// Calculăm îmbunătățirea
 		improvement := calculateImprovement(allQuizResults)
 
 		performanceData = append(performanceData, ClassPerformanceSummary{
@@ -529,7 +518,6 @@ func GetClassPerformance(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(performanceData)
 }
 
-// Structura pentru performanța per quiz
 type QuizPerformance struct {
 	QuizID        primitive.ObjectID `json:"quiz_id"`
 	QuizTitle     string             `json:"quiz_title"`
@@ -557,7 +545,6 @@ func GetClassQuizPerformance(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Get all students in the class
 	var class models.Class
 	if err := db.ClassCollection.FindOne(ctx, bson.M{"_id": classOID}).Decode(&class); err != nil {
 		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "404").Inc()
@@ -565,7 +552,6 @@ func GetClassQuizPerformance(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get all students' quiz results
 	cursor, err := db.UserCollection.Find(ctx, bson.M{"_id": bson.M{"$in": class.Students}})
 	if err != nil {
 		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
@@ -581,13 +567,11 @@ func GetClassQuizPerformance(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Map to store quiz performance data
 	quizPerformance := make(map[primitive.ObjectID]*QuizPerformance)
 
-	// Process each student's quiz results
 	for _, student := range students {
 		for _, qr := range student.QuizResults {
-			if qr.MaxScore > 0 { // Only include results with valid MaxScore
+			if qr.MaxScore > 0 {
 				perf, exists := quizPerformance[qr.QuizID]
 				if !exists {
 					perf = &QuizPerformance{
@@ -599,7 +583,6 @@ func GetClassQuizPerformance(w http.ResponseWriter, r *http.Request) {
 					quizPerformance[qr.QuizID] = perf
 				}
 
-				// Calculate score percentage
 				scorePercentage := float64(qr.Score) / float64(qr.MaxScore) * 100
 				perf.AverageScore = (perf.AverageScore*float64(perf.TotalAttempts) + scorePercentage) / float64(perf.TotalAttempts+1)
 				perf.TotalAttempts++
@@ -607,13 +590,11 @@ func GetClassQuizPerformance(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Convert map to slice for response
 	var performanceData []QuizPerformance
 	for _, perf := range quizPerformance {
 		performanceData = append(performanceData, *perf)
 	}
 
-	// Sort by quiz title
 	sort.Slice(performanceData, func(i, j int) bool {
 		return performanceData[i].QuizTitle < performanceData[j].QuizTitle
 	})
@@ -838,9 +819,9 @@ func GetClassPerformanceTrends(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	timeRange := r.URL.Query().Get("timeRange") // e.g., "4-weeks", "8-weeks", "12-weeks", "semester"
+	timeRange := r.URL.Query().Get("timeRange")
 	if timeRange == "" {
-		timeRange = "8-weeks" // Default
+		timeRange = "8-weeks"
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -883,7 +864,7 @@ func GetClassPerformanceTrends(w http.ResponseWriter, r *http.Request) {
 		startTime = now.AddDate(0, 0, -56) // 8 weeks ago
 	case "12-weeks":
 		startTime = now.AddDate(0, 0, -84) // 12 weeks ago
-	case "semester": // Assuming a semester is roughly 16-18 weeks, use 18 weeks as a placeholder
+	case "semester":
 		startTime = now.AddDate(0, 0, -126) // 18 weeks ago
 	default:
 		startTime = now.AddDate(0, 0, -56) // Default to 8 weeks
@@ -894,13 +875,10 @@ func GetClassPerformanceTrends(w http.ResponseWriter, r *http.Request) {
 			if qr.MaxScore > 0 && qr.Timestamp.After(startTime) && qr.Timestamp.Before(now) {
 				scorePercentage := float64(qr.Score) / float64(qr.MaxScore) * 100
 
-				// Determine the period string
 				periodString := ""
 				if timeRange == "semester" {
-					// Group by month for semester
-					periodString = qr.Timestamp.Format("Jan 2006") // e.g., "Jan 2023"
+					periodString = qr.Timestamp.Format("Jan 2006")
 				} else {
-					// Group by week for other ranges
 					_, week := qr.Timestamp.ISOWeek()
 					year := qr.Timestamp.Year()
 					periodString = fmt.Sprintf("Săptămâna %d-%d", week, year)
@@ -916,12 +894,10 @@ func GetClassPerformanceTrends(w http.ResponseWriter, r *http.Request) {
 
 	var trendData []models.QuizPerformanceTrendEntry
 
-	// Sort periods
 	var periods []string
 	for p := range performanceByPeriod {
 		periods = append(periods, p)
 	}
-	// A more robust chronological sort for week/month periods would be needed here if labels are not simple numbers
 	sort.Strings(periods)
 
 	for _, period := range periods {
@@ -931,9 +907,8 @@ func GetClassPerformanceTrends(w http.ResponseWriter, r *http.Request) {
 		}
 
 		totalScore := 0.0
-		minScore := 101.0 // Greater than max possible score (100)
-		maxScore := -1.0  // Less than min possible score (0)
-
+		minScore := 101.0
+		maxScore := -1.0
 		for _, s := range data.Scores {
 			totalScore += s
 			if s < minScore {
@@ -1017,12 +992,10 @@ func GetMostImprovedStudentsInClass(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
-		// Sort valid quiz results by timestamp
 		sort.Slice(validQuizResults, func(i, j int) bool {
 			return validQuizResults[i].Timestamp.Before(validQuizResults[j].Timestamp)
 		})
 
-		// Use the first and last valid quiz result to calculate improvement
 		initialQuiz := validQuizResults[0]
 		currentQuiz := validQuizResults[len(validQuizResults)-1]
 
@@ -1034,7 +1007,7 @@ func GetMostImprovedStudentsInClass(w http.ResponseWriter, r *http.Request) {
 		log.Printf("  Student %s (%s): Initial Score: %.2f%% (QuizID: %s), Current Score: %.2f%% (QuizID: %s), Improvement: %.2f%%",
 			student.Email, student.ID.Hex(), initialScorePercentage, initialQuiz.QuizID.Hex(), currentScorePercentage, currentQuiz.QuizID.Hex(), improvementValue)
 
-		if improvementValue > 0 { // Only consider positive improvement
+		if improvementValue > 0 {
 			improvedStudents = append(improvedStudents, models.MostImprovedStudent{
 				ID:           student.ID,
 				Name:         student.Email,
@@ -1046,12 +1019,10 @@ func GetMostImprovedStudentsInClass(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Sort by improvement in descending order
 	sort.Slice(improvedStudents, func(i, j int) bool {
 		return improvedStudents[i].Improvement > improvedStudents[j].Improvement
 	})
 
-	// Limit to top 5 most improved students
 	if len(improvedStudents) > 5 {
 		improvedStudents = improvedStudents[:5]
 	}

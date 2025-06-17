@@ -26,7 +26,6 @@ func compileAndRun(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Transform the code to use our tracing system
 	transformedCode := helpers.TransformCode(req.Code)
 
 	tmpDir, err := os.MkdirTemp("", "cpp-exec-*")
@@ -36,14 +35,12 @@ func compileAndRun(w http.ResponseWriter, r *http.Request) {
 	}
 	defer os.RemoveAll(tmpDir)
 
-	// Copy tracer files to temp directory
 	tracerDir := filepath.Join(tmpDir, "tracer")
 	if err := os.Mkdir(tracerDir, 0755); err != nil {
 		http.Error(w, "Failed to create tracer dir: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Write tracer files
 	if err := os.WriteFile(filepath.Join(tracerDir, "tracer.h"), []byte(tracerHeader), 0644); err != nil {
 		http.Error(w, "Failed to write tracer.h: "+err.Error(), http.StatusInternalServerError)
 		return
@@ -53,18 +50,16 @@ func compileAndRun(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Write main code
 	codeFile := filepath.Join(tmpDir, "main.cpp")
 	if err := os.WriteFile(codeFile, []byte(transformedCode), 0644); err != nil {
 		http.Error(w, "Failed to write code file: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Compile the code with the correct include path
 	log.Println("[compileAndRun] Compiling code...")
 	compileCmd := exec.Command("g++",
 		"-std=c++17",
-		"-I"+tracerDir, // Add the tracer directory to include path
+		"-I"+tracerDir,
 		codeFile,
 		filepath.Join(tracerDir, "tracer.cpp"),
 		"-o", filepath.Join(tmpDir, "a.out"))
@@ -83,7 +78,6 @@ func compileAndRun(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Run the executable
 	log.Println("[compileAndRun] Running executable...")
 	runCmd := exec.Command(filepath.Join(tmpDir, "a.out"))
 	runCmd.Stdin = bytes.NewBufferString(req.Input)
@@ -122,11 +116,9 @@ func compileAndRun(w http.ResponseWriter, r *http.Request) {
 		success = false
 	}
 
-	// Parse execution output if we have any
 	if outputStr != "" {
 		log.Printf("[compileAndRun] Raw output: %s", outputStr)
 
-		// Split output into program output and execution data
 		var programOutput strings.Builder
 		var executionData strings.Builder
 
@@ -138,10 +130,8 @@ func compileAndRun(w http.ResponseWriter, r *http.Request) {
 
 			log.Printf("[compileAndRun] Processing line: %s", line)
 
-			// Check if the line contains a state marker
 			if strings.HasPrefix(line, "STATE:") {
-				// Extract the state data
-				stateData := line[6:] // Skip "STATE:"
+				stateData := line[6:]
 				executionData.WriteString(stateData)
 				executionData.WriteString("\n")
 			} else if !strings.Contains(line, "STATE:") &&
@@ -150,13 +140,11 @@ func compileAndRun(w http.ResponseWriter, r *http.Request) {
 				!strings.HasPrefix(line, "(skip)") &&
 				!strings.HasPrefix(line, "[find]") &&
 				!strings.HasPrefix(line, "[erase]") {
-				// Only add to program output if it doesn't contain debug info
 				programOutput.WriteString(line)
 				programOutput.WriteString("\n")
 			}
 		}
 
-		// Parse execution data
 		if executionData.Len() > 0 {
 			log.Printf("[compileAndRun] Execution data to parse: %s", executionData.String())
 			execOutput, err := helpers.ParseExecutionOutput(executionData.String())
@@ -170,7 +158,6 @@ func compileAndRun(w http.ResponseWriter, r *http.Request) {
 			log.Println("[compileAndRun] No execution data found")
 		}
 
-		// Set the actual program output
 		outputStr = strings.TrimSpace(programOutput.String())
 		log.Printf("[compileAndRun] Final program output: %s", outputStr)
 	}
@@ -188,7 +175,6 @@ func main() {
 	r := http.NewServeMux()
 	r.HandleFunc("/cpp-compiler/compile-run", compileAndRun)
 
-	// CORS middleware to accept all origins for development purposes
 	corsObj := gorillaHandlers.CORS(
 		gorillaHandlers.AllowedOrigins([]string{"*"}),
 		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
@@ -199,7 +185,6 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8081", corsObj(r)))
 }
 
-// Tracer source files as strings
 var tracerHeader = `#pragma once
 
 #include <string>
@@ -223,14 +208,11 @@ var tracerHeader = `#pragma once
 
 namespace tracer {
 
-// Forward declarations
 class Traceable;
 class Tracer;
 
-// Global tracer instance
 extern Tracer* globalTracer;
 
-// Helper traits to detect container types
 template<typename T>
 struct is_map : std::false_type {};
 
@@ -303,7 +285,6 @@ struct is_forward_list : std::false_type {};
 template<typename T>
 struct is_forward_list<std::forward_list<T>> : std::true_type {};
 
-// Helper function to convert any numeric type to string
 template<typename T>
 std::string toString(const T& value) {
     if constexpr (std::is_same_v<T, std::string>) {
@@ -317,14 +298,12 @@ std::string toString(const T& value) {
     }
 }
 
-// Helper function to serialize a pair
 template<typename T1, typename T2>
 std::string serializePair(const std::pair<T1, T2>& p) {
     return "{\"key\":" + toString(p.first) + 
            ",\"value\":" + toString(p.second) + "}";
 }
 
-// Base class for all traceable objects
 class Traceable {
 public:
     virtual ~Traceable() = default;
@@ -335,7 +314,6 @@ public:
     virtual void traceOperation(const std::string& operation, const std::string& description) = 0;
 };
 
-// Main tracer class
 class Tracer {
 public:
     static Tracer& getInstance() {
@@ -379,7 +357,6 @@ private:
     std::map<std::string, Traceable*> objects;
 };
 
-// Template for tracing containers
 template<typename Container>
 class ContainerTracer : public Traceable {
 public:
@@ -435,7 +412,6 @@ public:
         bool first = true;
 
         if constexpr (is_stack<Container>::value) {
-            // Create a copy of the stack to iterate
             Container temp = container;
             while (!temp.empty()) {
                 if (!first) result += ",";
@@ -444,7 +420,6 @@ public:
                 first = false;
             }
         } else if constexpr (is_queue<Container>::value) {
-            // Create a copy of the queue to iterate
             Container temp = container;
             while (!temp.empty()) {
                 if (!first) result += ",";
@@ -453,7 +428,6 @@ public:
                 first = false;
             }
         } else if constexpr (is_priority_queue<Container>::value) {
-            // Create a copy of the priority queue to iterate
             Container temp = container;
             while (!temp.empty()) {
                 if (!first) result += ",";

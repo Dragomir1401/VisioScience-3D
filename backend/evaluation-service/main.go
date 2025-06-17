@@ -20,7 +20,6 @@ import (
 
 func prometheusMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Skip metrics collection for the metrics endpoint itself
 		if r.URL.Path == "/evaluation/metrics" {
 			next.ServeHTTP(w, r)
 			return
@@ -33,19 +32,16 @@ func prometheusMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-// initializeMetrics populates metrics with current values from the database
 func initializeMetrics() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Get total number of quizzes
 	count, err := helpers.Client.Database("data-feed-db").Collection("quizzes").CountDocuments(ctx, bson.M{})
 	if err != nil {
 		log.Printf("Error counting quizzes: %v", err)
 		return
 	}
 
-	// Set the active evaluations gauge to the current count
 	metrics.ActiveEvaluations.Set(float64(count))
 	log.Printf("Initialized metrics with %d active evaluations", count)
 }
@@ -57,18 +53,14 @@ func main() {
 	}
 	helpers.InitMongoClient()
 
-	// Register metrics
 	metrics.RegisterMetrics()
 
-	// Initialize metrics with current values
 	initializeMetrics()
 
 	r := mux.NewRouter()
 
-	// Prometheus metrics endpoint
 	r.Handle("/metrics", metrics.GetHandler()).Methods("GET")
 
-	// Quiz routes
 	r.Handle("/evaluation/quiz", middleware.JWTAuth(http.HandlerFunc(handlers.CreateQuiz))).Methods("POST")
 	r.Handle("/evaluation/quiz", middleware.JWTAuth(http.HandlerFunc(handlers.GetAllQuizzes))).Methods("GET")
 	r.Handle("/evaluation/quiz/{quiz_id}", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizByID))).Methods("GET")
@@ -84,11 +76,8 @@ func main() {
 	r.Handle("/evaluation/quiz/update-question-ids", middleware.JWTAuth(http.HandlerFunc(handlers.UpdateQuestionIDs))).Methods("POST")
 	r.Handle("/evaluation/quiz/add-mock-answers", middleware.JWTAuth(http.HandlerFunc(handlers.AddMockAnswers))).Methods("POST")
 
-	// Protected routes
 	r.Handle("/evaluation/quiz/{quiz_id}/statistics", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuizStatistics))).Methods("GET")
 	r.Handle("/evaluation/quiz/submit", middleware.JWTAuth(http.HandlerFunc(handlers.SubmitQuizResult))).Methods("POST")
-
-	// POST /evaluation/quiz/{quizId}/statistics
 	r.Handle("/evaluation/quiz/{quiz_id}/statistics", middleware.JWTAuth(http.HandlerFunc(handlers.UpdateQuizStatistics))).Methods("POST")
 
 	corsObj := gorillaHandlers.CORS(

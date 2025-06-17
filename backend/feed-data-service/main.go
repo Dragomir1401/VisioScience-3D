@@ -46,54 +46,36 @@ func initActiveFeedsGauge() {
 }
 
 func main() {
-	// Register metrics
 	metrics.RegisterMetrics()
 
 	r := mux.NewRouter()
 
-	// Prometheus metrics endpoint
 	r.Handle("/feed/metrics", metrics.GetHandler()).Methods("GET")
 
-	// Apply Prometheus middleware to all routes
 	r.Use(prometheusMiddleware)
 
-	// init mongo client
 	helpers.InitMongoClient()
 	initActiveMoleculesGauge()
 	initActiveFeedsGauge()
 
-	// CORS middleware to accept all origins for development purposes
 	corsObj := gorillaHandlers.CORS(
-		gorillaHandlers.AllowedOrigins([]string{"*"}), // Allow all origins for development purposes
+		gorillaHandlers.AllowedOrigins([]string{"*"}),
 		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
 		gorillaHandlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 	)
 
-	// POST /feed
 	r.HandleFunc("/feed", handlers.CreateFeed).Methods("POST")
-	// GET /feed
 	r.HandleFunc("/feed/{id}", handlers.GetFeedByID).Methods("GET")
-	// GET /feed
 	r.HandleFunc("/feed/{id}", handlers.UpdateFeedByID).Methods("PUT")
-	// GET /feed
 	r.HandleFunc("/feed/{id}", handlers.DeleteFeedByID).Methods("DELETE")
-	// GET /feed
 	r.HandleFunc("/feed/shape/{shape}", handlers.GetFeedsByShape).Methods("GET")
-
-	// GET /chem/molecules
 	r.HandleFunc("/feed/chem/molecules", handlers.GetAllMolecules).Methods("GET")
-	// POST /chem/molecules
 	r.HandleFunc("/feed/chem/molecules", handlers.CreateMolecule).Methods("POST")
-	// GET /chem/molecules/{id}
 	r.HandleFunc("/feed/chem/molecules/{id}", handlers.GetMoleculeByID).Methods("GET")
-	// PUT /chem/molecules/{id}
 	r.HandleFunc("/feed/chem/molecules/{id}", handlers.UpdateMolecule).Methods("PUT")
-	// DELETE /chem/molecules/{id}
 	r.HandleFunc("/feed/chem/molecules/{id}", handlers.DeleteMolecule).Methods("DELETE")
-	// GET /chem/molecules/{id}/3d
 	r.HandleFunc("/feed/chem/molecules/{id}/3d", handlers.GetMolecule3D).Methods("GET")
 
-	// Periodic Table endpoints
 	r.HandleFunc("/feed/chem/elements", handlers.GetAllElements).Methods("GET")
 	r.HandleFunc("/feed/chem/elements", handlers.CreateElement).Methods("POST")
 	r.HandleFunc("/feed/chem/elements/{symbol}", handlers.GetElementBySymbol).Methods("GET")

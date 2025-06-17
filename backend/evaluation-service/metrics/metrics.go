@@ -12,10 +12,8 @@ const (
 )
 
 var (
-	// Create a custom registry
 	registry = prometheus.NewRegistry()
 
-	// HTTP metrics
 	HTTPRequestsTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Name: metricPrefix + "http_requests_total",

@@ -13,14 +13,11 @@
 
 namespace tracer {
 
-// Forward declarations
 class Traceable;
 class Tracer;
 
-// Global tracer instance
 extern Tracer* globalTracer;
 
-// Helper function to convert any numeric type to string
 template<typename T>
 std::string toString(const T& value) {
     if constexpr (std::is_same_v<T, std::string>) {
@@ -32,20 +29,17 @@ std::string toString(const T& value) {
     }
 }
 
-// Helper function to serialize a pair
 template<typename T1, typename T2>
 std::string serializePair(const std::pair<T1, T2>& p) {
     return "{\"key\":" + toString(p.first) + 
            ",\"value\":" + toString(p.second) + "}";
 }
 
-// Helper function to serialize a value
 template<typename T>
 std::string serializeValue(const T& value) {
     return toString(value);
 }
 
-// Base class for all traceable objects
 class Traceable {
 public:
     virtual ~Traceable() = default;
@@ -56,7 +50,6 @@ public:
     virtual void traceOperation(const std::string& operation, const std::string& description) = 0;
 };
 
-// Main tracer class
 class Tracer {
 public:
     static Tracer& getInstance() {
@@ -100,7 +93,6 @@ private:
     std::map<std::string, Traceable*> objects;
 };
 
-// Template for tracing containers
 template<typename Container>
 class ContainerTracer : public Traceable {
 public:
@@ -179,10 +171,9 @@ private:
     Container& container;
 };
 
-// Helper function to create a traced container
 template<typename Container>
 ContainerTracer<Container> makeTracedContainer(const std::string& name, Container& container) {
     return ContainerTracer<Container>(name, container);
 }
 
-} // namespace tracer 
+}
