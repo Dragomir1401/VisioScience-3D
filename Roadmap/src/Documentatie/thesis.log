@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  18 JUN 2025 00:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  18 JUN 2025 00:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1039,12 +1039,12 @@ LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 (Font)              scaled to size 8.8pt on input line 6.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 (Font)              scaled to size 6.6pt on input line 6.
-<src/img/branding/upb.png, id=455, 598.235pt x 598.235pt>
+<src/img/branding/upb.png, id=451, 598.235pt x 598.235pt>
 File: src/img/branding/upb.png Graphic file (type png)
 <use src/img/branding/upb.png>
 Package pdftex.def Info: src/img/branding/upb.png  used on input line 7.
 (pdftex.def)             Requested size: 53.63545pt x 53.62888pt.
-<src/img/branding/cs.png, id=456, 695.59875pt x 307.1475pt>
+<src/img/branding/cs.png, id=452, 695.59875pt x 307.1475pt>
 File: src/img/branding/cs.png Graphic file (type png)
 <use src/img/branding/cs.png>
 Package pdftex.def Info: src/img/branding/cs.png  used on input line 7.
@@ -1303,13 +1303,13 @@ Overfull \hbox (0.73828pt too wide) in paragraph at lines 103--105
  []
 
 [11]
-<imgs/hover.png, id=683, 185.19188pt x 123.46124pt>
+<imgs/hover.png, id=678, 185.19188pt x 123.46124pt>
 File: imgs/hover.png Graphic file (type png)
 <use imgs/hover.png>
 Package pdftex.def Info: imgs/hover.png  used on input line 168.
 (pdftex.def)             Requested size: 206.28249pt x 137.52396pt.
  [12 <./imgs/hover.png>]
-<imgs/tutorial.png, id=692, 1027.58907pt x 203.25937pt>
+<imgs/tutorial.png, id=687, 1027.58907pt x 203.25937pt>
 File: imgs/tutorial.png Graphic file (type png)
 <use imgs/tutorial.png>
 Package pdftex.def Info: imgs/tutorial.png  used on input line 174.
@@ -1319,7 +1319,7 @@ Package pdftex.def Info: imgs/tutorial.png  used on input line 174.
 
  (src/chapters/studiuPiata.tex
 Capitolul 3.
-<imgs/phet.png, id=711, 1431.84938pt x 668.4975pt>
+<imgs/phet.png, id=706, 1431.84938pt x 668.4975pt>
 File: imgs/phet.png Graphic file (type png)
 <use imgs/phet.png>
 Package pdftex.def Info: imgs/phet.png  used on input line 11.
@@ -1330,39 +1330,39 @@ Package pdftex.def Info: imgs/phet.png  used on input line 11.
 
 
  <./imgs/phet.png>]
-<imgs/invatamate.png, id=718, 1271.5003pt x 721.19438pt>
+<imgs/invatamate.png, id=713, 1271.5003pt x 721.19438pt>
 File: imgs/invatamate.png Graphic file (type png)
 <use imgs/invatamate.png>
 Package pdftex.def Info: imgs/invatamate.png  used on input line 21.
 (pdftex.def)             Requested size: 412.56497pt x 234.01125pt.
  [16 <./imgs/invatamate.png>]
-<imgs/invatamatesimulare.png, id=725, 723.45282pt x 710.655pt>
+<imgs/invatamatesimulare.png, id=720, 723.45282pt x 710.655pt>
 File: imgs/invatamatesimulare.png Graphic file (type png)
 <use imgs/invatamatesimulare.png>
 Package pdftex.def Info: imgs/invatamatesimulare.png  used on input line 40.
 (pdftex.def)             Requested size: 202.15909pt x 198.58083pt.
-<imgs/invatamatejoc.png, id=726, 740.7675pt x 706.13812pt>
+<imgs/invatamatejoc.png, id=721, 740.7675pt x 706.13812pt>
 File: imgs/invatamatejoc.png Graphic file (type png)
 <use imgs/invatamatejoc.png>
 Package pdftex.def Info: imgs/invatamatejoc.png  used on input line 47.
 (pdftex.def)             Requested size: 202.15909pt x 192.70705pt.
-<imgs/mozaweb.png, id=727, 1038.88126pt x 673.01437pt>
+<imgs/mozaweb.png, id=722, 1038.88126pt x 673.01437pt>
 File: imgs/mozaweb.png Graphic file (type png)
 <use imgs/mozaweb.png>
 Package pdftex.def Info: imgs/mozaweb.png  used on input line 59.
 (pdftex.def)             Requested size: 288.79422pt x 187.08717pt.
  [17 <./imgs/invatamatesimulare.png> <./imgs/invatamatejoc.png> <./imgs/mozaweb.png>]
-<imgs/mozawebplugin.png, id=737, 942.52126pt x 472.01344pt>
+<imgs/mozawebplugin.png, id=732, 942.52126pt x 472.01344pt>
 File: imgs/mozawebplugin.png Graphic file (type png)
 <use imgs/mozawebplugin.png>
 Package pdftex.def Info: imgs/mozawebplugin.png  used on input line 66.
 (pdftex.def)             Requested size: 371.30595pt x 185.9499pt.
-<imgs/iqboard.png, id=741, 922.19531pt x 648.92438pt>
+<imgs/iqboard.png, id=736, 922.19531pt x 648.92438pt>
 File: imgs/iqboard.png Graphic file (type png)
 <use imgs/iqboard.png>
 Package pdftex.def Info: imgs/iqboard.png  used on input line 90.
 (pdftex.def)             Requested size: 202.15909pt x 142.2489pt.
-<imgs/iqboardsimulari.jpg, id=742, 818.05624pt x 439.6425pt>
+<imgs/iqboardsimulari.jpg, id=737, 818.05624pt x 439.6425pt>
 File: imgs/iqboardsimulari.jpg Graphic file (type jpg)
 <use imgs/iqboardsimulari.jpg>
 Package pdftex.def Info: imgs/iqboardsimulari.jpg  used on input line 97.
@@ -1383,7 +1383,7 @@ Capitolul 4.
 
 
 ] [22]
-<imgs/fediagram.png, id=782, 1083.29718pt x 294.34969pt>
+<imgs/fediagram.png, id=777, 1083.29718pt x 294.34969pt>
 File: imgs/fediagram.png Graphic file (type png)
 <use imgs/fediagram.png>
 Package pdftex.def Info: imgs/fediagram.png  used on input line 92.
@@ -1394,40 +1394,40 @@ Overfull \hbox (41.259pt too wide) in paragraph at lines 92--92
  []
 
 [23 <./imgs/fediagram.png>]
-<imgs/convertor.png, id=792, 1442.38875pt x 709.90219pt>
+<imgs/convertor.png, id=787, 1442.38875pt x 709.90219pt>
 File: imgs/convertor.png Graphic file (type png)
 <use imgs/convertor.png>
 Package pdftex.def Info: imgs/convertor.png  used on input line 122.
 (pdftex.def)             Requested size: 412.56497pt x 203.04997pt.
  [24 <./imgs/convertor.png>]
-<imgs/Blender.png, id=801, 974.13937pt x 724.95844pt>
+<imgs/Blender.png, id=796, 974.13937pt x 724.95844pt>
 File: imgs/Blender.png Graphic file (type png)
 <use imgs/Blender.png>
 Package pdftex.def Info: imgs/Blender.png  used on input line 132.
 (pdftex.def)             Requested size: 412.56497pt x 307.03578pt.
  [25 <./imgs/Blender.png>]
-<imgs/paleta.png, id=809, 406.1574pt x 146.7081pt>
+<imgs/paleta.png, id=804, 406.1574pt x 146.7081pt>
 File: imgs/paleta.png Graphic file (type png)
 <use imgs/paleta.png>
 Package pdftex.def Info: imgs/paleta.png  used on input line 151.
 (pdftex.def)             Requested size: 412.56497pt x 149.02242pt.
-<imgs/logo.png, id=810, 370.38374pt x 76.03406pt>
+<imgs/logo.png, id=805, 370.38374pt x 76.03406pt>
 File: imgs/logo.png Graphic file (type png)
 <use imgs/logo.png>
 Package pdftex.def Info: imgs/logo.png  used on input line 158.
 (pdftex.def)             Requested size: 206.28249pt x 42.34673pt.
  [26 <./imgs/paleta.png> <./imgs/logo.png>]
-<imgs/mascota.png, id=820, 401.24907pt x 569.87906pt>
+<imgs/mascota.png, id=815, 401.24907pt x 569.87906pt>
 File: imgs/mascota.png Graphic file (type png)
 <use imgs/mascota.png>
 Package pdftex.def Info: imgs/mascota.png  used on input line 170.
 (pdftex.def)             Requested size: 144.40025pt x 205.08673pt.
-<imgs/animatieregister.png, id=821, 580.41844pt x 549.55313pt>
+<imgs/animatieregister.png, id=816, 580.41844pt x 549.55313pt>
 File: imgs/animatieregister.png Graphic file (type png)
 <use imgs/animatieregister.png>
 Package pdftex.def Info: imgs/animatieregister.png  used on input line 174.
 (pdftex.def)             Requested size: 165.02347pt x 156.24692pt.
-<imgs/navdiagram (2).png, id=822, 642.4pt x 1204.5pt>
+<imgs/navdiagram (2).png, id=817, 642.4pt x 1204.5pt>
 File: imgs/navdiagram (2).png Graphic file (type png)
 <use imgs/navdiagram (2).png>
 Package pdftex.def Info: imgs/navdiagram (2).png  used on input line 182.
@@ -1449,12 +1449,12 @@ Overfull \hbox (2.9128pt too wide) in paragraph at lines 192--195
 \T1/ntxtt/m/n/12 setError()\T1/ntxtlf/m/n/12 ; in-di-fe-rent de re-zul-tat, în \T1/ntxtt/m/n/12 finally \T1/ntxtlf/m/n/12 se se-teaz  \T1/ntxtt/m/n/12 setLoading(false)\T1/ntxtlf/m/n/12 . 
  []
 
-<imgs/interfata.png, id=839, 342.5297pt x 703.12688pt>
+<imgs/interfata.png, id=834, 342.5297pt x 703.12688pt>
 File: imgs/interfata.png Graphic file (type png)
 <use imgs/interfata.png>
 Package pdftex.def Info: imgs/interfata.png  used on input line 207.
 (pdftex.def)             Requested size: 82.51173pt x 169.37616pt.
-<imgs/profile.png, id=840, 965.85844pt x 417.05812pt>
+<imgs/profile.png, id=835, 965.85844pt x 417.05812pt>
 File: imgs/profile.png Graphic file (type png)
 <use imgs/profile.png>
 Package pdftex.def Info: imgs/profile.png  used on input line 213.
@@ -1538,17 +1538,17 @@ LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 LaTeX Font Info:    Font shape `T1/ntxtt/b/n' in size <6.6> not available
 (Font)              Font shape `T1/txtt/bx/n' tried instead on input line 173.
  [37]
-<imgs/portainerlanding.png, id=994, 1431.09656pt x 690.32906pt>
+<imgs/portainerlanding.png, id=989, 1431.09656pt x 690.32906pt>
 File: imgs/portainerlanding.png Graphic file (type png)
 <use imgs/portainerlanding.png>
 Package pdftex.def Info: imgs/portainerlanding.png  used on input line 191.
 (pdftex.def)             Requested size: 412.56497pt x 199.01054pt.
-<imgs/servicesportainer.png, id=995, 1184.92688pt x 484.81125pt>
+<imgs/servicesportainer.png, id=990, 1184.92688pt x 484.81125pt>
 File: imgs/servicesportainer.png Graphic file (type png)
 <use imgs/servicesportainer.png>
 Package pdftex.def Info: imgs/servicesportainer.png  used on input line 199.
 (pdftex.def)             Requested size: 206.28249pt x 84.39937pt.
-<imgs/servicescli.png, id=996, 561.59813pt x 201.75375pt>
+<imgs/servicescli.png, id=991, 561.59813pt x 201.75375pt>
 File: imgs/servicescli.png Graphic file (type png)
 <use imgs/servicescli.png>
 Package pdftex.def Info: imgs/servicescli.png  used on input line 203.
@@ -1561,7 +1561,7 @@ File: t1qhv.fd 2009/09/25 v1.2 font definition file for T1/qhv
 LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
 (Font)              scaled to size 11.28003pt on input line 231.
  [39{C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec.enc}] [40]
-<imgs/bearch.png, id=1037, 800.23969pt x 464.4853pt>
+<imgs/bearch.png, id=1032, 800.23969pt x 464.4853pt>
 File: imgs/bearch.png Graphic file (type png)
 <use imgs/bearch.png>
 Package pdftex.def Info: imgs/bearch.png  used on input line 295.
@@ -1571,52 +1571,52 @@ File: lstlang1.sty 2023/02/27 1.9 listings language file
 ) (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
 ) [41 <./imgs/bearch.png>]
-Overfull \hbox (55.61284pt too wide) in paragraph at lines 338--340
+Overfull \hbox (55.61284pt too wide) in paragraph at lines 335--337
 []\T1/ntxtlf/b/n/12 Build & Push Do-c-ker: \T1/ntxtlf/m/n/12 com-pi-l m bi-na-rele Go, con-struim ima-gi-nea cu \T1/ntxtt/m/n/12 build-push-action
  []
 
 [42]
-Overfull \hbox (2.31013pt too wide) in paragraph at lines 383--386
+Overfull \hbox (2.31013pt too wide) in paragraph at lines 380--383
 \T1/ntxtlf/m/n/12 De exem-plu dup  ce Pro-me-theus trece prin \T1/ntxtt/m/n/12 evaluation_-service_-http_-requests_-
  []
 
 
-Overfull \hbox (5.33424pt too wide) in paragraph at lines 387--388
+Overfull \hbox (5.33424pt too wide) in paragraph at lines 384--385
 []\T1/ntxtlf/m/it/12 Timeseries(serie tem-po-ral  de date) \T1/ntxtlf/m/n/12 pen-tru \T1/ntxtt/m/n/12 evaluation_-service_-http_-requests_-
  []
 
 [43]
-<imgs/evaluationdashboard.png, id=1074, 1214.28656pt x 557.83406pt>
+<imgs/evaluationdashboard.png, id=1067, 1214.28656pt x 557.83406pt>
 File: imgs/evaluationdashboard.png Graphic file (type png)
 <use imgs/evaluationdashboard.png>
-Package pdftex.def Info: imgs/evaluationdashboard.png  used on input line 411.
+Package pdftex.def Info: imgs/evaluationdashboard.png  used on input line 408.
 (pdftex.def)             Requested size: 371.30595pt x 170.56898pt.
  [44 <./imgs/evaluationdashboard.png>]
-<imgs/userdashboard.png, id=1093, 1231.60126pt x 502.87875pt>
+<imgs/userdashboard.png, id=1086, 1231.60126pt x 502.87875pt>
 File: imgs/userdashboard.png Graphic file (type png)
 <use imgs/userdashboard.png>
-Package pdftex.def Info: imgs/userdashboard.png  used on input line 423.
+Package pdftex.def Info: imgs/userdashboard.png  used on input line 420.
 (pdftex.def)             Requested size: 371.30595pt x 151.60909pt.
-<imgs/feeddashboard.png, id=1094, 1227.83719pt x 710.655pt>
+<imgs/feeddashboard.png, id=1087, 1227.83719pt x 710.655pt>
 File: imgs/feeddashboard.png Graphic file (type png)
 <use imgs/feeddashboard.png>
-Package pdftex.def Info: imgs/feeddashboard.png  used on input line 424.
+Package pdftex.def Info: imgs/feeddashboard.png  used on input line 421.
 (pdftex.def)             Requested size: 371.30595pt x 214.9006pt.
  [45 <./imgs/userdashboard.png> <./imgs/feeddashboard.png>]
-Overfull \hbox (14.3183pt too wide) in paragraph at lines 460--464
+Overfull \hbox (14.3183pt too wide) in paragraph at lines 457--461
 \T1/ntxtt/m/n/12 ClassID []\T1/ntxtlf/m/n/12 i \T1/ntxtt/m/n/12 OwnerID \T1/ntxtlf/m/n/12 (re-pre-zen-tate prin \T1/ntxtt/m/n/12 ObjectID \T1/ntxtlf/m/n/12 din MongoDB), un ar-ray de \T1/ntxtt/m/n/12 Questions
  []
 
 [46]
-<imgs/dbdiagram.png, id=1111, 3728.93124pt x 3854.4pt>
+<imgs/dbdiagram.png, id=1104, 3728.93124pt x 3854.4pt>
 File: imgs/dbdiagram.png Graphic file (type png)
 <use imgs/dbdiagram.png>
-Package pdftex.def Info: imgs/dbdiagram.png  used on input line 472.
+Package pdftex.def Info: imgs/dbdiagram.png  used on input line 469.
 (pdftex.def)             Requested size: 412.56497pt x 426.39667pt.
-<imgs/mongoexpress.png, id=1113, 690.32906pt x 448.67625pt>
+<imgs/mongoexpress.png, id=1106, 690.32906pt x 448.67625pt>
 File: imgs/mongoexpress.png Graphic file (type png)
 <use imgs/mongoexpress.png>
-Package pdftex.def Info: imgs/mongoexpress.png  used on input line 483.
+Package pdftex.def Info: imgs/mongoexpress.png  used on input line 480.
 (pdftex.def)             Requested size: 412.56497pt x 268.14665pt.
  [47 <./imgs/dbdiagram.png>] [48 <./imgs/mongoexpress.png>]) [49]
 \openout2 = `src/chapters/implementare.aux'.
@@ -1793,12 +1793,12 @@ No file src/chapters/funcionalitati.tex.
 
 (src/chapters/scenariiUtilizare.tex
 Capitolul 7.
-<imgs/register.png, id=1266, 492.33937pt x 499.11469pt>
+<imgs/register.png, id=1259, 492.33937pt x 499.11469pt>
 File: imgs/register.png Graphic file (type png)
 <use imgs/register.png>
 Package pdftex.def Info: imgs/register.png  used on input line 26.
 (pdftex.def)             Requested size: 218.65892pt x 221.66742pt.
-<imgs/login.png, id=1267, 383.93437pt x 494.59781pt>
+<imgs/login.png, id=1260, 383.93437pt x 494.59781pt>
 File: imgs/login.png Graphic file (type png)
 <use imgs/login.png>
 Package pdftex.def Info: imgs/login.png  used on input line 30.
@@ -1812,7 +1812,7 @@ Package pdftex.def Info: imgs/login.png  used on input line 30.
 
 
 ]
-<imgs/mainmenu.png, id=1272, 1440.13031pt x 699.36281pt>
+<imgs/mainmenu.png, id=1265, 1440.13031pt x 699.36281pt>
 File: imgs/mainmenu.png Graphic file (type png)
 <use imgs/mainmenu.png>
 Package pdftex.def Info: imgs/mainmenu.png  used on input line 44.
@@ -1823,109 +1823,109 @@ Overfull \hbox (15.46225pt too wide) in paragraph at lines 47--50
  []
 
 [62 <./imgs/register.png> <./imgs/login.png> <./imgs/mainmenu.png>]
-<imgs/magazin.png, id=1284, 641.39626pt x 677.53125pt>
+<imgs/magazin.png, id=1277, 641.39626pt x 677.53125pt>
 File: imgs/magazin.png Graphic file (type png)
 <use imgs/magazin.png>
 Package pdftex.def Info: imgs/magazin.png  used on input line 55.
 (pdftex.def)             Requested size: 226.91199pt x 239.69304pt.
-<imgs/contact.png, id=1285, 485.56406pt x 674.52pt>
+<imgs/contact.png, id=1278, 485.56406pt x 674.52pt>
 File: imgs/contact.png Graphic file (type png)
 <use imgs/contact.png>
 Package pdftex.def Info: imgs/contact.png  used on input line 59.
 (pdftex.def)             Requested size: 165.02347pt x 229.24113pt.
  [63 <./imgs/magazin.png> <./imgs/contact.png>]
-<imgs/mathex.png, id=1295, 1427.3325pt x 615.0478pt>
+<imgs/mathex.png, id=1288, 1427.3325pt x 615.0478pt>
 File: imgs/mathex.png Graphic file (type png)
 <use imgs/mathex.png>
 Package pdftex.def Info: imgs/mathex.png  used on input line 87.
 (pdftex.def)             Requested size: 288.79422pt x 124.44327pt.
-<imgs/fizicaex.png, id=1296, 1427.3325pt x 547.2947pt>
+<imgs/fizicaex.png, id=1289, 1427.3325pt x 547.2947pt>
 File: imgs/fizicaex.png Graphic file (type png)
 <use imgs/fizicaex.png>
 Package pdftex.def Info: imgs/fizicaex.png  used on input line 88.
 (pdftex.def)             Requested size: 288.79422pt x 110.7347pt.
-<imgs/chimieex.png, id=1297, 1428.08531pt x 520.19344pt>
+<imgs/chimieex.png, id=1290, 1428.08531pt x 520.19344pt>
 File: imgs/chimieex.png Graphic file (type png)
 <use imgs/chimieex.png>
 Package pdftex.def Info: imgs/chimieex.png  used on input line 89.
 (pdftex.def)             Requested size: 288.79422pt x 105.19571pt.
-<imgs/astronomieex.png, id=1298, 1426.57968pt x 633.86812pt>
+<imgs/astronomieex.png, id=1291, 1426.57968pt x 633.86812pt>
 File: imgs/astronomieex.png Graphic file (type png)
 <use imgs/astronomieex.png>
 Package pdftex.def Info: imgs/astronomieex.png  used on input line 90.
 (pdftex.def)             Requested size: 288.79422pt x 128.3189pt.
-<imgs/infoex.png, id=1299, 1428.83812pt x 706.89093pt>
+<imgs/infoex.png, id=1292, 1428.83812pt x 706.89093pt>
 File: imgs/infoex.png Graphic file (type png)
 <use imgs/infoex.png>
 Package pdftex.def Info: imgs/infoex.png  used on input line 91.
 (pdftex.def)             Requested size: 288.79422pt x 142.87497pt.
  [64 <./imgs/mathex.png> <./imgs/fizicaex.png> <./imgs/chimieex.png>]
-<imgs/molform.png, id=1310, 287.57437pt x 464.4853pt>
+<imgs/molform.png, id=1303, 287.57437pt x 464.4853pt>
 File: imgs/molform.png Graphic file (type png)
 <use imgs/molform.png>
 Package pdftex.def Info: imgs/molform.png  used on input line 107.
 (pdftex.def)             Requested size: 103.14124pt x 166.59088pt.
-<imgs/infoops.png, id=1311, 405.76593pt x 219.06844pt>
+<imgs/infoops.png, id=1304, 405.76593pt x 219.06844pt>
 File: imgs/infoops.png Graphic file (type png)
 <use imgs/infoops.png>
 Package pdftex.def Info: imgs/infoops.png  used on input line 111.
 (pdftex.def)             Requested size: 226.91199pt x 122.51035pt.
  [65 <./imgs/astronomieex.png> <./imgs/infoex.png>]
-<imgs/dashboardprof.png, id=1320, 736.25063pt x 637.63219pt>
+<imgs/dashboardprof.png, id=1313, 736.25063pt x 637.63219pt>
 File: imgs/dashboardprof.png Graphic file (type png)
 <use imgs/dashboardprof.png>
 Package pdftex.def Info: imgs/dashboardprof.png  used on input line 125.
 (pdftex.def)             Requested size: 247.54149pt x 214.37917pt.
-<imgs/dashboardclasa.png, id=1321, 709.90219pt x 630.10406pt>
+<imgs/dashboardclasa.png, id=1314, 709.90219pt x 630.10406pt>
 File: imgs/dashboardclasa.png Graphic file (type png)
 <use imgs/dashboardclasa.png>
 Package pdftex.def Info: imgs/dashboardclasa.png  used on input line 133.
 (pdftex.def)             Requested size: 247.54149pt x 219.71286pt.
  [66 <./imgs/molform.png> <./imgs/infoops.png> <./imgs/dashboardprof.png>]
-<imgs/crearequiz.png, id=1334, 1427.3325pt x 710.655pt>
+<imgs/crearequiz.png, id=1327, 1427.3325pt x 710.655pt>
 File: imgs/crearequiz.png Graphic file (type png)
 <use imgs/crearequiz.png>
 Package pdftex.def Info: imgs/crearequiz.png  used on input line 142.
 (pdftex.def)             Requested size: 309.42372pt x 154.05655pt.
-<imgs/rezultatequiz.png, id=1335, 562.35094pt x 300.3722pt>
+<imgs/rezultatequiz.png, id=1328, 562.35094pt x 300.3722pt>
 File: imgs/rezultatequiz.png Graphic file (type png)
 <use imgs/rezultatequiz.png>
 Package pdftex.def Info: imgs/rezultatequiz.png  used on input line 148.
 (pdftex.def)             Requested size: 309.42372pt x 165.27396pt.
-<imgs/dashboardelev.png, id=1336, 733.99219pt x 316.18124pt>
+<imgs/dashboardelev.png, id=1329, 733.99219pt x 316.18124pt>
 File: imgs/dashboardelev.png Graphic file (type png)
 <use imgs/dashboardelev.png>
 Package pdftex.def Info: imgs/dashboardelev.png  used on input line 158.
 (pdftex.def)             Requested size: 309.42372pt x 133.29213pt.
  [67 <./imgs/dashboardclasa.png> <./imgs/crearequiz.png>] [68 <./imgs/rezultatequiz.png> <./imgs/dashboardelev.png>]
-<imgs/facequiz.png, id=1353, 547.2947pt x 657.95813pt>
+<imgs/facequiz.png, id=1346, 547.2947pt x 657.95813pt>
 File: imgs/facequiz.png Graphic file (type png)
 <use imgs/facequiz.png>
 Package pdftex.def Info: imgs/facequiz.png  used on input line 172.
 (pdftex.def)             Requested size: 226.91199pt x 272.79654pt.
-<imgs/vederequiz.png, id=1354, 337.26pt x 238.64156pt>
+<imgs/vederequiz.png, id=1347, 337.26pt x 238.64156pt>
 File: imgs/vederequiz.png Graphic file (type png)
 <use imgs/vederequiz.png>
 Package pdftex.def Info: imgs/vederequiz.png  used on input line 176.
 (pdftex.def)             Requested size: 165.02347pt x 116.77151pt.
  [69 <./imgs/facequiz.png> <./imgs/vederequiz.png>]
-<imgs/editorvizual.png, id=1364, 718.93594pt x 630.85687pt>
+<imgs/editorvizual.png, id=1357, 718.93594pt x 630.85687pt>
 File: imgs/editorvizual.png Graphic file (type png)
 <use imgs/editorvizual.png>
 Package pdftex.def Info: imgs/editorvizual.png  used on input line 197.
 (pdftex.def)             Requested size: 288.79422pt x 253.4164pt.
-<imgs/cppeditor.png, id=1366, 1440.88312pt x 708.39656pt>
+<imgs/cppeditor.png, id=1359, 1440.88312pt x 708.39656pt>
 File: imgs/cppeditor.png Graphic file (type png)
 <use imgs/cppeditor.png>
 Package pdftex.def Info: imgs/cppeditor.png  used on input line 204.
 (pdftex.def)             Requested size: 330.05322pt x 162.2576pt.
  [70 <./imgs/editorvizual.png> <./imgs/cppeditor.png>]
-<imgs/chemtable.png, id=1376, 1189.44376pt x 520.94624pt>
+<imgs/chemtable.png, id=1369, 1189.44376pt x 520.94624pt>
 File: imgs/chemtable.png Graphic file (type png)
 <use imgs/chemtable.png>
 Package pdftex.def Info: imgs/chemtable.png  used on input line 217.
 (pdftex.def)             Requested size: 330.05322pt x 144.55237pt.
-<imgs/chemdna.png, id=1377, 170.13562pt x 446.41782pt>
+<imgs/chemdna.png, id=1370, 170.13562pt x 446.41782pt>
 File: imgs/chemdna.png Graphic file (type png)
 <use imgs/chemdna.png>
 Package pdftex.def Info: imgs/chemdna.png  used on input line 227.
@@ -1935,24 +1935,24 @@ Underfull \hbox (badness 6675) in paragraph at lines 227--227
 []\T1/ntxtlf/m/n/10 (a) |Form  de
  []
 
-<imgs/chemhelix.png, id=1378, 467.49657pt x 289.83281pt>
+<imgs/chemhelix.png, id=1371, 467.49657pt x 289.83281pt>
 File: imgs/chemhelix.png Graphic file (type png)
 <use imgs/chemhelix.png>
 Package pdftex.def Info: imgs/chemhelix.png  used on input line 231.
 (pdftex.def)             Requested size: 173.27652pt x 107.42662pt.
-<imgs/chemtorus.png, id=1379, 391.4625pt x 454.69875pt>
+<imgs/chemtorus.png, id=1372, 391.4625pt x 454.69875pt>
 File: imgs/chemtorus.png Graphic file (type png)
 <use imgs/chemtorus.png>
 Package pdftex.def Info: imgs/chemtorus.png  used on input line 234.
 (pdftex.def)             Requested size: 156.7767pt x 182.10522pt.
 [71 <./imgs/chemtable.png> <./imgs/chemdna.png> <./imgs/chemhelix.png> <./imgs/chemtorus.png>]
-<imgs/profdashboard.png, id=1393, 572.89032pt x 694.09312pt>
+<imgs/profdashboard.png, id=1386, 572.89032pt x 694.09312pt>
 File: imgs/profdashboard.png Graphic file (type png)
 <use imgs/profdashboard.png>
 Package pdftex.def Info: imgs/profdashboard.png  used on input line 253.
 (pdftex.def)             Requested size: 330.05322pt x 399.88419pt.
  [72 <./imgs/profdashboard.png>]
-<imgs/elevbadges.png, id=1401, 1032.10594pt x 612.03656pt>
+<imgs/elevbadges.png, id=1394, 1032.10594pt x 612.03656pt>
 File: imgs/elevbadges.png Graphic file (type png)
 <use imgs/elevbadges.png>
 Package pdftex.def Info: imgs/elevbadges.png  used on input line 263.
@@ -1989,12 +1989,7 @@ LaTeX Font Info:    Font shape `T1/ntxtt/b/n' in size <10.95> not available
  [84] [85] [86]
 LaTeX Font Info:    Font shape `T1/ntxtt/m/it' in size <10.95> not available
 (Font)              Font shape `T1/txtt/m/sl' tried instead on input line 181.
- [87]
-Overfull \hbox (54.67911pt too wide) in paragraph at lines 212--254
- [][] 
- []
-
-[88])) [89]
+ [87])) [88]
 Underfull \hbox (badness 1466) in paragraph at lines 51--52
 []\T1/ntxtlf/m/n/12 Y. Zhang et al., ^^PVR/AR in STEM Lear-ning,^^Q *Pu-bMed*, 2024. [][]ht-
  []
@@ -2044,14 +2039,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 63--64
 [][]\T1/ntxtlf/m/n/12 https://stemeducationjournal.springeropen.com/articles/10.1186/s40594-022-
  []
 
-[90
+[89
 
 ]
 Underfull \hbox (badness 6927) in paragraph at lines 72--73
 []\T1/ntxtlf/m/n/12 Twin Science, ^^P5 Key Ad-van-ta-ges of Using Tea-cher Plat-forms,^^Q
  []
 
-(thesis.ind) [91] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologiiFe.aux) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
+(thesis.ind) [90] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologiiFe.aux) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2020/03/25>
@@ -2061,13 +2056,13 @@ L3 programming layer <2020/03/25>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 2147AC5B8663D4F3F56E602F7971BA4E;24071.
+(rerunfilecheck)             Checksum: 927321534C8AB0428B5808459BEC5F65;23866.
  ) 
 Here is how much of TeX's memory you used:
- 23461 strings out of 474486
- 382641 string characters out of 5743754
+ 23456 strings out of 474486
+ 382573 string characters out of 5743754
  2165542 words of memory out of 5000000
- 44557 multiletter control sequences out of 15000+600000
+ 44555 multiletter control sequences out of 15000+600000
  696911 words of font info for 219 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  125i,18n,147p,647b,2165s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -2081,9 +2076,9 @@ pdfTeX warning (dest): name{Hfootnote.41} has been referenced but does not exist
 pdfTeX warning (dest): name{Hfootnote.40} has been referenced but does not exist, replaced by a fixed one
 
 <C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/NewTXMI.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qhvr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qtmr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xbtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/txsys.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmb.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmri.pfb>
-Output written on thesis.pdf (98 pages, 20865038 bytes).
+Output written on thesis.pdf (97 pages, 20862064 bytes).
 PDF statistics:
- 1897 PDF objects out of 2073 (max. 8388607)
- 708 named destinations out of 1000 (max. 500000)
- 1195 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1886 PDF objects out of 2073 (max. 8388607)
+ 705 named destinations out of 1000 (max. 500000)
+ 1187 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -119,7 +119,6 @@
 \contentsline {subsection}{\numberline {8.5.5}Dimensiunea clusterului Kubernetes}{78}{subsection.8.5.5}%
 \contentsline {subsection}{\numberline {8.5.6}Popularea și accesul extern la intrările in baza de date}{78}{subsection.8.5.6}%
 \contentsline {section}{\numberline {8.6}Analiză comparativă pe metrici}{78}{section.8.6}%
-\contentsline {section}{\numberline {8.7}Statistici de dezvoltare}{79}{section.8.7}%
 \contentsline {chapter}{\numberline {9}Concluzii și perspective}{80}{chapter.9}%
 \contentsline {section}{\numberline {9.1}Concluzii}{80}{section.9.1}%
 \contentsline {section}{\numberline {9.2}Dezvoltare viitoare}{80}{section.9.2}%
