@@ -32,8 +32,8 @@ type User struct {
 
 type PointsEntry struct {
 	Points      int64     `bson:"points" json:"points"`
-	Source      string    `bson:"source" json:"source"`       // "quiz", "achievement", etc.
-	SourceID    string    `bson:"source_id" json:"source_id"` // ID of quiz or achievement
+	Source      string    `bson:"source" json:"source"`
+	SourceID    string    `bson:"source_id" json:"source_id"`
 	Description string    `bson:"description" json:"description"`
 	Timestamp   time.Time `bson:"timestamp" json:"timestamp"`
 }

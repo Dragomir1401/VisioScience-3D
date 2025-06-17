@@ -221,7 +221,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform list declarations
 		if strings.Contains(line, "list<") && !strings.Contains(line, "const") && !strings.Contains(line, "&") {
 			re := regexp.MustCompile(`(?:std::)?list<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
 			matches := re.FindStringSubmatch(line)
@@ -234,7 +233,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform forward_list declarations
 		if strings.Contains(line, "forward_list<") && !strings.Contains(line, "const") && !strings.Contains(line, "&") {
 			re := regexp.MustCompile(`(?:std::)?forward_list<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
 			matches := re.FindStringSubmatch(line)
@@ -247,7 +245,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform map declarations
 		if strings.Contains(line, "map<") || strings.Contains(line, "unordered_map<") {
 			re := regexp.MustCompile(`(?:std::)?(?:unordered_)?map<(?:std::)?\w+,\s*(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
 			matches := re.FindStringSubmatch(line)
@@ -260,7 +257,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform vector declarations
 		if strings.Contains(line, "vector<") {
 			re := regexp.MustCompile(`(?:std::)?vector<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
 			matches := re.FindStringSubmatch(line)
@@ -273,7 +269,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform stack declarations
 		if strings.Contains(line, "stack<") {
 			re := regexp.MustCompile(`(?:std::)?stack<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
 			matches := re.FindStringSubmatch(line)
@@ -286,7 +281,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform queue declarations
 		if strings.Contains(line, "queue<") {
 			re := regexp.MustCompile(`(?:std::)?queue<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
 			matches := re.FindStringSubmatch(line)
@@ -299,9 +293,7 @@ using namespace tracer;
 			}
 		}
 
-		// Transform priority_queue declarations
 		if strings.Contains(line, "priority_queue<") {
-			// Match priority_queue with standard comparators
 			re := regexp.MustCompile(`(?:std::)?priority_queue<(?:std::)?\w+(?:,\s*(?:std::)?vector<(?:std::)?\w+>)?(?:,\s*(?:std::)?(?:greater|less)<(?:std::)?\w+>)?>\s+(\w+)(?:\s*(?:=|{|;))?`)
 			matches := re.FindStringSubmatch(line)
 			if len(matches) >= 2 {
@@ -313,7 +305,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform deque declarations
 		if strings.Contains(line, "deque<") {
 			re := regexp.MustCompile(`(?:std::)?deque<(?:std::)?\w+>\s+(\w+)(?:\s*(?:=|{|;))?`)
 			matches := re.FindStringSubmatch(line)
@@ -326,9 +317,7 @@ using namespace tracer;
 			}
 		}
 
-		// Transform map operations
 		if strings.Contains(line, "[") && strings.Contains(line, "]=") {
-			// Handle map[key] = value operations
 			re := regexp.MustCompile(`(\w+)\[([^]]+)\]\s*=`)
 			matches := re.FindStringSubmatch(line)
 			if len(matches) >= 3 {
@@ -339,7 +328,6 @@ using namespace tracer;
 			}
 		}
 
-		// Handle map operations
 		if strings.Contains(line, ".insert(") {
 			re := regexp.MustCompile(`(\w+)\.insert\(`)
 			matches := re.FindStringSubmatch(line)
@@ -384,7 +372,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform vector operations
 		if strings.Contains(line, ".push_back(") {
 			re := regexp.MustCompile(`(\w+)\.push_back\(`)
 			matches := re.FindStringSubmatch(line)
@@ -451,7 +438,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform stack operations
 		if strings.Contains(line, ".push(") {
 			re := regexp.MustCompile(`(\w+)\.push\(`)
 			matches := re.FindStringSubmatch(line)
@@ -485,7 +471,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform priority_queue operations
 		if strings.Contains(line, ".push(") {
 			re := regexp.MustCompile(`(\w+)\.push\(`)
 			matches := re.FindStringSubmatch(line)
@@ -519,7 +504,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform deque operations
 		if strings.Contains(line, ".push_front(") {
 			re := regexp.MustCompile(`(\w+)\.push_front\(`)
 			matches := re.FindStringSubmatch(line)
@@ -641,7 +625,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform list operations
 		if strings.Contains(line, ".push_front(") {
 			re := regexp.MustCompile(`(\w+)\.push_front\(`)
 			matches := re.FindStringSubmatch(line)
@@ -785,7 +768,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform forward_list operations
 		if strings.Contains(line, ".insert_after(") {
 			re := regexp.MustCompile(`(\w+)\.insert_after\(`)
 			matches := re.FindStringSubmatch(line)
@@ -907,7 +889,6 @@ using namespace tracer;
 			}
 		}
 
-		// Transform set operations
 		if strings.Contains(line, ".insert(") {
 			re := regexp.MustCompile(`(\w+)\.insert\(`)
 			matches := re.FindStringSubmatch(line)

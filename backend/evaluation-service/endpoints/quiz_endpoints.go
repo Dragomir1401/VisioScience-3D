@@ -32,7 +32,6 @@ func CreateQuiz(w http.ResponseWriter, r *http.Request) {
 		metrics.EvaluationDuration.WithLabelValues(path).Observe(time.Since(start).Seconds())
 	}()
 
-	// Log raw request body
 	body, readErr := ioutil.ReadAll(r.Body)
 	if readErr != nil {
 		log.Printf("CreateQuiz: Error reading request body: %v", readErr)
@@ -42,7 +41,6 @@ func CreateQuiz(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Printf("CreateQuiz: Raw request body: %s", string(body))
 
-	// Create a new reader with the body content
 	r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 
 	var input models.QuizInput
@@ -57,7 +55,6 @@ func CreateQuiz(w http.ResponseWriter, r *http.Request) {
 	log.Printf("CreateQuiz: Received quiz with title: %s and %d questions", input.Title, len(input.Questions))
 	log.Printf("CreateQuiz: Class ID: %s, Owner ID: %s", input.ClassID, input.OwnerID)
 
-	// Convert input to Quiz model
 	quiz := models.Quiz{
 		ID:           primitive.NewObjectID(),
 		Title:        input.Title,
@@ -69,7 +66,7 @@ func CreateQuiz(w http.ResponseWriter, r *http.Request) {
 		StreakBonus:  input.StreakBonus,
 		Difficulty:   input.Difficulty,
 		Category:     input.Category,
-		QuizResults:  []models.QuizResult{}, // Initialize empty array
+		QuizResults:  []models.QuizResult{},
 		Statistics: models.QuizStatistics{
 			QuizID:        primitive.NewObjectID(),
 			TotalAttempts: 0,
@@ -82,7 +79,6 @@ func CreateQuiz(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	// Convert ClassID and OwnerID
 	var convErr error
 	log.Printf("CreateQuiz: Converting ClassID from hex: %s", input.ClassID)
 	quiz.ClassID, convErr = primitive.ObjectIDFromHex(input.ClassID)
@@ -102,12 +98,10 @@ func CreateQuiz(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Process questions
 	quiz.Questions = make([]models.Question, len(input.Questions))
 	for i, q := range input.Questions {
 		log.Printf("CreateQuiz: Processing question %d: %+v", i+1, q)
 
-		// Create new question with generated ID
 		newQuestion := models.Question{
 			ID:      primitive.NewObjectID(),
 			Text:    q.Text,
@@ -119,7 +113,6 @@ func CreateQuiz(w http.ResponseWriter, r *http.Request) {
 
 		log.Printf("CreateQuiz: Generated new question with ID: %s", newQuestion.ID.Hex())
 
-		// Validate choices and answer
 		if len(newQuestion.Choices) == 0 {
 			log.Printf("CreateQuiz: Question %d has no choices, setting default choices", i+1)
 			newQuestion.Choices = []string{"H2O", "CO2", "CH4", "O2"}
@@ -127,10 +120,9 @@ func CreateQuiz(w http.ResponseWriter, r *http.Request) {
 
 		if len(newQuestion.Answer) == 0 {
 			log.Printf("CreateQuiz: Question %d has no answer, setting default answer to first choice", i+1)
-			newQuestion.Answer = []int{0} // Default to first choice
+			newQuestion.Answer = []int{0}
 		}
 
-		// Validate answer indices
 		for _, ans := range newQuestion.Answer {
 			if ans < 0 || ans >= len(newQuestion.Choices) {
 				log.Printf("CreateQuiz: Invalid answer index %d for question %d (choices length: %d)",
@@ -661,7 +653,6 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Validate answers length matches questions length
 	if len(req.Answers) != len(quiz.Questions) {
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
 		http.Error(w, "Number of answers doesn't match number of questions", http.StatusBadRequest)
@@ -672,7 +663,6 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 	var correctAnswers []bool
 	var incorrectlyAnsweredQuestions []primitive.ObjectID
 
-	// Check each answer
 	for i, q := range quiz.Questions {
 		isCorrect := false
 		if containsInt(q.Answer, req.Answers[i]) {
@@ -684,7 +674,6 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		correctAnswers = append(correctAnswers, isCorrect)
 	}
 
-	// Calculate bonuses
 	timeBonus := int64(0)
 	if quiz.TimeBonus {
 		timeBonus = calculateTimeBonus(req.TimeTaken)
@@ -700,7 +689,6 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		streakBonus = calculateStreakBonus(correctAnswers)
 	}
 
-	// Calculate total points
 	points := calculatePoints(&quiz, score, int(timeBonus), int(perfectBonus), int(streakBonus))
 
 	response := SubmitAttemptResponse{
@@ -726,7 +714,6 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		IncorrectlyAnsweredQuestions: incorrectlyAnsweredQuestions,
 	}
 
-	// Update user stats
 	var userStats models.UserQuizStats
 	err = helpers.Client.Database("data-feed-db").Collection("user_quiz_stats").FindOne(ctx, bson.M{
 		"user_id": userOID,
@@ -754,7 +741,6 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		userStats.ConsecutivePerfect = 0
 	}
 
-	// Update quiz with new result
 	_, err = helpers.Client.Database("data-feed-db").Collection("quizzes").UpdateOne(
 		ctx,
 		bson.M{"_id": quizOID},
@@ -766,7 +752,6 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Update user stats
 	_, err = helpers.Client.Database("data-feed-db").Collection("user_quiz_stats").UpdateOne(
 		ctx,
 		bson.M{"user_id": userOID, "quiz_id": quizOID},
@@ -779,14 +764,12 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Update quiz statistics
 	if err := updateQuizStatistics(ctx, quizOID); err != nil {
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
 		http.Error(w, "Failed to update quiz statistics", http.StatusInternalServerError)
 		return
 	}
 
-	// Notify user-data-service about points earned
 	go func() {
 		userDataURL := os.Getenv("USER_DATA_SERVICE_URL")
 		if userDataURL == "" {
@@ -988,7 +971,6 @@ func calculatePoints(quiz *models.Quiz, score int, timeBonus int, perfectBonus i
 
 // updateQuizStatistics updates the statistics for a quiz
 func updateQuizStatistics(ctx context.Context, quizID primitive.ObjectID) error {
-	// Get all results for this quiz
 	cursor, err := helpers.Client.Database("data-feed-db").Collection("quizzes").Aggregate(ctx, []bson.M{
 		{"$match": bson.M{"_id": quizID}},
 		{"$unwind": "$quiz_results"},
@@ -1022,17 +1004,14 @@ func updateQuizStatistics(ctx context.Context, quizID primitive.ObjectID) error 
 		return nil
 	}
 
-	// Sort top performers by points
 	sort.Slice(stats[0].TopPerformers, func(i, j int) bool {
 		return stats[0].TopPerformers[i].Points > stats[0].TopPerformers[j].Points
 	})
 
-	// Keep only top 10 performers
 	if len(stats[0].TopPerformers) > 10 {
 		stats[0].TopPerformers = stats[0].TopPerformers[:10]
 	}
 
-	// Update quiz with new statistics
 	_, err = helpers.Client.Database("data-feed-db").Collection("quizzes").UpdateOne(
 		ctx,
 		bson.M{"_id": quizID},
@@ -1041,7 +1020,6 @@ func updateQuizStatistics(ctx context.Context, quizID primitive.ObjectID) error 
 	return err
 }
 
-// Structura pentru request-ul de actualizare a statisticilor
 type QuizStatisticsUpdateRequest struct {
 	QuizID        string                 `json:"quiz_id"`
 	TotalAttempts int                    `json:"total_attempts"`
@@ -1078,7 +1056,6 @@ func UpdateQuizStatistics(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("Received quiz statistics update for quiz %s: %+v", quizID.Hex(), req)
 
-	// Fetch the existing quiz to update its statistics
 	var quiz models.Quiz
 	collection := helpers.Client.Database("data-feed-db").Collection("quizzes")
 	err = collection.FindOne(context.Background(), bson.M{"_id": quizID}).Decode(&quiz)
@@ -1093,7 +1070,6 @@ func UpdateQuizStatistics(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Update the statistics fields
 	quiz.Statistics.QuizID = quizID
 	quiz.Statistics.TotalAttempts = req.TotalAttempts
 	quiz.Statistics.AverageScore = req.AverageScore
@@ -1103,7 +1079,6 @@ func UpdateQuizStatistics(w http.ResponseWriter, r *http.Request) {
 	quiz.Statistics.TopPerformers = req.TopPerformers
 	quiz.Statistics.QuestionStats = req.QuestionStats
 
-	// Save the updated quiz statistics
 	_, err = collection.UpdateOne(
 		context.Background(),
 		bson.M{"_id": quizID},
@@ -1152,7 +1127,6 @@ func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	// Get quiz and user stats
 	var quiz models.Quiz
 	if err := helpers.Client.Database("data-feed-db").Collection("quizzes").FindOne(ctx, bson.M{"_id": quizOID}).Decode(&quiz); err != nil {
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "404").Inc()
@@ -1160,7 +1134,6 @@ func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get user's quiz statistics
 	var userStats models.UserQuizStats
 	err = helpers.Client.Database("data-feed-db").Collection("user_quiz_stats").FindOne(ctx, bson.M{
 		"user_id": userOID,
@@ -1178,7 +1151,6 @@ func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Calculate score and track incorrectly answered questions
 	score := 0
 	var incorrectlyAnsweredQuestions []primitive.ObjectID
 	for i, answer := range req.Answers {
@@ -1191,7 +1163,6 @@ func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Create result
 	result := models.QuizResult{
 		UserID:                       userOID,
 		QuizID:                       quizOID,
@@ -1201,10 +1172,8 @@ func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 		IncorrectlyAnsweredQuestions: incorrectlyAnsweredQuestions,
 	}
 
-	// Calculate points
 	result.Points = calculatePoints(&quiz, score, 0, 0, 0)
 
-	// Update user stats
 	userStats.TotalAttempts++
 	userStats.AverageScore = (userStats.AverageScore*float64(userStats.TotalAttempts-1) + float64(score)) / float64(userStats.TotalAttempts)
 	userStats.AverageTime = (userStats.AverageTime*float64(userStats.TotalAttempts-1) + float64(req.TimeTaken)) / float64(userStats.TotalAttempts)
@@ -1215,7 +1184,6 @@ func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 		userStats.ConsecutivePerfect = 0
 	}
 
-	// Update quiz with new result
 	_, err = helpers.Client.Database("data-feed-db").Collection("quizzes").UpdateOne(
 		ctx,
 		bson.M{"_id": quizOID},
@@ -1227,7 +1195,6 @@ func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Update user stats
 	_, err = helpers.Client.Database("data-feed-db").Collection("user_quiz_stats").UpdateOne(
 		ctx,
 		bson.M{"user_id": userOID, "quiz_id": quizOID},
@@ -1240,14 +1207,12 @@ func SubmitQuizResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Update quiz statistics
 	if err := updateQuizStatistics(ctx, quizOID); err != nil {
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "500").Inc()
 		http.Error(w, "Failed to update quiz statistics", http.StatusInternalServerError)
 		return
 	}
 
-	// Notify user-data-service about points earned
 	go func() {
 		userDataURL := os.Getenv("USER_DATA_SERVICE_URL")
 		if userDataURL == "" {
@@ -1449,8 +1414,6 @@ func AddMockAnswers(w http.ResponseWriter, r *http.Request) {
 }
 
 func calculateTimeBonus(timeTaken int) int64 {
-	// Bonus points for completing quickly
-	// Example: 10 points if completed under 30 seconds
 	if timeTaken < 30 {
 		return 10
 	}
@@ -1458,7 +1421,6 @@ func calculateTimeBonus(timeTaken int) int64 {
 }
 
 func calculateStreakBonus(correctAnswers []bool) int64 {
-	// Bonus points for consecutive correct answers
 	var streak int
 	var maxStreak int
 	for _, correct := range correctAnswers {
@@ -1471,6 +1433,5 @@ func calculateStreakBonus(correctAnswers []bool) int64 {
 			streak = 0
 		}
 	}
-	// Example: 5 points per correct answer in the longest streak
 	return int64(maxStreak * 5)
 }
