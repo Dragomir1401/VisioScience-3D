@@ -10,6 +10,13 @@ nerelaționale, un serviciu de gestionare a infrastructurii, un serviciu de moni
 funcționează împreună cu un serviciu de provizionare de metrici și un serviciu de vizualizare
 și utilitarele corespunzătoare pentru gestionarea bazelor de date integrate.
 
+S-a ajuns la o asemenea arhitectura pe microservicii deoarece o variantă monolit nu răspundea
+bine nevoilor platformei, care are diferite componente cu scopt total separat și care
+nu comunică foarte mult între ele, ci mai mult toate cu interfața din frontend printr-un 
+router dedicat. În acest mod, putem să dezvoltăm fiecare parte a backend-ului separat, fără
+a influența componente deja implementate. Împărțirea pe servicii s-a realizat în funcție de scopul 
+principal, făcând diferența între datele utilizatorilor, datele educaționale, codul C++ interactiv și altele.
+
 \subsection{Configurarea clusterului}
 Clusterul este configurat folosind Kubernetes\footnote{https://kubernetes.io/}, care permite orchestrarea containerelor și
 gestionarea resurselor într-un mod eficient. Fiecare serviciu este containerizat folosind Docker,
@@ -246,7 +253,7 @@ fi testate rapid în legătură cu serviciile din cluster fără configurări su
    \texttt{cpp-compiler-service} – Serviciul care încapsulează logica de gestionare a compilării codului C++
   inserat în editorul interactiv și îl împarte în capturi de status a structurilor de date ce apar în cod. codul
   este primit din frontend și trece prin mai multe etape de procesare. Se trece linie cu linie prin el pentru a identifica
-  structurile de date folosite și a le extrage. Al doilea pas este de creare și adăugare a unui header de urmărire a
+  structurile de date folosite și a le extrage. Al doilea pas este de creare și adăugare a unui antet de urmărire a
   fiecărei structuri de date capabil să înregistreze și raporteze statusul la fiecare operație. La ultimul pas 
   aceste statusuri sunt adnotate cu metadatele necesare și inserate cronologic într-o listă de evenimente ca să personalizată
   fi trimisă către frontend.

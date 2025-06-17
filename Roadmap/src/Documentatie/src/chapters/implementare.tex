@@ -33,7 +33,7 @@ public:
         globalTracer->unregisterObject(this);
 \end{lstlisting}
 
-Se poate observa că header-ul se bazează pe structuri generice din C++ pentru a permite orice tip de container
+Se poate observa că antetul se bazează pe structuri generice din C++ pentru a permite orice tip de container
 să fie integrat în acest tip general de raportare a operațiilor și conținutului.
 
 Mai jos se află comparația limbajelor de care am discutat mai sus.
@@ -365,6 +365,44 @@ state-urile sunt legate cu useRef sau useState pentru a permite actualizarea lor
 După acestea apar funcțiile de procesare sau utilitare, iar componentele se termină cu 
 returnarea JSX-ului care definește structura vizuală a scenei.
 
+\subsection{Implementare front-end}
+\label{subsec:implementare-frontend}
+
+În partea de front-end, aplicaţia este structurată pe componente React,
+folosind TypeScript în unele zone pentru tipare stricte şi TailwindCSS pentru stilizare.
+Fiecare componentă 3D (de exemplu \texttt{BadgeDisplay}, \texttt{BalloonMascot},
+\texttt{Baloon} sau \texttt{Island}) este definită printr‐un set de interfeţe 
+care descriu proprietăţile primite (cum ar fi \texttt{Badge} sau \texttt{BalloonProps}).
+Aceste componente folosesc hook‐uri de stare (\texttt{useState}) şi referinţe
+(\texttt{useRef}) pentru a păstra stările de atingere a secțiunii, selecţie şi animaţii, 
+iar hook‐ul \texttt{useFrame} din \texttt{@react-three/fiber} asigură 
+actualizarea fiecărui frame de animaţie direct pe obiectele Three.js
+(rotire, balans, scalare la atingere).
+
+Animaţiile neon şi efectele de glow sunt obţinute cu \texttt{meshPhongMaterial} 
+şi proprietăţi dinamice de \texttt{emissiveIntensity} şi \texttt{opacity},
+corelate cu starea de atingere a secțiunii. Pentru mişcarea obiectelor 3D se foloseşte
+componenta \texttt{Float} din \texttt{drei}, iar pentru text 3D \texttt{Text}
+cu contur. Camera este controlată în scene printr‐o componentă
+custom (\texttt{CameraController}) care implementează rotire și mișcare inerțială,
+iar interacţiunea mouse-ului e centralizată în \texttt{SceneController} prin gestionarea 
+evenimentelor la mișcare.
+
+Pentru formulare şi interfeţe bidimensionale (de ex. \texttt{ChemistryAddForm},
+\texttt{ListFormulas}, \texttt{ClassPerformanceCard}) s-a folosit React clasic 
+cu \texttt{useEffect} pentru a accesa API-ul, \texttt{useState} pentru gestionarea 
+datelor (loading, error, succes) şi componente de UI animate cu Framer Motion
+(\texttt{BadgeNotification}, hint overlays). În \texttt{ChemistryAddForm},
+încărcarea fişierelor \texttt{.mol} este realizată cu un FileReader în
+\texttt{handleFileChange}. Toate cererile includ antetul JWT extras din stocarea locală.
+
+Pentru grafice de date statistice s-a integrat \texttt{recharts}, configurând
+\texttt{BarCharts}, \texttt{ResponsiveContainers} şi \texttt{CartesianGrids}, 
+cu transformări simple ale datelor în codul din \texttt{useEffect}. 
+Distribuția principală (sidebar, navbar) foloseşte componente UI din biblioteca lucide‐react
+pentru iconiţe şi React Router pentru navigare, împreună cu Tailwind pentru
+starea activă/inactivă şi efecte vizuale.
+
 \subsection{Conectivitate}
 \label{subsec:conectivitate-frontend}
 
@@ -375,7 +413,7 @@ obținerea datelor dinamice, precum formulele, moleculele sau quiz-urile, aplica
 utilizează hook-ul \texttt{useEffect} în componentele React, pentru a asigura 
 actualizarea datelor în mod eficient. În ceea ce privește autentificarea, token-ul
 JWT este gestionat și salvat în \texttt{localStorage}, fiind folosit ulterior 
-în header-ul \texttt{Authorization} al cererilor API.
+în antetul \texttt{Authorization} al cererilor API.
 
 De asemenea, s-a implementat un sistem de tratare a erorilor, care afișează mesaje 
 relevante utilizatorului atunci când apar probleme în comunicarea cu serverul. În
