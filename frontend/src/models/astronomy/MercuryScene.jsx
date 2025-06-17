@@ -10,7 +10,6 @@ import mercuryBump from "../../assets/textures/mercury/mercurybump.jpg";
 
 function Mercury({ rotationSpeed = 0.015 }) {
   const meshRef = useRef();
-  // load the two Mercury textures
   const [map, bumpMap] = useTexture([mercuryMap, mercuryBump]);
 
   useFrame((_, delta) => {
@@ -19,7 +18,6 @@ function Mercury({ rotationSpeed = 0.015 }) {
 
   return (
     <mesh ref={meshRef}>
-      {/* slightly smaller sphere for Mercury */}
       <sphereGeometry args={[3.5, 32, 32]} />
       <meshStandardMaterial
         map={map}
@@ -57,7 +55,6 @@ export default function ThreeMercuryScene() {
       }}
       performance={{ min: 0.5, max: 1 }}
     >
-      {/* Lighting setup */}
       <ambientLight intensity={0.25} />
       <hemisphereLight
         skyColor={0xffffff}

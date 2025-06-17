@@ -27,9 +27,9 @@ const QuizResults = () => {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
-        if (!sRes.ok) throw new Error("Elevi: " + await sRes.text());
-        if (!rRes.ok) throw new Error("Rezultate: " + await rRes.text());
-        if (!mRes.ok) throw new Error("Meta: " + await mRes.text());
+        if (!sRes.ok) throw new Error("Elevi: " + (await sRes.text()));
+        if (!rRes.ok) throw new Error("Rezultate: " + (await rRes.text()));
+        if (!mRes.ok) throw new Error("Meta: " + (await mRes.text()));
 
         const [sData, rData, mData] = await Promise.all([
           sRes.json(),
@@ -47,19 +47,18 @@ const QuizResults = () => {
               perfectScore: r.PerfectScore ?? r.perfect_score,
               streakBonus: r.StreakBonus ?? r.streak_bonus,
               timeBonus: r.TimeBonus ?? r.time_bonus,
-              timestamp: r.Timestamp ?? r.timestamp
+              timestamp: r.Timestamp ?? r.timestamp,
             }))
           : [];
         setResults(normResults);
 
-        // Calculate max points from questions
-        const maxPoints = Array.isArray(mData.questions) 
+        const maxPoints = Array.isArray(mData.questions)
           ? mData.questions.reduce((sum, q) => sum + (q.points || 1), 0)
           : 0;
 
         setQuizMeta({
           ...mData,
-          max_points: maxPoints
+          max_points: maxPoints,
         });
       } catch (e) {
         setError(e.message);
@@ -73,23 +72,24 @@ const QuizResults = () => {
   const merged = students.map((stu) => {
     const r = results.find((x) => x.userId === stu.id);
     if (!r) return { ...stu, score: null, points: null, pct: null };
-    
+
     const score = r.score;
     const points = r.points;
-    const pct = score != null && quizMeta?.max_points > 0
-      ? Math.round((score / quizMeta.max_points) * 100)
-      : 0;
-      
-    return { 
-      ...stu, 
-      score, 
+    const pct =
+      score != null && quizMeta?.max_points > 0
+        ? Math.round((score / quizMeta.max_points) * 100)
+        : 0;
+
+    return {
+      ...stu,
+      score,
       points,
       pct,
       timeTaken: r.timeTaken,
       perfectScore: r.perfectScore,
       streakBonus: r.streakBonus,
       timeBonus: r.timeBonus,
-      timestamp: r.timestamp
+      timestamp: r.timestamp,
     };
   });
 
@@ -128,7 +128,9 @@ const QuizResults = () => {
                         {u.points > u.score && (
                           <div className="text-xs text-green-600 space-y-0.5">
                             {u.perfectScore && <div>✨ Perfect</div>}
-                            {u.streakBonus > 0 && <div>🔥 +{u.streakBonus}</div>}
+                            {u.streakBonus > 0 && (
+                              <div>🔥 +{u.streakBonus}</div>
+                            )}
                             {u.timeBonus > 0 && <div>⚡ +{u.timeBonus}</div>}
                           </div>
                         )}

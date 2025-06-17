@@ -1,5 +1,4 @@
 import React from "react";
-// import { StarIcon } from "../../assets/icons";
 
 const AstronomyLanding = () => (
   <div className="bg-[#f0f8ff] p-8 rounded-xl shadow-xl text-black-500 space-y-6 border border-blue-300">
@@ -12,7 +11,6 @@ const AstronomyLanding = () => (
       constelațiilor.
     </p>
     <div className="flex items-center gap-6">
-      {/* <img className="w-16 h-16" src={StarIcon} alt="Star icon" /> */}
       <p className="text-md">
         Alege „Astronomie” din meniul din stânga pentru a începe explorarea
         cosmică!

@@ -1,102 +1,112 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
   TrophyIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   SearchIcon,
-} from 'lucide-react'
+} from "lucide-react";
 
 interface LeaderboardEntry {
-  user_id: string
-  email: string
-  total_points: number
-  ranking: number
-  badges: any[]
+  user_id: string;
+  email: string;
+  total_points: number;
+  ranking: number;
+  badges: any[];
 }
 
 interface ClassFilter {
-  id: string
-  name: string
+  id: string;
+  name: string;
 }
 
 const LeaderboardCard = () => {
-  const [filter, setFilter] = useState('all')
-  const [searchQuery, setSearchQuery] = useState('')
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [filter, setFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [classFilters, setClassFilters] = useState<ClassFilter[]>([
-    { id: 'all', name: 'Toate Clasele' },
-  ]) // Initial state includes 'Toate Clasele'
-  const token = localStorage.getItem('token')
+    { id: "all", name: "Toate Clasele" },
+  ]);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const response = await fetch('http://localhost:8000/user/classes', {
+        const response = await fetch("http://localhost:8000/user/classes", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        })
+        });
 
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data: any[] = await response.json()
+        const data: any[] = await response.json();
         const fetchedClasses: ClassFilter[] = data.map((cls) => ({
           id: cls.id,
           name: cls.name,
-        }))
-        setClassFilters((prev) => [{ id: 'all', name: 'Toate Clasele' }, ...fetchedClasses])
+        }));
+        setClassFilters((prev) => [
+          { id: "all", name: "Toate Clasele" },
+          ...fetchedClasses,
+        ]);
       } catch (e: any) {
-        console.error('Failed to fetch classes:', e)
-        // Optionally, set an error state for classes as well
+        console.error("Failed to fetch classes:", e);
       }
-    }
-    fetchClasses()
-  }, [token])
+    };
+    fetchClasses();
+  }, [token]);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
-      setLoading(true)
-      setError(null)
+      setLoading(true);
+      setError(null);
       try {
         const url = `http://localhost:8000/user/leaderboard${
-          filter !== 'all' ? `?class_id=${filter}` : ''
-        }`
+          filter !== "all" ? `?class_id=${filter}` : ""
+        }`;
         const response = await fetch(url, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        })
+        });
 
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data: LeaderboardEntry[] = await response.json()
-        setLeaderboard(data || []) // Ensure data is an array
+        const data: LeaderboardEntry[] = await response.json();
+        setLeaderboard(data || []);
       } catch (e: any) {
-        setError(e.message)
+        setError(e.message);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchLeaderboard()
-  }, [filter, token])
+    fetchLeaderboard();
+  }, [filter, token]);
 
   const filteredData = leaderboard.filter((entry) =>
-    entry.email.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+    entry.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   if (loading) {
-    return <p className="pt-24 text-center text-mulberry">Se încarcă clasamentul...</p>
+    return (
+      <p className="pt-24 text-center text-mulberry">
+        Se încarcă clasamentul...
+      </p>
+    );
   }
 
   if (error) {
-    return <p className="pt-24 text-center text-red-600">Eroare la încărcarea clasamentului: {error}</p>
+    return (
+      <p className="pt-24 text-center text-red-600">
+        Eroare la încărcarea clasamentului: {error}
+      </p>
+    );
   }
 
   return (
@@ -177,7 +187,9 @@ const LeaderboardCard = () => {
                 <td className="px-20 py-4">
                   <div className="flex items-center">
                     <img
-                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(entry.email)}&background=random`}
+                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+                        entry.email
+                      )}&background=random`}
                       alt={entry.email}
                       className="w-9 h-9 rounded-full mr-3"
                     />
@@ -195,7 +207,7 @@ const LeaderboardCard = () => {
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LeaderboardCard; 
+export default LeaderboardCard;

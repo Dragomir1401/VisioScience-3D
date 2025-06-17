@@ -4,20 +4,18 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 const ACCENTS = {
-  bronze: "#FFD700", // Gold neon
-  silver: "#C0C0C0", // Silver neon
-  gold: "#FFA500", // Orange neon
-  perfect: "#FF69B4", // Pink neon
+  bronze: "#FFD700",
+  silver: "#C0C0C0",
+  gold: "#FFA500",
+  perfect: "#FF69B4",
 };
 
-// Helper pentru a obține badge-ul cu progresul maxim sau câștigat pentru fiecare tip
 function getUniqueBadgesByType(badges) {
   const map = {};
   badges.forEach((badge) => {
     if (!map[badge.type]) {
       map[badge.type] = badge;
     } else {
-      // Preferă badge-ul câștigat, apoi progresul cel mai mare
       if (badge.earned && !map[badge.type].earned) {
         map[badge.type] = badge;
       } else if (badge.progress > map[badge.type].progress) {
@@ -39,7 +37,6 @@ function Achievements() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch user data
         const userResponse = await fetch("http://localhost:8000/user/me", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -57,7 +54,6 @@ function Achievements() {
           navigate("/profile");
         }
 
-        // Fetch badges
         const badgesResponse = await fetch(
           `http://localhost:8000/user/badges/${userData.id}`,
           {
@@ -74,7 +70,6 @@ function Achievements() {
         const badgesData = await badgesResponse.json();
         console.log("Raw badge data:", badgesData);
 
-        // Transform badge data to match the expected format
         const transformedBadges = badgesData.map((badge) => ({
           id: badge.badge.id,
           title: badge.badge.title,
@@ -149,7 +144,6 @@ function Achievements() {
           </p>
         </motion.div>
 
-        {/* Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -218,7 +212,6 @@ function Achievements() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left section - 3D Scene */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -232,7 +225,6 @@ function Achievements() {
             />
           </motion.div>
 
-          {/* Right section - Challenges and Badge Details */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -286,7 +278,6 @@ function Achievements() {
                 ))}
             </div>
 
-            {/* Selected Badge Details */}
             {selectedBadge && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -322,7 +313,6 @@ function Achievements() {
           </motion.div>
         </div>
 
-        {/* Back Button */}
         <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

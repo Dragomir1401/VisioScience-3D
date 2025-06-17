@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { TrendingUpIcon, CalendarIcon } from 'lucide-react'
+import React, { useState, useEffect } from "react";
+import { TrendingUpIcon, CalendarIcon } from "lucide-react";
 import {
   LineChart,
   Line,
@@ -9,34 +9,31 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from 'recharts'
+} from "recharts";
 
 const ImprovementCard = () => {
-  const token = localStorage.getItem('token');
-  const [timeRange, setTimeRange] = useState('8-weeks')
-  const [selectedClass, setSelectedClass] = useState('')
-  const [classes, setClasses] = useState([])
+  const token = localStorage.getItem("token");
+  const [timeRange, setTimeRange] = useState("8-weeks");
+  const [selectedClass, setSelectedClass] = useState("");
+  const [classes, setClasses] = useState([]);
 
-  const [performanceTrends, setPerformanceTrends] = useState([])
-  const [loadingTrends, setLoadingTrends] = useState(true)
-  const [errorTrends, setErrorTrends] = useState(null)
+  const [performanceTrends, setPerformanceTrends] = useState([]);
+  const [loadingTrends, setLoadingTrends] = useState(true);
+  const [errorTrends, setErrorTrends] = useState(null);
 
-  const [mostImprovedStudents, setMostImprovedStudents] = useState([])
-  const [loadingStudents, setLoadingStudents] = useState(true)
-  const [errorStudents, setErrorStudents] = useState(null)
+  const [mostImprovedStudents, setMostImprovedStudents] = useState([]);
+  const [loadingStudents, setLoadingStudents] = useState(true);
+  const [errorStudents, setErrorStudents] = useState(null);
 
   useEffect(() => {
     const fetchClasses = async () => {
       if (token) {
         try {
-          const response = await fetch(
-            'http://localhost:8000/user/classes',
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          const response = await fetch("http://localhost:8000/user/classes", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
@@ -46,7 +43,7 @@ const ImprovementCard = () => {
             setSelectedClass(data[0].id);
           }
         } catch (error) {
-          console.error('Eroare la preluarea claselor:', error);
+          console.error("Eroare la preluarea claselor:", error);
         }
       }
     };
@@ -74,7 +71,7 @@ const ImprovementCard = () => {
         const trendsData = await trendsResponse.json();
         setPerformanceTrends(trendsData || []);
       } catch (error) {
-        console.error('Eroare la preluarea tendințelor de performanță:', error);
+        console.error("Eroare la preluarea tendințelor de performanță:", error);
         setErrorTrends(error.message);
       } finally {
         setLoadingTrends(false);
@@ -97,7 +94,7 @@ const ImprovementCard = () => {
         const studentsData = await studentsResponse.json();
         setMostImprovedStudents(studentsData || []);
       } catch (error) {
-        console.error('Eroare la preluarea studenților îmbunătățiți:', error);
+        console.error("Eroare la preluarea studenților îmbunătățiți:", error);
         setErrorStudents(error.message);
       } finally {
         setLoadingStudents(false);
@@ -107,9 +104,12 @@ const ImprovementCard = () => {
     fetchImprovementData();
   }, [selectedClass, timeRange, token]);
 
-  // Calculate overall improvement
-  const initialAvg = performanceTrends.length > 0 ? performanceTrends[0].average : 0;
-  const currentAvg = performanceTrends.length > 0 ? performanceTrends[performanceTrends.length - 1].average : 0;
+  const initialAvg =
+    performanceTrends.length > 0 ? performanceTrends[0].average : 0;
+  const currentAvg =
+    performanceTrends.length > 0
+      ? performanceTrends[performanceTrends.length - 1].average
+      : 0;
   const overallImprovement = currentAvg - initialAvg;
 
   return (
@@ -157,20 +157,34 @@ const ImprovementCard = () => {
         <div className="bg-white p-4 rounded-xl border border-gray-100 col-span-3 md:col-span-1">
           <h3 className="font-semibold mb-4">Performanță Generală</h3>
           {loadingTrends ? (
-            <p className="text-center text-gray-500">Se încarcă datele de performanță...</p>
+            <p className="text-center text-gray-500">
+              Se încarcă datele de performanță...
+            </p>
           ) : errorTrends ? (
             <p className="text-center text-red-500">Eroare: {errorTrends}</p>
           ) : performanceTrends.length === 0 ? (
-            <p className="text-center text-gray-500">Nu există date de performanță pentru clasa selectată și intervalul de timp.</p>
+            <p className="text-center text-gray-500">
+              Nu există date de performanță pentru clasa selectată și intervalul
+              de timp.
+            </p>
           ) : (
             <div className="space-y-6">
               <div>
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-[#888888]">Media Clasei</span>
                   <div className="flex items-center">
-                    <span className="font-semibold">{currentAvg.toFixed(1)}%</span>
-                    <span className={`ml-1 text-xs ${overallImprovement >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                      {overallImprovement >= 0 ? '↑' : '↓'}{Math.abs(overallImprovement).toFixed(1)}%
+                    <span className="font-semibold">
+                      {currentAvg.toFixed(1)}%
+                    </span>
+                    <span
+                      className={`ml-1 text-xs ${
+                        overallImprovement >= 0
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {overallImprovement >= 0 ? "↑" : "↓"}
+                      {Math.abs(overallImprovement).toFixed(1)}%
                     </span>
                   </div>
                 </div>
@@ -188,7 +202,10 @@ const ImprovementCard = () => {
                   <span className="text-[#888888]">Cel Mai Bun Elev</span>
                   <div className="flex items-center">
                     <span className="font-semibold">
-                      {performanceTrends[performanceTrends.length - 1].topPerformer.toFixed(1)}%
+                      {performanceTrends[
+                        performanceTrends.length - 1
+                      ].topPerformer.toFixed(1)}
+                      %
                     </span>
                   </div>
                 </div>
@@ -196,7 +213,10 @@ const ImprovementCard = () => {
                   <div
                     className="bg-[#690375] h-2.5 rounded-full"
                     style={{
-                      width: `${performanceTrends[performanceTrends.length - 1].topPerformer}%`,
+                      width: `${
+                        performanceTrends[performanceTrends.length - 1]
+                          .topPerformer
+                      }%`,
                     }}
                   ></div>
                 </div>
@@ -206,7 +226,10 @@ const ImprovementCard = () => {
                   <span className="text-[#888888]">Cel Mai Slab Elev</span>
                   <div className="flex items-center">
                     <span className="font-semibold">
-                      {performanceTrends[performanceTrends.length - 1].lowestPerformer.toFixed(1)}%
+                      {performanceTrends[
+                        performanceTrends.length - 1
+                      ].lowestPerformer.toFixed(1)}
+                      %
                     </span>
                   </div>
                 </div>
@@ -214,7 +237,10 @@ const ImprovementCard = () => {
                   <div
                     className="bg-[#AE847E] h-2.5 rounded-full"
                     style={{
-                      width: `${performanceTrends[performanceTrends.length - 1].lowestPerformer}%`,
+                      width: `${
+                        performanceTrends[performanceTrends.length - 1]
+                          .lowestPerformer
+                      }%`,
                     }}
                   ></div>
                 </div>
@@ -225,11 +251,18 @@ const ImprovementCard = () => {
         <div className="bg-white p-4 rounded-xl border border-gray-100 col-span-3 md:col-span-2">
           <h3 className="font-semibold mb-4">Tendințe Performanță</h3>
           {loadingTrends ? (
-            <p className="text-center text-gray-500">Se încarcă graficul de tendințe...</p>
+            <p className="text-center text-gray-500">
+              Se încarcă graficul de tendințe...
+            </p>
           ) : errorTrends ? (
-            <p className="text-center text-red-500">Eroare la încărcarea graficului: {errorTrends}</p>
+            <p className="text-center text-red-500">
+              Eroare la încărcarea graficului: {errorTrends}
+            </p>
           ) : performanceTrends.length === 0 ? (
-            <p className="text-center text-gray-500">Nu există date de tendințe pentru clasa selectată și intervalul de timp.</p>
+            <p className="text-center text-gray-500">
+              Nu există date de tendințe pentru clasa selectată și intervalul de
+              timp.
+            </p>
           ) : (
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -275,13 +308,19 @@ const ImprovementCard = () => {
         </div>
       </div>
       <div className="bg-white p-4 rounded-xl border border-gray-100">
-        <h3 className="font-semibold mb-4">Elevii cu cea Mai Mare Îmbunătățire</h3>
+        <h3 className="font-semibold mb-4">
+          Elevii cu cea Mai Mare Îmbunătățire
+        </h3>
         {loadingStudents ? (
-          <p className="text-center text-gray-500">Se încarcă elevii cu performanțe îmbunătățite...</p>
+          <p className="text-center text-gray-500">
+            Se încarcă elevii cu performanțe îmbunătățite...
+          </p>
         ) : errorStudents ? (
           <p className="text-center text-red-500">Eroare: {errorStudents}</p>
         ) : mostImprovedStudents.length === 0 ? (
-          <p className="text-center text-gray-500">Nu există performanțe îmbunătățite pentru clasa selectată.</p>
+          <p className="text-center text-gray-500">
+            Nu există performanțe îmbunătățite pentru clasa selectată.
+          </p>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full">
@@ -310,7 +349,9 @@ const ImprovementCard = () => {
                     <td className="px-4 py-4">
                       <div className="flex items-center">
                         <img
-                          src={`https://ui-avatars.com/api/?name=${encodeURIComponent(student.name)}&background=random&color=fff&bold=true`}
+                          src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+                            student.name
+                          )}&background=random&color=fff&bold=true`}
                           alt={student.name}
                           className="w-9 h-9 rounded-full mr-3"
                         />
@@ -339,7 +380,7 @@ const ImprovementCard = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ImprovementCard; 
+export default ImprovementCard;

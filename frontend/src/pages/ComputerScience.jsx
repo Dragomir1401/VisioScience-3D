@@ -44,8 +44,8 @@ import {
   list,
   dll,
 } from "../assets/icons";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import HomeIcon from '@mui/icons-material/Home';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import HomeIcon from "@mui/icons-material/Home";
 
 const csObjects = [
   { id: "array", label: "Array", icon: array },
@@ -81,7 +81,6 @@ const ComputerScience = () => {
   const [viewMode, setViewMode] = useState("landing");
   const [type, setType] = useState("max");
 
-  // New state for map elements in the required format
   const [mapElements, setMapElements] = useState([
     { key: 10, value: 100 },
     { key: 20, value: 200 },
@@ -91,16 +90,18 @@ const ComputerScience = () => {
   ]);
 
   React.useEffect(() => {
-    setBuckets(Array(8).fill([]).map(() => []));
+    setBuckets(
+      Array(8)
+        .fill([])
+        .map(() => [])
+    );
     setElements([1, 2, 3, 4, 5]);
-    // Removed setRoot(null) as it's no longer directly used for map visualization root
-    // setMapElements will be managed dynamically or reset as needed
     setVisibleCount(0);
     setViewMode("landing");
   }, [selected?.id]);
 
   const handleShowCppEditor = () => {
-    navigate('/computer-science/editor');
+    navigate("/computer-science/editor");
   };
 
   const handleBackToLanding = () => {
@@ -134,11 +135,13 @@ const ComputerScience = () => {
           </div>
         )}
 
-        {viewMode === "landing" && !selected && <CSLanding onShowCppEditor={handleShowCppEditor} />}
+        {viewMode === "landing" && !selected && (
+          <CSLanding onShowCppEditor={handleShowCppEditor} />
+        )}
 
         {selected?.id === "vector" && viewMode === "landing" && (
           <div className="space-y-6">
-            <VectorScene 
+            <VectorScene
               elements={elements}
               showControls={true}
               backgroundColor="#2D2D2D"
@@ -154,7 +157,7 @@ const ComputerScience = () => {
 
         {selected?.id === "unordered_map" && viewMode === "landing" && (
           <div className="space-y-6">
-            <UnorderedMapScene 
+            <UnorderedMapScene
               buckets={buckets}
               showControls={true}
               backgroundColor="#2D2D2D"
@@ -171,7 +174,7 @@ const ComputerScience = () => {
 
         {selected?.id === "map" && viewMode === "landing" && (
           <div className="space-y-6">
-            <AVLTreeDemo 
+            <AVLTreeDemo
               elements={mapElements}
               showControls={true}
               backgroundColor="#2D2D2D"
@@ -187,7 +190,7 @@ const ComputerScience = () => {
 
         {selected?.id === "unordered_set" && viewMode === "landing" && (
           <div className="space-y-6">
-            <UnorderedSetScene 
+            <UnorderedSetScene
               buckets={buckets}
               showControls={true}
               backgroundColor="#2D2D2D"
@@ -204,7 +207,7 @@ const ComputerScience = () => {
 
         {selected?.id === "set" && viewMode === "landing" && (
           <div className="space-y-6">
-            <AVLSetDemo 
+            <AVLSetDemo
               root={root}
               onRootChange={setRoot}
               showControls={true}
@@ -221,7 +224,7 @@ const ComputerScience = () => {
 
         {selected?.id === "priority_queue" && viewMode === "landing" && (
           <div className="space-y-6">
-            <PriorityQueueDemo 
+            <PriorityQueueDemo
               elements={elements}
               onElementsChange={setElements}
               type={type}
@@ -257,7 +260,7 @@ const ComputerScience = () => {
 
         {selected?.id === "queue" && viewMode === "landing" && (
           <div className="space-y-6">
-            <QueueDemo 
+            <QueueDemo
               elements={elements}
               onElementsChange={setElements}
               showControls={true}
@@ -275,7 +278,7 @@ const ComputerScience = () => {
 
         {selected?.id === "stack" && viewMode === "landing" && (
           <div className="space-y-6">
-            <StackDemo 
+            <StackDemo
               elements={elements}
               onElementsChange={setElements}
               showControls={true}
@@ -292,7 +295,7 @@ const ComputerScience = () => {
 
         {selected?.id === "deque" && viewMode === "landing" && (
           <div className="space-y-6">
-            <DequeDemo 
+            <DequeDemo
               elements={elements}
               onElementsChange={setElements}
               showControls={true}
@@ -310,7 +313,7 @@ const ComputerScience = () => {
 
         {selected?.id === "list" && viewMode === "landing" && (
           <div className="space-y-6">
-            <ListDemo 
+            <ListDemo
               elements={elements}
               onElementsChange={setElements}
               showControls={true}
@@ -328,7 +331,7 @@ const ComputerScience = () => {
 
         {selected?.id === "doubly_linked_list" && viewMode === "landing" && (
           <div className="space-y-6">
-            <DoublyLinkedListDemo 
+            <DoublyLinkedListDemo
               elements={elements}
               onElementsChange={setElements}
               showControls={true}
@@ -346,7 +349,7 @@ const ComputerScience = () => {
 
         {selected?.id === "array" && viewMode === "landing" && (
           <div className="space-y-6">
-            <ArrayDemo 
+            <ArrayDemo
               elements={elements}
               onElementsChange={setElements}
               showControls={true}

@@ -15,16 +15,16 @@ const QuizCreation = () => {
     perfectBonus: 20,
     streakBonus: 15,
     difficulty: "medium",
-    category: "general"
+    category: "general",
   });
 
   const handleAddQuestion = () => {
     const newQuestion = {
-      text: '',
-      choices: ['', '', '', ''],
+      text: "",
+      choices: ["", "", "", ""],
       answer: [],
       points: 10,
-      images: null
+      images: null,
     };
     setQuestions([...questions, newQuestion]);
   };
@@ -63,9 +63,9 @@ const QuizCreation = () => {
   };
 
   const handleConfigChange = (field, value) => {
-    setQuizConfig(prev => ({
+    setQuizConfig((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -99,7 +99,6 @@ const QuizCreation = () => {
       return;
     }
 
-    // Remove IDs from questions before sending
     const questionsWithoutIds = questions.map(({ id, ...q }) => q);
 
     const payload = {
@@ -107,7 +106,7 @@ const QuizCreation = () => {
       class_id: classId,
       owner_id,
       questions: questionsWithoutIds,
-      ...quizConfig
+      ...quizConfig,
     };
 
     try {
@@ -149,7 +148,9 @@ const QuizCreation = () => {
       </h1>
 
       <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry mb-6">
-        <h2 className="text-lg font-semibold text-mulberry mb-4">Configurare Quiz</h2>
+        <h2 className="text-lg font-semibold text-mulberry mb-4">
+          Configurare Quiz
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -159,7 +160,9 @@ const QuizCreation = () => {
               type="number"
               min="1"
               value={quizConfig.maxPoints}
-              onChange={(e) => handleConfigChange("maxPoints", parseInt(e.target.value))}
+              onChange={(e) =>
+                handleConfigChange("maxPoints", parseInt(e.target.value))
+              }
               className="w-full p-2 border rounded-md"
             />
           </div>
@@ -171,7 +174,9 @@ const QuizCreation = () => {
               type="number"
               min="0"
               value={quizConfig.timeBonus}
-              onChange={(e) => handleConfigChange("timeBonus", parseInt(e.target.value))}
+              onChange={(e) =>
+                handleConfigChange("timeBonus", parseInt(e.target.value))
+              }
               className="w-full p-2 border rounded-md"
             />
           </div>
@@ -183,7 +188,9 @@ const QuizCreation = () => {
               type="number"
               min="0"
               value={quizConfig.perfectBonus}
-              onChange={(e) => handleConfigChange("perfectBonus", parseInt(e.target.value))}
+              onChange={(e) =>
+                handleConfigChange("perfectBonus", parseInt(e.target.value))
+              }
               className="w-full p-2 border rounded-md"
             />
           </div>
@@ -195,7 +202,9 @@ const QuizCreation = () => {
               type="number"
               min="0"
               value={quizConfig.streakBonus}
-              onChange={(e) => handleConfigChange("streakBonus", parseInt(e.target.value))}
+              onChange={(e) =>
+                handleConfigChange("streakBonus", parseInt(e.target.value))
+              }
               className="w-full p-2 border rounded-md"
             />
           </div>

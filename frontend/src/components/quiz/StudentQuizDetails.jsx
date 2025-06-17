@@ -38,13 +38,15 @@ const StudentQuizDetails = ({ classId }) => {
                   points: data.points ?? null,
                   perfectScore: data.perfect_score ?? false,
                   streakBonus: data.streak_bonus ?? 0,
-                  timeBonus: data.time_bonus ?? 0
+                  timeBonus: data.time_bonus ?? 0,
                 };
               }
             } catch {}
 
-            // Calculate maxPoints by summing points of all questions
-            const calculatedMaxPoints = (q.questions || []).reduce((sum, question) => sum + (question.points || 0), 0);
+            const calculatedMaxPoints = (q.questions || []).reduce(
+              (sum, question) => sum + (question.points || 0),
+              0
+            );
 
             return {
               id: q.id,
@@ -53,7 +55,7 @@ const StudentQuizDetails = ({ classId }) => {
               is_open: q.is_open,
               difficulty: q.difficulty || "medium",
               category: q.category || "general",
-              maxPoints: calculatedMaxPoints // Use calculated max points
+              maxPoints: calculatedMaxPoints,
             };
           })
         );
@@ -69,7 +71,9 @@ const StudentQuizDetails = ({ classId }) => {
   if (load) return <p className="text-sm text-gray-500">Se încarcă…</p>;
   if (error) return <p className="text-red-600 text-sm">{error}</p>;
   if (data.length === 0)
-    return <p className="text-sm italic text-gray-500">Nu există quiz-uri încă.</p>;
+    return (
+      <p className="text-sm italic text-gray-500">Nu există quiz-uri încă.</p>
+    );
 
   return (
     <ul className="space-y-3 text-sm">
@@ -102,14 +106,21 @@ const StudentQuizDetails = ({ classId }) => {
                   {q.result.score !== null ? (
                     <>
                       <div>
-                        Scor: {Math.min(q.result.score, q.maxPoints)} / {q.maxPoints}
+                        Scor: {Math.min(q.result.score, q.maxPoints)} /{" "}
+                        {q.maxPoints}
                       </div>
                       {q.result.points > q.result.score && (
                         <div className="text-xs text-green-600 space-y-0.5">
                           {q.result.perfectScore && <span>✨ Perfect</span>}
-                          {q.result.streakBonus > 0 && <span>🔥 +{q.result.streakBonus}</span>}
-                          {q.result.timeBonus > 0 && <span>⚡ +{q.result.timeBonus}</span>}
-                          <div className="font-semibold">Total cu bonus: {q.result.points}</div>
+                          {q.result.streakBonus > 0 && (
+                            <span>🔥 +{q.result.streakBonus}</span>
+                          )}
+                          {q.result.timeBonus > 0 && (
+                            <span>⚡ +{q.result.timeBonus}</span>
+                          )}
+                          <div className="font-semibold">
+                            Total cu bonus: {q.result.points}
+                          </div>
                         </div>
                       )}
                     </>

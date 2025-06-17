@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
   BarChart2Icon,
   ClipboardListIcon,
   AlertCircleIcon,
   CheckCircleIcon,
-} from 'lucide-react'
+} from "lucide-react";
 import {
   PieChart,
   Pie,
@@ -17,152 +17,187 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from 'recharts'
-import axios from 'axios'
+} from "recharts";
+import axios from "axios";
 
 interface QuizStats {
-  id: string
-  title: string
-  completed: number
-  avg: number
-  difficulty: string
-  total_users: number
-  in_progress: number
-  not_started: number
+  id: string;
+  title: string;
+  completed: number;
+  avg: number;
+  difficulty: string;
+  total_users: number;
+  in_progress: number;
+  not_started: number;
   challenging_questions: {
-    question: string
-    incorrect_rate: number
-  }[]
+    question: string;
+    incorrect_rate: number;
+  }[];
 }
 
 interface QuestionStatistics {
-  question: string
-  incorrect_rate: number
-  total_attempts: number
-  incorrect_attempts: number
+  question: string;
+  incorrect_rate: number;
+  total_attempts: number;
+  incorrect_attempts: number;
 }
 
 interface ChallengingQuestion {
-  question: string
-  incorrect_rate: number
+  question: string;
+  incorrect_rate: number;
 }
 
 interface QuizOption {
-  id: string
-  name: string
+  id: string;
+  name: string;
 }
 
-const COLORS = ['#4f46e5', '#AE847E', '#888888']
+const COLORS = ["#4f46e5", "#AE847E", "#888888"];
 
 const QuizStatsCard = () => {
-  const [overallStats, setOverallStats] = useState<QuizStats[]>([])
-  const [quizListOptions, setQuizListOptions] = useState<QuizOption[]>([{ id: 'all', name: 'Toate Quiz-urile' }])
-  const [selectedQuizId, setSelectedQuizId] = useState('all')
-  const [challengingQuestionsData, setChallengingQuestionsData] = useState<ChallengingQuestion[]>([])
-  const [questionStatistics, setQuestionStatistics] = useState<QuestionStatistics[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const token = localStorage.getItem('token')
+  const [overallStats, setOverallStats] = useState<QuizStats[]>([]);
+  const [quizListOptions, setQuizListOptions] = useState<QuizOption[]>([
+    { id: "all", name: "Toate Quiz-urile" },
+  ]);
+  const [selectedQuizId, setSelectedQuizId] = useState("all");
+  const [challengingQuestionsData, setChallengingQuestionsData] = useState<
+    ChallengingQuestion[]
+  >([]);
+  const [questionStatistics, setQuestionStatistics] = useState<
+    QuestionStatistics[]
+  >([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchOverallStats = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/user/quiz/statistics', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        setOverallStats(response.data || [])
-        const options = response.data.map((quiz: QuizStats) => ({ id: quiz.id, name: quiz.title }))
-        setQuizListOptions([{ id: 'all', name: 'Toate Quiz-urile' }, ...options])
+        const response = await axios.get(
+          "http://localhost:8000/user/quiz/statistics",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setOverallStats(response.data || []);
+        const options = response.data.map((quiz: QuizStats) => ({
+          id: quiz.id,
+          name: quiz.title,
+        }));
+        setQuizListOptions([
+          { id: "all", name: "Toate Quiz-urile" },
+          ...options,
+        ]);
       } catch (err: any) {
-        setError('Failed to load overall quiz statistics: ' + err.message)
-        console.error('Error fetching overall quiz stats:', err)
+        setError("Failed to load overall quiz statistics: " + err.message);
+        console.error("Error fetching overall quiz stats:", err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchOverallStats()
-  }, [token])
+    fetchOverallStats();
+  }, [token]);
 
   useEffect(() => {
     const fetchChallengingQuestions = async () => {
-      if (selectedQuizId === 'all') {
-        setChallengingQuestionsData([])
-        return
+      if (selectedQuizId === "all") {
+        setChallengingQuestionsData([]);
+        return;
       }
 
       try {
-        const response = await axios.get(`http://localhost:8000/user/quiz/${selectedQuizId}/challenging-questions`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        setChallengingQuestionsData(response.data || [])
+        const response = await axios.get(
+          `http://localhost:8000/user/quiz/${selectedQuizId}/challenging-questions`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setChallengingQuestionsData(response.data || []);
       } catch (err: any) {
-        console.error('Error fetching challenging questions:', err)
-        setChallengingQuestionsData([])
+        console.error("Error fetching challenging questions:", err);
+        setChallengingQuestionsData([]);
       }
-    }
+    };
 
-    fetchChallengingQuestions()
-  }, [selectedQuizId, token])
+    fetchChallengingQuestions();
+  }, [selectedQuizId, token]);
 
   useEffect(() => {
     const fetchQuestionStatistics = async () => {
-      if (selectedQuizId === 'all') {
-        setQuestionStatistics([])
-        return
+      if (selectedQuizId === "all") {
+        setQuestionStatistics([]);
+        return;
       }
 
       try {
-        const response = await axios.get(`http://localhost:8000/user/quiz/${selectedQuizId}/question-statistics`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        setQuestionStatistics(response.data || [])
+        const response = await axios.get(
+          `http://localhost:8000/user/quiz/${selectedQuizId}/question-statistics`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setQuestionStatistics(response.data || []);
       } catch (err: any) {
-        console.error('Error fetching question statistics:', err)
-        setQuestionStatistics([])
+        console.error("Error fetching question statistics:", err);
+        setQuestionStatistics([]);
       }
-    }
+    };
 
-    fetchQuestionStatistics()
-  }, [selectedQuizId, token])
+    fetchQuestionStatistics();
+  }, [selectedQuizId, token]);
 
-  const currentQuizStats = overallStats.find(quiz => quiz.id === selectedQuizId)
+  const currentQuizStats = overallStats.find(
+    (quiz) => quiz.id === selectedQuizId
+  );
 
-  // Prepare data for completion rate Pie Chart
-  const completionRateData = selectedQuizId === 'all'
-    ? [
-        { name: 'Completate', value: overallStats.reduce((sum, q) => sum + q.completed, 0) },
-        { name: 'Neîncepute', value: overallStats.reduce((sum, q) => sum + q.not_started, 0) },
-        { name: 'În Progres', value: overallStats.reduce((sum, q) => sum + q.in_progress, 0) },
-      ]
-    : [
-        { name: 'Completate', value: currentQuizStats?.completed || 0 },
-        { name: 'Neîncepute', value: currentQuizStats?.not_started || 0 },
-        { name: 'În Progres', value: currentQuizStats?.in_progress || 0 },
-      ];
+  const completionRateData =
+    selectedQuizId === "all"
+      ? [
+          {
+            name: "Completate",
+            value: overallStats.reduce((sum, q) => sum + q.completed, 0),
+          },
+          {
+            name: "Neîncepute",
+            value: overallStats.reduce((sum, q) => sum + q.not_started, 0),
+          },
+          {
+            name: "În Progres",
+            value: overallStats.reduce((sum, q) => sum + q.in_progress, 0),
+          },
+        ]
+      : [
+          { name: "Completate", value: currentQuizStats?.completed || 0 },
+          { name: "Neîncepute", value: currentQuizStats?.not_started || 0 },
+          { name: "În Progres", value: currentQuizStats?.in_progress || 0 },
+        ];
 
-  // Prepare data for difficulty distribution Bar Chart
   const difficultyDataMap = overallStats.reduce((acc, quiz) => {
     acc[quiz.difficulty] = (acc[quiz.difficulty] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
-  const difficultyData = Object.keys(difficultyDataMap).map(difficulty => ({
+  const difficultyData = Object.keys(difficultyDataMap).map((difficulty) => ({
     name: difficulty,
-    count: difficultyDataMap[difficulty]
+    count: difficultyDataMap[difficulty],
   }));
 
   if (loading) {
-    return <p className="pt-24 text-center text-mulberry">Se încarcă statisticile quiz-urilor...</p>
+    return (
+      <p className="pt-24 text-center text-mulberry">
+        Se încarcă statisticile quiz-urilor...
+      </p>
+    );
   }
 
   if (error) {
-    return <p className="pt-24 text-center text-red-600">Eroare: {error}</p>
+    return <p className="pt-24 text-center text-red-600">Eroare: {error}</p>;
   }
 
   return (
@@ -260,7 +295,13 @@ const QuizStatsCard = () => {
                 </div>
                 <div className="w-full bg-gray-100 rounded-full h-2.5">
                   <div
-                    className={`h-2.5 rounded-full ${quiz.avg >= 85 ? 'bg-green-500' : quiz.avg >= 70 ? 'bg-[#4f46e5]' : 'bg-[#AE847E]'}`}
+                    className={`h-2.5 rounded-full ${
+                      quiz.avg >= 85
+                        ? "bg-green-500"
+                        : quiz.avg >= 70
+                        ? "bg-[#4f46e5]"
+                        : "bg-[#AE847E]"
+                    }`}
                     style={{
                       width: `${quiz.avg}%`,
                     }}
@@ -298,54 +339,63 @@ const QuizStatsCard = () => {
               </tr>
             </thead>
             <tbody>
-              {(selectedQuizId === 'all' ? [] : questionStatistics).map((item, index) => (
-                <tr
-                  key={index}
-                  className="border-b border-gray-100 hover:bg-[#f3e8ff]"
-                >
-                  <td className="px-4 py-4">{item.question}</td>
-                  <td className="px-4 py-4">
-                    <div className="flex items-center">
-                      <div className="w-full max-w-[100px] bg-gray-100 rounded-full h-2.5">
-                        <div
-                          className="bg-[#AE847E] h-2.5 rounded-full"
-                          style={{
-                            width: `${item.incorrect_rate}%`,
-                          }}
-                        ></div>
+              {(selectedQuizId === "all" ? [] : questionStatistics).map(
+                (item, index) => (
+                  <tr
+                    key={index}
+                    className="border-b border-gray-100 hover:bg-[#f3e8ff]"
+                  >
+                    <td className="px-4 py-4">{item.question}</td>
+                    <td className="px-4 py-4">
+                      <div className="flex items-center">
+                        <div className="w-full max-w-[100px] bg-gray-100 rounded-full h-2.5">
+                          <div
+                            className="bg-[#AE847E] h-2.5 rounded-full"
+                            style={{
+                              width: `${item.incorrect_rate}%`,
+                            }}
+                          ></div>
+                        </div>
+                        <span className="ml-3 font-semibold text-[#AE847E]">
+                          {item.incorrect_rate.toFixed(1)}%
+                        </span>
                       </div>
-                      <span className="ml-3 font-semibold text-[#AE847E]">
-                        {item.incorrect_rate.toFixed(1)}%
+                    </td>
+                    <td className="px-4 py-4 text-center">
+                      <span className="font-medium text-[#4f46e5]">
+                        {item.total_attempts}
                       </span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-4 text-center">
-                    <span className="font-medium text-[#4f46e5]">
-                      {item.total_attempts}
-                    </span>
-                  </td>
-                  <td className="px-4 py-4 text-center">
-                    <span className="font-medium text-[#AE847E]">
-                      {item.incorrect_attempts}
-                    </span>
-                  </td>
-                  <td className="px-4 py-4 text-center">
-                    <span className="font-medium text-green-600">
-                      {item.total_attempts - item.incorrect_attempts}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-              {selectedQuizId === 'all' && (
+                    </td>
+                    <td className="px-4 py-4 text-center">
+                      <span className="font-medium text-[#AE847E]">
+                        {item.incorrect_attempts}
+                      </span>
+                    </td>
+                    <td className="px-4 py-4 text-center">
+                      <span className="font-medium text-green-600">
+                        {item.total_attempts - item.incorrect_attempts}
+                      </span>
+                    </td>
+                  </tr>
+                )
+              )}
+              {selectedQuizId === "all" && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-4 text-center text-gray-500">
-                    Selectați un quiz pentru a vedea statisticile detaliate ale întrebărilor.
+                  <td
+                    colSpan={5}
+                    className="px-4 py-4 text-center text-gray-500"
+                  >
+                    Selectați un quiz pentru a vedea statisticile detaliate ale
+                    întrebărilor.
                   </td>
                 </tr>
               )}
-              {selectedQuizId !== 'all' && questionStatistics.length === 0 && (
+              {selectedQuizId !== "all" && questionStatistics.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-4 text-center text-gray-500">
+                  <td
+                    colSpan={5}
+                    className="px-4 py-4 text-center text-gray-500"
+                  >
                     Nu există statistici disponibile pentru acest quiz încă.
                   </td>
                 </tr>
@@ -355,7 +405,7 @@ const QuizStatsCard = () => {
         </div>
       </div>
 
-      {selectedQuizId !== 'all' && questionStatistics.length > 0 && (
+      {selectedQuizId !== "all" && questionStatistics.length > 0 && (
         <div className="bg-white p-4 rounded-xl border border-gray-100">
           <h3 className="font-semibold mb-4 flex items-center gap-2">
             <BarChart2Icon size={18} className="text-[#4f46e5]" />
@@ -364,8 +414,11 @@ const QuizStatsCard = () => {
           <div className="h-96">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={questionStatistics.map(q => ({
-                  name: q.question.length > 20 ? q.question.substring(0, 20) + '...' : q.question,
+                data={questionStatistics.map((q) => ({
+                  name:
+                    q.question.length > 20
+                      ? q.question.substring(0, 20) + "..."
+                      : q.question,
                   corecte: q.total_attempts - q.incorrect_attempts,
                   gresite: q.incorrect_attempts,
                 }))}
@@ -387,15 +440,25 @@ const QuizStatsCard = () => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="corecte" name="Răspunsuri Corecte" fill="#4f46e5" stackId="a" />
-                <Bar dataKey="gresite" name="Răspunsuri Greșite" fill="#AE847E" stackId="a" />
+                <Bar
+                  dataKey="corecte"
+                  name="Răspunsuri Corecte"
+                  fill="#4f46e5"
+                  stackId="a"
+                />
+                <Bar
+                  dataKey="gresite"
+                  name="Răspunsuri Greșite"
+                  fill="#AE847E"
+                  stackId="a"
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default QuizStatsCard; 
+export default QuizStatsCard;

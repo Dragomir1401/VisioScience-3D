@@ -63,7 +63,6 @@ r.Handle("/user/auth/register", handlers.Register).Methods("POST")
 r.Handle("/user/auth/login", handlers.Login).Methods("POST")
 r.Handle("/user/me", middleware.JWT(http.Handler(handlers.GetMe)))
 r.Handle("/user/classes", middleware.JWT(http.Handler(handlers.CreateClass))).Methods("POST")
-// Alte rute...
 
 corsObj := gorillaHandlers.CORS(
     gorillaHandlers.AllowedOrigins([]string{"*"}),

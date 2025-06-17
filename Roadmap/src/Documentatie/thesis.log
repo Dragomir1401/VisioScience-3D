@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  17 JUN 2025 20:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  18 JUN 2025 00:08
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1985,12 +1985,12 @@ Anexa A.
 
 ] [83]
 LaTeX Font Info:    Font shape `T1/ntxtt/b/n' in size <10.95> not available
-(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 78.
+(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 77.
  [84] [85] [86]
 LaTeX Font Info:    Font shape `T1/ntxtt/m/it' in size <10.95> not available
-(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 182.
+(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 181.
  [87]
-Overfull \hbox (54.67911pt too wide) in paragraph at lines 213--255
+Overfull \hbox (54.67911pt too wide) in paragraph at lines 212--254
  [][] 
  []
 
@@ -2064,8 +2064,8 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 (rerunfilecheck)             Checksum: 2147AC5B8663D4F3F56E602F7971BA4E;24071.
  ) 
 Here is how much of TeX's memory you used:
- 23462 strings out of 474486
- 382657 string characters out of 5743754
+ 23461 strings out of 474486
+ 382641 string characters out of 5743754
  2165542 words of memory out of 5000000
  44557 multiletter control sequences out of 15000+600000
  696911 words of font info for 219 fonts, out of 8000000 for 9000
@@ -2081,9 +2081,9 @@ pdfTeX warning (dest): name{Hfootnote.41} has been referenced but does not exist
 pdfTeX warning (dest): name{Hfootnote.40} has been referenced but does not exist, replaced by a fixed one
 
 <C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/NewTXMI.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qhvr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qtmr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xbtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/txsys.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmb.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmri.pfb>
-Output written on thesis.pdf (98 pages, 20865544 bytes).
+Output written on thesis.pdf (98 pages, 20865038 bytes).
 PDF statistics:
- 1899 PDF objects out of 2073 (max. 8388607)
- 709 named destinations out of 1000 (max. 500000)
+ 1897 PDF objects out of 2073 (max. 8388607)
+ 708 named destinations out of 1000 (max. 500000)
  1195 words of extra memory for PDF output out of 10000 (max. 10000000)
 

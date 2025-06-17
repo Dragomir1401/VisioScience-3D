@@ -79,7 +79,6 @@ const QuizAttempt = () => {
     const startTime = Date.now();
 
     try {
-      // Get claims from token
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("No authentication token found");
@@ -89,7 +88,6 @@ const QuizAttempt = () => {
       const timeSpent = Math.floor((Date.now() - startTime.current) / 1000);
       setTimeTaken(timeSpent);
 
-      // First submit to evaluation service
       const evaluationPayload = {
         quiz_id: quizId,
         answers: answers.map((a) => parseInt(a, 10)),
@@ -119,7 +117,6 @@ const QuizAttempt = () => {
       const evaluationData = await evaluationResponse.json();
       setResult(evaluationData);
 
-      // Now submit to user-data-service with detailed statistics
       const incorrectlyAnsweredQuestions = quiz.questions
         .filter((_, index) => !evaluationData.correctAnswers[index])
         .map((q) => q.id);
@@ -147,7 +144,7 @@ const QuizAttempt = () => {
         incorrectly_answered_questions: incorrectlyAnsweredQuestions,
         performance_metrics: {
           accuracy: (evaluationData.score / evaluationData.maxScore) * 100,
-          speed: evaluationData.timeBonus > 0 ? 100 : 50, // Convert to numeric values
+          speed: evaluationData.timeBonus > 0 ? 100 : 50,
           consistency: evaluationData.streakBonus > 0 ? "high" : "normal",
         },
       };

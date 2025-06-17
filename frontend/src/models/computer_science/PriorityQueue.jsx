@@ -8,7 +8,7 @@ import {
   RefreshIcon,
 } from "@heroicons/react/solid";
 
-const PriorityQueueScene = ({ 
+const PriorityQueueScene = ({
   elements = [],
   type = "min",
   backgroundColor = "#2D2D2D",
@@ -16,7 +16,7 @@ const PriorityQueueScene = ({
   nodeColor = "#4f46e5",
   edgeColor = "#10b981",
   width = "100%",
-  height = "100%"
+  height = "100%",
 }) => {
   const list = useMemo(() => [...elements], [elements]);
   const root = buildTree(list);
@@ -43,14 +43,16 @@ const PriorityQueueScene = ({
   });
 
   return (
-    <div style={{ 
-      width, 
-      height, 
-      position: 'relative', 
-      borderRadius: '8px', 
-      overflow: 'hidden',
-      border: '2px solid #9B6B9E'
-    }}>
+    <div
+      style={{
+        width,
+        height,
+        position: "relative",
+        borderRadius: "8px",
+        overflow: "hidden",
+        border: "2px solid #9B6B9E",
+      }}
+    >
       <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
         <color attach="background" args={[backgroundColor]} />
         <ambientLight intensity={0.4} />
@@ -87,11 +89,7 @@ const PriorityQueueScene = ({
           </group>
         ))}
 
-        <OrbitControls
-          enablePan
-          enableZoom
-          enableRotate
-        />
+        <OrbitControls enablePan enableZoom enableRotate />
       </Canvas>
     </div>
   );
@@ -133,7 +131,7 @@ const computePositions = (node, x0, x1, y, gapY, list) => {
   computePositions(node.right, x, x1, y - gapY, gapY, list);
 };
 
-const PriorityQueueDemo = ({ 
+const PriorityQueueDemo = ({
   elements = [],
   onElementsChange,
   type = "min",
@@ -145,13 +143,12 @@ const PriorityQueueDemo = ({
   edgeColor = "#10b981",
   width = "100%",
   height = "100%",
-  canvasHeight = "100%"
+  canvasHeight = "100%",
 }) => {
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
   const [heap, setHeap] = useState([]);
 
-  // Rebuild heap when type changes
   useEffect(() => {
     const newHeap = [...elements];
     if (type === "min") {
@@ -196,7 +193,7 @@ const PriorityQueueDemo = ({
   };
 
   return (
-    <div className="flex gap-6" style={{ height: '100%' }}>
+    <div className="flex gap-6" style={{ height: "100%" }}>
       {showControls && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
           <h4 className="text-lg font-semibold text-mulberry">
@@ -247,7 +244,9 @@ const PriorityQueueDemo = ({
             </button>
           </div>
 
-          {message && <div className="text-sm text-gray-700 mt-2">{message}</div>}
+          {message && (
+            <div className="text-sm text-gray-700 mt-2">{message}</div>
+          )}
 
           <div className="text-sm text-gray-700">
             Contents: [{heap.join(", ")}]
@@ -255,8 +254,11 @@ const PriorityQueueDemo = ({
         </div>
       )}
 
-      <div className={showControls ? "w-2/3" : "w-full"} style={{ height: '100%' }}>
-        <PriorityQueueScene 
+      <div
+        className={showControls ? "w-2/3" : "w-full"}
+        style={{ height: "100%" }}
+      >
+        <PriorityQueueScene
           elements={heap}
           type={type}
           backgroundColor={backgroundColor}

@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaMedal } from 'react-icons/fa';
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaMedal } from "react-icons/fa";
 
 interface Badge {
   id: string;
@@ -15,11 +15,14 @@ interface BadgeNotificationProps {
   onClose: () => void;
 }
 
-const BadgeNotification: React.FC<BadgeNotificationProps> = ({ badges, onClose }) => {
+const BadgeNotification: React.FC<BadgeNotificationProps> = ({
+  badges,
+  onClose,
+}) => {
   React.useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
-    }, 5000); // Auto-close after 5 seconds
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, [onClose]);
@@ -39,7 +42,9 @@ const BadgeNotification: React.FC<BadgeNotificationProps> = ({ badges, onClose }
             </div>
             <div className="ml-3 w-0 flex-1">
               <p className="text-sm font-medium text-gray-900">
-                {badges.length === 1 ? 'New Badge Earned!' : 'New Badges Earned!'}
+                {badges.length === 1
+                  ? "New Badge Earned!"
+                  : "New Badges Earned!"}
               </p>
               <div className="mt-2 space-y-2">
                 {badges.map((badge) => (
@@ -48,8 +53,12 @@ const BadgeNotification: React.FC<BadgeNotificationProps> = ({ badges, onClose }
                       <img src={badge.icon} alt="" className="h-6 w-6" />
                     )}
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{badge.title}</p>
-                      <p className="text-sm text-gray-500">{badge.description}</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {badge.title}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        {badge.description}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -61,7 +70,11 @@ const BadgeNotification: React.FC<BadgeNotificationProps> = ({ badges, onClose }
                 className="inline-flex text-gray-400 hover:text-gray-500 focus:outline-none"
               >
                 <span className="sr-only">Close</span>
-                <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <svg
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
                   <path
                     fillRule="evenodd"
                     d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -77,4 +90,4 @@ const BadgeNotification: React.FC<BadgeNotificationProps> = ({ badges, onClose }
   );
 };
 
-export default BadgeNotification; 
+export default BadgeNotification;
