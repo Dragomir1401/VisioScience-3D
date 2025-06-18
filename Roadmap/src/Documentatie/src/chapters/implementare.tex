@@ -14,23 +14,18 @@ Alegerea a fost influențată de mai mulți factori, printre care se numără pe
 ceea ce îl face potrivit pentru construirea rapidă de aplicații scalabile. Alt motiv principal a fost compatibilitatea
 cu infrastructura aleasă pentru proiect, bazată pe Kubernetes și Docker, care se integrează foarte ușor cu Go.
 
-Pe lângă Go, pentru serviciul de compilare a codului C++ s-a optat tot pentru consistență la Go, dar header-ul
-care este inserat după detectarea structurilor de date pentru a crea raportări de status este scris in C++ 
+Pe lângă Go, pentru serviciul de compilare a codului C++ s-a optat pentru implementarea antetului
+care este inserat pentru detectarea structurilor de date pentru a crea raportări de status tot la C++ 
 pentru a asigura integrare nativă cu codul primit de la utilizator.
 
 
 \begin{lstlisting}[language=Go, caption={Middleware Prometheus pentru monitorizarea duratei cererilor HTTP}]
 template<typename Container>
-class ContainerTracer : public Traceable 
-public:
-    ContainerTracer(const std::string& name, Container& container)
-        : name(name), container(container) 
-        globalTracer->registerObject(this);
-
+class ContainerTracer: public Traceable 
+  ContainerTracer(n, c): name(n), container(c) 
+    globalTrc->registerObj(this)
 class Traceable
-public:
-    virtual ~Traceable()
-        globalTracer->unregisterObject(this);
+  virtual ~Traceable(): globalTrc->unregisterObj(this)
 \end{lstlisting}
 
 Se poate observa că antetul se bazează pe structuri generice din C++ pentru a permite orice tip de container
@@ -69,21 +64,17 @@ care automatizează build-ul, testarea, și deploy-ul pe clusterul Kubernetes lo
 
 Configurarea conexiunilor la baza de date MongoDB este centralizată în helperi, folosind driver-ul
 oficial MongoDB pentru Go. Monitorizarea serviciilor este asigurată prin integrarea cu Prometheus,
-cu metrici personalizate definite în cod și expuse la endpoint-uri REST.
+cu metrici personalizate definite în cod și expuse la endpoint-uri REST. Metricile sunt colectate
+direct în cod, cum se poate vedea și în exemplul de mai jos.
 
 \begin{lstlisting}[language=Go, caption={Middleware Prometheus pentru monitorizarea duratei cererilor HTTP}]
-func prometheusMiddleware(next http.Handler) http.Handler {
-    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        if r.URL.Path == "/feed/metrics" {
-            next.ServeHTTP(w, r)
-            return
-        }
-        start := prometheus.NewTimer(metrics.HTTPRequestDuration.WithLabelValues(r.Method, utils.NormalizePath(r.URL.Path)))
-        next.ServeHTTP(w, r)
-        start.ObserveDuration()
-        metrics.HTTPRequestsTotal.WithLabelValues(r.Method, utils.NormalizePath(r.URL.Path), "200").Inc()
-    })
-}
+func prometheusMiddleware(next http.Handler) http.Handler
+  return http.HandlerFunc = func(writer, req)
+    if r.URL.Path == "/feed/metrics"
+        next.ServeHTTP(w, r), return
+    start := timer(metrics.labels(r.Method, r.path))
+    next.ServeHTTP(w, r), start.ObserveDuration()
+    metrics.reqTotal.labels(r.Method, r.path, "200").Inc
 \end{lstlisting}
 
 \subsection{Dezvoltare back-end}
@@ -272,32 +263,21 @@ Pentru a vizualiza stările fiecărui container \textit{la runtime} s-au parcurs
 
 \begin{lstlisting}[language=C++, caption={Injectarea antetului și singleton-ului tracer}, label={lst:inject-header}]
 #include "tracer.h"
-
-namespace tracer {
+namespace tracer
     Tracer* globalTracer = &Tracer::getInstance();
-}
 \end{lstlisting}
 
 \begin{lstlisting}[language=C++, caption={Generarea unui tracer pentru un vector}, label={lst:vector-tracer}]
 std::vector<int> v = {1, 2, 3};
-auto v_tracer = makeTracedContainer("v", v);   // inserat automat de TransformCode
+auto v_tracer = tracedContainer("v", v); // inserat automat
 \end{lstlisting}
 
 \begin{lstlisting}[language=C++, caption={Instrumentarea unei operaţii asupra vectorului}, label={lst:vector-op}]
 v.push_back(42);
-v_tracer.traceOperation("insert", "Inserted element at back");
+v_tracer.traceOperation("insert", "Inserted element");
 \end{lstlisting}
 
-\begin{lstlisting}[language=Go, caption={Parsearea ieşirii EXEC şi construirea ExecutionStep}, label={lst:parse-state}]
-for _, line := range strings.Split(rawOutput, "\n") {
-    if strings.HasPrefix(line, "STATE:") {
-        var st models.ExecutionState
-        json.Unmarshal([]byte(line[6:]), &st)
-        output.States = append(output.States, st)
-    }
-}
-\end{lstlisting}
-
+La final ieșirea execuției e parsată și se construiește lista de pași de execuție ce va fi furnizată frontend-ului.
 
 \section{Front-end}
 \label{sec:implementare-frontend}
