@@ -1,10 +1,10 @@
-\chapter{Analiza cerințelor / Motivația proiectului}
+\chapter{Analiza cerințelor}
 \label{chapter:analiza}
 
 \section{Plaja de utilizatori}
 \label{sec:proj}
 
-Pulicul țintă al aplicației este destul de general, putând fi accesată de orice
+Publicul țintă al aplicației este destul de general, putând fi accesată de orice
 utilizator care se înregistrează și dorește să învețe sau sa iși amintească noțiuni de matematică, fizică, chimie,
 astronomie sau informatică.
 
@@ -103,16 +103,25 @@ modul în care aplicația trebuie să funcționeze și să suporte interacțiuni
 Cerințele funcționale pentru utilizatorii elevi sunt cerințe care țin de utilizatorii aplicației și modul în care
 aceștia pot să interacționeze cu aplicația din poziția de elevi.
 
-Printre cele mai importante funcționalități se numără: înregistrare și autentificare (crearea rapidă a
-unui cont propriu și acces securizat ulterior prin parolă), navigare în meniul 3D principal
-(alegerea materiei dintr-un meniu virtual), acces la module educaționale (vizualizarea modulelor
-structurate prin vizualizări 3D), interacțiune cu scenele 3D (interacțiune și observarea în
-timp real a efectului asupra modelelor), aderare la clase prin invitație (acceptarea invitațiilor
-direct din profil pentru acces la clase), gestionare invitații (notificări pentru invitații
-noi și posibilitatea de a accepta sau refuza direct din panoul profilului), vizualizare și
-rezolvare teste (lista testelor active afișată, cu vizualizarea rezultatelor și acces la cele deschise),
-consultare rezultate (panouri cu scoruri proprii și ale colegilor dacă sunt publice),
-administrare profil (gestionarea conectării sau a datelor personale).
+Printre cele mai importante funcționalități se numără: 
+\begin{itemize}
+  \item Înregistrare și autentificare (crearea rapidă a unui cont propriu și acces securizat ulterior prin parolă, securizarea datelor personale
+  prin criptare în bazele de date)
+  \item Navigare în meniul 3D principal (alegerea materiei dintr-un meniu virtual care îndeamnă la explorarea tuturor secțiunilor disponibile
+  ca într-un joc interactiv)
+  \item Acces la module educaționale (vizualizarea modulelor structurate prin vizualizări 3D, accesul la toate informațiile educaționale încărcate
+  în platformă, inclusiv texte, imagini și animații)
+  \item Interacțiune cu scenele 3D (manipulare și observare în timp real a efectelor asupra modelelor, schimbare orientării, zoom, modelarea
+  pieselor și alte acțiuni interactive)
+  \item Aderare la clase prin invitație (acceptarea invitațiilor direct din profil pentru acces la clasele definite de profesori și vizualizarea
+  testelor și structurii claselor în care se află)
+  \item Gestionare invitații (notificări pentru invitații noi și posibilitatea de a accepta sau refuza direct din panoul profilului)
+  \item Vizualizare și rezolvare teste (lista testelor active, vizualizarea rezultatelor și acces la rezolvarea testelor deschise,
+  chiar și acces la retestare în caz că testul permite acest lucru)
+  \item Consultare rezultate (panouri cu scoruri proprii și ale colegilor, dacă sunt publice, acces la zona de recompense)
+  \item Administrare profil (gestionarea autentificării și a datelor personale, accesul din profil la clase și la zona de recompense)
+\end{itemize}
+
 
 \subsection{Cerințe funcționale pentru utilizatorii profesori}
 \label{sub-sec:proj-requirements-teachers}
@@ -120,34 +129,25 @@ administrare profil (gestionarea conectării sau a datelor personale).
 Cerințele funcționale pentru utilizatorii profesori sunt cerințe care sunt necesare pentru a
 asigura o experiență adecvată utilizatorilor din rolul de profesor.
 
-Printre funcționalitățile esențiale pentru profesori se numără: înregistrare cont
-(crearea rapidă a unui profil de profesor), autentificare securizată (acces pe bază de
-email și parolă), meniu 3D principal (alegerea materiei din interfața virtuală),
-acces la resurse educaționale (consultarea materialelor și a modulelor),
-scene 3D interactive (explorare și manipulare de vizualizări tridimensionale),
-gestionare elevi și clase (creare, editare și organizare grupuri de elevi denumite clase),
-gestionare teste (configurare structură și parametri de evaluare), deschidere/închidere teste
-(controlul perioadelor de acces la evaluări), vizualizare rezultate
-(panouri dedicate cu scorurile elevilor), analiză și administrare rezultate
-(filtrare, export și ajustare note), meniu invitații (listarea și urmărirea
-statusului invitațiilor trimise), trimitere invitații (distribuirea directă
-către elevi din profilul de pe platformă), administrare profil profesor
-(actualizarea datelor și a conexiunii la platformă).
+Printre funcționalitățile esențiale pentru profesori se numără:
 
-\subsection{Cerințe funcționale pentru sistem}
-\label{sub-sec:proj-requirements-system}
+\begin{itemize}
+  \item Înregistrare cont (crearea rapidă a unui profil de profesor cu acces elevat la toate funcționalitățile platformei)
+  \item Autentificare securizată (acces pe bază de email și parolă, stocarea sigură a datelor personale în bazele de date, a parolei criptate)
+  \item Meniu 3D principal (alegerea materiei din interfața virtuală, posibilitatea de a explora toate secțiunile disponibile ca și rolul de elev)
+  \item Acces la resurse educaționale (consultarea materialelor și a modulelor din toate zonele și disciplinele disponibile)
+  \item Scene 3D interactive (explorare și manipulare de vizualizări tridimensionale ca și rolul de elev)
+  \item Gestionare elevi și clase (creare, editare și organizare de grupuri de elevi denumite „clase”, la care pot adera elevii prin invitație)
+  \item Gestionare teste (configurare structură și parametri de evaluare, crearea testelor cu răspuns simplu sau răspuns multipllu)
+  \item Deschidere/închidere teste (controlul perioadelor de acces la evaluări, permițând elevilor să rezolve testele doar când sunt deschise)
+  \item Vizualizare rezultate (panouri dedicate cu scorurile elevilor și cu multe alte metrici de performanță, inclusiv statistici pe clase sau pe teste)
+  \item Analiză și administrare rezultate (filtrare, sortare și analiză a rezultatelor elevilor)
+  \item Meniu invitații (listarea și urmărirea statusului invitațiilor trimise către elevi)
+  \item Trimitere invitații (distribuirea directă către elevi din profil, ei primind notificarea tot direct în profil)
+  \item Administrare profil profesor (actualizarea datelor și conexiunii la platformă, accesul din profil la panourile cu clasele și testele create și
+  la cele cu rezultate și performanțe)
+\end{itemize}
 
-Cerințele funcționale pentru sistem sunt cerințe care nu țin de utilizatorii aplicației, ci de sistemul în sine și modul în care acesta 
-trebuie să funcționeze. Aceste cerințe sunt esențiale pentru a asigura o experiență de utilizare fluidă și eficientă. 
-
-Printre cerințele esențiale pentru sistem se numără: invitații în timp real (livrare aproape instantanee
-către destinatari), notificări automate (alertare imediată la primirea unei invitații), 
-încărcare scene 3D (randare completă în sub câteva secunde), latență redusă UI
-(răspuns rapid la orice acțiune a utilizatorului), feedback instant în 3D (aplicarea 
-imediată a comenzilor de interacțiune), rezultate pe loc (afișarea scorului imediat 
-după trimiterea testului), management utilizatori (autentificare sigură și administrare
-eficientă a conturilor), control starea testelor (deschidere sau blocare al accesului 
-la evaluări cu efect imediat).
 
 \section{Cerințe non-funcționale}
 \label{sec:proj-non-functional-requirements}
@@ -160,9 +160,18 @@ Interfața trebuie sa răspundă rapid la interacțiunile utilizatorilor, iar an
 întârzieri semnificative. De asemenea, aplicația trebuie să fie disponibilă pe toate browserele moderne,
 inclusiv Chrome, Firefox, Safari și Edge.
 
+Invitațiile trebuie să ajungă în timp real (livrare aproape instantanee
+către destinatari). Încărcarea scenelor 3D trebuie să se facă în sub câteva secunde, iar latența să fie redusă în UI
+(răspuns rapid la orice acțiune a utilizatorului).
+
+Răspunsul trebuie să fie instant la scenele 3D (aplicarea imediată a comenzilor de interacțiune), 
+iar rezultatele să fie primite pe loc (afișarea scorului imediat
+după trimiterea testului) și gestionarea utilizatorilor să se facă prin autentificare sigură și administrare
+eficientă a datelor. Controlul stării testelor (deschidere sau blocare) trebuie să aibă efect imediat.
+
 Pentru o utilizare mai intuitivă sunt adaugate în unele locuri și indicatoari vizuali care arată modul de funcționare.
 Există numeroase exemple unde utilizatorul este îndrumat să pună mouse-ul peste un obiect
-pentru a activa meniuri, sau este ghidat prin interfață.
+pentru a activa meniuri sau este ghidat prin interfață.
 
 
 Meniurile conțin informații de prezentare și tutoriale pentru a naviga diferitele simulări 3D, ele fiind primul
@@ -170,7 +179,7 @@ lucru pe care utilizatorul le vede la intrarea în diferitele secțiuni. Datele 
 actualizate constant și dinamic prin comunicare cu serverul care gestionează acel serviciu în zona de back-end,
 prin protocolul HTTP.
 
-Ca cerințe non-funcționale necesare pentru încărcarea și gestionarea corectă a scenelor 3D, se poate discutape 
+Ca cerințe non-funcționale necesare pentru încărcarea și gestionarea corectă a scenelor 3D, se poate discuta pe 
 mai multe planuri.
 
 \textbf{Browser \& API}

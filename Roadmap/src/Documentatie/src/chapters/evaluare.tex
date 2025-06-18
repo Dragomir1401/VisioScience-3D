@@ -72,7 +72,7 @@ Performanța front-endului a fost evaluată prin testarea mai multor scenarii de
 și manipularea lor. Testele au arătat că platforma susține animații 3D simultane cu un cadru constant de 60fps, iar timpii de 
 încărcare au fost sub 1,5 secunde pentru majoritatea paginilor.
 
-\section{Testarea infrastructurii / Platformei}
+\section{Testarea infrastructurii / platformei}
 \label{subsec:evaluare-infrastructura}
 
 S-au utilizat teste de scalabilitate și failover, iar platforma a demonstrat un comportament robust și o scalabilitate bună
@@ -90,7 +90,7 @@ Soluția implementată a fost folosirea unui port-forward pentru a expune Ingres
 necesitat sincronizarea corectă a valorilor pentru containerPort și targetPort, configurarea serviciilor de tip ClusterIP și adnotările 
 specifice pentru Ingress. Ajustările făcute au asigurat că traficul extern poate accesa microserviciile într-un mod stabil și controlat.
 
-\subsection{CI/CD Build \& Rollout Workflow accesibilitate}
+\subsection{Accesibilitate CI/CD Build \& Rollout Workflow}
 Fluxul de lucru pentru CI/CD a fost un alt punct dificil de gestionat. Fiecare schimbare în cod presupunea reconstruirea și încărcarea
 imaginii containerului, urmată de un proces de rollout. Pentru a automatiza procesul folosind GitHub Actions astfel încât workflowul
 să aibă acces la clusterul local a fost nevoie de crearea unui GitHub runner local care să ruleze pe mașina de dezvoltare.

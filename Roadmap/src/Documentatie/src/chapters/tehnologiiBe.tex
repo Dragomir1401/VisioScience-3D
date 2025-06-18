@@ -237,11 +237,8 @@ fi testate rapid în legătură cu serviciile din cluster fără configurări su
   Primul este cel de validare a token-ului de autentificare în middleware-ul \texttt{JWTAuth}, apoi prin parsarea datelor,
   stocarea lor persistentă în baza de date MongoDB și apoi prin reexpunerea lor către frontend prin API-ul REST.
 
-Mai jos putem observa și arhitectura principală de comunicare între serviciile din back-end, cpp-compiler-service ne fiind
-inclus pentru că funcționează pe un flux diferit și nu interacționează direct cu celelalte servicii, ci doar cu 
-frontend-ul.
-
-\fig[width=1\textwidth]{imgs/bearch.png}{fig:arhitectura-backend}{Arhitectura backend-ului aplicației}
+Mai jos putem observa și arhitectura principală de comunicare între serviciile din back-end.
+\fig[width=0.85\textwidth]{imgs/bediagram.png}{fig:arhitectura-backend}{Arhitectura backend-ului aplicației}
 
 
 \subsection{Descrierea API-urilor}
