@@ -66,111 +66,63 @@ separate în directoarele \file{./k8s/} ale fiecărui serviciu. Denumirea fișie
 
 \file{*-pvc.yaml}       pentru \texttt{kind: PersistentVolumeClaim}
 
-Au fost aplicate toate manifesturile cu:
+Fișierele de \emph{Deployment} pentru servicii sunt structurate astfel încât să definească
+propietățile principale de configurare ale serviciului, cum ar fi numele, etichetele,
+numărul de replici, selectorul de etichete și specificațiile containerelor.
 \begin{lstlisting}[style=yamlstyle]
-kubectl apply -f ./k8s/
-\end{lstlisting}
-
-Un exemplu de \emph{Deployment} pentru serviciul de evaluare:
-\begin{lstlisting}[style=yamlstyle]
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: evaluation-service
-  labels:
-    app: evaluation-service
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: evaluation-service
-  template:
-    metadata:
-      labels:
-        app: evaluation-service
-    spec:
-      containers:
-        - name: evaluation-service
-          image: dragomir1401/evaluation-service:latest
-          ports:
-            - containerPort: 8080
-          env:
-            - name: MONGO_URI
-              value: "mongodb://mongo-evaluation-service:27017"
+apiVersion: apps/v1, kind: Deployment
+metadata: name, labels
+spec: replicas,selector: matchLabels: app, template:
+  metadata: labels: app, spec: containers: - name, image, ports, env
 \end{lstlisting}
 
 Acesta defineşte un \texttt{Deployment} pentru serviciul specificat, cu un singur replica pentru rulare
 și specifică imaginea Docker care va fi utilizată. De asemenea, definește variabilele de mediu necesare pentru
 conectarea la baza de date. Este unul dintre exemplele simple de manifest Kubernetes folosit.
 
-\newpage
 \subsubsection*{Tipuri de resurse şi rolurile lor}
 
-\textbf{Service} (\texttt{kind:Service}): expune pod-urile pe un IP intern al clusterului:
-  \begin{lstlisting}[style=yamlstyle]
-apiVersion: v1
-kind: Service
-metadata:
-  name: evaluation-service
-spec:
-  type: ClusterIP
-  selector:
-    app: evaluation-service
-  ports:
-    - port: 8080
-      targetPort: 8080
-  \end{lstlisting}
+\textbf{Service} (\texttt{kind:Service}): expune pod-urile pe un IP intern al clusterului.
+Astfel, alte servicii pot comunica cu acesta prin numele său și portul specificat. Accesul
+din exterior nu este permis direct. Astfel se ralizează o comunicare internă sigură între 
+servicii și accesul exterior e permis prin intrarea unică în Kong Gateway. Putem observa
+structura cum se structurează configurația pentru un serviciu.
+\begin{lstlisting}[style=yamlstyle]
+apiVersion: v1, kind: Service
+metadata: name
+spec: type, selector: app, ports: - port: 8080, - targetPort: 8080
+\end{lstlisting}
 
-  \textbf{Ingress} (\texttt{kind:Ingress}): defineşte rutare HTTP/S prin controller-ul folosit (Kong):
-  \begin{lstlisting}[style=yamlstyle]
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: evaluation-service-ingress
-  annotations:
-    konghq.com/strip-path: "false"
-spec:
-  ingressClassName: kong
-  rules:
-    - http:
-        paths:
-          - path: /evaluation
-            backend:
-              service:
-                name: evaluation-service
-                port:
-                  number: 8080
-  \end{lstlisting}
+\textbf{Ingress} (\texttt{kind:Ingress}): defineşte rutare HTTP/S prin controller-ul folosit.
+Acesta permite expunerea serviciilor către exterior printr-un singur punct de intrare și permite
+gestionarea traficului prin reguli de rutare, posibile firewalls sau balansarea încărcării pe 
+servicii. Astfel se definește un Ingress care poate fi adăugat apoi în configurarea 
+oricărui alt serviciu. S-au testat ambele variante cu trunchere a căii sau fără,
+dar s-a ales cea fără trunchere a căii pentru a permite accesul direct la un serviciu
+anume printr-un cuvânt cheie în URL. Și varianta cu trunchere ar fi funcționat, dar
+ar fi existat un număr foarte mare de rute în radăcina ruterului Kong, ceea ce ar fi
+putut duce la probleme de gestionare a acestora. 
+\begin{lstlisting}[style=yamlstyle]
+apiVersion: networking.k8s.io/v1, kind: Ingress
+metadata: name, annotations: konghq.com/strip-path: "false"
+spec: ingressClassName, rules: - http: paths: - path, backend: service: name, port
+\end{lstlisting}
 
-\newpage
-
-\textbf{ConfigMap \& PVC}: ConfigMap pentru configurări (de ex. pentru serviciul de provizionare
-\texttt{prometheus.yml}) şi PVC pentru volumul serviciului de vizualizare a metricilor în
-Grafana\footnote{Unealtă de vizualizare a metricilor și a datelor de monitorizare}:
+\textbf{ConfigMap\footnote{https://kubernetes.io/docs/concepts/configuration/configmap/} \& 
+PVC\footnote{https://kubernetes.io/docs/concepts/storage/persistent-volumes/}}:
+ConfigMap este folosit pentru configurări directe (de ex. pentru serviciul de provizionare
+\texttt{prometheus.yml}) şi PVC este folosit de exemplu pentru volumul serviciului de vizualizare a metricilor în
+Grafana. Putem observa structura de configurare a celor două tipuri adiționale de resurse.
   \begin{lstlisting}[style=yamlstyle]
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: prometheus-config
-data:
-  prometheus.yml: |
-    global:
-      scrape_interval: 15s
-      evaluation_interval: 15s
+apiVersion: v1, kind: ConfigMap
+metadata: name, data: prometheus: global: scrape_int, eval_int
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: grafana-pvc
-spec:
-  accessModes: [ReadWriteOnce]
-  resources:
-    requests:
-      storage: 1Gi
-  \end{lstlisting}
+apiVersion: v1, kind: PersistentVolumeClaim
+metadata: name, spec: accessModes, resources: requests: storage
+\end{lstlisting}
 
-Fiecărei resurse îi corespunde un singur fişier YAML – conţinând \texttt{apiVersion}, tipul \texttt{kind},
-metadatele şi \texttt{spec} – care poate fi aplicat cu \cmd{kubectl apply -f <fișier>}, sau
+Fiecărei resurse îi corespunde un singur fişier YAML care conţine\texttt{apiVersion}, tipul \texttt{kind},
+metadatele şi \texttt{spec}. Acestea pot fi aplicate cu \cmd{kubectl apply -f <fișier>}, sau
 automatizat printr-un pipeline de integrare continuă / livrare continuă (CI/CD) cum am discutat anterior.
 
 \subsection{Gestionarea clusterului}
@@ -208,15 +160,8 @@ Se poate vedea în imaginea de mai jos cum arată interfața Portainer pe cluste
 \subsection{Rutarea și gestionarea traficului}
 
 Pentru a centraliza şi controla traficul HTTP/S, am ales Kong\footnote{https://konghq.com/} ca API Gateway. În cluster am
-definit o clasă de rutare dedicată, astfel:
-
-\begin{lstlisting}[style=yamlstyle]
-kind: IngressClass
-metadata:
-  name: kong
-spec:
-  controller: konghq.com/ingress-controller
-\end{lstlisting}
+definit o clasă de rutare dedicată după configurarea Kong ca serviciu separat și adăugată această
+clasă de rutare în manifestele fiecărui serviciu care are nevoie de expunere.
 
 Controller-ul Kong va intercepta toate resursele de tip \texttt{Ingress} care 
 specifică ingressClassName:\texttt{kong}. În mediul de dezvoltare, pentru a nu expune un 
@@ -228,9 +173,8 @@ local:
 \noindent
 \cmd{kubectl port-forward svc/kong-kong-proxy 8000:80}
 
-Astfel, apelurile HTTP către \url{http://localhost:8000} sunt tunelate prin Kong şi pot 
+Astfel, apelurile HTTP către portul 8000 local sunt tunelate prin Kong şi pot 
 fi testate rapid în legătură cu serviciile din cluster fără configurări suplimentare de reţea.
-
 
 \section{Descrierea serviciilor}
 
@@ -320,20 +264,22 @@ se va face activarea criptării TLS\footnote{https://www.mongodb.com/docs/manual
 
 \subsection{Port forwarding}
 
-În mediul de dezvoltare, pentru a testa rapid Ingress‐ul Kong fără LoadBalancer extern, se folosește port‐forwarding:
-
-\func{kubectl port-forward svc/kong-kong-proxy 8000:80}.
-
-Apelurile la \url{http://localhost:8000} trec prin Kong şi pot fi rutate către microservicii.
+În mediul de dezvoltare, pentru a testa rapid Ingress‐ul Kong fără LoadBalancer extern, se folosește port‐forwarding
+după cum am discutat la capitolul Rutarea și gestionarea traficului. Acest lucru permite accesul la serviciile 
+din cluster. Ca pipeline-ul din GitHub Actions să aibă acces la clusterul Kind local s-a folosit
+un runner GitHub hostat 
+local\footnote{https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners}.
+Acesta permite direct accesul la comenzile de build și push în Docker și mai ales la cele de redeploy
+al serviciilor în cluster.
 
 \subsection{Deployment}
 
-Am automatizat build-ul, testarea şi deploy-ul în Kubernetes cu GitHub Actions. Pe scurt:
+După cum am menționat am automatizat build-ul, testarea şi deploy-ul în Kubernetes cu GitHub Actions.
 \begin{itemize}
   \item \textbf{Checkout \& Context:} selectăm codul pentru fiecare serviciu şi setăm contextul kubectl 
   către \texttt{kind-visioscience}, clusterul unde rulează local mediul de dezvoltare.
-  \item \textbf{Build \& Push Docker:} compilăm binarele Go, construim imaginea cu \texttt{build-push-action}
-  şi o încărcăm pe DockerHub sub \texttt{dragomir1401/\$SERVICIU:latest}.
+  \item \textbf{Build \& Push Docker:} compilăm binarele Go, construim imaginea cu build-push-action
+  şi o încărcăm pe DockerHub sub numele \texttt{dragomir1401/\$SERVICIU:latest}.
   \item \textbf{Deploy:} rulăm:
     \begin{lstlisting}[style=yamlstyle]
 kubectl apply -f k8s/

@@ -717,11 +717,6 @@ INPUT .\imgs\servicescli.png
 INPUT .\imgs\servicescli.png
 INPUT .\imgs\servicescli.png
 INPUT .\imgs\servicescli.png
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\tex-gyre\t1qhv.fd
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\tex-gyre\t1qhv.fd
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\tex-gyre\t1qhv.fd
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qhvr.tfm
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\tex-gyre\q-ec.enc
 INPUT .\imgs\bearch.png
 INPUT .\imgs\bearch.png
 INPUT .\imgs\bearch.png
@@ -1035,8 +1030,6 @@ INPUT .\thesis.out
 INPUT .\thesis.out
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\newtx\NewTXMI.pfb
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\newtx\NewTXMI.pfb
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\tex-gyre\qhvr.pfb
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\tex-gyre\qhvr.pfb
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\tex-gyre\qtmr.pfb
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\tex-gyre\qtmr.pfb
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\txfonts\t1xbtt.pfb
