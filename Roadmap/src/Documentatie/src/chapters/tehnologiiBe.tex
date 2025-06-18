@@ -73,7 +73,7 @@ numărul de replici, selectorul de etichete și specificațiile containerelor.
 apiVersion: apps/v1, kind: Deployment
 metadata: name, labels
 spec: replicas,selector: matchLabels: app, template:
-  metadata: labels: app, spec: containers: - name, image, ports, env
+  metadata: labels: app, spec: name, image, ports, env
 \end{lstlisting}
 
 Acesta defineşte un \texttt{Deployment} pentru serviciul specificat, cu un singur replica pentru rulare
@@ -90,7 +90,7 @@ structura cum se structurează configurația pentru un serviciu.
 \begin{lstlisting}[style=yamlstyle]
 apiVersion: v1, kind: Service
 metadata: name
-spec: type, selector: app, ports: - port: 8080, - targetPort: 8080
+spec: type, selector: app, ports: port: 8080, targetPort: 8080
 \end{lstlisting}
 
 \textbf{Ingress} (\texttt{kind:Ingress}): defineşte rutare HTTP/S prin controller-ul folosit.
@@ -118,7 +118,7 @@ apiVersion: v1, kind: ConfigMap
 metadata: name, data: prometheus: global: scrape_int, eval_int
 ---
 apiVersion: v1, kind: PersistentVolumeClaim
-metadata: name, spec: accessModes, resources: requests: storage
+metadata: name, spec: accessModes, res: requests: storage
 \end{lstlisting}
 
 Fiecărei resurse îi corespunde un singur fişier YAML care conţine\texttt{apiVersion}, tipul \texttt{kind},
@@ -279,11 +279,11 @@ După cum am menționat am automatizat build-ul, testarea şi deploy-ul în Kube
   \item \textbf{Checkout \& Context:} selectăm codul pentru fiecare serviciu şi setăm contextul kubectl 
   către \texttt{kind-visioscience}, clusterul unde rulează local mediul de dezvoltare.
   \item \textbf{Build \& Push Docker:} compilăm binarele Go, construim imaginea cu build-push-action
-  şi o încărcăm pe DockerHub sub numele \texttt{dragomir1401/\$SERVICIU:latest}.
+  şi o încărcăm pe DockerHub sub numele dragomir1401/\texttt{\$SVC:latest}.
   \item \textbf{Deploy:} rulăm:
     \begin{lstlisting}[style=yamlstyle]
 kubectl apply -f k8s/
-kubectl rollout status deployment/${{ steps.extract.outputs.name }}
+kubectl rollout status deployment/extract.outputs.name
     \end{lstlisting}
   \item Runner-ul GitHub este un hostat pe aceeaşi mașină ca și clusterul Kind, astfel că are acces direct la 
 kubeconfig\footnote{https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/}.
@@ -314,12 +314,12 @@ histogramei şi gauge-urilor.
 \texttt{github.com/prometheus/client\_golang/prometheus/promhttp} pentru expunerea 
 endpoint-ului \texttt{/\$SERVICIU/metrics}.
 
-De exemplu, în \texttt{evaluation-service} în metrics/metrics.go:
+De exemplu, în \texttt{evaluation-service} în codul responsabil de metrici definim astfel. 
 \begin{lstlisting}[style=yamlstyle]
 registry := prometheus.NewRegistry()
-HTTPRequestsTotal := prometheus.NewCounterVec(...)
-registry.MustRegister(HTTPRequestsTotal, HTTPRequestDuration, ActiveEvaluations)
-http.Handle("/evaluation/metrics", promhttp.HandlerFor(registry, promhttp.HandlerOpts{}))
+reqTotal := prometheus.NewCounterVec(...)
+registry.MustRegister(reqTotal, reqDuration, activeEvals)
+http.Handle("/eval/metrics", HandlerFor(registry, opt))
 \end{lstlisting}
 
 \subsection{Grafana Dashboard}  
@@ -327,23 +327,16 @@ De exemplu după ce Prometheus trece prin \texttt{evaluation\_service\_http\_req
 persistent prin volumele Kubernetes. Dashboard-ul Grafana are în general două tipuri de panouri pentru metrici 
 similare. De exemplu pentru metrica de cereri și evaluări active din serviciul de evaluare:
 
-\emph{Timeseries(serie temporală de date)} pentru \texttt{evaluation\_service\_http\_requests\_total}.
+\emph{Timeseries(serie temporală de date)} pentru \texttt{eval\_svc\_req\_total}.
 
-\emph{Gauge(serie de valori)} pentru \texttt{evaluation\_service\_active\_evaluations}.
+\emph{Gauge(serie de valori)} pentru \texttt{eval\_svc\_active\_evals}.
 
-Un fragment din JSON-ul dashboard-ului Grafana arată astfel:
+Iar apoi ele sunt definite și legate în configurația panoului din Grafana.
 \begin{lstlisting}[style=yamlstyle]
-  "panels":[
-    {
-      "type":"timeseries",
-      "targets":[{"expr":"evaluation_service_http_requests_total"}],
-      "title":"HTTP Requests"
-    },{
-      "type":"gauge",
-      "targets":[{"expr":"evaluation_service_active_evaluations"}],
-      "title":"Active Evaluations"
-    }
-  ]
+  "panels":
+     {"type":"timeseries",
+      "targets":[{"expr":"eval_svc_req_total"}],
+      "title":"HTTP Total Requests"}, ....
 \end{lstlisting}
 Aceste panouri sunt importate în Grafana în \texttt{Evaluation Service Dashboard} şi actualizate
 la fiecare 5s (configurabil).
@@ -351,7 +344,7 @@ la fiecare 5s (configurabil).
 Așadar există trei panouri principale în Grafana pentru trei servicii de logică de produs existente:
   
   \texttt{Evaluation Service Dashboard} pentru \texttt{evaluation-service}
-  \fig[width=0.9\textwidth]{imgs/evaluationdashboard.png}{fig:evaluation-dashboard}{Dashboard-ul pentru evaluări în Grafana}
+  \fig[width=1\textwidth]{imgs/evaluationdashboard.png}{fig:evaluation-dashboard}{Dashboard-ul pentru evaluări în Grafana}
   
   Se poate observa logarea numărului de cereri HTTP din serviciul, latența și durata medie a lor, numărul de evaluări
   active și rata operațiilor pe evaluări.
@@ -359,16 +352,13 @@ Așadar există trei panouri principale în Grafana pentru trei servicii de logi
   \texttt{Feed Data Service Dashboard} pentru \texttt{feed-data}
   
   În panou se pot vedea numărul de cereri HTTP, latența și durata medie a lor, numărul de feed-uri active, numărul de molecule
-  active, rata operațiilor asupra feed-urilor și moleculelor, precum și numărul de molecule generate.
+  active, rata operațiilor asupra feed-urilor și moleculelor, precum și numărul de molecule generate. La fel
+  ca cel de evaluări metricile se împart în cele două categorii discutate.
 
   \texttt{User Data Service Dashboard} pentru \texttt{user-data}
 
-  \fig[width=0.9\textwidth]{imgs/userdashboard.png}{fig:user-data-dashboard}{Dashboard-ul pentru metrici de utilizator în Grafana}
-  \fig[width=0.9\textwidth]{imgs/feeddashboard.png}{fig:feed-data-dashboard}{Dashboard-ul pentru metrici de feed-uri în Grafana}
-
-  În panoul pentru metricile din serviciul de utilizatori apar numărul, latența și durata cererilor HTTP,
-  numărul utilizatorilor și al claselor active.
-
+  Ca și în celelate panouri, și aici apare numărul, latența și durata cererilor HTTP. Metricile specifice serviciului
+  sunt numărul utilizatorilor și al claselor active.
 \newpage
 \section{Soluția de baze de date}
 \label{sec:proj-database}
@@ -422,8 +412,6 @@ metodele MongoDB standard, iar aplicația transforma și face validarea datelor 
 
 Gestionarea și vizualizarea datelor în mediul de dezvoltare a fost facută folosind interfețele oferite de Mongo express,
 care permit toate operațiile cu documentele din colecțiile MongoDB printr-o interfață web simplă și intuitivă.
-
-\fig[width=1\textwidth]{imgs/mongoexpress.png}{fig:mongo-express}{Interfața Mongo Express pentru gestionarea colecțiilor}
 
 \subsection{Securitatea datelor}
 
