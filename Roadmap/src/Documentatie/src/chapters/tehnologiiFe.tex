@@ -13,7 +13,7 @@ am concentrat atenția pe criterii precum maturitatea ecosistemului, performanț
 flexibilitate în personalizare şi capacitatea de integrare cu biblioteci 3D. Dintre principalele
 opțiuni (Vue.js, Angular, Svelte), React s-a impus datorită următoarelor avantaje:
 
-\textbf{Ecosistem matur și susținere largă}:
+\textbf{Ecosistem matur și susținere mare}:
   React are o comunitate activă de milioane de dezvoltatori,
   cu un număr impresionant de librării, tutoriale și un suport consistent din partea Meta. 
   Această resursă ne-a permis să adoptăm rapid bune practici și să găsim soluții la provocări 
@@ -37,7 +37,7 @@ Pe zona de stilizare a interfeței, am optat pentru Tailwind CSS\footnote{https:
 care ne-a permis să creăm un design personalizat. Am comparat framework-uri clasice de CSS
 (Bootstrap, Material UI) cu Tailwind CSS și am observat următoarele avantaje:
 
-\textbf{Prioritatea pe utilitare și JIT}:
+\textbf{Prioritatea pe utilitare și JIT\footnote{https://tailwindcss.com/docs/just-in-time-mode}}:
   Tailwind oferă clase utilitare care permit definirea rapidă a
   layout-urilor şi a stilurilor unice, fără a scrie sutele de linii de CSS personalizat. Motorul
   JIT (Just-In-Time) generează doar clasele folosite, menținând pachetul final mai mic ca dimensiune.
@@ -68,8 +68,9 @@ Câteva dintre beneficiile integrării cu Three.js prin React Three Fiber și Dr
 alegerea justificată sunt:
 
 \textbf{Abstracție declarativă}:
-  R3F “împachetează” API-ul imperativ Three.js într-un DSL\footnote{Limbaj specific de domeniu} React, 
-  permițându-ne să definim scene, obiecte și materiale în JSX\footnote{Format de JavaScript pentru limbajul de marcare}, 
+  R3F încapsulează API-ul Three.js într-un
+  DSL\footnote{Limbaj specific de domeniu} React, 
+  potențând definirea de scene, obiecte și materiale în JSX\footnote{https://react.dev/learn/writing-markup-with-jsx}, 
   sub formă de componente. 
   Astfel, putem folosi hook-uri (useFrame, useLoader) pentru a sincroniza animațiile și 
   resursele fără prea mult cod duplicat.
@@ -148,7 +149,7 @@ individualizează secţiunile de chimie şi astronomie. Pentru evidenţierea viz
 am introdus un violet închis (\#4f46e5). Culorile reflectă o atmosferă dinamică și 
 energică, încurajând explorarea și învățarea.
 
-\fig[width=1\textwidth]{imgs/paleta.png}{fig:fediagram}{Paleta de culori a platformei}
+\fig[width=1\textwidth]{imgs/paleta.png}{fig:paleta}{Paleta de culori a platformei}
 
 \subsubsection{Logo-ul}
 Logo-ul VisioScience3D este relativ simplu și în temă cu paleta de culori, fiind reprezentat
@@ -163,15 +164,20 @@ Mascota proiectului este un balon care se apropie de paleta de culori a platform
 și este de fiecare dată animat potrivit acțiunilor paginii respective. De exemplu, pe pagina de 
 înregistrare mascota se mișcă în sus și în jos când utilizatorul scrie în câmpurile de
 înregistrare, iar pe la înregistrare reușită mascota sare în sus și în jos pentru câteva secunde.
-Balonul mascotă este și principalul caracter de explorare a meniului principal, învârtindu-se între
+Balonul mascotă este și caracterul de explorare a meniului principal, învârtindu-se între
 insule pentru a ajunge la diferitele materii.
 
-\fig[width=0.35\textwidth]{imgs/mascota.png}{fig:fediagram}{Mascota platformei}
-
-Mascota apare în paginile platformei și are animații diferite în funcție de acțiunile utilizatorului.
-Ea apare la înregistrare, autentificare, în paginile principale și adiționale.
+\fig[width=0.25\textwidth]{imgs/mascota.png}{fig:fediagram}{Mascota platformei}
 
 \subsection{Experiența utilizatorului}
+
+
+\subsubsection{Navigarea în platformă}
+
+Navigarea în platformă este realizată printr-un meniu principal situat în partea de sus a paginii,
+iar în meniul 3D prin rotirea balonului mascotă în jurul insulelor pentru a ajunge la diferitele materii.
+În profil meniul funcționează pe bază de stări și se schimbă în funcție de pagina curentă.
+\fig[width=0.6\textwidth]{imgs/navdiagram (2).png}{fig:navdiagram}{Diagrama de navigare a platformei}
 
 \subsubsection{Gestionarea stărilor}
 Gestionarea stărilor legate de autentificare şi profilul utilizatorului se realizează prin 
@@ -183,7 +189,7 @@ stări locale (\texttt{useState}), efecte de ciclu de viață (\texttt{useEffect
   răspunsul API-ului, semnul de încărcare şi orice mesaj de eroare.
   \item \textbf{Efecte asincrone}:
   în \texttt{useEffect} se trimite cererea HTTP cu token-ul extras o singură dată din 
-  \texttt{localStorage}, iar la succes se apelează \texttt{setUser()}, iar la eșec \texttt{setError()}; indiferent de rezultat, în \texttt{finally} se setează \texttt{setLoading(false)}.
+  \texttt{localStorage}, la succes se apelează \texttt{setUser()}, iar la eșec \texttt{setError()}. Indiferent de rezultat, în \texttt{finally} se setează \texttt{setLoading(false)}.
   \item \textbf{Persistență}:
   token-ul JWT şi \texttt{userId} sunt citite şi stocate o singură dată de la prima montare
   a componentei, ceea ce permite menținerea autentificării între reîncărcări.
@@ -192,14 +198,7 @@ Acest model este simplu dar se poate extinde cu \emph{React Context}
 sau librării dedicate (Redux, Zustand) atunci când numărul de componente care împart aceleași stări
 crește semnificativ.
 
-\subsubsection{Navigarea în platformă}
 
-Navigarea în platformă este realizată printr-un meniu principal situat în partea de sus a paginii,
-iar în meniul 3D prin rotirea balonului mascotă în jurul insulelor pentru a ajunge la diferitele materii.
-În profil meniul funcționează pe bază de stări și se schimbă în funcție de pagina curentă.
-\fig[width=0.6\textwidth]{imgs/navdiagram (2).png}{fig:navdiagram}{Diagrama de navigare a platformei}
-
-\newpage
 \subsubsection{Designul interfeței utilizatorului}
 
 Interfața păstrează un design simplu cu meniul plasat sus și în stânga pentru selecția materiilor
@@ -241,8 +240,8 @@ Pentru a optimiza performanța graficii 3D pe framework-ul bazat pe WebGL\footno
   \item \textbf{Reducerea numărului de draw calls\footnote{Draw calls reprezintă apelurile efectuate de CPU către GPU pentru a desena obiecte.}:}
     Combinăm obiectele similare folosind \texttt{BufferGeometry} 
     pentru a limita costul fiecărui cadru.
-  \item \textbf{Frustum culling\footnote{Frustum culling reprezintă tehnica de eliminare a obiectelor care nu sunt vizibile în câmpul de vedere al camerei.} 
-  şi occlusion culling\footnote{Occlusion culling reprezintă tehnica de eliminare a obiectelor care sunt blocate de alte obiecte.}:} 
+  \item \textbf{Frustum culling\footnote{Tehnică de eliminare a obiectelor care nu sunt vizibile în câmpul vizual al camerei.} 
+  şi occlusion culling\footnote{Eliminarea obiectelor care sunt blocate de alte obiecte.}:} 
     WebGL elimină automat obiectele aflate în afara câmpului vizual, 
     iar React Three Fiber expune aceste mecanisme nativ, astfel încât
     obiectele invizibile nu sunt trimise GPU–ului.

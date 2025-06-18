@@ -42,30 +42,10 @@ simulat cereri HTTP către ruterul unui serviciu din interior şi am putut
 itera rapid și prinde bug-urile, fără să reconstruim imaginea Docker
 sau să dăm deploy în Kubernetes de fiecare dată.
 
-\begin{lstlisting}[language=Go,
-                   caption={Exemplu de testarea rapidă a endpoint-ului \texttt{/cpp-compiler/compile-run}},
-                   label={lst:test-compile-run}]
-func TestCompileAndRun(t *testing.T)
-    code, _ := os.ReadFile("testdata/hello.cpp")
-    body, _ := json.Marshal(models.CodeExecutionRequest{Code: string(code)})
-    req := httptest.NewRequest("POST",
-             "/cpp-compiler/compile-run", bytes.NewReader(body))
-    req.Header.Set("Content-Type", "application/json")
-    rr := httptest.NewRecorder()
-    compileAndRun(rr, req)
-    if rr.Code != http.StatusOK 
-        t.Fatalf("status %d; vreau 200", rr.Code)
-
-    var resp models.CodeExecutionResponse
-    json.NewDecoder(rr.Body).Decode(&resp)
-    if !resp.Success || len(resp.ExecutionData) == 0
-        t.Fatalf("nu am primit ExecutionData")
-\end{lstlisting}
-
-Rularea comenzii \verb|go test ./...| rulează sute de astfel de teste în
-sub-două secunde pe mașina de dezvoltare, oferind feedback aproape instant asupra
-regresiilor din \texttt{TransformCode()}, parserul JSON şi logica de
-gestionare a erorilor din serviciul \texttt{cpp-compiler-Service} de exemplu.
+Rularea comenzii \verb|go test ./...| rulează orice test rapid,
+oferind feedback aproape instant asupra
+regresiilor de exemplu din transormatorul de cod, parserul sau din logica de
+gestionare și propagare a erorilor de compilare către frontend.
 
 \section{Evaluarea front-endului}
 \label{subsec:evaluare-frontend}
@@ -155,29 +135,19 @@ directe. Asta a însemnat crearea unui fișier de configurare YAML pentru jobul 
 crearea unui pod dedicat pentru rularea acestuia.
 
 
-\section{Analiză comparativă pe metrici}
+\section{Analiza metricilor}
 \label{subsec:analiza-metrici}
 
-Justificarea cuantificativă a avantajelor platformei \textit{VisioScience3D} se poate observa în 
-tabelul~\ref{tab:metrics}. Acesta prezintă cei mai reprezentativi indicatori de exploatare.
-
-\begin{table}[h]
-\centering
-\begin{tabular}{lcccc}
-\toprule
-\textbf{Indicator} &
-\textbf{VisioScience3D} &
-\textbf{PhET} &
-\textbf{Mozaweb} &
-\textbf{IQBoard} \\ \midrule
-Timp răspuns API (ms) & \textbf{250} & >300 & >300 & >300 \\
-FPS scenă 3D (desktop) & \textbf{60} & 40-60 & 40-60 & 40-60 \\
-Cost licenţă anual (EUR) & \textbf{0} & 0 & 299 & \(\approx\)450 \\
-Consum RAM mediu (MB) & \textbf{150} & >200 & >200 & >200 \\ \bottomrule
-\end{tabular}
-\caption{Comparaţie pe principalii indicatori de performanţă şi cost.}
-\label{tab:metrics}
-\end{table}
+Cei mai reprezentativi indicatori de exploatare în contextul unei platforme ca VisioScience3D 
+sunt timpii de răspuns, rata de cadre pe secundă (FPS) în scenele 3D, costurile de licențiere
+și consumul de memorie RAM. Timpul de răspuns a fost constant sub 250ms pentru majoritatea cererilor
+în mediul de dezvoltare, putând să difere în eventuala producție în funcție de încărcarea serverului.
+Rata de cadre pe secundă este asigurată de tehnologiile WebGL și Three.js folosite și de 
+tehnicile de optimizare incluse. În general se menține constantă la cel puțin 60 FPS.
+Costurile de licențiere sunt zero pentru VisioScience3D, în timp ce alte platforme competitoare
+implică taxe anuale semnificative. În ceea ce privește consumul de memorie RAM, platforma
+se menține sub 150MB în majoritatea scenelor, ne încărcând resurse de foarte mari
+dimensiuni.
 
 Metricile au fost obținute prin utilizarea browserului Chrome pentru accesarea siteurilor și folosind informațiile
 de latență la nivel de cerere, resursele utilizate raportate de browser și rata de cadre resimțită în scenele 3D

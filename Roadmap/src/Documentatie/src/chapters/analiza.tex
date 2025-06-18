@@ -160,66 +160,47 @@ Interfața trebuie sa răspundă rapid la interacțiunile utilizatorilor, iar an
 întârzieri semnificative. De asemenea, aplicația trebuie să fie disponibilă pe toate browserele moderne,
 inclusiv Chrome, Firefox, Safari și Edge.
 
-
 Pentru o utilizare mai intuitivă sunt adaugate în unele locuri și indicatoari vizuali care arată modul de funcționare.
-Putem observa și un exemplu în figura următoare, unde utilizatorul este practic îndrumat să pună mouse-ul peste un obiect
-pentru a activa meniul.
-
-\fig[width=0.5\textwidth]{imgs/hover.png}{fig:distributie_persoane}{Animație intuitivă pentru utilizator deschiderea unui meniu lateral}
+Există numeroase exemple unde utilizatorul este îndrumat să pună mouse-ul peste un obiect
+pentru a activa meniuri, sau este ghidat prin interfață.
 
 
 Meniurile conțin informații de prezentare și tutoriale pentru a naviga diferitele simulări 3D, ele fiind primul
-lucru pe care utilizatorul la intrarea în diferitele secțiuni. Putem vedea un exemplu în figura următoare.
-
-\fig[width=1\textwidth]{imgs/tutorial.png}{fig:distributie_persoane}{Meniu de întâmpinare și ghidare pentru utilizator}
-
-Datele afișate în platformă sunt actualizate constant prin comunicare cu serverul care gestionează acel serviciu
+lucru pe care utilizatorul le vede la intrarea în diferitele secțiuni. Datele afișate în platformă sunt și ele
+actualizate constant și dinamic prin comunicare cu serverul care gestionează acel serviciu în zona de back-end,
 prin protocolul HTTP.
 
-Ca cerințe non-funcționale necesare pentru încărcarea și gestionarea corectă a scenelor 3D, putem să discutăm pe 
-mai multe planuri, cum ar fi:
+Ca cerințe non-funcționale necesare pentru încărcarea și gestionarea corectă a scenelor 3D, se poate discutape 
+mai multe planuri.
 
-\subsection*{1. Browser \& API}
+\textbf{Browser \& API}
 
-Aplicaţia trebuie să ruleze pe browsere moderne care suportă WebGL 1.0 (OpenGL ES 2.0) sau, de preferat, WebGL 2.0 (OpenGL ES 3.0).  
-Browsere compatibile: Chrome > 60, Firefox > 52, Safari > 11.
+Aplicaţia este destinată browserelor moderne care suportă WebGL 1.0 (OpenGL 2.0) sau, de preferat, 
+WebGL 2.0 (OpenGL 3.0). Browsere compatibile: Chrome > 60, Firefox > 52, Safari > 11.
 
-\subsection*{2. CPU}
+\textbf{CPU}
 
-\textbf{Minim desktop:} Procesor dual-core, recomandat > 1,5 GHz  
+Recomandat min un procesor dual-core, > 1,5 GHz  
 
-\subsection*{3. Memorie (RAM)}
+\textbf{Memorie (RAM)}
 
-\textbf{Minim:} 2 GB RAM total, din care \(\ge 256\) MB cel puțin liberi pentru heapul folosit de JavaScript și 
+Recomandat minim 2 GB RAM total, din care \(\ge 256\) MB cel puțin liberi pentru heapul folosit de JavaScript și 
 Three.js pentru încărcat modele și texturi.
 
-\textbf{Recomandat:} > 1 GB RAM, recomandat 4 GB+ RAM.
+\textbf{GPU \& VRAM}
 
-\subsection*{4. GPU \& VRAM}
+Minim placă grafică\footnote{https://enterprise.arcgis.com/en/system-requirements/10.5/windows/scene-viewer-requirements.htm}: 
 
-\textbf{Minim placă grafică\footnote{https://enterprise.arcgis.com/en/system-requirements/10.5/windows/scene-viewer-requirements.htm}:} 
+AMD/ATI: > Radeon 4xxx, NVIDIA: > GeForce 2xx, > Quadro FX 3800, Intel: > HD 4000 
 
-AMD/ATI: > Radeon 4xxx
+\textbf{Reţea}
 
-NVIDIA: > GeForce 2xx, > Quadro FX 3800
+Recomandat lăţime de bandă de 1 Mbps pentru a încărca rapid obiectele și texturile.
 
-Intel: > HD 4000 
+\textbf{Performanţă în aplicaţie}
 
-\subsection*{5. Reţea}
-
-\textbf{Lăţime de bandă minimă:} recomandat 1 Mbps pentru a încărca rapid obiectele și
-    texturile.
-
-\subsection*{6. Performanţă în aplicaţie}
-
-\textbf{FPS ţintă:} > 30 fps pe desktop, > 24 fps pe mobil.
-
-\textbf{Timp de încărcare iniţială:} < 2 s, < 5 s (la texturile mari).
-
-
-Aceste cerințe au fost testate în mediul de dezvoltare și sunt valabile pentru majoritatea, putând să difere
-în mediul de producție în cazul lansării aplicației.
-
+FPS ţintă: peste 30 fps, preferabil peste 60 fps pe desktop.
+Timp de încărcare iniţială: sub 2s și sub 5 s (la texturi mari).
 
 \section{Limitări}
 \label{sec:proj-limitations}

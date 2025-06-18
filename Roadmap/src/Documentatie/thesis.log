@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  18 JUN 2025 16:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  18 JUN 2025 18:33
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -739,15 +739,9 @@ LaTeX Warning: Label `sec:proj' multiply defined.
 
 LaTeX Warning: Label `sub-sec:proj-scope' multiply defined.
 
-
-LaTeX Warning: Label `fig:distributie_persoane' multiply defined.
-
 ) (src/chapters/studiuPiata.aux
 
 LaTeX Warning: Label `sec:proj' multiply defined.
-
-
-LaTeX Warning: Label `fig:distributie_persoane' multiply defined.
 
 
 LaTeX Warning: Label `sub-sec:proj-scope' multiply defined.
@@ -755,9 +749,6 @@ LaTeX Warning: Label `sub-sec:proj-scope' multiply defined.
 ) (src/chapters/tehnologiiFe.aux
 
 LaTeX Warning: Label `sec:proj' multiply defined.
-
-
-LaTeX Warning: Label `fig:fediagram' multiply defined.
 
 
 LaTeX Warning: Label `fig:fediagram' multiply defined.
@@ -787,15 +778,6 @@ LaTeX Warning: Label `fig:portainer-sidebyside' multiply defined.
 
 
 LaTeX Warning: Label `fig:portainer-sidebyside' multiply defined.
-
-
-LaTeX Warning: Label `fig:portainer-sidebyside' multiply defined.
-
-
-LaTeX Warning: Label `fig:portainer-sidebyside' multiply defined.
-
-
-LaTeX Warning: Label `fig:compilator-elev' multiply defined.
 
 
 LaTeX Warning: Label `fig:portainer-sidebyside' multiply defined.
@@ -1027,12 +1009,12 @@ LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 (Font)              scaled to size 8.8pt on input line 6.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 (Font)              scaled to size 6.6pt on input line 6.
-<src/img/branding/upb.png, id=451, 598.235pt x 598.235pt>
+<src/img/branding/upb.png, id=447, 598.235pt x 598.235pt>
 File: src/img/branding/upb.png Graphic file (type png)
 <use src/img/branding/upb.png>
 Package pdftex.def Info: src/img/branding/upb.png  used on input line 7.
 (pdftex.def)             Requested size: 53.63545pt x 53.62888pt.
-<src/img/branding/cs.png, id=452, 695.59875pt x 307.1475pt>
+<src/img/branding/cs.png, id=448, 695.59875pt x 307.1475pt>
 File: src/img/branding/cs.png Graphic file (type png)
 <use src/img/branding/cs.png>
 Package pdftex.def Info: src/img/branding/cs.png  used on input line 7.
@@ -1290,152 +1272,134 @@ Overfull \hbox (0.73828pt too wide) in paragraph at lines 103--105
 \T1/ntxtlf/m/n/12 Cerin[]ele func[]ionale pen-tru uti-li-za-to-rii elevi sunt cerin[]e care []in de uti-li-za-to-rii aplica[]iei
  []
 
-[11]
-<imgs/hover.png, id=678, 185.19188pt x 123.46124pt>
-File: imgs/hover.png Graphic file (type png)
-<use imgs/hover.png>
-Package pdftex.def Info: imgs/hover.png  used on input line 168.
-(pdftex.def)             Requested size: 206.28249pt x 137.52396pt.
- [12 <./imgs/hover.png>]
-<imgs/tutorial.png, id=687, 1027.58907pt x 203.25937pt>
-File: imgs/tutorial.png Graphic file (type png)
-<use imgs/tutorial.png>
-Package pdftex.def Info: imgs/tutorial.png  used on input line 174.
-(pdftex.def)             Requested size: 412.56497pt x 81.60625pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 200--200
+[11] [12]
+Underfull \hbox (badness 10000) in paragraph at lines 192--192
 [][][]\T1/ntxtlf/m/n/10 https://enterprise.arcgis.com/en/system-requirements/10.5/windows/scene-viewer-
  []
 
-[13{C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/newtx/ntx-ot1-tlf.enc} <./imgs/tutorial.png>]) [14]
+) [13{C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/newtx/ntx-ot1-tlf.enc}]
 \openout2 = `src/chapters/studiuPiata.aux'.
 
  (src/chapters/studiuPiata.tex
 Capitolul 3.
-<imgs/phet.png, id=708, 1431.84938pt x 668.4975pt>
+<imgs/phet.png, id=686, 1431.84938pt x 668.4975pt>
 File: imgs/phet.png Graphic file (type png)
 <use imgs/phet.png>
-Package pdftex.def Info: imgs/phet.png  used on input line 11.
-(pdftex.def)             Requested size: 412.56497pt x 192.61485pt.
-[15
+Package pdftex.def Info: imgs/phet.png  used on input line 10.
+(pdftex.def)             Requested size: 288.79422pt x 134.82938pt.
+[14
 
 
 
 
  <./imgs/phet.png>]
-<imgs/invatamate.png, id=715, 1271.5003pt x 721.19438pt>
-File: imgs/invatamate.png Graphic file (type png)
-<use imgs/invatamate.png>
-Package pdftex.def Info: imgs/invatamate.png  used on input line 21.
-(pdftex.def)             Requested size: 412.56497pt x 234.01125pt.
- [16 <./imgs/invatamate.png>]
-<imgs/invatamatesimulare.png, id=722, 723.45282pt x 710.655pt>
+<imgs/invatamatesimulare.png, id=694, 723.45282pt x 710.655pt>
 File: imgs/invatamatesimulare.png Graphic file (type png)
 <use imgs/invatamatesimulare.png>
-Package pdftex.def Info: imgs/invatamatesimulare.png  used on input line 40.
-(pdftex.def)             Requested size: 202.15909pt x 198.58083pt.
-<imgs/invatamatejoc.png, id=723, 740.7675pt x 706.13812pt>
+Package pdftex.def Info: imgs/invatamatesimulare.png  used on input line 34.
+(pdftex.def)             Requested size: 165.02347pt x 162.10258pt.
+<imgs/invatamatejoc.png, id=695, 740.7675pt x 706.13812pt>
 File: imgs/invatamatejoc.png Graphic file (type png)
 <use imgs/invatamatejoc.png>
-Package pdftex.def Info: imgs/invatamatejoc.png  used on input line 47.
-(pdftex.def)             Requested size: 202.15909pt x 192.70705pt.
-<imgs/mozaweb.png, id=724, 1038.88126pt x 673.01437pt>
+Package pdftex.def Info: imgs/invatamatejoc.png  used on input line 41.
+(pdftex.def)             Requested size: 165.02347pt x 157.3011pt.
+<imgs/mozaweb.png, id=696, 1038.88126pt x 673.01437pt>
 File: imgs/mozaweb.png Graphic file (type png)
 <use imgs/mozaweb.png>
-Package pdftex.def Info: imgs/mozaweb.png  used on input line 59.
+Package pdftex.def Info: imgs/mozaweb.png  used on input line 53.
 (pdftex.def)             Requested size: 288.79422pt x 187.08717pt.
- [17 <./imgs/invatamatesimulare.png> <./imgs/invatamatejoc.png> <./imgs/mozaweb.png>]
-<imgs/iqboard.png, id=737, 922.19531pt x 648.92438pt>
-File: imgs/iqboard.png Graphic file (type png)
-<use imgs/iqboard.png>
-Package pdftex.def Info: imgs/iqboard.png  used on input line 87.
-(pdftex.def)             Requested size: 202.15909pt x 142.2489pt.
-<imgs/iqboardsimulari.jpg, id=738, 818.05624pt x 439.6425pt>
+ [15 <./imgs/invatamatesimulare.png> <./imgs/invatamatejoc.png>]
+<imgs/iqboardsimulari.jpg, id=705, 818.05624pt x 439.6425pt>
 File: imgs/iqboardsimulari.jpg Graphic file (type jpg)
 <use imgs/iqboardsimulari.jpg>
-Package pdftex.def Info: imgs/iqboardsimulari.jpg  used on input line 94.
-(pdftex.def)             Requested size: 202.15909pt x 108.64246pt.
+Package pdftex.def Info: imgs/iqboardsimulari.jpg  used on input line 77.
+(pdftex.def)             Requested size: 247.54149pt x 133.03418pt.
 
-Overfull \hbox (6.36517pt too wide) in paragraph at lines 104--117
+Overfull \hbox (6.36517pt too wide) in paragraph at lines 83--97
 \T1/ntxtlf/m/n/12 În compara[]ie cu alte plat-forme, Vi-si-oS-cience3D adre-seaz  mai multe ne-voi educa[]ionale.
  []
 
-[18 <./imgs/iqboard.png> <./imgs/iqboardsimulari.jpg>]) [19]
+[16 <./imgs/mozaweb.png>]) [17 <./imgs/iqboardsimulari.jpg>]
 \openout2 = `src/chapters/tehnologiiFe.aux'.
 
  (src/chapters/tehnologiiFe.tex
 Capitolul 4.
-[20
+[18
 
 
 
 
-] [21]
-<imgs/fediagram.png, id=772, 1083.29718pt x 294.34969pt>
+] [19]
+Overfull \hbox (9.92006pt too wide) in paragraph at lines 70--77
+[]\T1/ntxtlf/b/n/12 Abstrac[]ie de-cla-ra-tiv \T1/ntxtlf/m/n/12 : R3F în-cap-su-leaz  API-ul Three.js într-un DSL[][][][][][] Re-act, poten[]ând
+ []
+
+<imgs/fediagram.png, id=742, 1083.29718pt x 294.34969pt>
 File: imgs/fediagram.png Graphic file (type png)
 <use imgs/fediagram.png>
-Package pdftex.def Info: imgs/fediagram.png  used on input line 92.
+Package pdftex.def Info: imgs/fediagram.png  used on input line 93.
 (pdftex.def)             Requested size: 453.82397pt x 123.31161pt.
 
-Overfull \hbox (41.259pt too wide) in paragraph at lines 92--92
+Overfull \hbox (41.259pt too wide) in paragraph at lines 93--93
  [] 
  []
 
-[22 <./imgs/fediagram.png>]
-<imgs/convertor.png, id=782, 1442.38875pt x 709.90219pt>
+[20 <./imgs/fediagram.png>]
+<imgs/convertor.png, id=752, 1442.38875pt x 709.90219pt>
 File: imgs/convertor.png Graphic file (type png)
 <use imgs/convertor.png>
-Package pdftex.def Info: imgs/convertor.png  used on input line 122.
+Package pdftex.def Info: imgs/convertor.png  used on input line 123.
 (pdftex.def)             Requested size: 412.56497pt x 203.04997pt.
- [23 <./imgs/convertor.png>]
-<imgs/Blender.png, id=790, 974.13937pt x 724.95844pt>
+ [21 <./imgs/convertor.png>]
+<imgs/Blender.png, id=760, 974.13937pt x 458.46281pt>
 File: imgs/Blender.png Graphic file (type png)
 <use imgs/Blender.png>
-Package pdftex.def Info: imgs/Blender.png  used on input line 132.
-(pdftex.def)             Requested size: 412.56497pt x 307.03578pt.
- [24 <./imgs/Blender.png>]
-<imgs/paleta.png, id=799, 406.1574pt x 146.7081pt>
+Package pdftex.def Info: imgs/Blender.png  used on input line 133.
+(pdftex.def)             Requested size: 412.56497pt x 194.16904pt.
+<imgs/paleta.png, id=761, 846.16125pt x 165.61874pt>
 File: imgs/paleta.png Graphic file (type png)
 <use imgs/paleta.png>
-Package pdftex.def Info: imgs/paleta.png  used on input line 151.
-(pdftex.def)             Requested size: 412.56497pt x 149.02242pt.
-<imgs/logo.png, id=800, 370.38374pt x 76.03406pt>
+Package pdftex.def Info: imgs/paleta.png  used on input line 152.
+(pdftex.def)             Requested size: 412.56497pt x 80.74954pt.
+ [22 <./imgs/Blender.png>]
+<imgs/logo.png, id=769, 370.38374pt x 76.03406pt>
 File: imgs/logo.png Graphic file (type png)
 <use imgs/logo.png>
-Package pdftex.def Info: imgs/logo.png  used on input line 158.
+Package pdftex.def Info: imgs/logo.png  used on input line 159.
 (pdftex.def)             Requested size: 206.28249pt x 42.34673pt.
-<imgs/mascota.png, id=801, 401.24907pt x 569.87906pt>
+<imgs/mascota.png, id=770, 401.24907pt x 569.87906pt>
 File: imgs/mascota.png Graphic file (type png)
 <use imgs/mascota.png>
-Package pdftex.def Info: imgs/mascota.png  used on input line 169.
-(pdftex.def)             Requested size: 144.40025pt x 205.08673pt.
-LaTeX Font Info:    Trying to load font information for T1+ntxtt on input line 178.
+Package pdftex.def Info: imgs/mascota.png  used on input line 170.
+(pdftex.def)             Requested size: 103.14124pt x 146.48679pt.
+<imgs/navdiagram (2).png, id=771, 642.4pt x 1204.5pt>
+File: imgs/navdiagram (2).png Graphic file (type png)
+<use imgs/navdiagram (2).png>
+Package pdftex.def Info: imgs/navdiagram (2).png  used on input line 180.
+(pdftex.def)             Requested size: 247.54149pt x 464.12909pt.
+ [23 <./imgs/paleta.png> <./imgs/logo.png> <./imgs/mascota.png>]
+LaTeX Font Info:    Trying to load font information for T1+ntxtt on input line 184.
  (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/newtx\t1ntxtt.fd
 File: t1ntxtt.fd 2012/04/20 v3.1
 )
 LaTeX Font Info:    Font shape `T1/ntxtt/m/n' will be
-(Font)              scaled to size 12.0pt on input line 178.
+(Font)              scaled to size 12.0pt on input line 184.
 
-Overfull \hbox (29.69385pt too wide) in paragraph at lines 177--180
+Overfull \hbox (29.69385pt too wide) in paragraph at lines 183--186
 \T1/ntxtlf/m/n/12 st ri lo-cale (\T1/ntxtt/m/n/12 useState\T1/ntxtlf/m/n/12 ), efecte de ci-clu de via[]  (\T1/ntxtt/m/n/12 useEffect\T1/ntxtlf/m/n/12 ) ³i persisten[]  în \T1/ntxtt/m/n/12 localStorage\T1/ntxtlf/m/n/12 : 
  []
 
-[25 <./imgs/paleta.png> <./imgs/logo.png>]
-Overfull \hbox (2.9128pt too wide) in paragraph at lines 184--187
-\T1/ntxtt/m/n/12 setError()\T1/ntxtlf/m/n/12 ; in-di-fe-rent de re-zul-tat, în \T1/ntxtt/m/n/12 finally \T1/ntxtlf/m/n/12 se se-teaz  \T1/ntxtt/m/n/12 setLoading(false)\T1/ntxtlf/m/n/12 . 
+[24 <./imgs/navdiagram (2).png>]
+Overfull \hbox (4.96883pt too wide) in paragraph at lines 190--193
+\T1/ntxtt/m/n/12 setError()\T1/ntxtlf/m/n/12 . In-di-fe-rent de re-zul-tat, în \T1/ntxtt/m/n/12 finally \T1/ntxtlf/m/n/12 se se-teaz  \T1/ntxtt/m/n/12 setLoading(false)\T1/ntxtlf/m/n/12 . 
  []
 
-<imgs/navdiagram (2).png, id=812, 642.4pt x 1204.5pt>
-File: imgs/navdiagram (2).png Graphic file (type png)
-<use imgs/navdiagram (2).png>
-Package pdftex.def Info: imgs/navdiagram (2).png  used on input line 200.
-(pdftex.def)             Requested size: 247.54149pt x 464.12909pt.
-[26 <./imgs/mascota.png>] [27 <./imgs/navdiagram (2).png>] [28] [29]) [30]
+[25] [26]) [27]
 \openout2 = `src/chapters/tehnologiiBe.aux'.
 
  (src/chapters/tehnologiiBe.tex
 Capitolul 5.
-[31
+[28
 
 
 
@@ -1452,7 +1416,7 @@ Overfull \hbox (22.0622pt too wide) in paragraph at lines 55--58
 \T1/ntxtlf/m/n/12 Pentru fi-e-care com-po-nent  a backend-ului^^V\T1/ntxtt/m/n/12 Deployment\T1/ntxtlf/m/n/12 , \T1/ntxtt/m/n/12 Service\T1/ntxtlf/m/n/12 , \T1/ntxtt/m/n/12 Ingress\T1/ntxtlf/m/n/12 , \T1/ntxtt/m/n/12 ConfigMap\T1/ntxtlf/m/n/12 ,
  []
 
-[32]
+[29]
 LaTeX Font Info:    Font shape `T1/ntxtt/m/n' will be
 (Font)              scaled to size 10.95pt on input line 72.
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
@@ -1505,229 +1469,191 @@ LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 (Font)              scaled to size 8.0pt on input line 73.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 (Font)              scaled to size 6.1pt on input line 73.
- [33]
+ [30]
 LaTeX Font Info:    Font shape `T1/ntxtt/b/n' in size <6.6> not available
 (Font)              Font shape `T1/txtt/bx/n' tried instead on input line 125.
-<imgs/portainerlanding.png, id=893, 1431.09656pt x 690.32906pt>
+<imgs/portainerlanding.png, id=859, 1431.09656pt x 690.32906pt>
 File: imgs/portainerlanding.png Graphic file (type png)
 <use imgs/portainerlanding.png>
 Package pdftex.def Info: imgs/portainerlanding.png  used on input line 143.
 (pdftex.def)             Requested size: 412.56497pt x 199.01054pt.
- [34]
-<imgs/servicesportainer.png, id=912, 1184.92688pt x 484.81125pt>
+ [31]
+<imgs/servicesportainer.png, id=878, 1184.92688pt x 484.81125pt>
 File: imgs/servicesportainer.png Graphic file (type png)
 <use imgs/servicesportainer.png>
 Package pdftex.def Info: imgs/servicesportainer.png  used on input line 151.
 (pdftex.def)             Requested size: 206.28249pt x 84.39937pt.
-<imgs/servicescli.png, id=913, 561.59813pt x 201.75375pt>
+<imgs/servicescli.png, id=879, 561.59813pt x 201.75375pt>
 File: imgs/servicescli.png Graphic file (type png)
 <use imgs/servicescli.png>
 Package pdftex.def Info: imgs/servicescli.png  used on input line 155.
 (pdftex.def)             Requested size: 185.65297pt x 66.69592pt.
- [35 <./imgs/portainerlanding.png> <./imgs/servicesportainer.png> <./imgs/servicescli.png>] [36]
-<imgs/bearch.png, id=941, 800.23969pt x 464.4853pt>
+ [32 <./imgs/portainerlanding.png> <./imgs/servicesportainer.png> <./imgs/servicescli.png>] [33]
+<imgs/bearch.png, id=906, 800.23969pt x 464.4853pt>
 File: imgs/bearch.png Graphic file (type png)
 <use imgs/bearch.png>
 Package pdftex.def Info: imgs/bearch.png  used on input line 239.
 (pdftex.def)             Requested size: 412.56497pt x 239.4713pt.
- [37] (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+ [34] (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 ) (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
-) [38 <./imgs/bearch.png>]
+) [35 <./imgs/bearch.png>]
 Overfull \hbox (7.74501pt too wide) in paragraph at lines 281--283
 \T1/ntxtlf/m/n/12 push-action ³i o în-c r-c m pe Do-c-ker-Hub sub nu-mele dra-go-mir1401/\T1/ntxtt/m/n/12 $SVC:latest\T1/ntxtlf/m/n/12 . 
  []
 
-[39]
+[36]
 Overfull \hbox (2.31013pt too wide) in paragraph at lines 326--329
 \T1/ntxtlf/m/n/12 De exem-plu dup  ce Pro-me-theus trece prin \T1/ntxtt/m/n/12 evaluation_-service_-http_-requests_-
  []
 
-[40]
-<imgs/evaluationdashboard.png, id=986, 1214.28656pt x 557.83406pt>
+[37]
+<imgs/evaluationdashboard.png, id=952, 1214.28656pt x 557.83406pt>
 File: imgs/evaluationdashboard.png Graphic file (type png)
 <use imgs/evaluationdashboard.png>
 Package pdftex.def Info: imgs/evaluationdashboard.png  used on input line 347.
 (pdftex.def)             Requested size: 412.56497pt x 189.52487pt.
- [41 <./imgs/evaluationdashboard.png>]
-Overfull \hbox (14.3183pt too wide) in paragraph at lines 393--397
+ [38 <./imgs/evaluationdashboard.png>]
+Overfull \hbox (14.3183pt too wide) in paragraph at lines 392--396
 \T1/ntxtt/m/n/12 ClassID []\T1/ntxtlf/m/n/12 i \T1/ntxtt/m/n/12 OwnerID \T1/ntxtlf/m/n/12 (re-pre-zen-tate prin \T1/ntxtt/m/n/12 ObjectID \T1/ntxtlf/m/n/12 din MongoDB), un ar-ray de \T1/ntxtt/m/n/12 Questions
  []
 
-[42]
-<imgs/dbdiagram.png, id=1002, 3728.93124pt x 3854.4pt>
+[39]
+<imgs/dbdiagram.png, id=967, 3728.93124pt x 3854.4pt>
 File: imgs/dbdiagram.png Graphic file (type png)
 <use imgs/dbdiagram.png>
-Package pdftex.def Info: imgs/dbdiagram.png  used on input line 405.
+Package pdftex.def Info: imgs/dbdiagram.png  used on input line 404.
 (pdftex.def)             Requested size: 412.56497pt x 426.39667pt.
- [43 <./imgs/dbdiagram.png>]) [44]
+ [40 <./imgs/dbdiagram.png>]) [41]
 \openout2 = `src/chapters/implementare.aux'.
 
  (src/chapters/implementare.tex
 Capitolul 6.
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 22.
-[45
+[42
 
 
 
 
 ]
-Overfull \hbox (1.50414pt too wide) in paragraph at lines 41--41
+Overfull \hbox (1.50414pt too wide) in paragraph at lines 39--39
 []\T1/ntxtlf/b/n/12 Caracteristic | 
  []
 
 
-Underfull \hbox (badness 1521) in paragraph at lines 43--43
+Underfull \hbox (badness 1521) in paragraph at lines 41--41
 \T1/ntxtlf/m/n/12 cu su-port na-tiv pen-
  []
 
 
-Underfull \hbox (badness 2229) in paragraph at lines 43--43
+Underfull \hbox (badness 2229) in paragraph at lines 41--41
 []\T1/ntxtlf/m/n/12 Interpretat, bun pen-
  []
 
 
-Underfull \hbox (badness 2376) in paragraph at lines 43--44
+Underfull \hbox (badness 2376) in paragraph at lines 41--42
 []\T1/ntxtlf/m/n/12 Interpretat, mai lent,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 45--45
+Underfull \hbox (badness 10000) in paragraph at lines 43--43
 []\T1/ntxtlf/m/n/12 Model event-loop,
  []
 
 
-Underfull \hbox (badness 1924) in paragraph at lines 45--45
+Underfull \hbox (badness 1924) in paragraph at lines 43--43
 \T1/ntxtlf/m/n/12 asin-cron cu callback-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 45--45
+Underfull \hbox (badness 10000) in paragraph at lines 43--43
 \T1/ntxtlf/m/n/12 uri/promises/async-
  []
 
 
-Underfull \hbox (badness 1629) in paragraph at lines 45--46
+Underfull \hbox (badness 1629) in paragraph at lines 43--44
 []\T1/ntxtlf/m/n/12 Suport li-mi-tat (threa-
  []
 
 
-Underfull \hbox (badness 4805) in paragraph at lines 45--46
+Underfull \hbox (badness 4805) in paragraph at lines 43--44
 \T1/ntxtlf/m/n/12 ding, asyn-cio), mai
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 45--46
+Underfull \hbox (badness 10000) in paragraph at lines 43--44
 \T1/ntxtlf/m/n/12 com-plex pen-tru
  []
 
 
-Underfull \hbox (badness 3068) in paragraph at lines 47--47
+Underfull \hbox (badness 3068) in paragraph at lines 45--45
 []\T1/ntxtlf/b/n/12 Simplitate []i
  []
 
 
-Underfull \hbox (badness 1852) in paragraph at lines 47--48
+Underfull \hbox (badness 1852) in paragraph at lines 45--46
 \T1/ntxtlf/m/n/12 turi mari pot de-veni
  []
 
 
-Underfull \hbox (badness 1565) in paragraph at lines 49--49
+Underfull \hbox (badness 1565) in paragraph at lines 47--47
 []\T1/ntxtlf/m/n/12 Ecosistem în cre[]tere
  []
 
 
-Underfull \hbox (badness 6300) in paragraph at lines 49--49
-\T1/ntxtlf/m/n/12 ra-pid , multe li-br -
- []
-
-
-Underfull \hbox (badness 6542) in paragraph at lines 49--49
-\T1/ntxtlf/m/n/12 rii pen-tru zona de
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 49--49
-\T1/ntxtlf/m/n/12 mi-cro-ser-vi-cii, su-port
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 49--49
-\T1/ntxtlf/m/n/12 bun pen-tru REST,
- []
-
-
-Underfull \hbox (badness 2302) in paragraph at lines 51--51
+Underfull \hbox (badness 2302) in paragraph at lines 49--49
 []\T1/ntxtlf/m/n/12 Scalabil pe I/O, dar
  []
 
 
-Underfull \hbox (badness 1496) in paragraph at lines 51--51
+Underfull \hbox (badness 1496) in paragraph at lines 49--49
 \T1/ntxtlf/m/n/12 single-threaded cu li-
  []
 
 
-Underfull \hbox (badness 3354) in paragraph at lines 53--53
+Underfull \hbox (badness 3354) in paragraph at lines 51--51
 []\T1/ntxtlf/m/n/12 Binar unic com-pi-lat,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 53--53
+Underfull \hbox (badness 10000) in paragraph at lines 51--51
 []\T1/ntxtlf/m/n/12 Necesit  run-time
  []
 
 
-Underfull \hbox (badness 1521) in paragraph at lines 53--53
+Underfull \hbox (badness 1521) in paragraph at lines 51--51
 \T1/ntxtlf/m/n/12 Node.js, ima-gini mai
  []
 
 
-Underfull \hbox (badness 1859) in paragraph at lines 53--54
+Underfull \hbox (badness 1859) in paragraph at lines 51--52
 []\T1/ntxtlf/m/n/12 Necesit  run-time Py-
  []
 
 
-Overfull \hbox (47.99997pt too wide) in paragraph at lines 39--57
+Overfull \hbox (47.99997pt too wide) in paragraph at lines 37--55
  [][] 
  []
 
-[46] [47] [48] [49]
-Overfull \hbox (30.95416pt too wide) in paragraph at lines 219--225
-\T1/ntxtlf/m/n/12 mi-rea quiz_-re-sult din \T1/ntxtt/m/n/12 evaluation-service\T1/ntxtlf/m/n/12 , han-d-le-rul de-co-di-fic  câm-pul \T1/ntxtt/m/n/12 QuizResultMeta
- []
-
-[50]
-Overfull \hbox (25.3867pt too wide) in paragraph at lines 256--257
-[]\T1/ntxtlf/m/n/12 insereaz  ape-luri [][][][][][] dup  ope-ra-µi-ile sem-ni-fi-ca-tive ([]
- []
-
-
-Overfull \hbox (1.92651pt too wide) in paragraph at lines 257--258
-[]\T1/ntxtlf/m/n/12 adaug  [][][][][][][][][][][][][][][][] îna-inte de [][][][] ³i dup 
- []
-
-(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+[43] [44] [45] [46] [47] (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
-)
-LaTeX Font Info:    Font shape `T1/ntxtt/m/it' in size <12> not available
-(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 272.
- [51]
-Overfull \hbox (8.51038pt too wide) in paragraph at lines 308--320
+) [48]
+Overfull \hbox (8.51038pt too wide) in paragraph at lines 296--308
 \T1/ntxtlf/m/n/12 mente in-te-rac-tive. De ase-me-nea, s-au dezvol-tat \T1/ntxtlf/b/n/12 for-mu-lare\T1/ntxtlf/m/n/12 , pre-cum \T1/ntxtt/m/n/12 ChemistryAddForm\T1/ntxtlf/m/n/12 ,
  []
 
-[52] [53]
-Overfull \hbox (15.3262pt too wide) in paragraph at lines 373--380
+[49]
+Overfull \hbox (15.3262pt too wide) in paragraph at lines 361--368
 []\T1/ntxtlf/m/n/12 Pentru for-mu-lare ³i in-ter-feµe bi-di-men-sio-nale (de ex. \T1/ntxtt/m/n/12 ChemistryAddForm\T1/ntxtlf/m/n/12 , \T1/ntxtt/m/n/12 ListFormulas\T1/ntxtlf/m/n/12 ,
  []
 
 
-Overfull \hbox (15.99812pt too wide) in paragraph at lines 373--380
+Overfull \hbox (15.99812pt too wide) in paragraph at lines 361--368
 \T1/ntxtlf/m/n/12 ani-mate cu Fra-mer Mo-tion (\T1/ntxtt/m/n/12 BadgeNotification\T1/ntxtlf/m/n/12 , hint over-lays). În \T1/ntxtt/m/n/12 ChemistryAddForm\T1/ntxtlf/m/n/12 ,
  []
 
-[54]) [55]
+[50]) [51]
 \openout2 = `src/chapters/funcionalitati.aux'.
 
 
@@ -1736,17 +1662,17 @@ No file src/chapters/funcionalitati.tex.
 
 (src/chapters/scenariiUtilizare.tex
 Capitolul 7.
-<imgs/register.png, id=1123, 492.33937pt x 499.11469pt>
-File: imgs/register.png Graphic file (type png)
-<use imgs/register.png>
-Package pdftex.def Info: imgs/register.png  used on input line 26.
-(pdftex.def)             Requested size: 218.65892pt x 221.66742pt.
-<imgs/login.png, id=1124, 383.93437pt x 494.59781pt>
-File: imgs/login.png Graphic file (type png)
-<use imgs/login.png>
-Package pdftex.def Info: imgs/login.png  used on input line 30.
-(pdftex.def)             Requested size: 173.27652pt x 223.22353pt.
-[56
+<imgs/mainmenu.png, id=1078, 1440.13031pt x 699.36281pt>
+File: imgs/mainmenu.png Graphic file (type png)
+<use imgs/mainmenu.png>
+Package pdftex.def Info: imgs/mainmenu.png  used on input line 29.
+(pdftex.def)             Requested size: 371.30595pt x 180.3147pt.
+
+Overfull \hbox (15.46225pt too wide) in paragraph at lines 32--35
+[]\T1/ntxtlf/m/n/12 Magazinul on-line este o sec[]iune de-di-cat  unde uti-li-za-to-rii pot achizi[]iona c r[]i educa[]ionale
+ []
+
+[52
 
 
 
@@ -1755,180 +1681,96 @@ Package pdftex.def Info: imgs/login.png  used on input line 30.
 
 
 ]
-<imgs/mainmenu.png, id=1129, 1440.13031pt x 699.36281pt>
-File: imgs/mainmenu.png Graphic file (type png)
-<use imgs/mainmenu.png>
-Package pdftex.def Info: imgs/mainmenu.png  used on input line 44.
-(pdftex.def)             Requested size: 371.30595pt x 180.3147pt.
-
-Overfull \hbox (15.46225pt too wide) in paragraph at lines 47--50
-[]\T1/ntxtlf/m/n/12 Magazinul on-line este o sec[]iune de-di-cat  unde uti-li-za-to-rii pot achizi[]iona c r[]i educa[]ionale
- []
-
-[57 <./imgs/register.png> <./imgs/login.png> <./imgs/mainmenu.png>]
-<imgs/magazin.png, id=1141, 641.39626pt x 677.53125pt>
+<imgs/magazin.png, id=1083, 641.39626pt x 677.53125pt>
 File: imgs/magazin.png Graphic file (type png)
 <use imgs/magazin.png>
-Package pdftex.def Info: imgs/magazin.png  used on input line 55.
-(pdftex.def)             Requested size: 226.91199pt x 239.69304pt.
-<imgs/contact.png, id=1142, 485.56406pt x 674.52pt>
-File: imgs/contact.png Graphic file (type png)
-<use imgs/contact.png>
-Package pdftex.def Info: imgs/contact.png  used on input line 59.
-(pdftex.def)             Requested size: 165.02347pt x 229.24113pt.
- [58 <./imgs/magazin.png> <./imgs/contact.png>]
-<imgs/mathex.png, id=1152, 1427.3325pt x 615.0478pt>
-File: imgs/mathex.png Graphic file (type png)
-<use imgs/mathex.png>
-Package pdftex.def Info: imgs/mathex.png  used on input line 87.
-(pdftex.def)             Requested size: 288.79422pt x 124.44327pt.
-<imgs/fizicaex.png, id=1153, 1427.3325pt x 547.2947pt>
-File: imgs/fizicaex.png Graphic file (type png)
-<use imgs/fizicaex.png>
-Package pdftex.def Info: imgs/fizicaex.png  used on input line 88.
-(pdftex.def)             Requested size: 288.79422pt x 110.7347pt.
-<imgs/chimieex.png, id=1154, 1428.08531pt x 520.19344pt>
+Package pdftex.def Info: imgs/magazin.png  used on input line 40.
+(pdftex.def)             Requested size: 185.65297pt x 196.10684pt.
+<imgs/login.png, id=1084, 383.93437pt x 494.59781pt>
+File: imgs/login.png Graphic file (type png)
+<use imgs/login.png>
+Package pdftex.def Info: imgs/login.png  used on input line 44.
+(pdftex.def)             Requested size: 144.40025pt x 186.02464pt.
+ [53 <./imgs/mainmenu.png> <./imgs/magazin.png> <./imgs/login.png>]
+<imgs/chimieex.png, id=1096, 1428.08531pt x 520.19344pt>
 File: imgs/chimieex.png Graphic file (type png)
 <use imgs/chimieex.png>
-Package pdftex.def Info: imgs/chimieex.png  used on input line 89.
-(pdftex.def)             Requested size: 288.79422pt x 105.19571pt.
-<imgs/astronomieex.png, id=1155, 1426.57968pt x 633.86812pt>
+Package pdftex.def Info: imgs/chimieex.png  used on input line 72.
+(pdftex.def)             Requested size: 371.30595pt x 135.2471pt.
+<imgs/astronomieex.png, id=1097, 1426.57968pt x 633.86812pt>
 File: imgs/astronomieex.png Graphic file (type png)
 <use imgs/astronomieex.png>
-Package pdftex.def Info: imgs/astronomieex.png  used on input line 90.
-(pdftex.def)             Requested size: 288.79422pt x 128.3189pt.
-<imgs/infoex.png, id=1156, 1428.83812pt x 706.89093pt>
-File: imgs/infoex.png Graphic file (type png)
-<use imgs/infoex.png>
-Package pdftex.def Info: imgs/infoex.png  used on input line 91.
-(pdftex.def)             Requested size: 288.79422pt x 142.87497pt.
- [59 <./imgs/mathex.png> <./imgs/fizicaex.png> <./imgs/chimieex.png>]
-<imgs/molform.png, id=1167, 287.57437pt x 464.4853pt>
+Package pdftex.def Info: imgs/astronomieex.png  used on input line 73.
+(pdftex.def)             Requested size: 371.30595pt x 164.97592pt.
+ [54 <./imgs/chimieex.png>]
+<imgs/molform.png, id=1105, 287.57437pt x 464.4853pt>
 File: imgs/molform.png Graphic file (type png)
 <use imgs/molform.png>
-Package pdftex.def Info: imgs/molform.png  used on input line 107.
+Package pdftex.def Info: imgs/molform.png  used on input line 89.
 (pdftex.def)             Requested size: 103.14124pt x 166.59088pt.
-<imgs/infoops.png, id=1168, 405.76593pt x 219.06844pt>
+<imgs/infoops.png, id=1106, 405.76593pt x 219.06844pt>
 File: imgs/infoops.png Graphic file (type png)
 <use imgs/infoops.png>
-Package pdftex.def Info: imgs/infoops.png  used on input line 111.
+Package pdftex.def Info: imgs/infoops.png  used on input line 93.
 (pdftex.def)             Requested size: 226.91199pt x 122.51035pt.
- [60 <./imgs/astronomieex.png> <./imgs/infoex.png>]
-<imgs/dashboardprof.png, id=1178, 736.25063pt x 637.63219pt>
-File: imgs/dashboardprof.png Graphic file (type png)
-<use imgs/dashboardprof.png>
-Package pdftex.def Info: imgs/dashboardprof.png  used on input line 125.
-(pdftex.def)             Requested size: 247.54149pt x 214.37917pt.
-<imgs/dashboardclasa.png, id=1179, 709.90219pt x 630.10406pt>
-File: imgs/dashboardclasa.png Graphic file (type png)
-<use imgs/dashboardclasa.png>
-Package pdftex.def Info: imgs/dashboardclasa.png  used on input line 133.
-(pdftex.def)             Requested size: 247.54149pt x 219.71286pt.
- [61 <./imgs/molform.png> <./imgs/infoops.png> <./imgs/dashboardprof.png>]
-<imgs/crearequiz.png, id=1191, 1427.3325pt x 710.655pt>
-File: imgs/crearequiz.png Graphic file (type png)
-<use imgs/crearequiz.png>
-Package pdftex.def Info: imgs/crearequiz.png  used on input line 142.
-(pdftex.def)             Requested size: 309.42372pt x 154.05655pt.
-<imgs/rezultatequiz.png, id=1192, 562.35094pt x 300.3722pt>
-File: imgs/rezultatequiz.png Graphic file (type png)
-<use imgs/rezultatequiz.png>
-Package pdftex.def Info: imgs/rezultatequiz.png  used on input line 148.
-(pdftex.def)             Requested size: 309.42372pt x 165.27396pt.
-<imgs/dashboardelev.png, id=1193, 733.99219pt x 316.18124pt>
-File: imgs/dashboardelev.png Graphic file (type png)
-<use imgs/dashboardelev.png>
-Package pdftex.def Info: imgs/dashboardelev.png  used on input line 158.
-(pdftex.def)             Requested size: 309.42372pt x 133.29213pt.
- [62 <./imgs/dashboardclasa.png> <./imgs/crearequiz.png>] [63 <./imgs/rezultatequiz.png> <./imgs/dashboardelev.png>]
-<imgs/facequiz.png, id=1210, 547.2947pt x 657.95813pt>
+ [55 <./imgs/astronomieex.png> <./imgs/molform.png> <./imgs/infoops.png>]
+<imgs/facequiz.png, id=1118, 547.2947pt x 387.69844pt>
 File: imgs/facequiz.png Graphic file (type png)
 <use imgs/facequiz.png>
-Package pdftex.def Info: imgs/facequiz.png  used on input line 172.
-(pdftex.def)             Requested size: 226.91199pt x 272.79654pt.
-<imgs/vederequiz.png, id=1211, 337.26pt x 238.64156pt>
+Package pdftex.def Info: imgs/facequiz.png  used on input line 143.
+(pdftex.def)             Requested size: 198.02942pt x 140.28122pt.
+<imgs/vederequiz.png, id=1119, 337.26pt x 238.64156pt>
 File: imgs/vederequiz.png Graphic file (type png)
 <use imgs/vederequiz.png>
-Package pdftex.def Info: imgs/vederequiz.png  used on input line 176.
-(pdftex.def)             Requested size: 165.02347pt x 116.77151pt.
- [64 <./imgs/facequiz.png> <./imgs/vederequiz.png>]
-<imgs/editorvizual.png, id=1221, 718.93594pt x 630.85687pt>
+Package pdftex.def Info: imgs/vederequiz.png  used on input line 147.
+(pdftex.def)             Requested size: 198.02942pt x 140.12727pt.
+ [56]
+<imgs/editorvizual.png, id=1124, 718.93594pt x 307.1475pt>
 File: imgs/editorvizual.png Graphic file (type png)
 <use imgs/editorvizual.png>
-Package pdftex.def Info: imgs/editorvizual.png  used on input line 197.
-(pdftex.def)             Requested size: 288.79422pt x 253.4164pt.
-<imgs/cppeditor.png, id=1223, 1440.88312pt x 708.39656pt>
-File: imgs/cppeditor.png Graphic file (type png)
-<use imgs/cppeditor.png>
-Package pdftex.def Info: imgs/cppeditor.png  used on input line 204.
-(pdftex.def)             Requested size: 330.05322pt x 162.2576pt.
- [65 <./imgs/editorvizual.png> <./imgs/cppeditor.png>]
-<imgs/chemtable.png, id=1233, 1189.44376pt x 520.94624pt>
+Package pdftex.def Info: imgs/editorvizual.png  used on input line 167.
+(pdftex.def)             Requested size: 412.56497pt x 176.26161pt.
+ [57 <./imgs/facequiz.png> <./imgs/vederequiz.png> <./imgs/editorvizual.png>]
+<imgs/chemtable.png, id=1137, 1189.44376pt x 520.94624pt>
 File: imgs/chemtable.png Graphic file (type png)
 <use imgs/chemtable.png>
-Package pdftex.def Info: imgs/chemtable.png  used on input line 217.
-(pdftex.def)             Requested size: 330.05322pt x 144.55237pt.
-<imgs/chemdna.png, id=1234, 170.13562pt x 446.41782pt>
-File: imgs/chemdna.png Graphic file (type png)
-<use imgs/chemdna.png>
-Package pdftex.def Info: imgs/chemdna.png  used on input line 227.
-(pdftex.def)             Requested size: 61.88222pt x 162.37236pt.
-
-Underfull \hbox (badness 6675) in paragraph at lines 227--227
-[]\T1/ntxtlf/m/n/10 (a) |Form  de
- []
-
-<imgs/chemhelix.png, id=1235, 467.49657pt x 289.83281pt>
-File: imgs/chemhelix.png Graphic file (type png)
-<use imgs/chemhelix.png>
-Package pdftex.def Info: imgs/chemhelix.png  used on input line 231.
-(pdftex.def)             Requested size: 173.27652pt x 107.42662pt.
-<imgs/chemtorus.png, id=1236, 391.4625pt x 454.69875pt>
-File: imgs/chemtorus.png Graphic file (type png)
-<use imgs/chemtorus.png>
-Package pdftex.def Info: imgs/chemtorus.png  used on input line 234.
-(pdftex.def)             Requested size: 156.7767pt x 182.10522pt.
-[66 <./imgs/chemtable.png> <./imgs/chemdna.png> <./imgs/chemhelix.png> <./imgs/chemtorus.png>]
-<imgs/profdashboard.png, id=1251, 572.89032pt x 694.09312pt>
+Package pdftex.def Info: imgs/chemtable.png  used on input line 184.
+(pdftex.def)             Requested size: 412.56497pt x 180.68848pt.
+ [58 <./imgs/chemtable.png>]
+<imgs/profdashboard.png, id=1145, 572.89032pt x 364.36125pt>
 File: imgs/profdashboard.png Graphic file (type png)
 <use imgs/profdashboard.png>
-Package pdftex.def Info: imgs/profdashboard.png  used on input line 253.
-(pdftex.def)             Requested size: 330.05322pt x 399.88419pt.
- [67 <./imgs/profdashboard.png>]
-<imgs/elevbadges.png, id=1258, 1032.10594pt x 612.03656pt>
-File: imgs/elevbadges.png Graphic file (type png)
-<use imgs/elevbadges.png>
-Package pdftex.def Info: imgs/elevbadges.png  used on input line 263.
-(pdftex.def)             Requested size: 412.56497pt x 244.65152pt.
-) [68 <./imgs/elevbadges.png>]
+Package pdftex.def Info: imgs/profdashboard.png  used on input line 203.
+(pdftex.def)             Requested size: 330.05322pt x 209.9175pt.
+) [59 <./imgs/profdashboard.png>]
 \openout2 = `src/chapters/evaluare.aux'.
 
  (src/chapters/evaluare.tex
 Capitolul 8.
-[69
+[60
 
 
 
 
-] [70] [71] [72] [73]) [74]
+] [61] [62] [63]) [64]
 \openout2 = `src/chapters/concluzii.aux'.
 
  (src/chapters/concluzii.tex
 Capitolul 9.
-[75
+[65
 
 
 
 
-]) [76]) (src/appendix/index.tex (src/appendix/build.system.makefiles.tex
+]) [66]) (src/appendix/index.tex (src/appendix/build.system.makefiles.tex
 Anexa A.
 LaTeX Font Info:    Font shape `T1/ntxtt/b/n' in size <10.95> not available
 (Font)              Font shape `T1/txtt/bx/n' tried instead on input line 28.
-[77
+[67
 
 
 
-] [78]))
+] [68]))
 Underfull \hbox (badness 1466) in paragraph at lines 51--52
 []\T1/ntxtlf/m/n/12 Y. Zhang et al., ^^PVR/AR in STEM Lear-ning,^^Q *Pu-bMed*, 2024. [][]ht-
  []
@@ -1978,14 +1820,20 @@ Underfull \hbox (badness 10000) in paragraph at lines 63--64
 [][]\T1/ntxtlf/m/n/12 https://stemeducationjournal.springeropen.com/articles/10.1186/s40594-022-
  []
 
-[79
+[69
 
 ]
 Underfull \hbox (badness 6927) in paragraph at lines 72--73
 []\T1/ntxtlf/m/n/12 Twin Science, ^^P5 Key Ad-van-ta-ges of Using Tea-cher Plat-forms,^^Q
  []
 
-(thesis.ind) [80] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologiiFe.aux) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
+LaTeX Font Info:    Trying to load font information for T1+qhv on input line 76.
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/tex-gyre\t1qhv.fd
+File: t1qhv.fd 2009/09/25 v1.2 font definition file for T1/qhv
+)
+LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
+(Font)              scaled to size 11.28003pt on input line 76.
+ (thesis.ind) [70{C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec.enc}] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologiiFe.aux) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2020/03/25>
@@ -1995,29 +1843,29 @@ L3 programming layer <2020/03/25>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 927321534C8AB0428B5808459BEC5F65;23866.
+(rerunfilecheck)             Checksum: 9045E82364444966439B55C903AD9B44;23578.
  ) 
 Here is how much of TeX's memory you used:
- 22848 strings out of 474486
- 373022 string characters out of 5743754
+ 22633 strings out of 474486
+ 368754 string characters out of 5743754
  2218542 words of memory out of 5000000
- 44186 multiletter control sequences out of 15000+600000
- 693532 words of font info for 217 fonts, out of 8000000 for 9000
+ 44022 multiletter control sequences out of 15000+600000
+ 696147 words of font info for 217 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 125i,19n,147p,647b,2156s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 125i,18n,147p,647b,2156s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+pdfTeX warning (dest): name{Hfootnote.46} has been referenced but does not exist, replaced by a fixed one
+
 
 pdfTeX warning (dest): name{Hfootnote.45} has been referenced but does not exist, replaced by a fixed one
 
 
 pdfTeX warning (dest): name{Hfootnote.44} has been referenced but does not exist, replaced by a fixed one
 
-
-pdfTeX warning (dest): name{Hfootnote.43} has been referenced but does not exist, replaced by a fixed one
-
-<C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/NewTXMI.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qtmr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xbtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/txsys.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmb.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmri.pfb>
-Output written on thesis.pdf (87 pages, 19841461 bytes).
+<C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/NewTXMI.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qhvr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qtmr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xbtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/txsys.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmb.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmri.pfb>
+Output written on thesis.pdf (77 pages, 11747513 bytes).
 PDF statistics:
- 1553 PDF objects out of 1728 (max. 8388607)
- 472 named destinations out of 1000 (max. 500000)
- 1152 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1412 PDF objects out of 1440 (max. 8388607)
+ 416 named destinations out of 1000 (max. 500000)
+ 1049 words of extra memory for PDF output out of 10000 (max. 10000000)
 

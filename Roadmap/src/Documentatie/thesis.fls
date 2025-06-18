@@ -518,20 +518,6 @@ INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\ntxexa
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\ntxexa.tfm
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\ntx-Bold-tlf-t1.tfm
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\ntx-Regular-tlf-t1.tfm
-INPUT .\imgs\hover.png
-INPUT .\imgs\hover.png
-INPUT .\imgs\hover.png
-INPUT .\imgs\hover.png
-INPUT .\imgs\hover.png
-INPUT .\imgs\hover.png
-INPUT .\imgs\hover.png
-INPUT .\imgs\tutorial.png
-INPUT .\imgs\tutorial.png
-INPUT .\imgs\tutorial.png
-INPUT .\imgs\tutorial.png
-INPUT .\imgs\tutorial.png
-INPUT .\imgs\tutorial.png
-INPUT .\imgs\tutorial.png
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\vf\public\newtx\ntxsy.vf
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\txsys.tfm
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\txex-bar.tfm
@@ -552,13 +538,6 @@ INPUT .\imgs\phet.png
 INPUT .\imgs\phet.png
 INPUT .\imgs\phet.png
 INPUT .\imgs\phet.png
-INPUT .\imgs\invatamate.png
-INPUT .\imgs\invatamate.png
-INPUT .\imgs\invatamate.png
-INPUT .\imgs\invatamate.png
-INPUT .\imgs\invatamate.png
-INPUT .\imgs\invatamate.png
-INPUT .\imgs\invatamate.png
 INPUT .\imgs\invatamatesimulare.png
 INPUT .\imgs\invatamatesimulare.png
 INPUT .\imgs\invatamatesimulare.png
@@ -580,13 +559,6 @@ INPUT .\imgs\mozaweb.png
 INPUT .\imgs\mozaweb.png
 INPUT .\imgs\mozaweb.png
 INPUT .\imgs\mozaweb.png
-INPUT .\imgs\iqboard.png
-INPUT .\imgs\iqboard.png
-INPUT .\imgs\iqboard.png
-INPUT .\imgs\iqboard.png
-INPUT .\imgs\iqboard.png
-INPUT .\imgs\iqboard.png
-INPUT .\imgs\iqboard.png
 INPUT .\imgs\iqboardsimulari.jpg
 INPUT .\imgs\iqboardsimulari.jpg
 INPUT .\imgs\iqboardsimulari.jpg
@@ -642,17 +614,17 @@ INPUT .\imgs\mascota.png
 INPUT .\imgs\mascota.png
 INPUT .\imgs\mascota.png
 INPUT .\imgs\mascota.png
+INPUT .\imgs\navdiagram (2).png
+INPUT .\imgs\navdiagram (2).png
+INPUT .\imgs\navdiagram (2).png
+INPUT .\imgs\navdiagram (2).png
+INPUT .\imgs\navdiagram (2).png
+INPUT .\imgs\navdiagram (2).png
+INPUT .\imgs\navdiagram (2).png
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\newtx\t1ntxtt.fd
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\newtx\t1ntxtt.fd
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\newtx\t1ntxtt.fd
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\txfonts\t1xtt.tfm
-INPUT .\imgs\navdiagram (2).png
-INPUT .\imgs\navdiagram (2).png
-INPUT .\imgs\navdiagram (2).png
-INPUT .\imgs\navdiagram (2).png
-INPUT .\imgs\navdiagram (2).png
-INPUT .\imgs\navdiagram (2).png
-INPUT .\imgs\navdiagram (2).png
 INPUT .\src\chapters\tehnologiiBe.tex
 INPUT .\src\chapters\tehnologiiBe.tex
 OUTPUT src\chapters\tehnologiiBe.aux
@@ -753,7 +725,6 @@ INPUT src\chapters\implementare.tex
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang1.sty
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang1.sty
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang1.sty
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\txfonts\t1xttsl.tfm
 OUTPUT src\chapters\funcionalitati.aux
 INPUT .\src\chapters\scenariiUtilizare.tex
 INPUT .\src\chapters\scenariiUtilizare.tex
@@ -761,20 +732,6 @@ OUTPUT src\chapters\scenariiUtilizare.aux
 INPUT .\src\chapters\scenariiUtilizare.tex
 INPUT .\src\chapters\scenariiUtilizare.tex
 INPUT src\chapters\scenariiUtilizare.tex
-INPUT .\imgs\register.png
-INPUT .\imgs\register.png
-INPUT .\imgs\register.png
-INPUT .\imgs\register.png
-INPUT .\imgs\register.png
-INPUT .\imgs\register.png
-INPUT .\imgs\register.png
-INPUT .\imgs\login.png
-INPUT .\imgs\login.png
-INPUT .\imgs\login.png
-INPUT .\imgs\login.png
-INPUT .\imgs\login.png
-INPUT .\imgs\login.png
-INPUT .\imgs\login.png
 INPUT .\imgs\mainmenu.png
 INPUT .\imgs\mainmenu.png
 INPUT .\imgs\mainmenu.png
@@ -789,27 +746,13 @@ INPUT .\imgs\magazin.png
 INPUT .\imgs\magazin.png
 INPUT .\imgs\magazin.png
 INPUT .\imgs\magazin.png
-INPUT .\imgs\contact.png
-INPUT .\imgs\contact.png
-INPUT .\imgs\contact.png
-INPUT .\imgs\contact.png
-INPUT .\imgs\contact.png
-INPUT .\imgs\contact.png
-INPUT .\imgs\contact.png
-INPUT .\imgs\mathex.png
-INPUT .\imgs\mathex.png
-INPUT .\imgs\mathex.png
-INPUT .\imgs\mathex.png
-INPUT .\imgs\mathex.png
-INPUT .\imgs\mathex.png
-INPUT .\imgs\mathex.png
-INPUT .\imgs\fizicaex.png
-INPUT .\imgs\fizicaex.png
-INPUT .\imgs\fizicaex.png
-INPUT .\imgs\fizicaex.png
-INPUT .\imgs\fizicaex.png
-INPUT .\imgs\fizicaex.png
-INPUT .\imgs\fizicaex.png
+INPUT .\imgs\login.png
+INPUT .\imgs\login.png
+INPUT .\imgs\login.png
+INPUT .\imgs\login.png
+INPUT .\imgs\login.png
+INPUT .\imgs\login.png
+INPUT .\imgs\login.png
 INPUT .\imgs\chimieex.png
 INPUT .\imgs\chimieex.png
 INPUT .\imgs\chimieex.png
@@ -824,13 +767,6 @@ INPUT .\imgs\astronomieex.png
 INPUT .\imgs\astronomieex.png
 INPUT .\imgs\astronomieex.png
 INPUT .\imgs\astronomieex.png
-INPUT .\imgs\infoex.png
-INPUT .\imgs\infoex.png
-INPUT .\imgs\infoex.png
-INPUT .\imgs\infoex.png
-INPUT .\imgs\infoex.png
-INPUT .\imgs\infoex.png
-INPUT .\imgs\infoex.png
 INPUT .\imgs\molform.png
 INPUT .\imgs\molform.png
 INPUT .\imgs\molform.png
@@ -845,41 +781,6 @@ INPUT .\imgs\infoops.png
 INPUT .\imgs\infoops.png
 INPUT .\imgs\infoops.png
 INPUT .\imgs\infoops.png
-INPUT .\imgs\dashboardprof.png
-INPUT .\imgs\dashboardprof.png
-INPUT .\imgs\dashboardprof.png
-INPUT .\imgs\dashboardprof.png
-INPUT .\imgs\dashboardprof.png
-INPUT .\imgs\dashboardprof.png
-INPUT .\imgs\dashboardprof.png
-INPUT .\imgs\dashboardclasa.png
-INPUT .\imgs\dashboardclasa.png
-INPUT .\imgs\dashboardclasa.png
-INPUT .\imgs\dashboardclasa.png
-INPUT .\imgs\dashboardclasa.png
-INPUT .\imgs\dashboardclasa.png
-INPUT .\imgs\dashboardclasa.png
-INPUT .\imgs\crearequiz.png
-INPUT .\imgs\crearequiz.png
-INPUT .\imgs\crearequiz.png
-INPUT .\imgs\crearequiz.png
-INPUT .\imgs\crearequiz.png
-INPUT .\imgs\crearequiz.png
-INPUT .\imgs\crearequiz.png
-INPUT .\imgs\rezultatequiz.png
-INPUT .\imgs\rezultatequiz.png
-INPUT .\imgs\rezultatequiz.png
-INPUT .\imgs\rezultatequiz.png
-INPUT .\imgs\rezultatequiz.png
-INPUT .\imgs\rezultatequiz.png
-INPUT .\imgs\rezultatequiz.png
-INPUT .\imgs\dashboardelev.png
-INPUT .\imgs\dashboardelev.png
-INPUT .\imgs\dashboardelev.png
-INPUT .\imgs\dashboardelev.png
-INPUT .\imgs\dashboardelev.png
-INPUT .\imgs\dashboardelev.png
-INPUT .\imgs\dashboardelev.png
 INPUT .\imgs\facequiz.png
 INPUT .\imgs\facequiz.png
 INPUT .\imgs\facequiz.png
@@ -901,13 +802,6 @@ INPUT .\imgs\editorvizual.png
 INPUT .\imgs\editorvizual.png
 INPUT .\imgs\editorvizual.png
 INPUT .\imgs\editorvizual.png
-INPUT .\imgs\cppeditor.png
-INPUT .\imgs\cppeditor.png
-INPUT .\imgs\cppeditor.png
-INPUT .\imgs\cppeditor.png
-INPUT .\imgs\cppeditor.png
-INPUT .\imgs\cppeditor.png
-INPUT .\imgs\cppeditor.png
 INPUT .\imgs\chemtable.png
 INPUT .\imgs\chemtable.png
 INPUT .\imgs\chemtable.png
@@ -915,27 +809,6 @@ INPUT .\imgs\chemtable.png
 INPUT .\imgs\chemtable.png
 INPUT .\imgs\chemtable.png
 INPUT .\imgs\chemtable.png
-INPUT .\imgs\chemdna.png
-INPUT .\imgs\chemdna.png
-INPUT .\imgs\chemdna.png
-INPUT .\imgs\chemdna.png
-INPUT .\imgs\chemdna.png
-INPUT .\imgs\chemdna.png
-INPUT .\imgs\chemdna.png
-INPUT .\imgs\chemhelix.png
-INPUT .\imgs\chemhelix.png
-INPUT .\imgs\chemhelix.png
-INPUT .\imgs\chemhelix.png
-INPUT .\imgs\chemhelix.png
-INPUT .\imgs\chemhelix.png
-INPUT .\imgs\chemhelix.png
-INPUT .\imgs\chemtorus.png
-INPUT .\imgs\chemtorus.png
-INPUT .\imgs\chemtorus.png
-INPUT .\imgs\chemtorus.png
-INPUT .\imgs\chemtorus.png
-INPUT .\imgs\chemtorus.png
-INPUT .\imgs\chemtorus.png
 INPUT .\imgs\profdashboard.png
 INPUT .\imgs\profdashboard.png
 INPUT .\imgs\profdashboard.png
@@ -943,13 +816,6 @@ INPUT .\imgs\profdashboard.png
 INPUT .\imgs\profdashboard.png
 INPUT .\imgs\profdashboard.png
 INPUT .\imgs\profdashboard.png
-INPUT .\imgs\elevbadges.png
-INPUT .\imgs\elevbadges.png
-INPUT .\imgs\elevbadges.png
-INPUT .\imgs\elevbadges.png
-INPUT .\imgs\elevbadges.png
-INPUT .\imgs\elevbadges.png
-INPUT .\imgs\elevbadges.png
 INPUT .\src\chapters\evaluare.tex
 INPUT .\src\chapters\evaluare.tex
 OUTPUT src\chapters\evaluare.aux
@@ -971,9 +837,14 @@ INPUT .\src\appendix\build.system.makefiles.tex
 INPUT .\src\appendix\build.system.makefiles.tex
 INPUT src\appendix\build.system.makefiles.tex
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\txfonts\t1xbtt.tfm
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\tex-gyre\t1qhv.fd
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\tex-gyre\t1qhv.fd
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\tex\latex\tex-gyre\t1qhv.fd
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qhvr.tfm
 INPUT .\thesis.ind
 INPUT .\thesis.ind
 INPUT thesis.ind
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\tex-gyre\q-ec.enc
 INPUT thesis.aux
 INPUT .\src\chapters\intro.aux
 INPUT .\src\chapters\intro.aux
@@ -1009,12 +880,12 @@ INPUT .\thesis.out
 INPUT .\thesis.out
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\newtx\NewTXMI.pfb
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\newtx\NewTXMI.pfb
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\tex-gyre\qhvr.pfb
+INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\tex-gyre\qhvr.pfb
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\tex-gyre\qtmr.pfb
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\tex-gyre\qtmr.pfb
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\txfonts\t1xbtt.pfb
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\txfonts\t1xbtt.pfb
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\txfonts\t1xtt.pfb
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\txfonts\t1xtt.pfb
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\txfonts\t1xtt.pfb
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\txfonts\t1xtt.pfb
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\type1\public\newtx\txsys.pfb

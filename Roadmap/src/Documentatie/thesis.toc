@@ -20,106 +20,105 @@
 \contentsline {subsection}{\numberline {2.4.2}Cerințe funcționale pentru utilizatorii profesori}{11}{subsection.2.4.2}%
 \contentsline {subsection}{\numberline {2.4.3}Cerințe funcționale pentru sistem}{12}{subsection.2.4.3}%
 \contentsline {section}{\numberline {2.5}Cerințe non-funcționale}{12}{section.2.5}%
-\contentsline {section}{\numberline {2.6}Limitări}{14}{section.2.6}%
-\contentsline {chapter}{\numberline {3}Studiu de piață / Soluții existente}{15}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Alte soluții existente}{15}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}Colorado Edu}{15}{subsection.3.1.1}%
-\contentsline {subsection}{\numberline {3.1.2}invatamate.com}{16}{subsection.3.1.2}%
-\contentsline {subsection}{\numberline {3.1.3}Mozaweb.com}{17}{subsection.3.1.3}%
-\contentsline {subsection}{\numberline {3.1.4}iqboard.ro}{18}{subsection.3.1.4}%
-\contentsline {section}{\numberline {3.2}Raportarea la alte soluții}{19}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Motivația alegerii VisioScience3D ca platformă}{19}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Tehnologii și arhitectură}{19}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Tehnologii utilizate pentru front-end}{20}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Soluția de front-end}{20}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Framework principal}{20}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}Framework 3D}{22}{subsection.4.1.2}%
-\contentsline {subsection}{\numberline {4.1.3}Modelare 3D}{23}{subsection.4.1.3}%
-\contentsline {section}{\numberline {4.2}Soluția UI/UX}{24}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Brandingul proiectului}{24}{subsection.4.2.1}%
-\contentsline {subsubsection}{Paleta de culori}{24}{section*.21}%
-\contentsline {subsubsection}{Logo-ul}{25}{section*.23}%
-\contentsline {subsubsection}{Mascota platformei}{25}{section*.25}%
-\contentsline {subsection}{\numberline {4.2.2}Experiența utilizatorului}{26}{subsection.4.2.2}%
-\contentsline {subsubsection}{Gestionarea stărilor}{26}{section*.27}%
-\contentsline {subsubsection}{Navigarea în platformă}{26}{section*.28}%
-\contentsline {subsubsection}{Designul interfeței utilizatorului}{28}{section*.30}%
-\contentsline {section}{\numberline {4.3}Soluția de creare a scenelor 3D}{28}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Utilizarea tehnologiilor WebGL și Three.js}{28}{subsection.4.3.1}%
-\contentsline {subsubsection}{Crearea și gestionarea scenelor 3D}{28}{section*.31}%
-\contentsline {subsubsection}{Interacțiunea cu obiectele 3D}{28}{section*.32}%
-\contentsline {subsubsection}{Optimizarea performanței graficii 3D}{29}{section*.33}%
-\contentsline {subsection}{\numberline {4.3.2}Integrarea cu frontendul}{30}{subsection.4.3.2}%
-\contentsline {chapter}{\numberline {5}Tehnologii utilizate pentru back-end}{31}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Descrierea arhitecturii}{31}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Configurarea clusterului}{31}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Structurarea şi crearea fişierelor YAML}{32}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}Gestionarea clusterului}{34}{subsection.5.1.3}%
-\contentsline {subsection}{\numberline {5.1.4}Rutarea și gestionarea traficului}{35}{subsection.5.1.4}%
-\contentsline {section}{\numberline {5.2}Descrierea serviciilor}{36}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Descrierea API-urilor}{37}{subsection.5.2.1}%
-\contentsline {section}{\numberline {5.3}Securitate}{38}{section.5.3}%
-\contentsline {section}{\numberline {5.4}CI/CD}{39}{section.5.4}%
-\contentsline {subsection}{\numberline {5.4.1}Port forwarding}{39}{subsection.5.4.1}%
-\contentsline {subsection}{\numberline {5.4.2}Deployment}{39}{subsection.5.4.2}%
-\contentsline {subsection}{\numberline {5.4.3}Metrici / Monitorizare}{39}{subsection.5.4.3}%
-\contentsline {subsection}{\numberline {5.4.4}Avantajele folosirii Prometheus}{39}{subsection.5.4.4}%
-\contentsline {subsection}{\numberline {5.4.5}Colectare Prometheus}{40}{subsection.5.4.5}%
-\contentsline {subsection}{\numberline {5.4.6}Grafana Dashboard}{40}{subsection.5.4.6}%
-\contentsline {section}{\numberline {5.5}Soluția de baze de date}{42}{section.5.5}%
-\contentsline {subsection}{\numberline {5.5.1}Structura bazei de date}{42}{subsection.5.5.1}%
-\contentsline {subsubsection}{Tipuri de baze de date utilizate / Motivația alegerii}{42}{section*.39}%
-\contentsline {subsubsection}{Gestionarea datelor}{42}{section*.40}%
-\contentsline {subsection}{\numberline {5.5.2}Securitatea datelor}{44}{subsection.5.5.2}%
-\contentsline {subsubsection}{Performanța și scalabilitatea bazei de date}{44}{section*.42}%
-\contentsline {subsection}{\numberline {5.5.3}Integrarea cu back-endul}{44}{subsection.5.5.3}%
-\contentsline {chapter}{\numberline {6}Detalii de implementare}{45}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Back-end}{45}{section.6.1}%
-\contentsline {subsection}{\numberline {6.1.1}Dezvoltare back-end}{47}{subsection.6.1.1}%
-\contentsline {subsection}{\numberline {6.1.2}Implementarea serviciilor}{47}{subsection.6.1.2}%
-\contentsline {subsection}{\numberline {6.1.3}Conectivitate}{50}{subsection.6.1.3}%
-\contentsline {subsection}{\numberline {6.1.4}Procesarea codului în editorul interactiv}{51}{subsection.6.1.4}%
-\contentsline {section}{\numberline {6.2}Front-end}{52}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Configurare front-end}{52}{subsection.6.2.1}%
-\contentsline {subsection}{\numberline {6.2.2}Dezvoltare front-end}{52}{subsection.6.2.2}%
-\contentsline {subsection}{\numberline {6.2.3}Implementare front-end}{53}{subsection.6.2.3}%
-\contentsline {subsection}{\numberline {6.2.4}Conectivitate}{54}{subsection.6.2.4}%
-\contentsline {chapter}{\numberline {7}Scenarii de utilizare}{56}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Înregistrare si autentificare utilizator}{56}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Explorarea meniul principal}{57}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Accesarea secțiunilor educaționale}{58}{section.7.3}%
-\contentsline {section}{\numberline {7.4}Interacțiunea cu scenele 3D educaționale}{60}{section.7.4}%
-\contentsline {section}{\numberline {7.5}Gestionarea profilului de profesor}{61}{section.7.5}%
-\contentsline {subsection}{\numberline {7.5.1}Crearea de clase și gestionarea elevilor}{61}{subsection.7.5.1}%
-\contentsline {subsection}{\numberline {7.5.2}Crearea de teste și gestionarea lor}{62}{subsection.7.5.2}%
-\contentsline {subsection}{\numberline {7.5.3}Vizualizarea rezultatelor}{62}{subsection.7.5.3}%
-\contentsline {section}{\numberline {7.6}Gestionarea contului de elev}{63}{section.7.6}%
-\contentsline {subsection}{\numberline {7.6.1}Intrarea în clasele profesorului}{63}{subsection.7.6.1}%
-\contentsline {subsection}{\numberline {7.6.2}Accesarea testelor și vizualizarea rezultatelor}{64}{subsection.7.6.2}%
-\contentsline {subsection}{\numberline {7.6.3}Compilatorul interactiv de cod}{64}{subsection.7.6.3}%
-\contentsline {subsection}{\numberline {7.6.4}Tabloul de elemente interactiv}{66}{subsection.7.6.4}%
-\contentsline {subsection}{\numberline {7.6.5}Panoul profesorului}{67}{subsection.7.6.5}%
-\contentsline {subsection}{\numberline {7.6.6}Recompensele elevilor}{68}{subsection.7.6.6}%
-\contentsline {chapter}{\numberline {8}Evaluarea implementării}{69}{chapter.8}%
-\contentsline {section}{\numberline {8.1}Introducere}{69}{section.8.1}%
-\contentsline {section}{\numberline {8.2}Evaluarea back-endului}{69}{section.8.2}%
-\contentsline {subsection}{\numberline {8.2.1}Testarea back-endului}{69}{subsection.8.2.1}%
-\contentsline {subsection}{\numberline {8.2.2}Monitorizarea back-endului}{69}{subsection.8.2.2}%
-\contentsline {subsection}{\numberline {8.2.3}Evaluarea performanței back-endului}{70}{subsection.8.2.3}%
-\contentsline {section}{\numberline {8.3}Evaluarea front-endului}{71}{section.8.3}%
-\contentsline {subsection}{\numberline {8.3.1}Testarea front-endului}{71}{subsection.8.3.1}%
-\contentsline {subsection}{\numberline {8.3.2}Monitorizarea front-endului}{71}{subsection.8.3.2}%
-\contentsline {subsection}{\numberline {8.3.3}Evaluarea performanței front-endului}{71}{subsection.8.3.3}%
-\contentsline {section}{\numberline {8.4}Testarea infrastructurii / Platformei}{71}{section.8.4}%
-\contentsline {section}{\numberline {8.5}Probleme întâmpinate}{72}{section.8.5}%
-\contentsline {subsection}{\numberline {8.5.1}Backend \& Kubernetes Ingress}{72}{subsection.8.5.1}%
-\contentsline {subsection}{\numberline {8.5.2}CI/CD Build \& Rollout Workflow accesibilitate}{72}{subsection.8.5.2}%
-\contentsline {subsection}{\numberline {8.5.3}Epuizarea memoriei GPU din cauza texturilor masive}{72}{subsection.8.5.3}%
-\contentsline {subsection}{\numberline {8.5.4}Crearea fluxului de parsare a codului C++}{72}{subsection.8.5.4}%
-\contentsline {subsection}{\numberline {8.5.5}Dimensiunea clusterului Kubernetes}{73}{subsection.8.5.5}%
-\contentsline {subsection}{\numberline {8.5.6}Popularea și accesul extern la intrările in baza de date}{73}{subsection.8.5.6}%
-\contentsline {section}{\numberline {8.6}Analiză comparativă pe metrici}{73}{section.8.6}%
-\contentsline {chapter}{\numberline {9}Concluzii și perspective}{75}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Concluzii}{75}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Dezvoltare viitoare}{75}{section.9.2}%
-\contentsline {chapter}{\numberline {A}Anexe}{77}{appendix.A}%
+\contentsline {section}{\numberline {2.6}Limitări}{13}{section.2.6}%
+\contentsline {chapter}{\numberline {3}Studiu de piață / Soluții existente}{14}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Alte soluții existente}{14}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Colorado Edu}{14}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}invatamate.com}{15}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Mozaweb.com}{15}{subsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.1.4}iqboard.ro}{16}{subsection.3.1.4}%
+\contentsline {section}{\numberline {3.2}Raportarea la alte soluții}{16}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Motivația alegerii VisioScience3D ca platformă}{17}{section.3.3}%
+\contentsline {chapter}{\numberline {4}Tehnologii utilizate pentru front-end}{18}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Soluția de front-end}{18}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Framework principal}{18}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Framework 3D}{20}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Modelare 3D}{21}{subsection.4.1.3}%
+\contentsline {section}{\numberline {4.2}Soluția UI/UX}{22}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Brandingul proiectului}{22}{subsection.4.2.1}%
+\contentsline {subsubsection}{Paleta de culori}{22}{section*.12}%
+\contentsline {subsubsection}{Logo-ul}{23}{section*.14}%
+\contentsline {subsubsection}{Mascota platformei}{23}{section*.16}%
+\contentsline {subsection}{\numberline {4.2.2}Experiența utilizatorului}{24}{subsection.4.2.2}%
+\contentsline {subsubsection}{Navigarea în platformă}{24}{section*.18}%
+\contentsline {subsubsection}{Gestionarea stărilor}{25}{section*.20}%
+\contentsline {subsubsection}{Designul interfeței utilizatorului}{25}{section*.21}%
+\contentsline {section}{\numberline {4.3}Soluția de creare a scenelor 3D}{25}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Utilizarea tehnologiilor WebGL și Three.js}{25}{subsection.4.3.1}%
+\contentsline {subsubsection}{Crearea și gestionarea scenelor 3D}{25}{section*.22}%
+\contentsline {subsubsection}{Interacțiunea cu obiectele 3D}{26}{section*.23}%
+\contentsline {subsubsection}{Optimizarea performanței graficii 3D}{26}{section*.24}%
+\contentsline {subsection}{\numberline {4.3.2}Integrarea cu frontendul}{27}{subsection.4.3.2}%
+\contentsline {chapter}{\numberline {5}Tehnologii utilizate pentru back-end}{28}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Descrierea arhitecturii}{28}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Configurarea clusterului}{28}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Structurarea şi crearea fişierelor YAML}{29}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Gestionarea clusterului}{31}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Rutarea și gestionarea traficului}{32}{subsection.5.1.4}%
+\contentsline {section}{\numberline {5.2}Descrierea serviciilor}{33}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Descrierea API-urilor}{34}{subsection.5.2.1}%
+\contentsline {section}{\numberline {5.3}Securitate}{35}{section.5.3}%
+\contentsline {section}{\numberline {5.4}CI/CD}{36}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Port forwarding}{36}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Deployment}{36}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}Metrici / Monitorizare}{36}{subsection.5.4.3}%
+\contentsline {subsection}{\numberline {5.4.4}Avantajele folosirii Prometheus}{36}{subsection.5.4.4}%
+\contentsline {subsection}{\numberline {5.4.5}Colectare Prometheus}{37}{subsection.5.4.5}%
+\contentsline {subsection}{\numberline {5.4.6}Grafana Dashboard}{37}{subsection.5.4.6}%
+\contentsline {section}{\numberline {5.5}Soluția de baze de date}{39}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Structura bazei de date}{39}{subsection.5.5.1}%
+\contentsline {subsubsection}{Tipuri de baze de date utilizate / Motivația alegerii}{39}{section*.30}%
+\contentsline {subsubsection}{Gestionarea datelor}{39}{section*.31}%
+\contentsline {subsection}{\numberline {5.5.2}Securitatea datelor}{41}{subsection.5.5.2}%
+\contentsline {subsubsection}{Performanța și scalabilitatea bazei de date}{41}{section*.33}%
+\contentsline {subsection}{\numberline {5.5.3}Integrarea cu back-endul}{41}{subsection.5.5.3}%
+\contentsline {chapter}{\numberline {6}Detalii de implementare}{42}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Back-end}{42}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Dezvoltare back-end}{44}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Implementarea serviciilor}{44}{subsection.6.1.2}%
+\contentsline {subsection}{\numberline {6.1.3}Conectivitate}{47}{subsection.6.1.3}%
+\contentsline {subsection}{\numberline {6.1.4}Procesarea codului în editorul interactiv}{47}{subsection.6.1.4}%
+\contentsline {section}{\numberline {6.2}Front-end}{48}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Configurare front-end}{48}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Dezvoltare front-end}{49}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Implementare front-end}{50}{subsection.6.2.3}%
+\contentsline {subsection}{\numberline {6.2.4}Conectivitate}{51}{subsection.6.2.4}%
+\contentsline {chapter}{\numberline {7}Scenarii de utilizare}{52}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Înregistrare si autentificare utilizator}{52}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Explorarea meniul principal}{52}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Accesarea secțiunilor educaționale}{54}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Interacțiunea cu scenele 3D educaționale}{55}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Gestionarea profilului de profesor}{56}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}Crearea de clase și gestionarea elevilor}{56}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}Crearea de teste și gestionarea lor}{56}{subsection.7.5.2}%
+\contentsline {subsection}{\numberline {7.5.3}Vizualizarea rezultatelor}{56}{subsection.7.5.3}%
+\contentsline {section}{\numberline {7.6}Gestionarea contului de elev}{56}{section.7.6}%
+\contentsline {subsection}{\numberline {7.6.1}Intrarea în clasele profesorului}{56}{subsection.7.6.1}%
+\contentsline {subsection}{\numberline {7.6.2}Accesarea testelor și vizualizarea rezultatelor}{56}{subsection.7.6.2}%
+\contentsline {subsection}{\numberline {7.6.3}Compilatorul interactiv de cod}{57}{subsection.7.6.3}%
+\contentsline {subsection}{\numberline {7.6.4}Tabloul de elemente interactiv}{58}{subsection.7.6.4}%
+\contentsline {subsection}{\numberline {7.6.5}Panoul profesorului}{58}{subsection.7.6.5}%
+\contentsline {subsection}{\numberline {7.6.6}Recompensele elevilor}{59}{subsection.7.6.6}%
+\contentsline {chapter}{\numberline {8}Evaluarea implementării}{60}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Introducere}{60}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Evaluarea back-endului}{60}{section.8.2}%
+\contentsline {subsection}{\numberline {8.2.1}Testarea back-endului}{60}{subsection.8.2.1}%
+\contentsline {subsection}{\numberline {8.2.2}Monitorizarea back-endului}{60}{subsection.8.2.2}%
+\contentsline {subsection}{\numberline {8.2.3}Evaluarea performanței back-endului}{61}{subsection.8.2.3}%
+\contentsline {section}{\numberline {8.3}Evaluarea front-endului}{61}{section.8.3}%
+\contentsline {subsection}{\numberline {8.3.1}Testarea front-endului}{61}{subsection.8.3.1}%
+\contentsline {subsection}{\numberline {8.3.2}Monitorizarea front-endului}{61}{subsection.8.3.2}%
+\contentsline {subsection}{\numberline {8.3.3}Evaluarea performanței front-endului}{62}{subsection.8.3.3}%
+\contentsline {section}{\numberline {8.4}Testarea infrastructurii / Platformei}{62}{section.8.4}%
+\contentsline {section}{\numberline {8.5}Probleme întâmpinate}{62}{section.8.5}%
+\contentsline {subsection}{\numberline {8.5.1}Backend \& Kubernetes Ingress}{62}{subsection.8.5.1}%
+\contentsline {subsection}{\numberline {8.5.2}CI/CD Build \& Rollout Workflow accesibilitate}{62}{subsection.8.5.2}%
+\contentsline {subsection}{\numberline {8.5.3}Epuizarea memoriei GPU din cauza texturilor masive}{63}{subsection.8.5.3}%
+\contentsline {subsection}{\numberline {8.5.4}Crearea fluxului de parsare a codului C++}{63}{subsection.8.5.4}%
+\contentsline {subsection}{\numberline {8.5.5}Dimensiunea clusterului Kubernetes}{63}{subsection.8.5.5}%
+\contentsline {subsection}{\numberline {8.5.6}Popularea și accesul extern la intrările in baza de date}{63}{subsection.8.5.6}%
+\contentsline {section}{\numberline {8.6}Analiza metricilor}{64}{section.8.6}%
+\contentsline {chapter}{\numberline {9}Concluzii și perspective}{65}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Concluzii}{65}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Dezvoltare viitoare}{65}{section.9.2}%
+\contentsline {chapter}{\numberline {A}Anexe}{67}{appendix.A}%

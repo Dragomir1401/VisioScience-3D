@@ -18,21 +18,6 @@ pentru conturi de profesor și conturi de elev.
 se va face animatia mascotei balon pentru logare și se va redirecționa utilizatorul către pagina principală a aplicației.
 Modelul 3D al mascotei este responsiv și la scrierea caraterelor în promptul de înregistrare și logare.
 
-
-\begin{figure}[htb]
-  \centering
-  \subfloat[Înregistrare utilizator\label{fig:register}]{
-    \includegraphics[width=0.53\textwidth]{imgs/register.png}
-  }
-  \hfill
-  \subfloat[Autentificare utilizator\label{fig:login}]{
-    \includegraphics[width=0.42\textwidth]{imgs/login.png}
-  }
-  \caption{Înregistrare și autentificare utilizator}
-  \label{fig:portainer-sidebyside}
-\end{figure}
-
-\newpage
 \section{Explorarea meniul principal}
 \label{sec:explorare-meniu-principal}
 
@@ -51,13 +36,13 @@ Pagina de contact este o secțiune unde utilizatorii pot trimite feedback, suges
 \begin{figure}[htb]
   \centering
   \subfloat[Magazinul online\label{fig:magazin}]{
-    \includegraphics[width=0.55\textwidth]{imgs/magazin.png}
+    \includegraphics[width=0.45\textwidth]{imgs/magazin.png}
   }
   \hfill
-  \subfloat[Pagina de contact\label{fig:contact}]{
-    \includegraphics[width=0.4\textwidth]{imgs/contact.png}
+  \subfloat[Pagina de login\label{fig:login}]{
+    \includegraphics[width=0.35\textwidth]{imgs/login.png}
   }
-  \caption{Magazinul online și pagina de contact}
+  \caption{Magazinul online și pagina de login}
   \label{fig:portainer-sidebyside}
 \end{figure}
 
@@ -84,11 +69,8 @@ animația rotațiilor planetelor.
 cum ar fi: array, vector, unordered map, ordered map, unordered set, ordered set, multiset,
 priority queue, deque, stack, queue, list și doubly linked list.
 
-\fig[width=0.7\textwidth]{imgs/mathex.png}{fig:explorare-mathematica}{Exemplu de scenă de matematică}
-\fig[width=0.7\textwidth]{imgs/fizicaex.png}{fig:explorare-fizica}{Exemplu de scenă de fizică}
-\fig[width=0.7\textwidth]{imgs/chimieex.png}{fig:explorare-chimie}{Exemplu de scenă de chimie}
-\fig[width=0.7\textwidth]{imgs/astronomieex.png}{fig:explorare-astronomie}{Exemplu de scenă de astronomie}
-\fig[width=0.7\textwidth]{imgs/infoex.png}{fig:explorare-informatica}{Exemplu de scenă de informatică}
+\fig[width=0.9\textwidth]{imgs/chimieex.png}{fig:explorare-chimie}{Exemplu de scenă de chimie}
+\fig[width=0.9\textwidth]{imgs/astronomieex.png}{fig:explorare-astronomie}{Exemplu de scenă de astronomie}
 
 \newpage
 
@@ -114,15 +96,11 @@ elementele și se pot anima operațiile de inserare, ștergere sau căutare a el
 \end{figure}
 
 
-\newpage
-
 \section{Gestionarea profilului de profesor}
 \label{sec:gestionare-profil-utilizator}
 
 Profesorii au panouri complexe de control asupra resurselor și contului lor. În secțiunea ce urmează
 se vor prezenta funcționalitățile principale disponibile.
-
-\fig[width=0.6\textwidth]{imgs/dashboardprof.png}{fig:dashboard-profesor}{Dashboard-ul profesorului}
 
 \subsection{Crearea de clase și gestionarea elevilor}
 \label{subsec:creare-clase-elevi}
@@ -130,22 +108,18 @@ se vor prezenta funcționalitățile principale disponibile.
 Profesorul are acces la crearea de clase și gestionarea elevilor din aceste clase prin panourile de administrare.
 Acesta poate adăuga elevi noi în clasele sale, poate vizualiza lista de elevi și poate edita informațiile acestora.
 
-\fig[width=0.6\textwidth]{imgs/dashboardclasa.png}{fig:dashboard-clasa}{Dashboard-ul unei clase}
-
-
 \subsection{Crearea de teste și gestionarea lor}
 \label{subsec:creare-teste}
 
 Profesorul are de asemenea acces la crearea de teste pentru elevii săi. Aceste teste pot fi personalizate cu întrebări și răspunsuri,
 simple sau cu răspuns multiplu, cu sistem de punctaj customizabil.
 
-\fig[width=0.75\textwidth]{imgs/crearequiz.png}{fig:creare-test}{Crearea unui test}
-
 \subsection{Vizualizarea rezultatelor}
 \label{subsec:vizualizare-rezultate}
 
 Profesorul poate vizualiza rezultatele testelor elevilor săi, inclusiv scorurile și răspunsurile la întrebări.
-\fig[width=0.75\textwidth]{imgs/rezultatequiz.png}{fig:vizualizare-rezultate}{Vizualizarea rezultatelor testelor}
+Profesorii au și un panou complex integrat pentru a vizualiza metrici mai complexe despre rezultatele elevilor, despre
+care se va discuta ulterior.
 
 \section{Gestionarea contului de elev}
 \label{subsec:gestionare-cont-elev}
@@ -155,10 +129,7 @@ Profesorul poate vizualiza rezultatele testelor elevilor săi, inclusiv scoruril
 
 Intrarea într-o anumită clasă se face pe bază de invitație de la profesor, direct din platform și care apare în panoul de control
 al elevului. Elevul poate vedea clasele la care este înscris și poate accesa resursele și testele disponibile în acele clase.
-\fig[width=0.75\textwidth]{imgs/dashboardelev.png}{fig:dashboard-elev}{Dashboard-ul elevului}
 
-
-\newpage
 \subsection{Accesarea testelor și vizualizarea rezultatelor}
 \label{subsec:accesare-teste-elev}
 
@@ -168,11 +139,11 @@ obținut după finalizarea testului.
 \begin{figure}[htb]
   \centering
   \subfloat[Test de completat\label{fig:quiz}]{
-    \includegraphics[width=0.55\textwidth]{imgs/facequiz.png}
+    \includegraphics[width=0.48\textwidth]{imgs/facequiz.png}
   }
   \hfill
   \subfloat[Rezultatele elevului la test\label{fig:quizresults}]{
-    \includegraphics[width=0.4\textwidth]{imgs/vederequiz.png}
+    \includegraphics[width=0.48\textwidth]{imgs/vederequiz.png}
   }
   \caption{Interacțiunea elevului cu testele}
   \label{fig:portainer-sidebyside}
@@ -192,19 +163,15 @@ de navigare sau prin cel de rulare automată. În partea dreaptă avem intrarea 
 și ieșirea pe care o generează codul după rulare. În partea de jos avem scena 3D cu structurile de 
 date identificate care se actualizează în timp real cu fiecare pas de rulare a codului prin care
 trecem.
-\newpage
 
-\fig[width=0.7\textwidth]{imgs/editorvizual.png}{fig:compilator-elev}{Editorul vizual cu pași de rulare}
+\fig[width=1\textwidth]{imgs/editorvizual.png}{fig:compilator-elev}{Editorul vizual cu pași de rulare}
 
 Această zonă este integrată în pagina de editare a codului împreună cu partea unde se scrie codul
 în sine. În partea dreaptă se află ce am descris anterior. În partea stângă avem editorul care folosește 
 tema de Visual Studio Code\footnote{https://code.visualstudio.com/} și care are suport pentru 
 limbajul C++ la momentul actual. El suportă redimensionare, copiere automată a codului sau 
 resetare la modelul de cod inițial.
-\fig[width=0.8\textwidth]{imgs/cppeditor.png}{fig:compilator-elev}{Compilatorul interactiv de cod pentru elevi}
 
-
-\newpage
 \subsection{Tabloul de elemente interactiv}
 \label{subsec:tablou-elemente-interactiv}
 
@@ -214,28 +181,11 @@ la selectare oricărui element în orice poziție și deschide un panou de detal
 care arată numărul atomic, simbolul chimic, masa atomică, grupul, perioada și o descriere pe scurt 
 despre elementul selectat.
 
-\fig[width=0.8\textwidth]{imgs/chemtable.png}{fig:tabel-chimie}{Tabloul de elemente chimice interactiv}
+\fig[width=1\textwidth]{imgs/chemtable.png}{fig:tabel-chimie}{Tabloul de elemente chimice interactiv}
 
 Elementele au multiple moduri de așezare interactivă, precum tabel, sferă, helix, grid, 
 spirală, piramidă, val, floare, torus, cub, galaxie, ADN, copac, vortex, stea, fagure, solar,
 fractal sau matrice. Mai jos se pot observa câteva exemple.
-
-\begin{figure}[htb]
-  \centering
-  \subfloat[Formă de ADN \label{fig:chemdna}]{
-    \includegraphics[width=0.15\textwidth]{imgs/chemdna.png}
-  }
-  \hfill
-  \subfloat[Formă de helix \label{fig:chemhelix}]{
-    \includegraphics[width=0.42\textwidth]{imgs/chemhelix.png}
-  }
-  \subfloat[Formă de torus \label{fig:chemtorus}]{
-    \includegraphics[width=0.38\textwidth]{imgs/chemtorus.png}
-  }
-  \hfill
-  \caption{Diferite forme de aranjare a elementelor chimice}
-  \label{fig:portainer-sidebyside}
-\end{figure}
 
 \subsection{Panoul profesorului}
 \label{subsec:panou-profesor}
@@ -252,12 +202,10 @@ rata de greșeli, totalul de încercări, răspunsurile corecte și cele greșit
 
 \fig[width=0.8\textwidth]{imgs/profdashboard.png}{fig:panou-profesor}{Panoul profesorului cu metrici și statistici}
 
-
 \subsection{Recompensele elevilor}
 \label{subsec:recompense-elevi}
 
 Elevii primesc insigne 3D sub formă de baloane tematice ca și mascota platformei pentru realizările lor.
 Acestea sunt afișate în panoul de recompense al elevului și pot fi obținute pentru diverse realizări, precum
-completarea primului test, obținerea unui scor maxim la un test, ajungerea la rang de expert, etc.
-
-\fig[width=1\textwidth]{imgs/elevbadges.png}{fig:recompense-elevi}{Panoul de recompense al elevilor cu baloane 3D}
+completarea primului test, obținerea unui scor maxim la un test, ajungerea la rang de expert prin rezolvarea
+unui număr mare de teste, etc.

@@ -31,8 +31,6 @@ class Traceable
 Se poate observa că antetul se bazează pe structuri generice din C++ pentru a permite orice tip de container
 să fie integrat în acest tip general de raportare a operațiilor și conținutului.
 
-Mai jos se află comparația limbajelor de care am discutat mai sus.
-
 \begin{table}[h!]
 \centering
 \caption{Compararea limbajelor de programare care ar fi fost potrivite pentru VisioScience3D}
@@ -46,7 +44,7 @@ Mai jos se află comparația limbajelor de care am discutat mai sus.
 \hline
 \textbf{Simplitate și claritate} & Sintaxă simplă, tipuri de date clare, cod ușor de întreținut & Flexibil, dar poate duce la cod greu de urmărit (callback hell) & Sintaxă clară, dar structuri mari pot deveni greu de gestionat \\
 \hline
-\textbf{Ecosistem} & Ecosistem în creștere rapidă, multe librării pentru zona de microservicii, suport bun pentru REST, MongoDB & Ecosistem foarte matur și extins, multe librării, framework-uri & Ecosistem matur, multe librării pentru ML, backend, dar nu neapărat pentru performanță \\
+\textbf{Ecosistem} & Ecosistem în creștere rapidă, multe biblioteci pentru zona de microservicii & Ecosistem foarte matur și extins, multe librării, framework-uri & Ecosistem matur, multe librării pentru ML, backend, dar nu neapărat pentru performanță \\
 \hline
 \textbf{Scalabilitate} & Foarte scalabil, folosit în microservicii și sisteme distribuite & Scalabil pe I/O, dar single-threaded cu limite pe CPU & Scalabilitate limitată, se bazează pe external scaling și caching \\
 \hline
@@ -66,12 +64,10 @@ Configurarea conexiunilor la baza de date MongoDB este centralizată în helperi
 oficial MongoDB pentru Go. Monitorizarea serviciilor este asigurată prin integrarea cu Prometheus,
 cu metrici personalizate definite în cod și expuse la endpoint-uri REST. Metricile sunt colectate
 direct în cod, cum se poate vedea și în exemplul de mai jos.
-
 \begin{lstlisting}[language=Go, caption={Middleware Prometheus pentru monitorizarea duratei cererilor HTTP}]
 func prometheusMiddleware(next http.Handler) http.Handler
-  return http.HandlerFunc = func(writer, req)
-    if r.URL.Path == "/feed/metrics"
-        next.ServeHTTP(w, r), return
+  return http.HandlerFunc = func(writer w, req r)
+    if path == "/feed/metrics" then serve(w, r), return
     start := timer(metrics.labels(r.Method, r.path))
     next.ServeHTTP(w, r), start.ObserveDuration()
     metrics.reqTotal.labels(r.Method, r.path, "200").Inc
@@ -217,8 +213,8 @@ cum ar fi \texttt{Register}, \texttt{Login} şi \texttt{GetMe}.
 \texttt{GetMe} decodează token-ul, returnează datele profilului fără parolă desigur.  
 
 Fluxul de recompense și badge-uri este gestionat printr-un sistem de evenimente.
-La primirea quiz\_result din \texttt{evaluation-service}, handlerul decodifică câmpul
-\texttt{QuizResultMeta} și salvează datele în baza de date \texttt{users-data}.  
+La primirea rezultatelor din \texttt{evaluation-service}, handlerul decodifică câmpul
+QuizResultMeta și salvează datele în baza de date \texttt{users-data}.  
 Punctele calculate (base, time, streak, perfect) se adaugă  
 în istoricul de punctaj şi la punctele totale.  
 \texttt{UpdateUserRankings} recalculează rangurile globale şi pe clase.  
@@ -253,8 +249,8 @@ Pentru a vizualiza stările fiecărui container \textit{la runtime} s-au parcurs
         \begin{itemize}
           \item detectează declaraţii de containere STL (\texttt{vector}, \texttt{map}, \texttt{stack}, etc.);
           \item generează pentru fiecare un ContainerTracer cu makeTracedContainer();
-          \item inserează apeluri \lstinline{traceOperation()} după operaţiile semnificative (\lstinline{push_back}, \lstinline{insert}, \lstinline{erase}, etc.).;
-          \item adaugă \lstinline{Tracer::getInstance().snapshot()} înainte de \lstinline{return} şi după structuri de control.
+          \item inserează apeluri \lstinline{traceOperation()} după operaţiile semnificative
+          \item adaugă \lstinline{getInstance().snapshot()} la \lstinline{return} şi structuri de control.
         \end{itemize}
   \item La rulare, fiecare operaţie scoate pe \texttt{stdout} linii JSON prefixate cu \texttt{STATE:}.
   \item Backend-ul Go parsează aceste linii, le converteşte în \texttt{ExecutionStep} şi le trimite front-end-ului.
@@ -263,16 +259,8 @@ Pentru a vizualiza stările fiecărui container \textit{la runtime} s-au parcurs
 
 \begin{lstlisting}[language=C++, caption={Injectarea antetului și singleton-ului tracer}, label={lst:inject-header}]
 #include "tracer.h"
-namespace tracer
-    Tracer* globalTracer = &Tracer::getInstance();
-\end{lstlisting}
-
-\begin{lstlisting}[language=C++, caption={Generarea unui tracer pentru un vector}, label={lst:vector-tracer}]
-std::vector<int> v = {1, 2, 3};
-auto v_tracer = tracedContainer("v", v); // inserat automat
-\end{lstlisting}
-
-\begin{lstlisting}[language=C++, caption={Instrumentarea unei operaţii asupra vectorului}, label={lst:vector-op}]
+Tracer* globalTracer = &Tracer::getInstance();
+auto v_tracer = tracedContainer("v", v);
 v.push_back(42);
 v_tracer.traceOperation("insert", "Inserted element");
 \end{lstlisting}
