@@ -11,7 +11,7 @@ Edit
 wsl --list --verbose --all
 If docker-desktop-data is missing or shouty errors appear, restart the backend:
 
-TO START THE DOCKER BACKEND DATAș
+TO START THE DOCKER BACKEND DATA
 
 wsl -d docker-desktop-data
 
@@ -73,7 +73,7 @@ Edit
 
 # PowerShell **as Administrator**
 
-Optimize-VHD `  -Path "C:\Users\<you>\AppData\Local\Docker\wsl\main\ext4.vhdx"`
+Optimize-VHD `  -Path "C:\Users\andre\AppData\Local\Docker\wsl\main\ext4.vhdx"`
 -Mode Full
 Do the same for docker_data.vhdx if it exists:
 
@@ -112,3 +112,9 @@ Optimize-VHD -Path "$env:USERPROFILE\AppData\Local\Docker\wsl\disk\docker_data.v
 
 wsl
 docker system df
+
+## DISMOUNT + COMPACT
+
+Dismount-VHD -Path "C:\Users\andre\AppData\Local\Docker\wsl\disk\docker_data.vhdx"
+
+Optimize-VHD -Path "C:\Users\andre\AppData\Local\Docker\wsl\disk\docker_data.vhdx" -Mode Full -Verbose -Passthru
