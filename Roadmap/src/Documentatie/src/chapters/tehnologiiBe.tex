@@ -17,6 +17,11 @@ router dedicat. În acest mod, putem să dezvoltăm fiecare parte a backend-ului
 a influența componente deja implementate. Împărțirea pe servicii s-a realizat în funcție de scopul 
 principal, făcând diferența între datele utilizatorilor, datele educaționale, codul C++ interactiv și altele.
 
+Alegerea de Kubernetes este justificată și de publicații precum \cite{k8sBenefits}, care scoate în
+evidența avantajele principale ca scalabilitate, portabilitatea și flexibilitatea pe care o poate
+aduce în dezvoltarea și implementarea de platforme Web. Pentru dezvoltare rapidă și locală
+s-a folosit Kubernetes în Docker (kind) care a permis îmbinarea și a avantajelor oferite de Docker.
+
 \subsection{Configurarea clusterului}
 Clusterul este configurat folosind Kubernetes\footnote{https://kubernetes.io/}, care permite orchestrarea containerelor și
 gestionarea resurselor într-un mod eficient. Fiecare serviciu este containerizat folosind Docker,
@@ -301,9 +306,9 @@ servicii și microservicii. În plus, arhitectura sa detașată de stare (statel
 pentru stocarea pe termen scurt cu export către sisteme
 externe îl fac ideal pentru arhitecturi dinamice, precum Kubernetes. De asemenea, se integrează
 nativ cu instrumente vizuale precum Grafana, oferind dashboard-uri ușor de configurat
-și interpretat de către dezvoltatori. În cazul platformei VisioScience3D, Grafana a recunoscut
-sursa de date din partea Prometheus direct fără configurări suplimentare și s-au putut
-crea panourile de vizualizare direct prin configurări externe.
+și interpretat de către dezvoltatori. Grafana e o soluție ideală pentru vizualizarea metricilor
+colectate de Prometheus, fapt menționat și în publicații precum \cite{grafanaObs}, care îl descrie 
+ca o necesitate esențială în platformele moderne.
 
 \subsection{Colectare Prometheus}  
 În fiecare serviciu Go am folosit clientul official Prometheus:
@@ -374,6 +379,10 @@ de baze de date. Structura ar fi putut fi integrată și într-un mediu relațio
 MongoDB oferă o flexibilitate mai mare pentru tipurile de date pe care le gestionăm, cum ar fi feed-urile 
 educaționale, datele utilizatorilor, cât și pentru structura testelor și evaluărilor.
 
+Avantajele folosire MongoDB sunt descrise și în publicații precum \cite{mongoDevTo}, care prezintă
+flexibilitatea schemelor și de altă parte scalabilitatea și performanța pe care o oferă. Astfel
+MongoDB este justificat o alegere bună pentru cazul platformei dezvoltate.
+
 Un alt avantaj al folosirii MongoDB este că permite stocarea datelor într-o formă 
 orientată pe documente similare cu JSON. Alegerea s-a bazat și pe flexibilitatea schemelor,
 scalabilitatea orizontală și compatibilitatea nativă cu structurile de date folosite, precum și
@@ -436,11 +445,8 @@ Back-endul este implementat în Go, folosind pachetul oficial MongoDB driver, ca
 complet pentru operațiile pe colecții și documente, tranzacții și agregări. 
 
 La pornire, fiecare serviciu inițializează o conexiune persistentă la baza de date. Modelele Go
-definite permit maparea clară între structurile din cod și documentele MongoDB.
+definite permit maparea clară între structurile din cod și documentele mongo.
 De exemplu, în \texttt{evaluation-service}, obiectele \texttt{Quiz} și \texttt{QuizResult}
-sunt manipulate direct în cod, iar metodele HTTP expun API REST care gestionează aceste resurse prin modelul CRUD\footnote{Create, Read, Update, and Delete}.
-
-Așsadar arhitectura descrisă permite un flux clar și mai ales scalabil între date și servicii, ușurând
-mentenanța serviciilor și extinderea aplicației.
+sunt manipulate direct în cod, iar metodele expun un API REST pentru aceste resurse prin CRUD\footnote{Create, Read, Update, and Delete}.
 
 

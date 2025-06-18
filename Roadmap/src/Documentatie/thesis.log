@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  18 JUN 2025 18:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  19 JUN 2025 00:13
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1037,7 +1037,7 @@ File: src/img/branding/cs.png Graphic file (type png)
 Package pdftex.def Info: src/img/branding/cs.png  used on input line 14.
 (pdftex.def)             Requested size: 123.77074pt x 54.65146pt.
 
-Overfull \hbox (60.08894pt too wide) in paragraph at lines 26--31
+Overfull \hbox (51.10335pt too wide) in paragraph at lines 26--31
  [] 
  []
 
@@ -1405,255 +1405,255 @@ Capitolul 5.
 
 
 ]
-LaTeX Font Info:    Trying to load font information for T1+txtt on input line 57.
+LaTeX Font Info:    Trying to load font information for T1+txtt on input line 62.
  (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/txfonts\t1txtt.fd
 File: t1txtt.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Font shape `T1/ntxtt/b/n' in size <12> not available
-(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 57.
+(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 62.
 
-Overfull \hbox (22.0622pt too wide) in paragraph at lines 55--58
+Overfull \hbox (22.0622pt too wide) in paragraph at lines 60--63
 \T1/ntxtlf/m/n/12 Pentru fi-e-care com-po-nent  a backend-ului^^V\T1/ntxtt/m/n/12 Deployment\T1/ntxtlf/m/n/12 , \T1/ntxtt/m/n/12 Service\T1/ntxtlf/m/n/12 , \T1/ntxtt/m/n/12 Ingress\T1/ntxtlf/m/n/12 , \T1/ntxtt/m/n/12 ConfigMap\T1/ntxtlf/m/n/12 ,
  []
 
 [29]
 LaTeX Font Info:    Font shape `T1/ntxtt/m/n' will be
-(Font)              scaled to size 10.95pt on input line 72.
+(Font)              scaled to size 10.95pt on input line 77.
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 10.95pt on input line 73.
+(Font)              scaled to size 10.95pt on input line 78.
 LaTeX Font Info:    Font shape `OT1/minntx/m/n' will be
-(Font)              scaled to size 10.95pt on input line 73.
+(Font)              scaled to size 10.95pt on input line 78.
 LaTeX Font Info:    Font shape `OT1/minntx/m/n' will be
-(Font)              scaled to size 8.0pt on input line 73.
+(Font)              scaled to size 8.0pt on input line 78.
 LaTeX Font Info:    Font shape `OT1/minntx/m/n' will be
-(Font)              scaled to size 6.1pt on input line 73.
+(Font)              scaled to size 6.1pt on input line 78.
 LaTeX Font Info:    Font shape `OML/ntxmi/m/it' will be
-(Font)              scaled to size 10.95pt on input line 73.
+(Font)              scaled to size 10.95pt on input line 78.
 LaTeX Font Info:    Font shape `OML/ntxmi/m/it' will be
-(Font)              scaled to size 8.0pt on input line 73.
+(Font)              scaled to size 8.0pt on input line 78.
 LaTeX Font Info:    Font shape `OML/ntxmi/m/it' will be
-(Font)              scaled to size 6.1pt on input line 73.
+(Font)              scaled to size 6.1pt on input line 78.
 LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
-(Font)              scaled to size 10.95pt on input line 73.
+(Font)              scaled to size 10.95pt on input line 78.
 LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
-(Font)              scaled to size 8.0pt on input line 73.
+(Font)              scaled to size 8.0pt on input line 78.
 LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
-(Font)              scaled to size 6.1pt on input line 73.
+(Font)              scaled to size 6.1pt on input line 78.
 LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
-(Font)              scaled to size 10.95pt on input line 73.
+(Font)              scaled to size 10.95pt on input line 78.
 LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
-(Font)              scaled to size 8.0pt on input line 73.
+(Font)              scaled to size 8.0pt on input line 78.
 LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
-(Font)              scaled to size 6.1pt on input line 73.
+(Font)              scaled to size 6.1pt on input line 78.
 LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
-(Font)              scaled to size 10.95pt on input line 73.
+(Font)              scaled to size 10.95pt on input line 78.
 LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
-(Font)              scaled to size 8.0pt on input line 73.
+(Font)              scaled to size 8.0pt on input line 78.
 LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
-(Font)              scaled to size 6.1pt on input line 73.
+(Font)              scaled to size 6.1pt on input line 78.
 LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
-(Font)              scaled to size 10.95pt on input line 73.
+(Font)              scaled to size 10.95pt on input line 78.
 LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
-(Font)              scaled to size 8.0pt on input line 73.
+(Font)              scaled to size 8.0pt on input line 78.
 LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
-(Font)              scaled to size 6.1pt on input line 73.
+(Font)              scaled to size 6.1pt on input line 78.
 LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
-(Font)              scaled to size 10.95pt on input line 73.
+(Font)              scaled to size 10.95pt on input line 78.
 LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
-(Font)              scaled to size 8.0pt on input line 73.
+(Font)              scaled to size 8.0pt on input line 78.
 LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
-(Font)              scaled to size 6.1pt on input line 73.
+(Font)              scaled to size 6.1pt on input line 78.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
-(Font)              scaled to size 10.95pt on input line 73.
+(Font)              scaled to size 10.95pt on input line 78.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
-(Font)              scaled to size 8.0pt on input line 73.
+(Font)              scaled to size 8.0pt on input line 78.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
-(Font)              scaled to size 6.1pt on input line 73.
+(Font)              scaled to size 6.1pt on input line 78.
  [30]
 LaTeX Font Info:    Font shape `T1/ntxtt/b/n' in size <6.6> not available
-(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 125.
-<imgs/portainerlanding.png, id=859, 1431.09656pt x 690.32906pt>
+(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 130.
+ [31]
+<imgs/portainerlanding.png, id=878, 1431.09656pt x 690.32906pt>
 File: imgs/portainerlanding.png Graphic file (type png)
 <use imgs/portainerlanding.png>
-Package pdftex.def Info: imgs/portainerlanding.png  used on input line 143.
+Package pdftex.def Info: imgs/portainerlanding.png  used on input line 148.
 (pdftex.def)             Requested size: 412.56497pt x 199.01054pt.
- [31]
-<imgs/servicesportainer.png, id=878, 1184.92688pt x 484.81125pt>
+<imgs/servicesportainer.png, id=879, 1184.92688pt x 484.81125pt>
 File: imgs/servicesportainer.png Graphic file (type png)
 <use imgs/servicesportainer.png>
-Package pdftex.def Info: imgs/servicesportainer.png  used on input line 151.
+Package pdftex.def Info: imgs/servicesportainer.png  used on input line 156.
 (pdftex.def)             Requested size: 206.28249pt x 84.39937pt.
-<imgs/servicescli.png, id=879, 561.59813pt x 201.75375pt>
+<imgs/servicescli.png, id=880, 561.59813pt x 201.75375pt>
 File: imgs/servicescli.png Graphic file (type png)
 <use imgs/servicescli.png>
-Package pdftex.def Info: imgs/servicescli.png  used on input line 155.
+Package pdftex.def Info: imgs/servicescli.png  used on input line 160.
 (pdftex.def)             Requested size: 185.65297pt x 66.69592pt.
  [32 <./imgs/portainerlanding.png> <./imgs/servicesportainer.png> <./imgs/servicescli.png>] [33]
-<imgs/bearch.png, id=906, 800.23969pt x 464.4853pt>
+<imgs/bearch.png, id=907, 800.23969pt x 464.4853pt>
 File: imgs/bearch.png Graphic file (type png)
 <use imgs/bearch.png>
-Package pdftex.def Info: imgs/bearch.png  used on input line 239.
+Package pdftex.def Info: imgs/bearch.png  used on input line 244.
 (pdftex.def)             Requested size: 412.56497pt x 239.4713pt.
  [34] (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 ) (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
 ) [35 <./imgs/bearch.png>]
-Overfull \hbox (7.74501pt too wide) in paragraph at lines 281--283
+Overfull \hbox (7.74501pt too wide) in paragraph at lines 286--288
 \T1/ntxtlf/m/n/12 push-action ³i o în-c r-c m pe Do-c-ker-Hub sub nu-mele dra-go-mir1401/\T1/ntxtt/m/n/12 $SVC:latest\T1/ntxtlf/m/n/12 . 
  []
 
 [36]
-Overfull \hbox (2.31013pt too wide) in paragraph at lines 326--329
+Overfull \hbox (2.31013pt too wide) in paragraph at lines 331--334
 \T1/ntxtlf/m/n/12 De exem-plu dup  ce Pro-me-theus trece prin \T1/ntxtt/m/n/12 evaluation_-service_-http_-requests_-
  []
 
 [37]
-<imgs/evaluationdashboard.png, id=952, 1214.28656pt x 557.83406pt>
+<imgs/evaluationdashboard.png, id=951, 1214.28656pt x 557.83406pt>
 File: imgs/evaluationdashboard.png Graphic file (type png)
 <use imgs/evaluationdashboard.png>
-Package pdftex.def Info: imgs/evaluationdashboard.png  used on input line 347.
+Package pdftex.def Info: imgs/evaluationdashboard.png  used on input line 352.
 (pdftex.def)             Requested size: 412.56497pt x 189.52487pt.
  [38 <./imgs/evaluationdashboard.png>]
-Overfull \hbox (14.3183pt too wide) in paragraph at lines 392--396
+Overfull \hbox (14.3183pt too wide) in paragraph at lines 401--405
 \T1/ntxtt/m/n/12 ClassID []\T1/ntxtlf/m/n/12 i \T1/ntxtt/m/n/12 OwnerID \T1/ntxtlf/m/n/12 (re-pre-zen-tate prin \T1/ntxtt/m/n/12 ObjectID \T1/ntxtlf/m/n/12 din MongoDB), un ar-ray de \T1/ntxtt/m/n/12 Questions
  []
 
 [39]
-<imgs/dbdiagram.png, id=967, 3728.93124pt x 3854.4pt>
+<imgs/dbdiagram.png, id=973, 3854.4pt x 3811.23875pt>
 File: imgs/dbdiagram.png Graphic file (type png)
 <use imgs/dbdiagram.png>
-Package pdftex.def Info: imgs/dbdiagram.png  used on input line 404.
-(pdftex.def)             Requested size: 412.56497pt x 426.39667pt.
+Package pdftex.def Info: imgs/dbdiagram.png  used on input line 413.
+(pdftex.def)             Requested size: 412.56497pt x 407.89738pt.
  [40 <./imgs/dbdiagram.png>]) [41]
 \openout2 = `src/chapters/implementare.aux'.
 
  (src/chapters/implementare.tex
 Capitolul 6.
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 22.
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 25.
 [42
 
 
 
 
 ]
-Overfull \hbox (1.50414pt too wide) in paragraph at lines 39--39
+Overfull \hbox (1.50414pt too wide) in paragraph at lines 42--42
 []\T1/ntxtlf/b/n/12 Caracteristic | 
  []
 
 
-Underfull \hbox (badness 1521) in paragraph at lines 41--41
+Underfull \hbox (badness 1521) in paragraph at lines 44--44
 \T1/ntxtlf/m/n/12 cu su-port na-tiv pen-
  []
 
 
-Underfull \hbox (badness 2229) in paragraph at lines 41--41
+Underfull \hbox (badness 2229) in paragraph at lines 44--44
 []\T1/ntxtlf/m/n/12 Interpretat, bun pen-
  []
 
 
-Underfull \hbox (badness 2376) in paragraph at lines 41--42
+Underfull \hbox (badness 2376) in paragraph at lines 44--45
 []\T1/ntxtlf/m/n/12 Interpretat, mai lent,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 43--43
+Underfull \hbox (badness 10000) in paragraph at lines 46--46
 []\T1/ntxtlf/m/n/12 Model event-loop,
  []
 
 
-Underfull \hbox (badness 1924) in paragraph at lines 43--43
+Underfull \hbox (badness 1924) in paragraph at lines 46--46
 \T1/ntxtlf/m/n/12 asin-cron cu callback-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 43--43
+Underfull \hbox (badness 10000) in paragraph at lines 46--46
 \T1/ntxtlf/m/n/12 uri/promises/async-
  []
 
 
-Underfull \hbox (badness 1629) in paragraph at lines 43--44
+Underfull \hbox (badness 1629) in paragraph at lines 46--47
 []\T1/ntxtlf/m/n/12 Suport li-mi-tat (threa-
  []
 
 
-Underfull \hbox (badness 4805) in paragraph at lines 43--44
+Underfull \hbox (badness 4805) in paragraph at lines 46--47
 \T1/ntxtlf/m/n/12 ding, asyn-cio), mai
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 43--44
+Underfull \hbox (badness 10000) in paragraph at lines 46--47
 \T1/ntxtlf/m/n/12 com-plex pen-tru
  []
 
 
-Underfull \hbox (badness 3068) in paragraph at lines 45--45
+Underfull \hbox (badness 3068) in paragraph at lines 48--48
 []\T1/ntxtlf/b/n/12 Simplitate []i
  []
 
 
-Underfull \hbox (badness 1852) in paragraph at lines 45--46
+Underfull \hbox (badness 1852) in paragraph at lines 48--49
 \T1/ntxtlf/m/n/12 turi mari pot de-veni
  []
 
 
-Underfull \hbox (badness 1565) in paragraph at lines 47--47
+Underfull \hbox (badness 1565) in paragraph at lines 50--50
 []\T1/ntxtlf/m/n/12 Ecosistem în cre[]tere
  []
 
 
-Underfull \hbox (badness 2302) in paragraph at lines 49--49
+Underfull \hbox (badness 2302) in paragraph at lines 52--52
 []\T1/ntxtlf/m/n/12 Scalabil pe I/O, dar
  []
 
 
-Underfull \hbox (badness 1496) in paragraph at lines 49--49
+Underfull \hbox (badness 1496) in paragraph at lines 52--52
 \T1/ntxtlf/m/n/12 single-threaded cu li-
  []
 
 
-Underfull \hbox (badness 3354) in paragraph at lines 51--51
+Underfull \hbox (badness 3354) in paragraph at lines 54--54
 []\T1/ntxtlf/m/n/12 Binar unic com-pi-lat,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 51--51
+Underfull \hbox (badness 10000) in paragraph at lines 54--54
 []\T1/ntxtlf/m/n/12 Necesit  run-time
  []
 
 
-Underfull \hbox (badness 1521) in paragraph at lines 51--51
+Underfull \hbox (badness 1521) in paragraph at lines 54--54
 \T1/ntxtlf/m/n/12 Node.js, ima-gini mai
  []
 
 
-Underfull \hbox (badness 1859) in paragraph at lines 51--52
+Underfull \hbox (badness 1859) in paragraph at lines 54--55
 []\T1/ntxtlf/m/n/12 Necesit  run-time Py-
  []
 
 
-Overfull \hbox (47.99997pt too wide) in paragraph at lines 37--55
+Overfull \hbox (47.99997pt too wide) in paragraph at lines 40--58
  [][] 
  []
 
 [43] [44] [45] [46] [47] (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 ) [48]
-Overfull \hbox (8.51038pt too wide) in paragraph at lines 296--308
+Overfull \hbox (8.51038pt too wide) in paragraph at lines 299--311
 \T1/ntxtlf/m/n/12 mente in-te-rac-tive. De ase-me-nea, s-au dezvol-tat \T1/ntxtlf/b/n/12 for-mu-lare\T1/ntxtlf/m/n/12 , pre-cum \T1/ntxtt/m/n/12 ChemistryAddForm\T1/ntxtlf/m/n/12 ,
  []
 
 [49]
-Overfull \hbox (15.3262pt too wide) in paragraph at lines 361--368
+Overfull \hbox (15.3262pt too wide) in paragraph at lines 364--371
 []\T1/ntxtlf/m/n/12 Pentru for-mu-lare ³i in-ter-feµe bi-di-men-sio-nale (de ex. \T1/ntxtt/m/n/12 ChemistryAddForm\T1/ntxtlf/m/n/12 , \T1/ntxtt/m/n/12 ListFormulas\T1/ntxtlf/m/n/12 ,
  []
 
 
-Overfull \hbox (15.99812pt too wide) in paragraph at lines 361--368
+Overfull \hbox (15.99812pt too wide) in paragraph at lines 364--371
 \T1/ntxtlf/m/n/12 ani-mate cu Fra-mer Mo-tion (\T1/ntxtt/m/n/12 BadgeNotification\T1/ntxtlf/m/n/12 , hint over-lays). În \T1/ntxtt/m/n/12 ChemistryAddForm\T1/ntxtlf/m/n/12 ,
  []
 
-[50]) [51]
+[50] [51]) [52]
 \openout2 = `src/chapters/funcionalitati.aux'.
 
 
@@ -1662,7 +1662,7 @@ No file src/chapters/funcionalitati.tex.
 
 (src/chapters/scenariiUtilizare.tex
 Capitolul 7.
-<imgs/mainmenu.png, id=1078, 1440.13031pt x 699.36281pt>
+<imgs/mainmenu.png, id=1092, 1440.13031pt x 699.36281pt>
 File: imgs/mainmenu.png Graphic file (type png)
 <use imgs/mainmenu.png>
 Package pdftex.def Info: imgs/mainmenu.png  used on input line 29.
@@ -1672,7 +1672,7 @@ Overfull \hbox (15.46225pt too wide) in paragraph at lines 32--35
 []\T1/ntxtlf/m/n/12 Magazinul on-line este o sec[]iune de-di-cat  unde uti-li-za-to-rii pot achizi[]iona c r[]i educa[]ionale
  []
 
-[52
+[53
 
 
 
@@ -1681,159 +1681,159 @@ Overfull \hbox (15.46225pt too wide) in paragraph at lines 32--35
 
 
 ]
-<imgs/magazin.png, id=1083, 641.39626pt x 677.53125pt>
+<imgs/magazin.png, id=1097, 641.39626pt x 677.53125pt>
 File: imgs/magazin.png Graphic file (type png)
 <use imgs/magazin.png>
 Package pdftex.def Info: imgs/magazin.png  used on input line 40.
 (pdftex.def)             Requested size: 185.65297pt x 196.10684pt.
-<imgs/login.png, id=1084, 383.93437pt x 494.59781pt>
+<imgs/login.png, id=1098, 383.93437pt x 494.59781pt>
 File: imgs/login.png Graphic file (type png)
 <use imgs/login.png>
 Package pdftex.def Info: imgs/login.png  used on input line 44.
 (pdftex.def)             Requested size: 144.40025pt x 186.02464pt.
- [53 <./imgs/mainmenu.png> <./imgs/magazin.png> <./imgs/login.png>]
-<imgs/chimieex.png, id=1096, 1428.08531pt x 520.19344pt>
+ [54 <./imgs/mainmenu.png> <./imgs/magazin.png> <./imgs/login.png>]
+<imgs/chimieex.png, id=1111, 1428.08531pt x 520.19344pt>
 File: imgs/chimieex.png Graphic file (type png)
 <use imgs/chimieex.png>
 Package pdftex.def Info: imgs/chimieex.png  used on input line 72.
 (pdftex.def)             Requested size: 371.30595pt x 135.2471pt.
-<imgs/astronomieex.png, id=1097, 1426.57968pt x 633.86812pt>
+<imgs/astronomieex.png, id=1112, 1426.57968pt x 633.86812pt>
 File: imgs/astronomieex.png Graphic file (type png)
 <use imgs/astronomieex.png>
 Package pdftex.def Info: imgs/astronomieex.png  used on input line 73.
 (pdftex.def)             Requested size: 371.30595pt x 164.97592pt.
- [54 <./imgs/chimieex.png>]
-<imgs/molform.png, id=1105, 287.57437pt x 464.4853pt>
+ [55 <./imgs/chimieex.png>]
+<imgs/molform.png, id=1119, 287.57437pt x 464.4853pt>
 File: imgs/molform.png Graphic file (type png)
 <use imgs/molform.png>
 Package pdftex.def Info: imgs/molform.png  used on input line 89.
 (pdftex.def)             Requested size: 103.14124pt x 166.59088pt.
-<imgs/infoops.png, id=1106, 405.76593pt x 219.06844pt>
+<imgs/infoops.png, id=1120, 405.76593pt x 219.06844pt>
 File: imgs/infoops.png Graphic file (type png)
 <use imgs/infoops.png>
 Package pdftex.def Info: imgs/infoops.png  used on input line 93.
 (pdftex.def)             Requested size: 226.91199pt x 122.51035pt.
- [55 <./imgs/astronomieex.png> <./imgs/molform.png> <./imgs/infoops.png>]
-<imgs/facequiz.png, id=1118, 547.2947pt x 387.69844pt>
+ [56 <./imgs/astronomieex.png> <./imgs/molform.png> <./imgs/infoops.png>]
+<imgs/facequiz.png, id=1132, 547.2947pt x 387.69844pt>
 File: imgs/facequiz.png Graphic file (type png)
 <use imgs/facequiz.png>
 Package pdftex.def Info: imgs/facequiz.png  used on input line 143.
 (pdftex.def)             Requested size: 198.02942pt x 140.28122pt.
-<imgs/vederequiz.png, id=1119, 337.26pt x 238.64156pt>
+<imgs/vederequiz.png, id=1133, 337.26pt x 238.64156pt>
 File: imgs/vederequiz.png Graphic file (type png)
 <use imgs/vederequiz.png>
 Package pdftex.def Info: imgs/vederequiz.png  used on input line 147.
 (pdftex.def)             Requested size: 198.02942pt x 140.12727pt.
- [56]
-<imgs/editorvizual.png, id=1124, 718.93594pt x 307.1475pt>
+ [57]
+<imgs/editorvizual.png, id=1138, 718.93594pt x 307.1475pt>
 File: imgs/editorvizual.png Graphic file (type png)
 <use imgs/editorvizual.png>
 Package pdftex.def Info: imgs/editorvizual.png  used on input line 167.
 (pdftex.def)             Requested size: 412.56497pt x 176.26161pt.
- [57 <./imgs/facequiz.png> <./imgs/vederequiz.png> <./imgs/editorvizual.png>]
-<imgs/chemtable.png, id=1137, 1189.44376pt x 520.94624pt>
+ [58 <./imgs/facequiz.png> <./imgs/vederequiz.png> <./imgs/editorvizual.png>]
+<imgs/chemtable.png, id=1151, 1189.44376pt x 520.94624pt>
 File: imgs/chemtable.png Graphic file (type png)
 <use imgs/chemtable.png>
 Package pdftex.def Info: imgs/chemtable.png  used on input line 184.
 (pdftex.def)             Requested size: 412.56497pt x 180.68848pt.
- [58 <./imgs/chemtable.png>]
-<imgs/profdashboard.png, id=1145, 572.89032pt x 364.36125pt>
+ [59 <./imgs/chemtable.png>]
+<imgs/profdashboard.png, id=1159, 572.89032pt x 364.36125pt>
 File: imgs/profdashboard.png Graphic file (type png)
 <use imgs/profdashboard.png>
 Package pdftex.def Info: imgs/profdashboard.png  used on input line 203.
 (pdftex.def)             Requested size: 330.05322pt x 209.9175pt.
-) [59 <./imgs/profdashboard.png>]
+) [60 <./imgs/profdashboard.png>]
 \openout2 = `src/chapters/evaluare.aux'.
 
  (src/chapters/evaluare.tex
 Capitolul 8.
-[60
+[61
 
 
 
 
-] [61] [62] [63]) [64]
+] [62] [63] [64]) [65]
 \openout2 = `src/chapters/concluzii.aux'.
 
  (src/chapters/concluzii.tex
 Capitolul 9.
-[65
+[66
 
 
 
 
-]) [66]) (src/appendix/index.tex (src/appendix/build.system.makefiles.tex
+]) [67]) (src/appendix/index.tex (src/appendix/build.system.makefiles.tex
 Anexa A.
 LaTeX Font Info:    Font shape `T1/ntxtt/b/n' in size <10.95> not available
 (Font)              Font shape `T1/txtt/bx/n' tried instead on input line 28.
-[67
+[68
 
 
 
-] [68]))
-Underfull \hbox (badness 1466) in paragraph at lines 51--52
-[]\T1/ntxtlf/m/n/12 Y. Zhang et al., ^^PVR/AR in STEM Lear-ning,^^Q *Pu-bMed*, 2024. [][]ht-
+] [69]))
+Underfull \hbox (badness 2277) in paragraph at lines 51--52
+[]\T1/ntxtlf/m/n/12 Y. Zhang et al., ^^PVR/AR in STEM Lear-ning,^^Q *Pu-bMed*, 2024.[][]ht-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 54--55
-[]\T1/ntxtlf/m/n/12 Frontiers in Edu-ca-tion, ^^PGa-mi-fi-ca-tion and Im-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 54--55
-\T1/ntxtlf/m/n/12 mer-sive Lear-ning En-vi-ron-ments,^^Q 2024. [][]ht-
- []
-
-
-Overfull \hbox (31.70598pt too wide) in paragraph at lines 54--55
-\T1/ntxtlf/m/n/12 tps://www.frontiersin.org/journals/education/articles/10.3389/feduc.2024.1354526/full[][].
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 57--58
+Underfull \hbox (badness 10000) in paragraph at lines 59--60
 []\T1/ntxtlf/m/n/12 Mindomo, ^^PWhat is Vi-sual Lear-ning?,^^Q 2023.
  []
 
 
-Underfull \hbox (badness 6526) in paragraph at lines 57--58
+Underfull \hbox (badness 6526) in paragraph at lines 59--60
 [][]\T1/ntxtlf/m/n/12 https://www.mindomo.com/blog/what-is-visual-learning/[][]. [Ac-ce-sat 24 mai
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 63--64
+Underfull \hbox (badness 10000) in paragraph at lines 65--66
 []\T1/ntxtlf/m/n/12 Du, Y., Zhang, H., et al., ^^PFac-tors in-flu-en-cing tea-chers sa-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 63--64
+Underfull \hbox (badness 10000) in paragraph at lines 65--66
 \T1/ntxtlf/m/n/12 tis-fac-tion and per-for-mance with on-line tea-ching in uni-ver-si-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 63--64
+Underfull \hbox (badness 10000) in paragraph at lines 65--66
 \T1/ntxtlf/m/n/12 ties du-ring the COVID-19,^^Q *Fron-ti-ers in Psy-cho-logy*, 2023.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 63--64
+Underfull \hbox (badness 10000) in paragraph at lines 65--66
 [][]\T1/ntxtlf/m/n/12 https://stemeducationjournal.springeropen.com/articles/10.1186/s40594-022-
  []
 
-[69
+[70
 
 ]
-Underfull \hbox (badness 6927) in paragraph at lines 72--73
+Underfull \hbox (badness 6927) in paragraph at lines 74--75
 []\T1/ntxtlf/m/n/12 Twin Science, ^^P5 Key Ad-van-ta-ges of Using Tea-cher Plat-forms,^^Q
  []
 
-LaTeX Font Info:    Trying to load font information for T1+qhv on input line 76.
+LaTeX Font Info:    Trying to load font information for T1+qhv on input line 78.
 (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/tex-gyre\t1qhv.fd
 File: t1qhv.fd 2009/09/25 v1.2 font definition file for T1/qhv
 )
 LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
-(Font)              scaled to size 11.28003pt on input line 76.
- (thesis.ind) [70{C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec.enc}] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologiiFe.aux) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
+(Font)              scaled to size 11.28003pt on input line 78.
+
+Underfull \hbox (badness 10000) in paragraph at lines 97--98
+[]\T1/ntxtlf/m/n/12 GetInRhythm, ^^PHar-ne-s-sing Gra-fana for Com-pre-hen-sive Full-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 97--98
+\T1/ntxtlf/m/n/12 Stack Ob-ser-va-bi-lity,^^Q 2023. [][]$\T1/qhv/m/n/12 https : / / medium . com / @GetInRhythm /
+ []
+
+
+Overfull \hbox (5.6346pt too wide) in paragraph at lines 97--98
+\T1/qhv/m/n/12 harnessing-[]grafana-[]for-[]comprehensive-[]full-[]stack-[]observability-[]c63a37277044$[][]\T1/ntxtlf/m/n/12 .
+ []
+
+(thesis.ind) [71{C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec.enc}] (thesis.aux (src/chapters/intro.aux) (src/chapters/analiza.aux) (src/chapters/studiuPiata.aux) (src/chapters/tehnologiiFe.aux) (src/chapters/tehnologiiBe.aux) (src/chapters/implementare.aux) (src/chapters/funcionalitati.aux) (src/chapters/scenariiUtilizare.aux) (src/chapters/evaluare.aux) (src/chapters/concluzii.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2020/03/25>
@@ -1846,13 +1846,13 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 (rerunfilecheck)             Checksum: 9045E82364444966439B55C903AD9B44;23578.
  ) 
 Here is how much of TeX's memory you used:
- 22633 strings out of 474486
- 368754 string characters out of 5743754
+ 22646 strings out of 474486
+ 368942 string characters out of 5743754
  2218542 words of memory out of 5000000
- 44022 multiletter control sequences out of 15000+600000
+ 44030 multiletter control sequences out of 15000+600000
  696147 words of font info for 217 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 125i,18n,147p,647b,2156s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 125i,18n,147p,647b,2163s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 pdfTeX warning (dest): name{Hfootnote.46} has been referenced but does not exist, replaced by a fixed one
 
@@ -1863,9 +1863,9 @@ pdfTeX warning (dest): name{Hfootnote.45} has been referenced but does not exist
 pdfTeX warning (dest): name{Hfootnote.44} has been referenced but does not exist, replaced by a fixed one
 
 <C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/NewTXMI.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qhvr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qtmr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xbtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/txsys.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmb.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmri.pfb>
-Output written on thesis.pdf (77 pages, 11747513 bytes).
+Output written on thesis.pdf (78 pages, 11956151 bytes).
 PDF statistics:
- 1412 PDF objects out of 1440 (max. 8388607)
- 416 named destinations out of 1000 (max. 500000)
+ 1432 PDF objects out of 1440 (max. 8388607)
+ 421 named destinations out of 1000 (max. 500000)
  1049 words of extra memory for PDF output out of 10000 (max. 10000000)
 
