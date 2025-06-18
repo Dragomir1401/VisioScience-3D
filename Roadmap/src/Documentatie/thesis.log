@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  19 JUN 2025 00:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.10)  19 JUN 2025 00:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1009,12 +1009,12 @@ LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 (Font)              scaled to size 8.8pt on input line 6.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 (Font)              scaled to size 6.6pt on input line 6.
-<src/img/branding/upb.png, id=447, 598.235pt x 598.235pt>
+<src/img/branding/upb.png, id=451, 598.235pt x 598.235pt>
 File: src/img/branding/upb.png Graphic file (type png)
 <use src/img/branding/upb.png>
 Package pdftex.def Info: src/img/branding/upb.png  used on input line 7.
 (pdftex.def)             Requested size: 53.63545pt x 53.62888pt.
-<src/img/branding/cs.png, id=448, 695.59875pt x 307.1475pt>
+<src/img/branding/cs.png, id=452, 695.59875pt x 307.1475pt>
 File: src/img/branding/cs.png Graphic file (type png)
 <use src/img/branding/cs.png>
 Package pdftex.def Info: src/img/branding/cs.png  used on input line 7.
@@ -1057,20 +1057,22 @@ l.17 \begin{abstract}
                       [1]
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
 (Font)              scaled to size 24.88pt on input line 17.
- (src/base/sinopsis.tex) (template/contents.pages.tex [2
+ (src/base/sinopsis.tex) [2
+
+] (src/base/abstract.tex) (template/contents.pages.tex [3
 
 ] (thesis.toc
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
 (Font)              scaled to size 12.0pt on input line 2.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
 (Font)              scaled to size 6.6pt on input line 2.
- [3
+ [4
 
-] [4])
+] [5])
 \tf@toc=\write6
 \openout6 = `thesis.toc'.
 
- [5])
+ [6])
 No file thesis.nls.
 (src/main.tex
 \openout2 = `src/chapters/intro.aux'.
@@ -1282,7 +1284,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 192--192
 
  (src/chapters/studiuPiata.tex
 Capitolul 3.
-<imgs/phet.png, id=686, 1431.84938pt x 668.4975pt>
+<imgs/phet.png, id=695, 1431.84938pt x 668.4975pt>
 File: imgs/phet.png Graphic file (type png)
 <use imgs/phet.png>
 Package pdftex.def Info: imgs/phet.png  used on input line 10.
@@ -1293,23 +1295,23 @@ Package pdftex.def Info: imgs/phet.png  used on input line 10.
 
 
  <./imgs/phet.png>]
-<imgs/invatamatesimulare.png, id=694, 723.45282pt x 710.655pt>
+<imgs/invatamatesimulare.png, id=703, 723.45282pt x 710.655pt>
 File: imgs/invatamatesimulare.png Graphic file (type png)
 <use imgs/invatamatesimulare.png>
 Package pdftex.def Info: imgs/invatamatesimulare.png  used on input line 34.
 (pdftex.def)             Requested size: 165.02347pt x 162.10258pt.
-<imgs/invatamatejoc.png, id=695, 740.7675pt x 706.13812pt>
+<imgs/invatamatejoc.png, id=704, 740.7675pt x 706.13812pt>
 File: imgs/invatamatejoc.png Graphic file (type png)
 <use imgs/invatamatejoc.png>
 Package pdftex.def Info: imgs/invatamatejoc.png  used on input line 41.
 (pdftex.def)             Requested size: 165.02347pt x 157.3011pt.
-<imgs/mozaweb.png, id=696, 1038.88126pt x 673.01437pt>
+<imgs/mozaweb.png, id=705, 1038.88126pt x 673.01437pt>
 File: imgs/mozaweb.png Graphic file (type png)
 <use imgs/mozaweb.png>
 Package pdftex.def Info: imgs/mozaweb.png  used on input line 53.
 (pdftex.def)             Requested size: 288.79422pt x 187.08717pt.
  [15 <./imgs/invatamatesimulare.png> <./imgs/invatamatejoc.png>]
-<imgs/iqboardsimulari.jpg, id=705, 818.05624pt x 439.6425pt>
+<imgs/iqboardsimulari.jpg, id=714, 818.05624pt x 439.6425pt>
 File: imgs/iqboardsimulari.jpg Graphic file (type jpg)
 <use imgs/iqboardsimulari.jpg>
 Package pdftex.def Info: imgs/iqboardsimulari.jpg  used on input line 77.
@@ -1334,7 +1336,7 @@ Overfull \hbox (9.92006pt too wide) in paragraph at lines 70--77
 []\T1/ntxtlf/b/n/12 Abstrac[]ie de-cla-ra-tiv \T1/ntxtlf/m/n/12 : R3F în-cap-su-leaz  API-ul Three.js într-un DSL[][][][][][] Re-act, poten[]ând
  []
 
-<imgs/fediagram.png, id=742, 1083.29718pt x 294.34969pt>
+<imgs/fediagram.png, id=751, 1083.29718pt x 294.34969pt>
 File: imgs/fediagram.png Graphic file (type png)
 <use imgs/fediagram.png>
 Package pdftex.def Info: imgs/fediagram.png  used on input line 93.
@@ -1345,34 +1347,34 @@ Overfull \hbox (41.259pt too wide) in paragraph at lines 93--93
  []
 
 [20 <./imgs/fediagram.png>]
-<imgs/convertor.png, id=752, 1442.38875pt x 709.90219pt>
+<imgs/convertor.png, id=761, 1442.38875pt x 709.90219pt>
 File: imgs/convertor.png Graphic file (type png)
 <use imgs/convertor.png>
 Package pdftex.def Info: imgs/convertor.png  used on input line 123.
 (pdftex.def)             Requested size: 412.56497pt x 203.04997pt.
  [21 <./imgs/convertor.png>]
-<imgs/Blender.png, id=760, 974.13937pt x 458.46281pt>
+<imgs/Blender.png, id=769, 974.13937pt x 458.46281pt>
 File: imgs/Blender.png Graphic file (type png)
 <use imgs/Blender.png>
 Package pdftex.def Info: imgs/Blender.png  used on input line 133.
 (pdftex.def)             Requested size: 412.56497pt x 194.16904pt.
-<imgs/paleta.png, id=761, 846.16125pt x 165.61874pt>
+<imgs/paleta.png, id=770, 846.16125pt x 165.61874pt>
 File: imgs/paleta.png Graphic file (type png)
 <use imgs/paleta.png>
 Package pdftex.def Info: imgs/paleta.png  used on input line 152.
 (pdftex.def)             Requested size: 412.56497pt x 80.74954pt.
  [22 <./imgs/Blender.png>]
-<imgs/logo.png, id=769, 370.38374pt x 76.03406pt>
+<imgs/logo.png, id=778, 370.38374pt x 76.03406pt>
 File: imgs/logo.png Graphic file (type png)
 <use imgs/logo.png>
 Package pdftex.def Info: imgs/logo.png  used on input line 159.
 (pdftex.def)             Requested size: 206.28249pt x 42.34673pt.
-<imgs/mascota.png, id=770, 401.24907pt x 569.87906pt>
+<imgs/mascota.png, id=779, 401.24907pt x 569.87906pt>
 File: imgs/mascota.png Graphic file (type png)
 <use imgs/mascota.png>
 Package pdftex.def Info: imgs/mascota.png  used on input line 170.
 (pdftex.def)             Requested size: 103.14124pt x 146.48679pt.
-<imgs/navdiagram (2).png, id=771, 642.4pt x 1204.5pt>
+<imgs/navdiagram (2).png, id=780, 642.4pt x 1204.5pt>
 File: imgs/navdiagram (2).png Graphic file (type png)
 <use imgs/navdiagram (2).png>
 Package pdftex.def Info: imgs/navdiagram (2).png  used on input line 180.
@@ -1473,23 +1475,23 @@ LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 LaTeX Font Info:    Font shape `T1/ntxtt/b/n' in size <6.6> not available
 (Font)              Font shape `T1/txtt/bx/n' tried instead on input line 130.
  [31]
-<imgs/portainerlanding.png, id=878, 1431.09656pt x 690.32906pt>
+<imgs/portainerlanding.png, id=887, 1431.09656pt x 690.32906pt>
 File: imgs/portainerlanding.png Graphic file (type png)
 <use imgs/portainerlanding.png>
 Package pdftex.def Info: imgs/portainerlanding.png  used on input line 148.
 (pdftex.def)             Requested size: 412.56497pt x 199.01054pt.
-<imgs/servicesportainer.png, id=879, 1184.92688pt x 484.81125pt>
+<imgs/servicesportainer.png, id=888, 1184.92688pt x 484.81125pt>
 File: imgs/servicesportainer.png Graphic file (type png)
 <use imgs/servicesportainer.png>
 Package pdftex.def Info: imgs/servicesportainer.png  used on input line 156.
 (pdftex.def)             Requested size: 206.28249pt x 84.39937pt.
-<imgs/servicescli.png, id=880, 561.59813pt x 201.75375pt>
+<imgs/servicescli.png, id=889, 561.59813pt x 201.75375pt>
 File: imgs/servicescli.png Graphic file (type png)
 <use imgs/servicescli.png>
 Package pdftex.def Info: imgs/servicescli.png  used on input line 160.
 (pdftex.def)             Requested size: 185.65297pt x 66.69592pt.
  [32 <./imgs/portainerlanding.png> <./imgs/servicesportainer.png> <./imgs/servicescli.png>] [33]
-<imgs/bearch.png, id=907, 800.23969pt x 464.4853pt>
+<imgs/bearch.png, id=916, 800.23969pt x 464.4853pt>
 File: imgs/bearch.png Graphic file (type png)
 <use imgs/bearch.png>
 Package pdftex.def Info: imgs/bearch.png  used on input line 244.
@@ -1509,7 +1511,7 @@ Overfull \hbox (2.31013pt too wide) in paragraph at lines 331--334
  []
 
 [37]
-<imgs/evaluationdashboard.png, id=951, 1214.28656pt x 557.83406pt>
+<imgs/evaluationdashboard.png, id=960, 1214.28656pt x 557.83406pt>
 File: imgs/evaluationdashboard.png Graphic file (type png)
 <use imgs/evaluationdashboard.png>
 Package pdftex.def Info: imgs/evaluationdashboard.png  used on input line 352.
@@ -1520,7 +1522,7 @@ Overfull \hbox (14.3183pt too wide) in paragraph at lines 401--405
  []
 
 [39]
-<imgs/dbdiagram.png, id=973, 3854.4pt x 3811.23875pt>
+<imgs/dbdiagram.png, id=982, 3854.4pt x 3811.23875pt>
 File: imgs/dbdiagram.png Graphic file (type png)
 <use imgs/dbdiagram.png>
 Package pdftex.def Info: imgs/dbdiagram.png  used on input line 413.
@@ -1662,7 +1664,7 @@ No file src/chapters/funcionalitati.tex.
 
 (src/chapters/scenariiUtilizare.tex
 Capitolul 7.
-<imgs/mainmenu.png, id=1092, 1440.13031pt x 699.36281pt>
+<imgs/mainmenu.png, id=1101, 1440.13031pt x 699.36281pt>
 File: imgs/mainmenu.png Graphic file (type png)
 <use imgs/mainmenu.png>
 Package pdftex.def Info: imgs/mainmenu.png  used on input line 29.
@@ -1681,63 +1683,63 @@ Overfull \hbox (15.46225pt too wide) in paragraph at lines 32--35
 
 
 ]
-<imgs/magazin.png, id=1097, 641.39626pt x 677.53125pt>
+<imgs/magazin.png, id=1107, 641.39626pt x 677.53125pt>
 File: imgs/magazin.png Graphic file (type png)
 <use imgs/magazin.png>
 Package pdftex.def Info: imgs/magazin.png  used on input line 40.
 (pdftex.def)             Requested size: 185.65297pt x 196.10684pt.
-<imgs/login.png, id=1098, 383.93437pt x 494.59781pt>
+<imgs/login.png, id=1108, 383.93437pt x 494.59781pt>
 File: imgs/login.png Graphic file (type png)
 <use imgs/login.png>
 Package pdftex.def Info: imgs/login.png  used on input line 44.
 (pdftex.def)             Requested size: 144.40025pt x 186.02464pt.
  [54 <./imgs/mainmenu.png> <./imgs/magazin.png> <./imgs/login.png>]
-<imgs/chimieex.png, id=1111, 1428.08531pt x 520.19344pt>
+<imgs/chimieex.png, id=1120, 1428.08531pt x 520.19344pt>
 File: imgs/chimieex.png Graphic file (type png)
 <use imgs/chimieex.png>
 Package pdftex.def Info: imgs/chimieex.png  used on input line 72.
 (pdftex.def)             Requested size: 371.30595pt x 135.2471pt.
-<imgs/astronomieex.png, id=1112, 1426.57968pt x 633.86812pt>
+<imgs/astronomieex.png, id=1121, 1426.57968pt x 633.86812pt>
 File: imgs/astronomieex.png Graphic file (type png)
 <use imgs/astronomieex.png>
 Package pdftex.def Info: imgs/astronomieex.png  used on input line 73.
 (pdftex.def)             Requested size: 371.30595pt x 164.97592pt.
  [55 <./imgs/chimieex.png>]
-<imgs/molform.png, id=1119, 287.57437pt x 464.4853pt>
+<imgs/molform.png, id=1128, 287.57437pt x 464.4853pt>
 File: imgs/molform.png Graphic file (type png)
 <use imgs/molform.png>
 Package pdftex.def Info: imgs/molform.png  used on input line 89.
 (pdftex.def)             Requested size: 103.14124pt x 166.59088pt.
-<imgs/infoops.png, id=1120, 405.76593pt x 219.06844pt>
+<imgs/infoops.png, id=1129, 405.76593pt x 219.06844pt>
 File: imgs/infoops.png Graphic file (type png)
 <use imgs/infoops.png>
 Package pdftex.def Info: imgs/infoops.png  used on input line 93.
 (pdftex.def)             Requested size: 226.91199pt x 122.51035pt.
  [56 <./imgs/astronomieex.png> <./imgs/molform.png> <./imgs/infoops.png>]
-<imgs/facequiz.png, id=1132, 547.2947pt x 387.69844pt>
+<imgs/facequiz.png, id=1141, 547.2947pt x 387.69844pt>
 File: imgs/facequiz.png Graphic file (type png)
 <use imgs/facequiz.png>
 Package pdftex.def Info: imgs/facequiz.png  used on input line 143.
 (pdftex.def)             Requested size: 198.02942pt x 140.28122pt.
-<imgs/vederequiz.png, id=1133, 337.26pt x 238.64156pt>
+<imgs/vederequiz.png, id=1142, 337.26pt x 238.64156pt>
 File: imgs/vederequiz.png Graphic file (type png)
 <use imgs/vederequiz.png>
 Package pdftex.def Info: imgs/vederequiz.png  used on input line 147.
 (pdftex.def)             Requested size: 198.02942pt x 140.12727pt.
  [57]
-<imgs/editorvizual.png, id=1138, 718.93594pt x 307.1475pt>
+<imgs/editorvizual.png, id=1147, 718.93594pt x 307.1475pt>
 File: imgs/editorvizual.png Graphic file (type png)
 <use imgs/editorvizual.png>
 Package pdftex.def Info: imgs/editorvizual.png  used on input line 167.
 (pdftex.def)             Requested size: 412.56497pt x 176.26161pt.
  [58 <./imgs/facequiz.png> <./imgs/vederequiz.png> <./imgs/editorvizual.png>]
-<imgs/chemtable.png, id=1151, 1189.44376pt x 520.94624pt>
+<imgs/chemtable.png, id=1160, 1189.44376pt x 520.94624pt>
 File: imgs/chemtable.png Graphic file (type png)
 <use imgs/chemtable.png>
 Package pdftex.def Info: imgs/chemtable.png  used on input line 184.
 (pdftex.def)             Requested size: 412.56497pt x 180.68848pt.
  [59 <./imgs/chemtable.png>]
-<imgs/profdashboard.png, id=1159, 572.89032pt x 364.36125pt>
+<imgs/profdashboard.png, id=1169, 572.89032pt x 364.36125pt>
 File: imgs/profdashboard.png Graphic file (type png)
 <use imgs/profdashboard.png>
 Package pdftex.def Info: imgs/profdashboard.png  used on input line 203.
@@ -1771,65 +1773,65 @@ LaTeX Font Info:    Font shape `T1/ntxtt/b/n' in size <10.95> not available
 
 
 ] [69]))
-Underfull \hbox (badness 2277) in paragraph at lines 51--52
+Underfull \hbox (badness 2277) in paragraph at lines 55--56
 []\T1/ntxtlf/m/n/12 Y. Zhang et al., ^^PVR/AR in STEM Lear-ning,^^Q *Pu-bMed*, 2024.[][]ht-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 59--60
+Underfull \hbox (badness 10000) in paragraph at lines 63--64
 []\T1/ntxtlf/m/n/12 Mindomo, ^^PWhat is Vi-sual Lear-ning?,^^Q 2023.
  []
 
 
-Underfull \hbox (badness 6526) in paragraph at lines 59--60
+Underfull \hbox (badness 6526) in paragraph at lines 63--64
 [][]\T1/ntxtlf/m/n/12 https://www.mindomo.com/blog/what-is-visual-learning/[][]. [Ac-ce-sat 24 mai
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 65--66
+Underfull \hbox (badness 10000) in paragraph at lines 69--70
 []\T1/ntxtlf/m/n/12 Du, Y., Zhang, H., et al., ^^PFac-tors in-flu-en-cing tea-chers sa-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 65--66
+Underfull \hbox (badness 10000) in paragraph at lines 69--70
 \T1/ntxtlf/m/n/12 tis-fac-tion and per-for-mance with on-line tea-ching in uni-ver-si-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 65--66
+Underfull \hbox (badness 10000) in paragraph at lines 69--70
 \T1/ntxtlf/m/n/12 ties du-ring the COVID-19,^^Q *Fron-ti-ers in Psy-cho-logy*, 2023.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 65--66
+Underfull \hbox (badness 10000) in paragraph at lines 69--70
 [][]\T1/ntxtlf/m/n/12 https://stemeducationjournal.springeropen.com/articles/10.1186/s40594-022-
  []
 
 [70
 
 ]
-Underfull \hbox (badness 6927) in paragraph at lines 74--75
+Underfull \hbox (badness 6927) in paragraph at lines 78--79
 []\T1/ntxtlf/m/n/12 Twin Science, ^^P5 Key Ad-van-ta-ges of Using Tea-cher Plat-forms,^^Q
  []
 
-LaTeX Font Info:    Trying to load font information for T1+qhv on input line 78.
+LaTeX Font Info:    Trying to load font information for T1+qhv on input line 82.
 (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/tex-gyre\t1qhv.fd
 File: t1qhv.fd 2009/09/25 v1.2 font definition file for T1/qhv
 )
 LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
-(Font)              scaled to size 11.28003pt on input line 78.
+(Font)              scaled to size 11.28003pt on input line 82.
 
-Underfull \hbox (badness 10000) in paragraph at lines 97--98
+Underfull \hbox (badness 10000) in paragraph at lines 101--102
 []\T1/ntxtlf/m/n/12 GetInRhythm, ^^PHar-ne-s-sing Gra-fana for Com-pre-hen-sive Full-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 97--98
+Underfull \hbox (badness 10000) in paragraph at lines 101--102
 \T1/ntxtlf/m/n/12 Stack Ob-ser-va-bi-lity,^^Q 2023. [][]$\T1/qhv/m/n/12 https : / / medium . com / @GetInRhythm /
  []
 
 
-Overfull \hbox (5.6346pt too wide) in paragraph at lines 97--98
+Overfull \hbox (5.6346pt too wide) in paragraph at lines 101--102
 \T1/qhv/m/n/12 harnessing-[]grafana-[]for-[]comprehensive-[]full-[]stack-[]observability-[]c63a37277044$[][]\T1/ntxtlf/m/n/12 .
  []
 
@@ -1843,13 +1845,13 @@ L3 programming layer <2020/03/25>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 9045E82364444966439B55C903AD9B44;23578.
+(rerunfilecheck)             Checksum: F4DFFCA9FA24AEA71FB746E204F516EB;23664.
  ) 
 Here is how much of TeX's memory you used:
- 22646 strings out of 474486
- 368942 string characters out of 5743754
+ 22660 strings out of 474486
+ 369304 string characters out of 5743754
  2218542 words of memory out of 5000000
- 44030 multiletter control sequences out of 15000+600000
+ 44040 multiletter control sequences out of 15000+600000
  696147 words of font info for 217 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  125i,18n,147p,647b,2163s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1863,9 +1865,9 @@ pdfTeX warning (dest): name{Hfootnote.45} has been referenced but does not exist
 pdfTeX warning (dest): name{Hfootnote.44} has been referenced but does not exist, replaced by a fixed one
 
 <C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/NewTXMI.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qhvr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qtmr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xbtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/txsys.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmb.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmr.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/ztmri.pfb>
-Output written on thesis.pdf (78 pages, 11956151 bytes).
+Output written on thesis.pdf (79 pages, 11958460 bytes).
 PDF statistics:
- 1432 PDF objects out of 1440 (max. 8388607)
- 421 named destinations out of 1000 (max. 500000)
- 1049 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1442 PDF objects out of 1728 (max. 8388607)
+ 423 named destinations out of 1000 (max. 500000)
+ 1057 words of extra memory for PDF output out of 10000 (max. 10000000)
 

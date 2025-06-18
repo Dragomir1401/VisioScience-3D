@@ -228,6 +228,11 @@
 
 \renewenvironment{abstract}{\null\vfil\prefacesection{Sinopsis}}{\par\vfill\null}
 
+\newenvironment{abstracteng}
+{\null\vfil\prefacesection{Abstract}}
+{\par\vfill\null}
+
+
 \def\prefacesection#1{%
 	\chapter*{#1}
 	\addcontentsline{toc}{chapter}{#1}}

@@ -406,6 +406,11 @@ INPUT .\src\base\sinopsis.tex
 INPUT .\src\base\sinopsis.tex
 INPUT .\src\base\sinopsis.tex
 INPUT src\base\sinopsis.tex
+INPUT .\src\base\abstract.tex
+INPUT .\src\base\abstract.tex
+INPUT .\src\base\abstract.tex
+INPUT .\src\base\abstract.tex
+INPUT src\base\abstract.tex
 INPUT .\template\contents.pages.tex
 INPUT .\template\contents.pages.tex
 INPUT template\contents.pages.tex

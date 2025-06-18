@@ -1,6 +1,7 @@
 \babel@toc {romanian}{}\relax 
 \contentsline {chapter}{Mulțumiri}{i}{table.caption.2}%
 \contentsline {chapter}{Sinopsis}{ii}{chapter*.3}%
+\contentsline {chapter}{Abstract}{iii}{chapter*.4}%
 \contentsline {chapter}{\numberline {1}Introducere}{1}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Context}{1}{section.1.1}%
 \contentsline {subsection}{\numberline {1.1.1}Definirea problemei}{1}{subsection.1.1.1}%
@@ -36,18 +37,18 @@
 \contentsline {subsection}{\numberline {4.1.3}Modelare 3D}{21}{subsection.4.1.3}%
 \contentsline {section}{\numberline {4.2}Soluția UI/UX}{22}{section.4.2}%
 \contentsline {subsection}{\numberline {4.2.1}Brandingul proiectului}{22}{subsection.4.2.1}%
-\contentsline {subsubsection}{Paleta de culori}{22}{section*.12}%
-\contentsline {subsubsection}{Logo-ul}{23}{section*.14}%
-\contentsline {subsubsection}{Mascota platformei}{23}{section*.16}%
+\contentsline {subsubsection}{Paleta de culori}{22}{section*.13}%
+\contentsline {subsubsection}{Logo-ul}{23}{section*.15}%
+\contentsline {subsubsection}{Mascota platformei}{23}{section*.17}%
 \contentsline {subsection}{\numberline {4.2.2}Experiența utilizatorului}{24}{subsection.4.2.2}%
-\contentsline {subsubsection}{Navigarea în platformă}{24}{section*.18}%
-\contentsline {subsubsection}{Gestionarea stărilor}{25}{section*.20}%
-\contentsline {subsubsection}{Designul interfeței utilizatorului}{25}{section*.21}%
+\contentsline {subsubsection}{Navigarea în platformă}{24}{section*.19}%
+\contentsline {subsubsection}{Gestionarea stărilor}{25}{section*.21}%
+\contentsline {subsubsection}{Designul interfeței utilizatorului}{25}{section*.22}%
 \contentsline {section}{\numberline {4.3}Soluția de creare a scenelor 3D}{25}{section.4.3}%
 \contentsline {subsection}{\numberline {4.3.1}Utilizarea tehnologiilor WebGL și Three.js}{25}{subsection.4.3.1}%
-\contentsline {subsubsection}{Crearea și gestionarea scenelor 3D}{25}{section*.22}%
-\contentsline {subsubsection}{Interacțiunea cu obiectele 3D}{26}{section*.23}%
-\contentsline {subsubsection}{Optimizarea performanței graficii 3D}{26}{section*.24}%
+\contentsline {subsubsection}{Crearea și gestionarea scenelor 3D}{25}{section*.23}%
+\contentsline {subsubsection}{Interacțiunea cu obiectele 3D}{26}{section*.24}%
+\contentsline {subsubsection}{Optimizarea performanței graficii 3D}{26}{section*.25}%
 \contentsline {subsection}{\numberline {4.3.2}Integrarea cu frontendul}{27}{subsection.4.3.2}%
 \contentsline {chapter}{\numberline {5}Tehnologii utilizate pentru back-end}{28}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Descrierea arhitecturii}{28}{section.5.1}%
@@ -67,10 +68,10 @@
 \contentsline {subsection}{\numberline {5.4.6}Grafana Dashboard}{37}{subsection.5.4.6}%
 \contentsline {section}{\numberline {5.5}Soluția de baze de date}{39}{section.5.5}%
 \contentsline {subsection}{\numberline {5.5.1}Structura bazei de date}{39}{subsection.5.5.1}%
-\contentsline {subsubsection}{Tipuri de baze de date utilizate / Motivația alegerii}{39}{section*.30}%
-\contentsline {subsubsection}{Gestionarea datelor}{39}{section*.31}%
+\contentsline {subsubsection}{Tipuri de baze de date utilizate / Motivația alegerii}{39}{section*.31}%
+\contentsline {subsubsection}{Gestionarea datelor}{39}{section*.32}%
 \contentsline {subsection}{\numberline {5.5.2}Securitatea datelor}{41}{subsection.5.5.2}%
-\contentsline {subsubsection}{Performanța și scalabilitatea bazei de date}{41}{section*.33}%
+\contentsline {subsubsection}{Performanța și scalabilitatea bazei de date}{41}{section*.34}%
 \contentsline {subsection}{\numberline {5.5.3}Integrarea cu back-endul}{41}{subsection.5.5.3}%
 \contentsline {chapter}{\numberline {6}Detalii de implementare}{42}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Back-end}{42}{section.6.1}%
