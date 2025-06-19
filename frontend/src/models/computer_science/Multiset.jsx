@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Line } from "@react-three/drei";
-import ForestBackground4 from "../ForestBackground4";
+import ForestBackground2 from "../ForestBackground2";
 import { PlusIcon, TrashIcon, RefreshIcon } from "@heroicons/react/solid";
 
 class AVLNode {
@@ -110,14 +110,14 @@ function computePositions(node, x0, x1, y, gapY, list) {
   computePositions(node.right, x, x1, y - gapY, gapY, list);
 }
 
-const MultisetScene = ({ 
+const MultisetScene = ({
   root = null,
   backgroundColor = "#2D2D2D",
   textColor = "#ffffff",
   nodeColor = "#4f46e5",
   edgeColor = "#10b981",
   width = "100%",
-  height = "100%"
+  height = "100%",
 }) => {
   const flat = [];
   const edges = [];
@@ -138,19 +138,21 @@ const MultisetScene = ({
   });
 
   return (
-    <div style={{ 
-      width, 
-      height, 
-      position: 'relative', 
-      borderRadius: '8px', 
-      overflow: 'hidden',
-      border: '2px solid #9B6B9E'
-    }}>
+    <div
+      style={{
+        width,
+        height,
+        position: "relative",
+        borderRadius: "8px",
+        overflow: "hidden",
+        border: "2px solid #9B6B9E",
+      }}
+    >
       <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
         <color attach="background" args={[backgroundColor]} />
         <ambientLight intensity={0.4} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
-        <ForestBackground4
+        <ForestBackground2
           isRotatingForestBackground={false}
           isRotatingForestBackgroundSetter={() => {}}
         />
@@ -193,17 +195,13 @@ const MultisetScene = ({
           </group>
         ))}
 
-        <OrbitControls
-          enablePan
-          enableZoom
-          enableRotate
-        />
+        <OrbitControls enablePan enableZoom enableRotate />
       </Canvas>
     </div>
   );
 };
 
-const AVLMultisetDemo = ({ 
+const AVLMultisetDemo = ({
   root = null,
   onRootChange,
   showControls = false,
@@ -213,7 +211,7 @@ const AVLMultisetDemo = ({
   edgeColor = "#7b3fe4",
   width = "100%",
   height = "100%",
-  canvasHeight = "100%"
+  canvasHeight = "100%",
 }) => {
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
@@ -247,7 +245,7 @@ const AVLMultisetDemo = ({
   };
 
   return (
-    <div className="flex gap-6" style={{ height: '100%' }}>
+    <div className="flex gap-6" style={{ height: "100%" }}>
       {showControls && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
           <h4 className="text-lg font-semibold text-mulberry">
@@ -290,7 +288,9 @@ const AVLMultisetDemo = ({
             </button>
           </div>
 
-          {message && <div className="text-sm text-gray-700 mt-2">{message}</div>}
+          {message && (
+            <div className="text-sm text-gray-700 mt-2">{message}</div>
+          )}
 
           <div className="text-sm text-gray-700">
             Contents: [{inorderList.join(", ")}]
@@ -298,8 +298,11 @@ const AVLMultisetDemo = ({
         </div>
       )}
 
-      <div className={showControls ? "w-2/3" : "w-full"} style={{ height: '100%' }}>
-        <MultisetScene 
+      <div
+        className={showControls ? "w-2/3" : "w-full"}
+        style={{ height: "100%" }}
+      >
+        <MultisetScene
           root={root}
           backgroundColor={backgroundColor}
           textColor={textColor}

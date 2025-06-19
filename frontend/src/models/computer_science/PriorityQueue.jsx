@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Line } from "@react-three/drei";
-import ForestBackground4 from "../ForestBackground4";
+import ForestBackground2 from "../ForestBackground2";
 import {
   PlusIcon,
   ArrowCircleDownIcon,
@@ -57,7 +57,7 @@ const PriorityQueueScene = ({
         <color attach="background" args={[backgroundColor]} />
         <ambientLight intensity={0.4} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
-        <ForestBackground4
+        <ForestBackground2
           isRotatingForestBackground={false}
           isRotatingForestBackgroundSetter={() => {}}
         />

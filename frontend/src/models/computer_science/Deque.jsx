@@ -9,9 +9,9 @@ import {
   TrashIcon,
   BanIcon,
 } from "@heroicons/react/solid";
-import ForestBackground4 from "../ForestBackground4";
+import ForestBackground2 from "../ForestBackground2";
 
-export default function DequeDemo({ 
+export default function DequeDemo({
   elements: externalElements = [],
   onElementsChange,
   showControls = false,
@@ -23,10 +23,11 @@ export default function DequeDemo({
   edgeColor = "#7b3fe4",
   width = "100%",
   height = "100%",
-  canvasHeight = "100%"
+  canvasHeight = "100%",
 }) {
   const [internalElements, setInternalElements] = useState([]);
-  const elements = externalElements.length > 0 ? externalElements : internalElements;
+  const elements =
+    externalElements.length > 0 ? externalElements : internalElements;
   const setElements = (newElements) => {
     if (onElementsChange) {
       onElementsChange(newElements);
@@ -82,7 +83,7 @@ export default function DequeDemo({
   const camZ = Math.max(count * spacing, 10);
 
   return (
-    <div className="flex gap-6" style={{ height: '100%' }}>
+    <div className="flex gap-6" style={{ height: "100%" }}>
       {showControls && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
           <h4 className="text-xl font-bold text-mulberry">
@@ -151,12 +152,18 @@ export default function DequeDemo({
         </div>
       )}
 
-      <div className={showControls ? "w-2/3" : "w-full"} style={{ height: '100%' }}>
-        <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }} style={{ height: canvasHeight, width: width }}>
+      <div
+        className={showControls ? "w-2/3" : "w-full"}
+        style={{ height: "100%" }}
+      >
+        <Canvas
+          camera={{ position: [centerX, camY, camZ], fov: 50 }}
+          style={{ height: canvasHeight, width: width }}
+        >
           <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 5, 5]} intensity={1} />
-          <ForestBackground4 />
+          <ForestBackground2 />
           {elements.map((val, i) => {
             const x = i * spacing;
             return (

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Line } from "@react-three/drei";
-import ForestBackground4 from "../ForestBackground4";
+import ForestBackground2 from "../ForestBackground2";
 import {
   PlusIcon,
   TrashIcon,
@@ -9,14 +9,14 @@ import {
   ArrowCircleLeftIcon,
 } from "@heroicons/react/solid";
 
-const StackScene = ({ 
+const StackScene = ({
   elements = [],
   backgroundColor = "#2D2D2D",
   textColor = "#ffffff",
   nodeColor = "#4f46e5",
   topIndicatorColor = "#10b981",
   width = "100%",
-  height = "100%"
+  height = "100%",
 }) => {
   const spacing = 1.6;
   const count = elements.length;
@@ -25,14 +25,16 @@ const StackScene = ({
   const camDist = Math.max(count * spacing + 5, 10);
 
   return (
-    <div style={{ 
-      width, 
-      height, 
-      position: 'relative', 
-      borderRadius: '8px', 
-      overflow: 'hidden',
-      border: '2px solid #9B6B9E'
-    }}>
+    <div
+      style={{
+        width,
+        height,
+        position: "relative",
+        borderRadius: "8px",
+        overflow: "hidden",
+        border: "2px solid #9B6B9E",
+      }}
+    >
       <Canvas
         camera={{
           position: [0, camHeight, camDist],
@@ -42,7 +44,7 @@ const StackScene = ({
         <color attach="background" args={[backgroundColor]} />
         <ambientLight intensity={0.4} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
-        <ForestBackground4
+        <ForestBackground2
           isRotatingForestBackground={false}
           isRotatingForestBackgroundSetter={() => {}}
         />
@@ -96,7 +98,7 @@ const StackScene = ({
   );
 };
 
-const StackDemo = ({ 
+const StackDemo = ({
   elements = [],
   onElementsChange,
   showControls = false,
@@ -106,7 +108,7 @@ const StackDemo = ({
   topIndicatorColor = "#10b981",
   width = "100%",
   height = "100%",
-  canvasHeight = "100%"
+  canvasHeight = "100%",
 }) => {
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
@@ -144,7 +146,7 @@ const StackDemo = ({
   };
 
   return (
-    <div className="flex gap-6" style={{ height: '100%' }}>
+    <div className="flex gap-6" style={{ height: "100%" }}>
       {showControls && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry w-1/3 space-y-4">
           <h4 className="text-lg font-semibold text-mulberry">LIFO Stack</h4>
@@ -194,8 +196,11 @@ const StackDemo = ({
         </div>
       )}
 
-      <div className={showControls ? "w-2/3" : "w-full"} style={{ height: '100%' }}>
-        <StackScene 
+      <div
+        className={showControls ? "w-2/3" : "w-full"}
+        style={{ height: "100%" }}
+      >
+        <StackScene
           elements={elements}
           backgroundColor={backgroundColor}
           textColor={textColor}

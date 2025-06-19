@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text } from "@react-three/drei";
-import ForestBackground4 from "../ForestBackground4";
+import ForestBackground2 from "../ForestBackground2";
 import {
   PlusIcon,
   EyeIcon,
@@ -9,7 +9,7 @@ import {
   RefreshIcon,
 } from "@heroicons/react/solid";
 
-export default function ArrayDemo({ 
+export default function ArrayDemo({
   elements: externalElements = [],
   onElementsChange,
   showControls = false,
@@ -20,10 +20,11 @@ export default function ArrayDemo({
   highlightSetColor = "#f472b6",
   width = "100%",
   height = "100%",
-  canvasHeight = "100%"
+  canvasHeight = "100%",
 }) {
   const [internalElements, setInternalElements] = useState([]);
-  const elements = externalElements.length > 0 ? externalElements : internalElements;
+  const elements =
+    externalElements.length > 0 ? externalElements : internalElements;
   const setElements = (newElements) => {
     if (onElementsChange) {
       onElementsChange(newElements);
@@ -90,7 +91,7 @@ export default function ArrayDemo({
   const camZ = Math.max(count * spacing, 25);
 
   return (
-    <div className="flex gap-6" style={{ height: '100%' }}>
+    <div className="flex gap-6" style={{ height: "100%" }}>
       {showControls && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
           <h4 className="text-lg font-semibold text-mulberry">Static Array</h4>
@@ -157,12 +158,18 @@ export default function ArrayDemo({
         </div>
       )}
 
-      <div className={showControls ? "w-2/3" : "w-full"} style={{ height: '100%' }}>
-        <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }} style={{ height: canvasHeight, width: width }}>
+      <div
+        className={showControls ? "w-2/3" : "w-full"}
+        style={{ height: "100%" }}
+      >
+        <Canvas
+          camera={{ position: [centerX, camY, camZ], fov: 50 }}
+          style={{ height: canvasHeight, width: width }}
+        >
           <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 5, 5]} intensity={1} />
-          <ForestBackground4
+          <ForestBackground2
             isRotatingForestBackground={isRotating}
             isRotatingForestBackgroundSetter={setIsRotating}
           />
@@ -170,7 +177,10 @@ export default function ArrayDemo({
           {elements.map((val, i) => {
             let color = nodeColor;
             if (highlight.index === i) {
-              color = highlight.type === "get" ? highlightGetColor : highlightSetColor;
+              color =
+                highlight.type === "get"
+                  ? highlightGetColor
+                  : highlightSetColor;
             }
             const x = i * spacing;
             return (

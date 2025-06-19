@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text } from "@react-three/drei";
 import * as THREE from "three";
-import ForestBackground4 from "../ForestBackground4";
+import ForestBackground2 from "../ForestBackground2";
 
-const ArrayScene = ({ 
-  elements = [], 
+const ArrayScene = ({
+  elements = [],
   spacing = 1.2,
   nodeColor = "#4f46e5",
   textColor = "#ffffff",
   backgroundColor = "#2D2D2D",
   width = "100%",
-  height = "100%"
+  height = "100%",
 }) => (
   <>
     <ambientLight intensity={0.4} />
@@ -34,16 +34,17 @@ const ArrayScene = ({
   </>
 );
 
-const VectorScene = ({ 
+const VectorScene = ({
   elements = [],
   backgroundColor = "#2D2D2D",
   textColor = "#ffffff",
   nodeColor = "#4f46e5",
   width = "100%",
   height = "100%",
-  canvasHeight = "100%"
+  canvasHeight = "100%",
 }) => {
-  const [isRotatingForestBackground, setIsRotatingForestBackground] = useState(false);
+  const [isRotatingForestBackground, setIsRotatingForestBackground] =
+    useState(false);
   const spacing = 1.2;
   const count = elements.length;
   const centerX = count > 0 ? ((count - 1) * spacing) / 2 : 0;
@@ -51,14 +52,16 @@ const VectorScene = ({
   const camDistance = 7;
 
   return (
-    <div style={{ 
-      width, 
-      height, 
-      position: 'relative', 
-      borderRadius: '8px', 
-      overflow: 'hidden',
-      border: '2px solid #9B6B9E'
-    }}>
+    <div
+      style={{
+        width,
+        height,
+        position: "relative",
+        borderRadius: "8px",
+        overflow: "hidden",
+        border: "2px solid #9B6B9E",
+      }}
+    >
       <Canvas
         camera={{
           position: [centerX, camHeight, camDistance],
@@ -71,12 +74,12 @@ const VectorScene = ({
         <color attach="background" args={[backgroundColor]} />
         <ambientLight intensity={0.3} />
         <directionalLight position={[10, 10, 10]} intensity={1} />
-        <ForestBackground4
+        <ForestBackground2
           isRotatingForestBackground={isRotatingForestBackground}
           isRotatingForestBackgroundSetter={setIsRotatingForestBackground}
         />
-        <ArrayScene 
-          elements={elements} 
+        <ArrayScene
+          elements={elements}
           spacing={spacing}
           nodeColor={nodeColor}
           textColor={textColor}

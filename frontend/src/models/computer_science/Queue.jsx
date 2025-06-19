@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Line } from "@react-three/drei";
-import ForestBackground4 from "../ForestBackground4";
+import ForestBackground2 from "../ForestBackground2";
 import {
   PlusIcon,
   ArrowCircleLeftIcon,
@@ -9,7 +9,7 @@ import {
   RefreshIcon,
 } from "@heroicons/react/solid";
 
-const QueueScene = ({ 
+const QueueScene = ({
   elements = [],
   backgroundColor = "#2D2D2D",
   textColor = "#ffffff",
@@ -17,7 +17,7 @@ const QueueScene = ({
   frontIndicatorColor = "#10b981",
   backIndicatorColor = "#ef4444",
   width = "100%",
-  height = "100%"
+  height = "100%",
 }) => {
   const spacing = 2;
   const count = elements.length;
@@ -26,19 +26,21 @@ const QueueScene = ({
   const camDist = Math.max(count * spacing, 10);
 
   return (
-    <div style={{ 
-      width, 
-      height, 
-      position: 'relative', 
-      borderRadius: '8px', 
-      overflow: 'hidden',
-      border: '2px solid #9B6B9E'
-    }}>
+    <div
+      style={{
+        width,
+        height,
+        position: "relative",
+        borderRadius: "8px",
+        overflow: "hidden",
+        border: "2px solid #9B6B9E",
+      }}
+    >
       <Canvas camera={{ position: [centerX, camY, camDist], fov: 50 }}>
         <color attach="background" args={[backgroundColor]} />
         <ambientLight intensity={0.4} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
-        <ForestBackground4
+        <ForestBackground2
           isRotatingForestBackground={false}
           isRotatingForestBackgroundSetter={() => {}}
         />
@@ -119,7 +121,7 @@ const QueueScene = ({
   );
 };
 
-const QueueDemo = ({ 
+const QueueDemo = ({
   elements = [],
   onElementsChange,
   showControls = false,
@@ -130,7 +132,7 @@ const QueueDemo = ({
   backIndicatorColor = "#ef4444",
   width = "100%",
   height = "100%",
-  canvasHeight = "100%"
+  canvasHeight = "100%",
 }) => {
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
@@ -168,7 +170,7 @@ const QueueDemo = ({
   };
 
   return (
-    <div className="flex gap-6" style={{ height: '100%' }}>
+    <div className="flex gap-6" style={{ height: "100%" }}>
       {showControls && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry w-1/3 space-y-4">
           <h4 className="text-lg font-semibold text-mulberry">FIFO Queue</h4>
@@ -217,7 +219,9 @@ const QueueDemo = ({
             </button>
           </div>
 
-          {message && <div className="text-sm text-gray-700 mt-2">{message}</div>}
+          {message && (
+            <div className="text-sm text-gray-700 mt-2">{message}</div>
+          )}
 
           <div className="text-sm text-gray-700">
             Contents: [{elements.join(", ")}]
@@ -225,8 +229,11 @@ const QueueDemo = ({
         </div>
       )}
 
-      <div className={showControls ? "w-2/3" : "w-full"} style={{ height: '100%' }}>
-        <QueueScene 
+      <div
+        className={showControls ? "w-2/3" : "w-full"}
+        style={{ height: "100%" }}
+      >
+        <QueueScene
           elements={elements}
           backgroundColor={backgroundColor}
           textColor={textColor}

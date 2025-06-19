@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text } from "@react-three/drei";
 import * as THREE from "three";
-import ForestBackground4 from "../ForestBackground4";
+import ForestBackground2 from "../ForestBackground2";
 import {
   PlusIcon,
   ArrowLeftIcon,
@@ -11,7 +11,7 @@ import {
   RefreshIcon,
 } from "@heroicons/react/solid";
 
-const DoublyLinkedListScene = ({ 
+const DoublyLinkedListScene = ({
   elements,
   backgroundColor = "#2D2D2D",
   textColor = "#ffffff",
@@ -19,7 +19,7 @@ const DoublyLinkedListScene = ({
   arrowColor = "#888888",
   nullColor = "#555555",
   width = "100%",
-  height = "100%"
+  height = "100%",
 }) => {
   const spacing = 3;
   const boxHalf = 1;
@@ -79,7 +79,14 @@ const DoublyLinkedListScene = ({
           .clone()
           .add(new THREE.Vector3(-boxHalf, 0, 0));
         const dir = new THREE.Vector3(-1, 0, 0);
-        const arrow = new THREE.ArrowHelper(dir, from, len, nullColor, 0.4, 0.2);
+        const arrow = new THREE.ArrowHelper(
+          dir,
+          from,
+          len,
+          nullColor,
+          0.4,
+          0.2
+        );
         na.push({
           arrow,
           tip: from.clone().add(dir.clone().multiplyScalar(len)),
@@ -90,7 +97,14 @@ const DoublyLinkedListScene = ({
           .clone()
           .add(new THREE.Vector3(boxHalf, 0, 0));
         const dir = new THREE.Vector3(1, 0, 0);
-        const arrow = new THREE.ArrowHelper(dir, from, len, nullColor, 0.4, 0.2);
+        const arrow = new THREE.ArrowHelper(
+          dir,
+          from,
+          len,
+          nullColor,
+          0.4,
+          0.2
+        );
         na.push({
           arrow,
           tip: from.clone().add(dir.clone().multiplyScalar(len)),
@@ -102,11 +116,14 @@ const DoublyLinkedListScene = ({
 
   return (
     <div style={{ width, height }}>
-      <Canvas camera={{ position: [centerX, camY, camZ], fov: 50 }} style={{ height: '100%', width: '100%' }}>
+      <Canvas
+        camera={{ position: [centerX, camY, camZ], fov: 50 }}
+        style={{ height: "100%", width: "100%" }}
+      >
         <color attach="background" args={[backgroundColor]} />
         <ambientLight intensity={0.4} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
-        <ForestBackground4 />
+        <ForestBackground2 />
 
         {elements.map((val, i) => {
           const pos = positions[i];
@@ -156,7 +173,7 @@ const DoublyLinkedListScene = ({
   );
 };
 
-export default function DoublyLinkedListDemo({ 
+export default function DoublyLinkedListDemo({
   elements: externalElements = [],
   onElementsChange,
   showControls = false,
@@ -167,10 +184,11 @@ export default function DoublyLinkedListDemo({
   nullColor = "#555555",
   width = "100%",
   height = "100%",
-  canvasHeight = "100%"
+  canvasHeight = "100%",
 }) {
   const [internalElements, setInternalElements] = useState([]);
-  const elements = externalElements.length > 0 ? externalElements : internalElements;
+  const elements =
+    externalElements.length > 0 ? externalElements : internalElements;
   const setElements = (newElements) => {
     if (onElementsChange) {
       onElementsChange(newElements);
@@ -213,7 +231,7 @@ export default function DoublyLinkedListDemo({
   };
 
   return (
-    <div className="flex gap-6" style={{ height: '100%' }}>
+    <div className="flex gap-6" style={{ height: "100%" }}>
       {showControls && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
           <h4 className="text-lg font-semibold text-mulberry">
@@ -272,8 +290,11 @@ export default function DoublyLinkedListDemo({
         </div>
       )}
 
-      <div className={showControls ? "w-2/3" : "w-full"} style={{ height: '100%' }}>
-        <DoublyLinkedListScene 
+      <div
+        className={showControls ? "w-2/3" : "w-full"}
+        style={{ height: "100%" }}
+      >
+        <DoublyLinkedListScene
           elements={elements}
           backgroundColor={backgroundColor}
           textColor={textColor}
