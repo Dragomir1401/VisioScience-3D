@@ -12,7 +12,7 @@ astronomie sau informatică.
 \label{sub-sec:proj-scope}
 
 Categoriile principale de utilizatori suportate de platformă sunt utilizatorii elevi și profesorii, fiecare având
-un rol specific în cadrul aplicației și având acces la funcționalități diferite.
+un rol specific și având acces la funcționalități diferite.
 
 Aceste categorii indică și publicul țintă al aplicației, care este format din elevi de nivel gimnaziu sau liceu
 și profesori care predau disciplinele menționate la acest nivel de învățământ.
@@ -29,7 +29,7 @@ Putem face și o analiză din diverse puncte de vedere demografice și comportam
 
 \textbf{Vârstă:} Aplicația este destinată elevilor de gimnaziu și liceu (10-18 ani) și profesorilor de toate vârstele (25-60 ani). 
 
-\textbf{Tip de învățare:} Se folosesc animații 3D pentru a explica conceptele științifice.
+\textbf{Tip de învățare:} Preponderent vizual. Se folosesc animații 3D pentru a explica conceptele științifice.
 
 \textbf{Studii:} Utilizatorii sunt elevi de gimnaziu și liceu, respectiv profesori cu studii superioare în domeniul educației sau al științelor exacte. Scopul aplicației și publicul țintă explică și nivelul educațional al acestora.
 
@@ -37,33 +37,32 @@ Putem face și o analiză din diverse puncte de vedere demografice și comportam
 
 \textbf{Interese:} Utilizatorii au interese în domeniile educației, tehnologiei, științei și învățării interactive, domenii pe care aplicația le acoperă.
 
-\textbf{Motivație elevi:} Elevii doresc să învețe și să își îmbunătățească cunoștințele în domeniile științifice sau să obțină performanțe mai bune la școală și liceu, pentru a obține note mai mari.
+\textbf{Motivație elevi:} Elevii doresc să învețe și să își îmbunătățească cunoștințele în domeniile științifice sau să obțină performanțe mai bune la școală și liceu.
 
 \textbf{Motivație profesori:} Profesorii doresc să își îmbunătățească metodele de predare, oferind elevilor o experiență mai interactivă și captivantă.
 
 \textbf{Tehnologie:} Utilizatorii trebuie să aibă cel puțin un nivel de competență tehnologică începător-mediu și să fie familiarizați cu utilizarea platformelor web.
 
-\textbf{Dispozitive:} Aplicația poate fi accesată de pe computere, laptopuri, tablete sau telefoane mobile, având în vedere că este o platformă web.
+\textbf{Dispozitive:} Aplicația poate fi accesată de pe computere, laptopuri, tablete sau telefoane mobile.
 
 \section{Motivația proiectului}
 \label{sec:proj-motivation}
 
 Motivația proiectului este de a oferi o platformă educațională interactivă care să ajute elevii, decizia ideii fiind luată după ce s-a studiat
-piața de soluții existente care oferă acest tip de produs destinat României, în limba română și care oferă o experiență modernă, cât și suport pentru 
-testare incorporat. 
+piața de soluții existente care oferă acest tip de produs destinat României.
 
 Pentru a justifica mai mult nevoia de o asemenea platformă deschisă publicului de elevi și profesori din România am realizat un studiu scurt
 printr-un chestionar care a avut un număr de peste 35 de răspunsuri. Chestionarul a fost trimis către elevi și studenți, cât și către adulți
 care au răspuns la un nivel ipotetic dacă s-ar mai afla în școală sau liceu. Media de vârstă a respondenților a între 18 și 24 de ani, dar
 există și răspunsuri de la persoane de peste 35 de ani sau sub 14 ani.
 
-\fig[width=0.7\textwidth]{imgs/stildeinvatareforms.png}{fig:invatamatesimulare}{Stilurile de învățare preferate de respondenți}
+\fig[width=1\textwidth]{imgs/stildeinvatareforms.png}{fig:invatamatesimulare}{Stilurile de învățare preferate de respondenți}
 
 Răspunsurile au indicat că peste 85\% au ca stil de învățare principal stilul vizual, urmat de stilul auditiv și
 apoi prin citit/scris, de menționat fiind că a fost o înrebare cu răspuns multiplu. Asta susține motivația dezvoltării 
 unei astfel de platforme ce are ca scop principal învățarea prin simulări 3D.
 
-La întrebarea care materii ar fi util să existe intr-o platformă de simulări 3D în învățare,
+La întrebarea care materii ar fi util să existe intr-o platformă de simulări didactice 3D,
 peste 75\% dintre respondenți au spus fizică, peste 65\% chimie, peste 55\% matematică și la fel și pentru informatică, iar 
 pentru biologie peste 60\% dintre răspunsuri au menționat-o.
 
@@ -73,27 +72,25 @@ pentru biologie peste 60\% dintre răspunsuri au menționat-o.
 Dezvoltarea produsului s-a realizat în manieră iterativă, bazat pe testarea progresivă a funcționalităților 
 implementate și feedback-ul primit de la utilizatorii pe care i-am avut la dispoziție în timpul dezvoltării.
 De fiecare dată s-au reevaluat cerințele și reprioritizat implementarea lor până la realizarea unui MVP
-\footnote{Produs cu funcționalitate minim valabilă} satisfacător care poate fi menținut și dezvoltat cu alte funcționalități în ultima
-parte a proiectului. 
+\footnote{Produs cu funcționalitate minim valabilă} satisfacător care să poate fi menținut și dezvoltat cu alte funcționalități ulterior. 
 
 Cerințele și dorințele clasei țintă de utilizatori au fost colectate prin discuții directe și cu elevii din clasele
 unde este profesor unul dintre părinții autorului. Elevii au prezentat un entuziasm crescut pentru existența unei
-astfel de platforme gratuite și au dat sugestii după folosirea prototipului minim funcțional. Printre feedback-ul
+astfel de platforme gratuite și au dat sugestii după folosirea prototipului. Printre feedback-ul
 principal primit la momentul respectiv s-au numărat:
 
 - Animațiile 3D sunt atractive și ușor de utilizat.\\
-- Ar fi utilă o interactivitate mai mare cu scenele.\\
+- Ar fi utilă o interacțiune mai consistentă cu scenele.\\
 - Testele sunt eficiente, iar rezultatele sunt clare și ușor de vizualizat.\\
 - O idee interesantă ar fi un sistem de recompense sub formă de obiecte sau insigne 3D pentru realizările utilizatorilor.\\
 - Pe partea de algoritmică, un motor care să vizualizeze cum se modifică structurile de date în timp real ar adăuga un plus de valoare.\\
 
 \textbf{Principii de bază ale interfeței:}
 
-Interfața a fost realizată având la bază trei principii fundamentale. În primul rând, \textbf{simplitatea} 
-a fost esențială, alegându-se un design minimalist, care să nu distragă atenția de la 
-conținutul educațional. Al doilea principiu este \textbf{interactivitatea}, iar pentru aceasta au fost 
-integrate animații 3D în cât mai multe zone ale aplicației, pentru a face experiența de învățare mai
-captivantă și mai plăcută. Alt aspect important a fost \textbf{accesibilitatea}, folosindu-se o paletă
+Interfața a fost realizată având la bază trei principii fundamentale. În primul rând, simplitatea 
+a fost esențială, alegându-se un design minimalist, pentru a nu distrage atenția de la 
+conținutul educațional. Al doilea principiu este interactivitatea dată de animațiile 3D din cât mai multe zone ale aplicației.
+Alt aspect important a fost accesibilitatea, folosindu-se o paletă
 de culori care să fie ușor de privit și care să nu obosească ochii utilizatorului.
 
 \section{Cerințe funcționale}
@@ -102,16 +99,12 @@ de culori care să fie ușor de privit și care să nu obosească ochii utilizat
 \textbf{Cerințele funcționale ale aplicației:}
 
 Cerințele funcționale ale aplicației sunt împărțite în două mari categorii, în funcție de tipul de utilizator.
-Prima categorie se referă la cerințele funcționale pentru utilizatorii elevi, urmate de cerințele pentru
-utilizatorii profesori. În plus, există și cerințele funcționale pentru sistemul în sine, care definesc
-modul în care aplicația trebuie să funcționeze și să suporte interacțiunile utilizatorilor.
-
 
 \subsection{Cerințe funcționale pentru utilizatorii elevi}
 \label{sub-sec:proj-requirements-students}
 
-Cerințele funcționale pentru utilizatorii elevi sunt cerințe care țin de utilizatorii aplicației și modul în care
-aceștia pot să interacționeze cu aplicația din poziția de elevi.
+Cerințele funcționale pentru utilizatorii elevi sunt cerințe care țin de modul în care utilizatorii pot să
+interacționeze cu aplicația din poziția de elevi.
 
 Printre cele mai importante funcționalități se numără: 
 \begin{itemize}
@@ -127,7 +120,7 @@ Printre cele mai importante funcționalități se numără:
   testelor și structurii claselor în care se află)
   \item Gestionare invitații (notificări pentru invitații noi și posibilitatea de a accepta sau refuza direct din panoul profilului)
   \item Vizualizare și rezolvare teste (lista testelor active, vizualizarea rezultatelor și acces la rezolvarea testelor deschise,
-  chiar și acces la retestare în caz că testul permite acest lucru)
+  chiar și acces la retestare în caz că se permite acest lucru)
   \item Consultare rezultate (panouri cu scoruri proprii și ale colegilor, dacă sunt publice, acces la zona de recompense)
   \item Administrare profil (gestionarea autentificării și a datelor personale, accesul din profil la clase și la zona de recompense)
 \end{itemize}
@@ -136,14 +129,14 @@ Printre cele mai importante funcționalități se numără:
 \subsection{Cerințe funcționale pentru utilizatorii profesori}
 \label{sub-sec:proj-requirements-teachers}
 
-Cerințele funcționale pentru utilizatorii profesori sunt cerințe care sunt necesare pentru a
+Acestea sunt cerințe care sunt necesare pentru a
 asigura o experiență adecvată utilizatorilor din rolul de profesor.
 
 Printre funcționalitățile esențiale pentru profesori se numără:
 
 \begin{itemize}
   \item Înregistrare cont (crearea rapidă a unui profil de profesor cu acces elevat la toate funcționalitățile platformei)
-  \item Autentificare securizată (acces pe bază de email și parolă, stocarea sigură a datelor personale în bazele de date, a parolei criptate)
+  \item Autentificare securizată (acces pe bază de email și parolă, stocarea sigură a datelor personale în bazele de date și a parolei criptate)
   \item Meniu 3D principal (alegerea materiei din interfața virtuală, posibilitatea de a explora toate secțiunile disponibile ca și rolul de elev)
   \item Acces la resurse educaționale (consultarea materialelor și a modulelor din toate zonele și disciplinele disponibile)
   \item Scene 3D interactive (explorare și manipulare de vizualizări tridimensionale ca și rolul de elev)
@@ -166,9 +159,6 @@ Dezvoltarea produsului a fost destinată pentru utilizare pe Web, de pe orice di
 fără a necesita instalarea de aplicații sau plugin-uri suplimentare. Din natura aplicației, gradul de portabilitate
 de la dispozitiv la dispozitiv este ridicat.
 
-Interfața trebuie sa răspundă rapid la interacțiunile utilizatorilor, iar animațiile 3D să fie fluide și să nu aibă
-întârzieri semnificative. De asemenea, aplicația trebuie să fie disponibilă pe toate browserele moderne,
-inclusiv Chrome, Firefox, Safari și Edge.
 
 Invitațiile trebuie să ajungă în timp real (livrare aproape instantanee
 către destinatari). Încărcarea scenelor 3D trebuie să se facă în sub câteva secunde, iar latența să fie redusă în UI
@@ -199,11 +189,11 @@ WebGL 2.0 (OpenGL 3.0). Browsere compatibile: Chrome > 60, Firefox > 52, Safari 
 
 \textbf{CPU}
 
-Recomandat min un procesor dual-core, > 1,5 GHz  
+Recomandat minim un procesor dual-core, > 1,5 GHz  
 
 \textbf{Memorie (RAM)}
 
-Recomandat minim 2 GB RAM total, din care \(\ge 256\) MB cel puțin liberi pentru heapul folosit de JavaScript și 
+Recomandat minim 2 GB RAM total, din care 256 MB cel puțin liberi pentru heapul folosit de JavaScript și 
 Three.js pentru încărcat modele și texturi.
 
 \textbf{GPU \& VRAM}
@@ -224,14 +214,13 @@ Timp de încărcare iniţială: sub 2s și sub 5 s (la texturi mari).
 \section{Limitări}
 \label{sec:proj-limitations}
 
-Din punct de vedere al specificului platformei, ea oferă câteva limitări pe mai multe planuri, 
-cum ar fi: compatibilitate browser și platformă (aplicația este compatibilă cu majoritatea 
-browserelor de astăzi, însă nu este optimizată pentru browserele mai vechi sau pentru dispozitivele
-mobile cu specificații mai reduse), performanță hardware (aplicația necesită un hardware 
+Din punct de vedere al specificului platformei, ea oferă câteva limitări. Compatibilitate browser-platformă
+(aplicația este compatibilă cu majoritatea browserelor de astăzi, însă nu este optimizată pentru browserele mai vechi),
+performanță hardware (aplicația necesită un hardware 
 minim pentru a funcționa corect), conexiune la internet (aplicația necesită o conexiune 
 la internet stabilă pentru a funcționa corect), dispozitive mobile și tabletă (aplicația
 necesită un hardware decent pentru rulare, ceea ce este mai greu de obținut pentru dispozitivele
-mobile), practice (aplicația are limitări în utilizare, depinzând de eficacitatea 
-învățării utilizatorului care o folosește), conținut (aplicația nu oferă un conținut 
+mobile), practice (aplicația are limitări în utilizare date de capacitățile 
+utilizatorului care o folosește), conținut (aplicația nu oferă un conținut 
 educațional complet, ci doar partea modelabilă 3D a acestuia pe fiecare materie).
 

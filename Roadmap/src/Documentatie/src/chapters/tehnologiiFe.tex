@@ -8,7 +8,7 @@
 Frameworkul principal care s-a folosit este React JS\footnote{https://reactjs.org/}, care este o tehnologie foarte populară
 și răspândită bazată pe JavaScript\footnote{https://www.javascript.com/}, una dintre cele mai populare limbaje de programare destinate
 web-ului existent.
-În alegerii de tehnologie pentru front-endul platformei VisioScience3D,
+În alegerea de tehnologie pentru front-endul platformei VisioScience3D,
 am concentrat atenția pe criterii precum maturitatea ecosistemului, performanță, curba de învățare,
 flexibilitate în personalizare şi capacitatea de integrare cu biblioteci 3D. Dintre principalele
 opțiuni (Vue.js, Angular, Svelte), React s-a impus datorită următoarelor avantaje:
@@ -26,8 +26,8 @@ opțiuni (Vue.js, Angular, Svelte), React s-a impus datorită următoarelor avan
 
 \textbf{React Router DOM}:
   Pentru că oferă o soluție de rutare foarte ușoara în navigarea între diferitele
-  secţiuni ale platformei (fizică, chimie, astronomie etc.) prin React Router DOM 
-  ce oferă simplitate în definirea rutelor şi suportul pentru incărcare întârziată de module.
+  secţiuni ale platformei (fizică, chimie, astronomie etc.) prin React Router DOM .
+  Acesta face mai simplă definirea rutelor şi suportul pentru incărcare întârziată de module.
   Alternativele (Vue Router, Angular Router) sunt la fel de capabile, însă integrarea lor cu
   React Three Fiber, care vom vedea este baza în simulările 3D, ar fi impus un strat suplimentar
   de interoperabilitate.
@@ -49,7 +49,7 @@ care ne-a permis să creăm un design personalizat. Am comparat framework-uri cl
 
 \textbf{Integrare bună cu React}:
   Utilizarea className din JSX se potrivește în mod natural cu framework-ul Tailwind.
-  Mai ales plugin-urile pe care le oferă precum @tailwindcss/forms facilitează configurarea unui stil constant pentru
+  Mai ales plugin-urile pe care le oferă precum @tailwindcss/forms ajută configurarea unui stil constant pentru
   toate formularele.
 
 \textbf{Extensibilitate}:
@@ -86,8 +86,7 @@ alegerea justificată sunt:
 
 Așadar, combinația React + React Router DOM + Tailwind CSS + React Three Fiber + Drei ne-a oferit un
 stack unificat, performant și ușor de întreținut, bine adaptat
-pentru dezvoltarea rapidă de simulări 3D interactive în browser și pentru extinderea ușoară a
-platformei VisioScience3D. Se poate observa în figura de mai jos cum arată
+pentru dezvoltarea rapidă de simulări 3D interactive în browser. Se poate observa în figura de mai jos cum arată
 arhitectura simplificată a frontend-ului platformei.
 
 \fig[width=1.1\textwidth]{imgs/fediagram.png}{fig:fediagram}{Diagrama de design principală a frontend-ului}
@@ -97,7 +96,7 @@ arhitectura simplificată a frontend-ului platformei.
 După cum am discutat anterior, frameworkul 3D ales pentru acest proiect este React Three Fiber (R3F).
 Această bibliotecă integrează Three.js cu React, permițându-ne să creăm scene 3D într-un mod declarativ 
 și reactiv. R3F combină principiile WebGL cu capabilitățile oferite de React, precum componentizarea și
-gestionarea stării, ceea ce facilitează dezvoltarea unor scene 3D complexe folosind JSX.
+gestionarea stării.
 
 Unul dintre avantajele principale ale R3F este că ne permite să integrăm hook-uri, care îmbunătățesc
 eficiența și interactivitatea aplicației. De exemplu, hook-ul useFrame permite actualizarea 

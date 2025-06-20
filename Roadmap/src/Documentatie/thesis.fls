@@ -530,13 +530,6 @@ INPUT .\imgs\stildeinvatareforms.png
 INPUT .\imgs\stildeinvatareforms.png
 INPUT .\imgs\stildeinvatareforms.png
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\ntx-Regular-tlf-t1.tfm
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\vf\public\newtx\ntxsy.vf
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\txsys.tfm
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\txex-bar.tfm
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\vf\public\newtx\ntx-Regular-tlf-ot1.vf
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\txmiaX.tfm
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\ntx-Regular-tlf-ot1r.tfm
-INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\newtx\ntx-ot1-tlf.enc
 INPUT .\src\chapters\studiuPiata.tex
 INPUT .\src\chapters\studiuPiata.tex
 OUTPUT src\chapters\studiuPiata.aux
