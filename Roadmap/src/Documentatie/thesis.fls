@@ -522,6 +522,13 @@ INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\ntxexa
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\ntxexa.tfm
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\ntxexa.tfm
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\ntx-Bold-tlf-t1.tfm
+INPUT .\imgs\stildeinvatareforms.png
+INPUT .\imgs\stildeinvatareforms.png
+INPUT .\imgs\stildeinvatareforms.png
+INPUT .\imgs\stildeinvatareforms.png
+INPUT .\imgs\stildeinvatareforms.png
+INPUT .\imgs\stildeinvatareforms.png
+INPUT .\imgs\stildeinvatareforms.png
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\ntx-Regular-tlf-t1.tfm
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\vf\public\newtx\ntxsy.vf
 INPUT C:\Users\andre\AppData\Local\Programs\MiKTeX\fonts\tfm\public\newtx\txsys.tfm
@@ -827,6 +834,13 @@ OUTPUT src\chapters\evaluare.aux
 INPUT .\src\chapters\evaluare.tex
 INPUT .\src\chapters\evaluare.tex
 INPUT src\chapters\evaluare.tex
+INPUT .\imgs\ajutorForms.png
+INPUT .\imgs\ajutorForms.png
+INPUT .\imgs\ajutorForms.png
+INPUT .\imgs\ajutorForms.png
+INPUT .\imgs\ajutorForms.png
+INPUT .\imgs\ajutorForms.png
+INPUT .\imgs\ajutorForms.png
 INPUT .\src\chapters\concluzii.tex
 INPUT .\src\chapters\concluzii.tex
 OUTPUT src\chapters\concluzii.aux
