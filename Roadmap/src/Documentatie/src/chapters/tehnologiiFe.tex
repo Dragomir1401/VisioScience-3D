@@ -114,8 +114,8 @@ redarea dinamică a obiectelor din scenă. În plus, useEffect ne ajută să ges
 secundare, cum ar fi adăugarea de evenimente sau actualizarea stării în funcție de modificările din scenă.
 
 Pentru integrarea obiectelor cu extensia .glb am folosit un convertor GLTF\footnote{https://gltf.pmnd.rs/} care
-ne permite să convertim modele .glb în componente React Three Fiber oferind grupuri de meshe-uri și
-materiale. Acest lucru a permis să importăm modelele 3D direct în aplicația React și să creăm
+ne permite să convertim modele .glb în componente React Three Fiber care conțin grupuri de meshe-uri și
+materiale. Acest lucru a permis importarea modelelor 3D direct în aplicația React și crearea de 
 diverse manipulări și animații folosind API-ul R3F.
 
 
@@ -140,12 +140,12 @@ animație continuă de plutire și animații realiste de zbor pentru dronele din
 \subsection{Branding-ul proiectului}
 \subsubsection{Paleta de culori}
 Brandingul VisioScience3D se bazează pe o paletă caldă, prietenoasă şi destul de pastelată,
-menită să creeze o atmosferă de joc și luminoasă pentru elevi. Fundalurile folosesc un gradient
-simplu de la \#fdf4ff (alb-roz pal) prin \#f3e8ff (lavandă) spre \#fff7ed (piersică pal),
-în timp ce culorile de accent dau personalitate interfeţei: nuanţa de mulberry (\#690375)
-marchează elementele active, bordurile şi textele importante, iar tonul maro rozaliu (\#AE847E) 
+menită să creeze o atmosferă de gamificare pentru elevi. Fundalurile folosesc un gradient
+simplu de la \#fdf4ff (alb-roz pal) prin \#f3e8ff (lavandă) spre \#fff7ed (piersică pal).
+Culorile de accent dau personalitate interfeţei, cu nuanţe de mulberry (\#690375) ce
+marchează elementele active, bordurile şi textele importante și cu tonul maro rozaliu (\#AE847E) ce 
 individualizează secţiunile de chimie şi astronomie. Pentru evidenţierea vizualizărilor 3D
-am introdus un violet închis (\#4f46e5). Culorile reflectă o atmosferă dinamică și 
+s-a introdus un violet închis (\#4f46e5). Culorile reflectă o atmosferă dinamică și 
 energică, încurajând explorarea și învățarea.
 
 \fig[width=1\textwidth]{imgs/paleta.png}{fig:paleta}{Paleta de culori a platformei}
@@ -162,7 +162,7 @@ Mascota proiectului este un balon care se apropie de paleta de culori a platform
 și care simbolizează explorarea și învățarea. Balonul apare în toate paginile importante ale platformei
 și este de fiecare dată animat potrivit acțiunilor paginii respective. De exemplu, pe pagina de 
 înregistrare mascota se mișcă în sus și în jos când utilizatorul scrie în câmpurile de
-înregistrare, iar pe la înregistrare reușită mascota sare în sus și în jos pentru câteva secunde.
+înregistrare, iar la înregistrare reușită mascota sare în sus și în jos pentru câteva secunde.
 Balonul mascotă este și caracterul de explorare a meniului principal, învârtindu-se între
 insule pentru a ajunge la diferitele materii.
 
@@ -185,7 +185,7 @@ stări locale (\texttt{useState}), efecte de ciclu de viață (\texttt{useEffect
 \begin{itemize}
   \item \textbf{Stări locale}:
   variabilele declarate cu \texttt{useState} păstrează 
-  răspunsul API-ului, semnul de încărcare şi orice mesaj de eroare.
+  răspunsul API-ului şi orice mesaj de eroare.
   \item \textbf{Efecte asincrone}:
   în \texttt{useEffect} se trimite cererea HTTP cu token-ul extras o singură dată din 
   \texttt{localStorage}, la succes se apelează \texttt{setUser()}, iar la eșec \texttt{setError()}. Indiferent de rezultat, în \texttt{finally} se setează \texttt{setLoading(false)}.
@@ -193,21 +193,20 @@ stări locale (\texttt{useState}), efecte de ciclu de viață (\texttt{useEffect
   token-ul JWT şi \texttt{userId} sunt citite şi stocate o singură dată de la prima montare
   a componentei, ceea ce permite menținerea autentificării între reîncărcări.
 \end{itemize}
-Acest model este simplu dar se poate extinde cu \emph{React Context}
-sau librării dedicate (Redux, Zustand) atunci când numărul de componente care împart aceleași stări
-crește semnificativ.
+Acest model este simplu dar s-ar putea extinde cu \emph{React Context}
+sau biblioteci dedicate (Redux, Zustand) dacă numărul de componente care împart aceleași stări
+ar crește semnificativ.
 
 
 \subsubsection{Proiectarea interfeței utilizatorului}
 
 Interfața păstrează un design simplu cu meniul plasat sus și în stânga pentru selecția materiilor
-după rotire la fiecare insulă în particular care reprezintă o materie. Navigare prin materii
+după rotire la fiecare insulă în particular. Navigarea prin materii
 reprezintă o rotație de 360 de grade a camerei în jurul insulei principale, iar după o rotație
 se revine la instanța inițială a castelului insulei principale.
 
 Panoul profilului este simplu și ușor de folosit, având elemente care ies ușor în evidență
-și care sunt ușor de accesat cu acțiuni simple de tipul selecție, drag-and-drop sau butoane de toggle.
-De exemplu în imagine de mai jos se poate observa interfața profilului elevului.
+și care sunt ușor de accesat cu acțiuni simple de tipul selecție, drag-and-drop sau butoane de activare/dezactivare.
 
 \section{Soluția de creare a scenelor 3D}
 \label{sec:proj-3d}
@@ -215,7 +214,7 @@ De exemplu în imagine de mai jos se poate observa interfața profilului elevulu
 \subsubsection{Crearea și gestionarea scenelor 3D}
 
 Scenele 3D se creaza folosind tagul de tip Canvas din React Three Fiber, care
-ne permite să definim o zonă de desenare 3D în care putem adăuga obiecte, camere și lumini.
+ne permite să definim o zonă de desenare 3D unde se pot adăuga obiecte, camere și lumini.
 Acestea sunt gestionate printr-o ierarhie de componente React, fiecare reprezentând un obiect 3D
 sau un grup de obiecte.
 
@@ -234,7 +233,7 @@ preventDefault pentru a preveni comportamentele implicite.
 
 \subsubsection{Optimizarea performanței graficii 3D}
 
-Pentru a optimiza performanța graficii 3D pe framework-ul bazat pe WebGL\footnote{Framework de bază pentru grafică 3D în browsere, https://webglfundamentals.org/}, se abordează câteva tehnici generale:
+Pentru a optimiza performanța graficii 3D pe framework-ul bazat pe WebGL\footnote{Framework de bază pentru grafică 3D în browsere, https://webglfundamentals.org/}, s-au abordat câteva tehnici generale:
 \begin{itemize}
   \item \textbf{Reducerea numărului de draw calls\footnote{Draw calls reprezintă apelurile efectuate de CPU către GPU pentru a desena obiecte.}:}
     Combinăm obiectele similare folosind \texttt{BufferGeometry} 
@@ -243,11 +242,11 @@ Pentru a optimiza performanța graficii 3D pe framework-ul bazat pe WebGL\footno
   şi occlusion culling\footnote{Eliminarea obiectelor care sunt blocate de alte obiecte.}:} 
     WebGL elimină automat obiectele aflate în afara câmpului vizual, 
     iar React Three Fiber expune aceste mecanisme nativ, astfel încât
-    obiectele invizibile nu sunt trimise GPU–ului.
+    obiectele invizibile să nu fie trimise GPU–ului.
 \end{itemize}
 
 React Three Fiber (\texttt{@react-three/fiber}) și Drei (\texttt{@react-three/drei}) oferă setări și hook-uri
-dedicate pentru performanță, care sunt esențiale pentru optimizarea scenelor 3D. De exemplu, setarea
+dedicate pentru performanță, care sunt esențiale pentru optimizare. De exemplu, setarea
 \texttt{<Canvas dpr={[1,1]} />} limitează \emph{device pixel ratio}\footnote{DPR reprezintă raportul dintre pixelii fizici și pixelii logici, afectând claritatea graficii.}
 la un interval controlat, prevenind 
 supraîncărcarea GPU-ului pe ecranele cu densitate mare. De asemenea, proprietatea \texttt{performance={min:0.5, max:1}}
@@ -279,7 +278,7 @@ din \texttt{\@react-spring/three} transformă această stare într-un set de pro
 \texttt{mesh}.
 
 În plus, componenta de background ataşează direct evenimente DOM (\texttt{mousedown}, \texttt{mousemove},
-\texttt{keydown}) şi gestionate în interiorul declanșatorului \texttt{useFrame} din frameworkul de React,
+\texttt{keydown}) şi le gestionează în interiorul \texttt{useFrame} din frameworkul de React,
 permiţând controlul direct al rotaţiei scenei în funcţie de interacţiunea utilizatorului.
 Starea şi logica aplicației se propagă în lumea 3D, creând o legătură reactivă între UI-ul
 convenţional şi grafica gestionată prin WebGL.
