@@ -56,7 +56,8 @@ const QuizAttempt = () => {
         console.log("Quiz state after setting:", quiz);
         console.log("Processed questions for quiz:", questions);
 
-        setAnswers(Array(questions.length).fill(null));
+        // Initialize answers as arrays for multiple choice
+        setAnswers(Array(questions.length).fill().map(() => []));
         setStage("ready");
       } catch (e) {
         dbg("Fetch error:", e);
@@ -68,15 +69,50 @@ const QuizAttempt = () => {
   const choose = (qIdx, cIdx) => {
     setAnswers((prev) => {
       const newAnswers = [...prev];
-      newAnswers[qIdx] = cIdx;
+      if (!Array.isArray(newAnswers[qIdx])) {
+        newAnswers[qIdx] = [];
+      }
+      
+      const currentAnswers = newAnswers[qIdx];
+      const choiceIndex = currentAnswers.indexOf(cIdx);
+      
+      if (choiceIndex === -1) {
+        newAnswers[qIdx] = [...currentAnswers, cIdx];
+      } else {
+        newAnswers[qIdx] = currentAnswers.filter((_, index) => index !== choiceIndex);
+      }
+      
       return newAnswers;
     });
   };
 
+  const isAnswerSelected = (qIdx, cIdx) => {
+    return Array.isArray(answers[qIdx]) && answers[qIdx].includes(cIdx);
+  };
+
+  const isQuizComplete = () => {
+    return answers.every(answer => Array.isArray(answer) && answer.length > 0);
+  };
+
+  const getUnansweredQuestions = () => {
+    return answers
+      .map((answer, index) => ({ answer, index }))
+      .filter(({ answer }) => !Array.isArray(answer) || answer.length === 0)
+      .map(({ index }) => index + 1);
+  };
+
   const handleSubmit = async () => {
     if (isSubmitting) return;
+    
+    // Validate that all questions are answered
+    if (!isQuizComplete()) {
+      const unansweredQuestions = getUnansweredQuestions();
+      setError(`Te rog să răspunzi la toate întrebările. Întrebările nerăspunse: ${unansweredQuestions.join(', ')}`);
+      return;
+    }
+    
     setIsSubmitting(true);
-    const startTime = Date.now();
+    const submitStartTime = Date.now();
 
     try {
       const token = localStorage.getItem("token");
@@ -85,12 +121,12 @@ const QuizAttempt = () => {
       }
       const claims = jwtDecode(token);
 
-      const timeSpent = Math.floor((Date.now() - startTime.current) / 1000);
+      const timeSpent = Math.floor((Date.now() - submitStartTime) / 1000);
       setTimeTaken(timeSpent);
 
       const evaluationPayload = {
         quiz_id: quizId,
-        answers: answers.map((a) => parseInt(a, 10)),
+        answers: answers.map((a) => Array.isArray(a) ? a.map(index => index + 1) : [a + 1]), // Convert 0-based to 1-based indexing
         timeTaken: timeSpent,
         maxScore: quiz.questions.length,
         class_id: quiz.classId,
@@ -348,6 +384,13 @@ const QuizAttempt = () => {
       <div className="max-w-4xl mx-auto space-y-6">
         <h1 className="text-2xl font-bold text-mulberry">{quiz.title}</h1>
 
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <p className="text-red-700 font-medium">Eroare:</p>
+            <p className="text-red-600">{error}</p>
+          </div>
+        )}
+
         {quiz.questions.map((q, i) => (
           <div
             key={q.id ?? i}
@@ -372,25 +415,60 @@ const QuizAttempt = () => {
               {q.choices.map((c, j) => (
                 <li key={j} className="flex items-center gap-2">
                   <input
-                    type="radio"
-                    checked={answers[i] === j}
+                    type="checkbox"
+                    checked={isAnswerSelected(i, j)}
                     onChange={() => choose(i, j)}
+                    className="rounded border-gray-300 text-mulberry focus:ring-mulberry"
                   />
                   <span>{c}</span>
                 </li>
               ))}
             </ul>
             <p className="text-sm text-gray-500 mt-2">Puncte: {q.points}</p>
+            {Array.isArray(answers[i]) && answers[i].length > 0 && (
+              <p className="text-sm text-green-600 mt-1">
+                ✓ Răspunsuri selectate: {answers[i].length}
+              </p>
+            )}
           </div>
         ))}
 
         {stage !== "sent" ? (
-          <button
-            onClick={handleSubmit}
-            className="bg-gradient-to-r from-mulberry to-pink-500 text-white px-6 py-2 rounded-md hover:opacity-90"
-          >
-            Trimite răspunsurile
-          </button>
+          <div className="space-y-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <p className="text-blue-700 font-medium">Progres quiz:</p>
+              <p className="text-blue-600">
+                {answers.filter(answer => Array.isArray(answer) && answer.length > 0).length} / {quiz.questions.length} întrebări răspunse
+              </p>
+              {!isQuizComplete() && (
+                <p className="text-orange-600 text-sm mt-1">
+                  ⚠️ Te rog să răspunzi la toate întrebările înainte de a trimite quiz-ul.
+                </p>
+              )}
+            </div>
+            
+            <button
+              onClick={handleSubmit}
+              disabled={!isQuizComplete() || isSubmitting}
+              className={`px-6 py-3 rounded-md font-medium shadow-sm transition-all duration-200 ${
+                isQuizComplete() && !isSubmitting
+                  ? "bg-gradient-to-r from-mulberry to-pink-500 text-white hover:opacity-90"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+            >
+              {isSubmitting ? (
+                <span className="flex items-center gap-2">
+                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Se trimite...
+                </span>
+              ) : (
+                `Trimite răspunsurile ${isQuizComplete() ? '' : '(incomplet)'}`
+              )}
+            </button>
+          </div>
         ) : (
           <>
             <div className="bg-white p-6 rounded-xl shadow-md border border-purple-200 space-y-4">

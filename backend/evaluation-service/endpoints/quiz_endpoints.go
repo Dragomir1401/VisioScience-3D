@@ -585,11 +585,11 @@ func GetQuizForAttempt(w http.ResponseWriter, r *http.Request) {
 }
 
 type SubmitAttemptRequest struct {
-	QuizID    string `json:"quiz_id"`
-	Answers   []int  `json:"answers"`
-	TimeTaken int    `json:"timeTaken"`
-	MaxScore  int    `json:"maxScore"`
-	ClassID   string `json:"class_id"`
+	QuizID    string  `json:"quiz_id"`
+	Answers   [][]int `json:"answers"`
+	TimeTaken int     `json:"timeTaken"`
+	MaxScore  int     `json:"maxScore"`
+	ClassID   string  `json:"class_id"`
 }
 
 type SubmitAttemptResponse struct {
@@ -622,12 +622,31 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Read and log the raw request body
+	body, readErr := ioutil.ReadAll(r.Body)
+	if readErr != nil {
+		log.Printf("SubmitAttempt: Error reading request body: %v", readErr)
+		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Error reading request body", http.StatusBadRequest)
+		return
+	}
+	log.Printf("SubmitAttempt: Raw request body: %s", string(body))
+
+	// Restore the body for JSON decoding
+	r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+
 	var req SubmitAttemptRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		log.Printf("SubmitAttempt: Error decoding JSON: %v", err)
+		log.Printf("SubmitAttempt: Raw body was: %s", string(body))
 		metrics.HTTPRequestsTotal.WithLabelValues("POST", utils.NormalizePath(r.URL.Path), "400").Inc()
 		http.Error(w, "Bad payload", http.StatusBadRequest)
 		return
 	}
+
+	log.Printf("SubmitAttempt: Successfully parsed request - QuizID: %s, ClassID: %s, TimeTaken: %d, MaxScore: %d",
+		req.QuizID, req.ClassID, req.TimeTaken, req.MaxScore)
+	log.Printf("SubmitAttempt: Answers: %v", req.Answers)
 
 	quizOID, err := primitive.ObjectIDFromHex(req.QuizID)
 	if err != nil {
@@ -665,11 +684,35 @@ func SubmitAttempt(w http.ResponseWriter, r *http.Request) {
 
 	for i, q := range quiz.Questions {
 		isCorrect := false
-		if containsInt(q.Answer, req.Answers[i]) {
+
+		// Check if the user selected exactly all correct answers and no incorrect ones
+		userAnswers := req.Answers[i]
+		expectedAnswers := q.Answer
+
+		log.Printf("Question %d evaluation: User selected %v, Expected %v", i+1, userAnswers, expectedAnswers)
+
+		// First check if the number of selected answers matches the number of correct answers
+		if len(userAnswers) == len(expectedAnswers) {
+			// Then check if all selected answers are correct
+			allCorrect := true
+			for _, userAnswer := range userAnswers {
+				if !containsInt(expectedAnswers, userAnswer) {
+					allCorrect = false
+					break
+				}
+			}
+			isCorrect = allCorrect
+			log.Printf("Question %d: Length match ✓, All correct: %v", i+1, allCorrect)
+		} else {
+			log.Printf("Question %d: Length mismatch (user: %d, expected: %d)", i+1, len(userAnswers), len(expectedAnswers))
+		}
+
+		if isCorrect {
 			score++
-			isCorrect = true
+			log.Printf("Question %d: CORRECT ✓", i+1)
 		} else {
 			incorrectlyAnsweredQuestions = append(incorrectlyAnsweredQuestions, q.ID)
+			log.Printf("Question %d: INCORRECT ✗", i+1)
 		}
 		correctAnswers = append(correctAnswers, isCorrect)
 	}
