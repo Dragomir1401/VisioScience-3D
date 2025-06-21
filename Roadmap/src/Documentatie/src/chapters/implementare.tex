@@ -18,7 +18,7 @@ menționând și punctele susținute anterior. În documentația actuală se pre
 care principal este dezvoltarea Web.
 
 Pe lângă Go, pentru serviciul de compilare a codului C++ s-a optat pentru implementarea antetului
-care este inserat pentru detectarea structurilor de date pentru a crea raportări de status tot la C++ 
+care este inserat pentru detectarea structurilor de date și pentru a crea raportări de status tot la C++ 
 pentru a asigura integrare nativă cu codul primit de la utilizator.
 
 
@@ -36,7 +36,7 @@ să fie integrat în acest tip general de raportare a operațiilor și conținut
 
 \begin{table}[h!]
 \centering
-\caption{Compararea limbajelor de programare care ar fi fost potrivite pentru VisioScience3D}
+\caption{Compararea limbajelor de programare potrivite pentru VisioScience3D}
 \begin{tabular}{|p{2.5cm}|p{4cm}|p{4cm}|p{4cm}|}
 \hline
 \textbf{Caracteristică} & \textbf{Go\footnote{https://golang.org/}} & \textbf{Node.js (JavaScript)\footnote{https://nodejs.org/}} & \textbf{Python\footnote{https://www.python.org/}} \\
@@ -45,13 +45,13 @@ să fie integrat în acest tip general de raportare a operațiilor și conținut
 \hline
 \textbf{Concurență} & Goroutines ușor de folosit, eficiente din punct de vedere al resurselor & Model event-loop, asincron cu callback-uri/promises/async-await & Suport limitat (threading, asyncio), mai complex pentru concurență \\
 \hline
-\textbf{Simplitate și claritate} & Sintaxă simplă, tipuri de date clare, cod ușor de întreținut & Flexibil, dar poate duce la cod greu de urmărit (callback hell) & Sintaxă clară, dar structuri mari pot deveni greu de gestionat \\
+\textbf{Simplitate și claritate} & Sintaxă simplă, tipuri de date clare, cod ușor de întreținut & Flexibil, dar poate duce la cod greu de urmărit & Sintaxă clară, dar structurile mari pot deveni greu de gestionat \\
 \hline
-\textbf{Ecosistem} & Ecosistem în creștere rapidă, multe biblioteci pentru zona de microservicii & Ecosistem foarte matur și extins, multe librării, framework-uri & Ecosistem matur, multe librării pentru ML, backend, dar nu neapărat pentru performanță \\
+\textbf{Ecosistem} & Ecosistem în creștere rapidă, multe biblioteci pentru zona de microservicii & Ecosistem foarte matur și extins, multe biblioteci, framework-uri & Ecosistem matur, multe biblioteci pentru ML, backend, dar nu neapărat pentru performanță \\
 \hline
 \textbf{Scalabilitate} & Foarte scalabil, folosit în microservicii și sisteme distribuite & Scalabil pe I/O, dar single-threaded cu limite pe CPU & Scalabilitate limitată, se bazează pe external scaling și caching \\
 \hline
-\textbf{Deploy și containerizare} & Binar unic compilat, ușor de deployat în containere & Necesită runtime Node.js, imagini mai mari & Necesită runtime Python și librării, imagini relativ mari \\
+\textbf{Deploy și containerizare} & Binar unic compilat, ușor de livrat în containere & Necesită runtime Node.js, imagini mai mari & Necesită runtime Python și biblioteci, imagini relativ mari \\
 \hline
 \end{tabular}
 \label{tab:comparatie-limbaje}
@@ -60,12 +60,12 @@ să fie integrat în acest tip general de raportare a operațiilor și conținut
 
 Fiecare microserviciu are propria configurație Kubernetes definită prin fișiere YAML pentru Deployment,
 Service, ConfigMap și alte resurse necesare. Configurarea constă în containerizarea și automatizarea
-livrării folosind Docker pentru containerizarea serviciilor și GitHub Actions pentru lanțul CI/CD,
-care automatizează build-ul, testarea, și deploy-ul pe clusterul Kubernetes local.
+livrării folosind Docker pentru împachetarea imaginilor serviciilor și GitHub Actions pentru lanțul CI/CD,
+care automatizează construirea, testarea, și deploy-ul pe clusterul Kubernetes local.
 
-Configurarea conexiunilor la baza de date MongoDB este centralizată în helperi, folosind driver-ul
+Configurarea conexiunilor la baza de date MongoDB este centralizată în secțiuni ajutătoare, folosind driver-ul
 oficial MongoDB pentru Go. Monitorizarea serviciilor este asigurată prin integrarea cu Prometheus,
-cu metrici personalizate definite în cod și expuse la endpoint-uri REST. Metricile sunt colectate
+cu metrici personalizate definite în cod și expuse la endpoint-uri REST. Metricile sunt incrementate
 direct în cod, cum se poate vedea și în exemplul de mai jos.
 \begin{lstlisting}[language=Go, caption={Middleware Prometheus pentru monitorizarea duratei cererilor HTTP}]
 func prometheusMiddleware(next http.Handler) http.Handler
@@ -91,8 +91,8 @@ pentru succes și eșecuri, ceea ce permite monitorizarea calității serviciilo
 
 Pentru interacțiunea cu MongoDB, structurile Go sunt mapate la documente BSON, cu chei explicite 
 și suport pentru ID-uri generate automat. Structurile BSON sunt convertite nativ in JSON pentru
-serializare/deserializarea datelor și trimitea lor între servicii și front-end. Se poate observa
-un exemplu generare și parsare a token-ului în structuri de date in anexa \ref{lst:jwt-token}.
+serializarea/deserializarea datelor și trimiterea lor între servicii și front-end. Se poate observa
+un exemplu de generare și parsare a token-ului în structuri de date in anexa \ref{lst:jwt-token}.
 
 \subsection{Implementarea serviciilor}
 \label{subsec:implementare-servicii}
@@ -103,13 +103,13 @@ Este serviciul responsabil pentru compilarea și executarea
 codului C++ transmis de către utilizatori în secțiunea de informatică.
 Acesta utilizează un server HTTP implementat în Go 
 pentru a primi cereri de compilare și a trimite rezultatele înapoi 
-către front-end. Serviciul primește un \texttt{CodeExecutionRequest} 
+către front-end. Serviciul primește un CodeExecutionRequest 
 ce conține codul C++ al utilizatorului și inputul necesar execuției, 
 transformându-l pentru a include un sistem de urmărire a execuției.
 
 După validarea cererii, serviciul creează un director temporar pe server 
-în care sunt plasate fișierele necesare, inclusiv fișierele de \textit{tracing}, 
-care permit urmărirea pașilor executați în timpul rulării codului. Utilizând 
+în care sunt plasate fișierele necesare, inclusiv fișierele de urmărire, 
+care permit trasarea pașilor executați în timpul rulării codului. Utilizând 
 compilatorul \texttt{g++}, codul este compilat, iar eventualele erori sunt gestionate 
 și trimise înapoi utilizatorului. În continuare, executabilul generat este rulat 
 și rezultatele sunt colectate, inclusiv pașii de execuție detaliați, care sunt 
@@ -118,8 +118,7 @@ platformă.
 
 Serviciul este construit pentru a gestiona atât erorile de compilare, cât și 
 erorile de execuție, fiind capabil să returneze informații detaliate despre 
-fiecare pas al execuției, precum și statistici de performanță, pentru a ajuta 
-utilizatorii să își optimizeze soluțiile. De asemenea, timpul de execuție 
+fiecare pas al execuției. De asemenea, timpul de execuție 
 este limitat pentru a evita blocarea back-endului.
 
 \texttt{Cpp-compiler-service} este implementat scalabil și poate fi extins 
@@ -130,16 +129,16 @@ automate sau integrarea cu alte platforme externe.
 
 Serviciul gestionează întreaga funcționalitate 
 legată de testele din aplicație, inclusiv crearea, actualizarea și obținerea
-de quizuri. Datele pentru fiecare quiz sunt stocate în MongoDB. Fiecare quiz conține un 
+de quizuri. Datele pentru fiecare quiz sunt stocate în MongoDB. Ele conțin un 
 set de întrebări, fiecare întrebare având un text, opțiuni multiple de
 răspuns și indicarea răspunsului corect. Atunci când un student trimite
 răspunsurile pentru un quiz, acestea sunt validate, iar scorul final
 este calculat în funcție de corectitudinea răspunsurilor, aplicând
-eventual bonusuri pentru timp sau performanță perfectă.
+eventual bonusuri pentru timp sau scor perfect.
 
-Modelele de date, cum ar fi \texttt{Quiz}, \texttt{Question} și 
-\texttt{QuizResult}, sunt definite folosind structuri în Go. De exemplu,
-pentru fiecare quiz, este creat un document \texttt{Quiz} care conține 
+Modelele de date, cum ar fi Quiz, Question și 
+QuizResult, sunt definite folosind structuri în Go. De exemplu,
+pentru fiecare quiz, este creat un document Quiz care conține 
 informații despre titlu, ID-ul clasei și al profesorului, întrebările 
 asociate și rezultatele obținute de studenți. Datele sunt manipulate 
 prin interogări și operații de modificare folosind driverul de MongoDB.
@@ -151,12 +150,12 @@ gestionate prin returnarea unui mesaj de eroare corespunzător.
 Pe măsură ce studenții completează quizurile, rezultatele acestora sunt 
 stocate în colecția de rezultate ale quiz-urilor, iar scorurile sunt actualizate
 în timp real. Fiecare rezultat al unui student este legat de un quiz specific, 
-iar înregistrările sunt modificate folosind operații MongoDB de tip \texttt{Update} 
-sau \texttt{Insert}. În plus, statisticile de performanță, precum scorul mediu,
+iar înregistrările sunt modificate folosind operații MongoDB de tip actualizare sau inserare.
+În plus, statisticile de performanță, precum scorul mediu,
 timpul mediu de completare și numărul de scoruri perfecte, sunt calculate periodic 
 și actualizate în cadrul fiecărui quiz. Aceste statistici sunt esențiale pentru
-analiza performanței generale a quizurilor. Datele sunt structurate într-un model
-flexibil care permite adăugarea
+analiza performanței generale a quizurilor și pentru generarea de recompense pentru elevi.
+Datele sunt structurate într-un model flexibil care permite adăugarea
 de noi întrebări, actualizarea acestora și modificarea criteriilor de evaluare în mod eficient.
 
 \textbf{feed-data-service}
@@ -165,31 +164,30 @@ Serviciul gestionează datele educaționale din platformă (formulele de la toat
 incluzând arii, volume, formule fizice, formulele chimice, statistici despre planetelor
 și elementele din tabelul periodic. Acesta
 interacționează cu frontend-ul, expunând endpoint-uri pentru manipularea și
-vizualizarea datelor, procesând fișierele \texttt{mol} și realizând
+vizualizarea datelor, procesând fișierele mol și realizând
 conversii între diferite formate de date. Modelele utilizate în acest serviciu
-includ \texttt{Molecule}, \texttt{Feed}, \texttt{Formula} și \texttt{PeriodicElement},
+includ Molecule, Feed, Formula și PeriodicElement,
 care sunt stocate și gestionate în baza de date MongoDB. 
 
-Pentru gestionarea moleculelor, serviciul procesează fișierele \texttt{mol} încărcate, 
-folosind funcții precum \texttt{ParseMolFile} din pachetul \texttt{prettifier},
+Pentru gestionarea moleculelor, serviciul procesează fișierele mol încărcate, 
+folosind funcții precum ParseMolFile din pachetul prettifier dezvoltat,
 care extrage informații despre atomi și legături chimice. Aceste date sunt
-salvate într-un obiect \texttt{Molecule}, care conține atât informațiile 
+salvate într-un obiect Molecule, care conține atât informațiile 
 brute (cum ar fi formula și descrierea), cât și datele prelucrate (atomii
 și legăturile). Partea de procesare include verificarea și completarea valorilor
 lipsă, validarea tipurilor de date și gestionarea erorilor în cazul fișierelor
 invalide. De asemenea, fiecare moleculă are un ID unic generat automat, iar
 toate modificările sunt stocate în colecțiile MongoDB.
 
-În plus, \texttt{feed-data-service} se ocupă și cu gestionarea formulelor 
+În plus, feed-data-service se ocupă și cu gestionarea formulelor 
 chimice și a elementelor din tabelul periodic, oferind funcționalități 
 de creare, actualizare și ștergere a acestora. Datele elementelor, cum 
 ar fi simbolul, numărul atomic, grupa și perioada, sunt stocate în structura 
-\texttt{PeriodicElement}, iar pentru fiecare feed se asociază un set de 
+PeriodicElement, iar pentru fiecare feed se asociază un set de 
 formule chimice, care sunt actualizate și procesate pentru a asigura 
 integrarea corectă cu celelalte componente ale platformei. În acest mod,
 serviciul asigură că toate datele educaționale sunt actualizate și
-disponibile pentru utilizatorii finali, permițând o gestionare eficientă 
-a informațiilor științifice în cadrul platformei educaționale.
+disponibile pentru utilizatorii finali.
 
 \textbf{user-data-service}
 
@@ -200,34 +198,35 @@ de utilizatorii platformei.
 Aici apar structuri complexe ca User care stochează ID, email, hash parolă, rol, clase,  
 quiz\_results, total\_points, points\_history, badges, ranguri.  
 Badge-urile au ID, titlu, descriere, tip, iconiţă, timestamp.  
-UserBadge salvează progres, valoare curentă, completare, timestamp.  
+UserBadge salvează progres, valoare curentă, grad de completare, timestamp.  
 
 Recompensele și badge-urile sunt gestionate de un controler separat ce 
 expune metode ca 
-\texttt{EnsureBadgesExist} ce defineşte badge-uri implicite şi le inserează  
-dacă nu există. Altă metodă expusă este \texttt{CheckAndUpdateBadges} care preia 
-user\_quiz\_history şi badge-uri şi calculează progresul, crează sau actualizează badge-urile utilizatorului.  
+EnsureBadgesExist care defineşte badge-uri implicite şi le inserează  
+dacă nu existau. Altă metodă expusă este CheckAndUpdateBadges care preia 
+user\_quiz\_history şi badge-urile şi calculează progresul, crează sau actualizează
+badge-urile utilizatorului curent.  
 
 Gestionare utilizatori şi autentificarea se face prin endpoint-uri REST,
-cum ar fi \texttt{Register}, \texttt{Login} şi \texttt{GetMe}.  
-\texttt{Register} validează JSON, face hash-ul parolei cu bcrypt, inserează user-ul în baza de date  
-şi incrementează metoda utilizatori activi.  
-\texttt{Login} verifică hash-ul parolei, generează JWT care încapsulează rolul şi email-ul.  
-\texttt{GetMe} decodează token-ul, returnează datele profilului fără parolă desigur.  
+cum ar fi Register, Login şi GetMe.  
+Register validează datele primite, face hash-ul parolei cu bcrypt, inserează user-ul în baza de date  
+şi incrementează metrica utilizatori activi.  
+Login verifică hash-ul parolei și generează JWT care încapsulează rolul şi email-ul.  
+GetMe decodează token-ul, returnează datele profilului fără parolă desigur.  
 
 Fluxul de recompense și badge-uri este gestionat printr-un sistem de evenimente.
-La primirea rezultatelor din \texttt{evaluation-service}, handlerul decodifică câmpul
-QuizResultMeta și salvează datele în baza de date \texttt{users-data}.  
+La primirea rezultatelor din evaluation-service, handlerul decodifică câmpul
+QuizResultMeta și salvează datele în baza de date users-data.  
 Punctele calculate (base, time, streak, perfect) se adaugă  
 în istoricul de punctaj şi la punctele totale.  
-\texttt{UpdateUserRankings} recalculează rangurile globale şi pe clase.  
+UpdateUserRankings recalculează rangurile globale şi pe clase.  
 
 \subsection{Conectivitate}
 \label{subsec:implementare-backend}
 
 Microserviciile comunică prin API REST, iar traficul este expus și rulat în interiorul clusterului Kubernetes.
 Pentru dezvoltare locală, se utilizează port-forwarding Kubernetes pentru a expune temporar serviciile
-externe către mașina locală. Gestionarea rutelor externe și balansării numărului de cereri se realizează 
+externe către mașina locală. Gestionarea rutelor externe și a împărțirii numărului de cereri se realizează 
 cu ajutorul Kong Ingress Controller, care asigură rutarea traficului HTTP către serviciile potrivite.
 
 În anexa \ref{lst:create-quiz} putem să vedem un exemplu de implementare a unui endpoint pentru crearea unui quiz,
@@ -235,7 +234,7 @@ care primește datele de la front-end, le validează și le inserează în baza 
 cu codul HTTP corespunzător.
 
 Rutele tipice sunt configurate în routerul fiecărui microserviciu,
-peste care se aplică middleware-ului JWT pentru protejarea endpoint-urilor sensibile.
+peste care se aplică middleware-ul JWT pentru protejarea endpoint-urilor sensibile.
 Accesul la endpointuri gestionat prin CORS este relaxat în mediul de dezvoltare
 pentru a permite testarea fără restricții de origine.
 
@@ -245,18 +244,18 @@ Pentru procesarea codului C++ introdus de utilizator în editorul interactiv,
 s-a implementat un serviciu dedicat care primește codul sursă, îl compilează și execută,
 returnând rezultatele intermediare în format JSON.
 
-Pentru a vizualiza stările fiecărui container \textit{la runtime} s-au parcurs următorii paşi:
+Pentru a vizualiza stările fiecărui container la runtime s-au parcurs următorii paşi:
 \begin{enumerate}
-  \item Inserăm antetul \verb|tracer.h| şi instanţa globală a tracer-ului în fişierul C++.
-  \item Funcţia Go \lstinline{TransformCode} parcurge sursa linie cu linie şi:
+  \item Se inserează antetul \verb|tracer.h| şi instanţa globală a lui în fişierul C++.
+  \item Funcţia Go TransformCode parcurge sursa linie cu linie şi:
         \begin{itemize}
-          \item detectează declaraţii de containere STL (\texttt{vector}, \texttt{map}, \texttt{stack}, etc.);
+          \item detectează declaraţii de containere STL (vector, map, stack, etc.);
           \item generează pentru fiecare un ContainerTracer cu makeTracedContainer();
-          \item inserează apeluri \lstinline{traceOperation()} după operaţiile semnificative
-          \item adaugă \lstinline{getInstance().snapshot()} la \lstinline{return} şi structuri de control.
+          \item inserează apeluri traceOperation() după operaţiile semnificative
+          \item adaugă getInstance().snapshot() la return şi după structuri de control.
         \end{itemize}
-  \item La rulare, fiecare operaţie scoate pe \texttt{stdout} linii JSON prefixate cu \texttt{STATE:}.
-  \item Backend-ul Go parsează aceste linii, le converteşte în \texttt{ExecutionStep} şi le trimite front-end-ului.
+  \item La rulare, fiecare operaţie scoate la ieșirea standard linii prefixate cu STATE:.
+  \item Backend-ul Go parsează aceste linii, le converteşte într-o listă de pași de execuție şi le trimite frontend-ului.
 \end{enumerate}
 
 
@@ -268,14 +267,12 @@ v.push_back(42);
 v_tracer.traceOperation("insert", "Inserted element");
 \end{lstlisting}
 
-La final ieșirea execuției e parsată și se construiește lista de pași de execuție ce va fi furnizată frontend-ului.
-
 \section{Front-end}
 \label{sec:implementare-frontend}
 
 Pentru dezvoltarea front-end-ului am folosit React, împreună cu React Router 
 DOM\footnote{https://reactrouter.com/} pentru navigare,
-și tehnologia Three.js prin biblioteca React Three Fiber (R3F) și Drei pentru componente 3D reutilizabile.
+tehnologia Three.js prin biblioteca React Three Fiber (R3F) și Drei pentru componente 3D reutilizabile.
 Această combinație a permis crearea unei interfețe interactive cu multiple vizualizări 3D dinamice.
 
 \subsection{Configurare front-end}
@@ -283,8 +280,8 @@ Această combinație a permis crearea unei interfețe interactive cu multiple vi
 
 Mediul de dezvoltare a fost configurat cu Node.js\footnote{https://nodejs.org/} și 
 npm\footnote{https://www.npmjs.com/}, folosind Vite\footnote{https://vitejs.dev/} ca agregator și server de dezvoltare rapidă.
-În directorul proiectului, pachetele relevante instalate includ \texttt{react}, \texttt{react-router-dom}, 
-\texttt{@react-three/fiber}, \texttt{@react-three/drei} și alte dependențe utile pentru animații și stilizare.
+În directorul de pachete ale proiectului, pachetele relevante instalate includ react, react-router-dom, 
+react-three/fiber, react-three/drei și alte dependențe utile pentru animații și stilizare.
 Tehnologiile menționate se îmbină cu folosirea Tailwind CSS\footnote{https://tailwindcss.com/} 
 pentru stilizare rapidă și eficientă, permițând crearea de interfețe responsive. 
 
@@ -293,35 +290,35 @@ pentru stilizare rapidă și eficientă, permițând crearea de interfețe respo
 
 Componenta principală a aplicației este structurată pe baza React și React Router pentru navigare între pagini.
 Pentru vizualizările 3D s-au folosit componente R3F, cu suport Drei pentru facilități precum 
-\texttt{useGLTF} pentru importul modelelor 3D, \texttt{useSpring} pentru animații și \texttt{Canvas}
+useGLTF pentru importul modelelor 3D, useSpring pentru animații și Canvas
 pentru spațiul 3D.
 
-Exemple de componente dezvoltate în cadrul proiectului includ \textbf{Landing Pages} 
-pentru materii precum Astronomie, Chimie și Informatică, fiecare cu descrieri detaliate și
-elemente interactive. De asemenea, s-au dezvoltat \textbf{formulare},
-precum \texttt{ChemistryAddForm}, care permit adăugarea moleculelor cu încărcare
-de fișiere și validări. În ceea ce privește vizualizările 3D, s-au creat componente
-precum \texttt{ChemistryBaloon}, \texttt{Drone}, \texttt{Island} și \texttt{SpaceBackground},
-care sunt animate și controlate de utilizator. Alte componente includ elemente 
-\textbf{educaționale} pentru structuri de date și concepte de programare, 
+Exemple de componente dezvoltate în cadrul proiectului includ pagini de întâmpinare
+pentru materii, fiecare cu descrieri detaliate și
+elemente interactive. De asemenea, s-au dezvoltat formulare,
+precum ChemistryAddForm, care permit adăugare de molecule în listă prin încărcare
+de fișiere de descriere. S-au creat componente
+precum ChemistryBaloon, Drone, Island și SpaceBackground,
+care sunt animate și controlate prin intrări de la utilizator. Alte componente includ elemente 
+educaționale pentru structuri de date și concepte de programare, 
 completate cu vizualizări grafice. În plus, s-au dezvoltat panouri de control și 
 pagini pentru quiz-uri, clase, invitații și alte funcționalități, toate 
-acestea având apeluri către API-ul backend-ului pentru a asigura robustețe în 
-aducerea datelor.
+acestea având apeluri către API-ul backend-ului pentru a asigura consistență în 
+datele afișate și posibilitatea de modificare a lor.
 
 Un exemplu de componentă standard React care utilizează Three.js pentru a crea un balon animat se află
-la zona de anexe \ref{lst:react-baloon}. Această componentă folosește \texttt{useSpring} pentru a anima 
+la zona din anexe \ref{lst:react-baloon}. Această componentă folosește useSpring pentru a anima 
 poziția și rotația balonului.
 
 \vspace{0.5em}
 
 Alt exemplu este componenta meniului principal, care include o insulă complexă animată ce 
 poate fi rotită cu mouse-ul în anexa \ref{lst:react-island}. Aceasta folosește
-\texttt{useRef} pentru a manipula direct obiectele Three.js și a aplica rotații în funcție
+useRef pentru a manipula direct obiectele Three.js și a aplica rotații în funcție
 de mișcarea mouse-ului.
 
 În alte zone componentele sunt implementate după modelul de carduri, cum ar fi în zona
-panoului de metrici la care are access profesorul bazate pe rezultatele obținute de elevi
+panoului de metrici bazate pe rezultatele obținute de elevi
 la diferitele quiz-uri. Se folosesc și componente deja existente precum containere responsive
 și adaptive la dimensiunile ecranului. Unele componente fac și validări de date sau agregări
 scurte pe datele pe care le primesc, procesările și agregările importante fiind realizate
@@ -335,43 +332,40 @@ returnarea JSX-ului care definește interfața grafică.
 Unele scene 3D încep cu interfețe de declarare de elemente, precum geometria unor obiecte,
 materiale sau chiar și animații. Componentele au logica de animare în general în useFrame, iar
 state-urile sunt legate cu useRef sau useState pentru a permite actualizarea lor în timp real.
-După acestea apar funcțiile de procesare sau utilitare, iar componentele se termină cu 
-returnarea JSX-ului care definește structura vizuală a scenei.
+După asta apar funcțiile de procesare sau utilitare, iar componentele se termină cu 
+returnarea JSX-ului care definește structura vizuală a scenei ca și în celelalte cazuri.
 
 \subsection{Implementare front-end}
 \label{subsec:implementare-frontend}
 
 În partea de front-end, aplicaţia este structurată pe componente React,
-folosind TypeScript în unele zone pentru tipare stricte şi TailwindCSS pentru stilizare.
-Fiecare componentă 3D (de exemplu \texttt{BadgeDisplay}, \texttt{BalloonMascot},
-\texttt{Baloon} sau \texttt{Island}) este definită printr‐un set de interfeţe 
-care descriu proprietăţile primite (cum ar fi \texttt{Badge} sau \texttt{BalloonProps}).
-Aceste componente folosesc hook‐uri de stare (\texttt{useState}) şi referinţe
-(\texttt{useRef}) pentru a păstra stările de atingere a secțiunii, selecţie şi animaţii, 
-iar hook‐ul \texttt{useFrame} din \texttt{@react-three/fiber} asigură 
-actualizarea fiecărui frame de animaţie direct pe obiectele Three.js
-(rotire, balans, scalare la atingere).
+folosind TypeScript în unele zone pentru tipare strictă şi TailwindCSS pentru stilizare.
+Fiecare componentă 3D (de exemplu BadgeDisplay, BalloonMascot,
+Baloon sau Island) este definită printr‐un set de interfeţe 
+care descriu proprietăţile primite (cum ar fi BadgeProps sau BalloonProps).
+Aceste componente folosesc hook‐uri de stare (useState) şi referinţe
+(useRef) pentru a păstra stările de atingere a secțiunii, selecţie şi animaţii, 
+iar useFrame asigură actualizarea fiecărui cadru direct pe obiecte (rotire, scalare, etc).
 
-Animaţiile neon şi efectele de glow sunt obţinute cu \texttt{meshPhongMaterial} 
-şi proprietăţi dinamice de \texttt{emissiveIntensity} şi \texttt{opacity},
+Animaţiile neon şi efectele de glow sunt obţinute cu meshPhongMaterial 
+şi proprietăţi dinamice de emissiveIntensity şi opacity,
 corelate cu starea de atingere a secțiunii. Pentru mişcarea obiectelor 3D se foloseşte
-componenta \texttt{Float} din \texttt{drei}, iar pentru text 3D \texttt{Text}
-cu contur. Camera este controlată în scene printr‐o componentă
-custom (\texttt{CameraController}) care implementează rotire și mișcare inerțială,
-iar interacţiunea mouse-ului e centralizată în \texttt{SceneController} prin gestionarea 
+componenta Float din drei, iar pentru text 3D componenta Text din drei.
+Camera este controlată în scene printr‐o componentă
+custom (CameraController) care implementează rotire și mișcare inerțială,
+iar interacţiunea mouse-ului e centralizată în SceneController prin gestionarea 
 evenimentelor la mișcare.
 
-Pentru formulare şi interfeţe bidimensionale (de ex. \texttt{ChemistryAddForm},
-\texttt{ListFormulas}, \texttt{ClassPerformanceCard}) s-a folosit React clasic 
-cu \texttt{useEffect} pentru a accesa API-ul, \texttt{useState} pentru gestionarea 
-datelor (loading, error, succes) şi componente de UI animate cu Framer Motion
-(\texttt{BadgeNotification}, hint overlays). În \texttt{ChemistryAddForm},
-încărcarea fişierelor \texttt{.mol} este realizată cu un FileReader în
-\texttt{handleFileChange}. Toate cererile includ antetul JWT extras din stocarea locală.
+Pentru formulare şi interfeţe modulare (de ex. ChemistryAddForm,
+ListFormulas, ClassPerformanceCard) s-a folosit React clasic 
+cu useEffect pentru a accesa API-ul, useState pentru gestionarea 
+datelor (loading, error, succes) şi componente de UI animate cu Framer Motion.
+În ChemistryAddForm, încărcarea fişierelor \texttt{.mol} este realizată cu un FileReader în
+handleFileChange. Toate cererile includ antetul JWT extras din stocarea locală.
 
-Pentru grafice de date statistice s-a integrat \texttt{recharts}, configurând
-\texttt{BarCharts}, \texttt{ResponsiveContainers} şi \texttt{CartesianGrids}, 
-cu transformări simple ale datelor în codul din \texttt{useEffect}. 
+Pentru grafice de date statistice s-a integrat recharts, configurând
+BarCharts, ResponsiveContainers şi CartesianGrids, 
+cu transformări simple ale datelor în codul din useEffect. 
 Distribuția principală (sidebar, navbar) foloseşte componente UI din biblioteca lucide‐react
 pentru iconiţe şi React Router pentru navigare, împreună cu Tailwind pentru
 starea activă/inactivă şi efecte vizuale.
@@ -381,18 +375,17 @@ starea activă/inactivă şi efecte vizuale.
 
 Aplicația comunică cu backend-ul prin intermediul fetch API, efectuând cereri REST
 către serverul local pe portul 8000, în contextul mediului de dezvoltare utilizat.
-În implementarea acesteia, s-au adoptat mai multe pattern-uri. De exemplu, pentru
-obținerea datelor dinamice, precum formulele, moleculele sau quiz-urile, aplicația
-utilizează hook-ul \texttt{useEffect} în componentele React, pentru a asigura 
-actualizarea datelor în mod eficient. În ceea ce privește autentificarea, token-ul
-JWT este gestionat și salvat în \texttt{localStorage}, fiind folosit ulterior 
-în antetul \texttt{Authorization} al cererilor API.
+De exemplu, pentru obținerea datelor precum formulele, moleculele sau quiz-urile, aplicația
+utilizează useEffect în componente pentru a asigura 
+actualizarea datelor instant. În ceea ce privește autentificarea, token-ul
+JWT este gestionat și salvat în stocarea locală, fiind folosit ulterior 
+în antetul Authorization al cererilor din API.
 
 De asemenea, s-a implementat un sistem de tratare a erorilor, care afișează mesaje 
 relevante utilizatorului atunci când apar probleme în comunicarea cu serverul. În
 plus, au fost dezvoltate formulare pentru inserarea, ștergerea și actualizarea 
 datelor pe server, iar răspunsurile și validările sunt gestionate vizual în frontend
-pentru o experiență de utilizator intuitivă.
+pentru o experiență mai bună.
 
 
 Se folosește useEffect pentru a chema
@@ -407,14 +400,14 @@ Iar o secțiune importantă este vizualizarea 3D a moleculelor, care primește d
 observa în anexa \ref{lst:react-molecule}.
 
 Crearea unei scene dinamice ca cele din secțiunea de informatică pentru structuri de date se face prin
-simularea lor în cod manual pentru
-a vedea rezultatul operaţiilor și conținutul lor la un moment dat. Apoi se crează o scenă 3D
+simularea lor manual pentru
+a vedea rezultatul operaţiilor și conținutul lor în fiecare moment. Apoi se crează o scenă 3D
 demo care afișează nodurile și conexiunile lor folosind Three.js și React Three Fiber.
-Diferitele structuri de date sunt construite sub diferite forme sugestive pentru
+Diferitele structuri de date sunt construite sub diverse forme sugestive pentru
 particularitățile lor. De exemplu, cele care păstrează ordinea elementelor sunt afișate
 ca arbore de căutare cu auto echilibrare deoarece așa sunt implementate în biblioteca
 standard din C++. Acestea sunt reprezentate cu noduri și conexiuni între ele care
 se ajustează automat în funcție de operațiile efectuate. Alte structuri sunt afișate
-liniar dacă e cazul saui cu forme specifice ca bucket-urile pentru hash table-uri
-sau stivă sau coadă cu formele lor specifice.
+liniar dacă e cazul sau cu forme specifice ca bucket-urile pentru hashtable-uri
+sau stivă și coadă cu modelele lor consacrate.
 

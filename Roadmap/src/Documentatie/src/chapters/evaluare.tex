@@ -5,22 +5,21 @@
 Obiectivele stabilite pentru platformă au fost atinse, iar evaluarea implementării arată un succes în ceea ce privește funcționalitatea, 
 performanța și experiența utilizatorului.
 
-\section{Evaluarea back-endului}
-\label{subsec:evaluare-backend}
 
 \section{Răspunsurile de posibili utilizatori}
 \label{subsec:evaluare-backend-utilizatori}
 
 În urma formularului discutat și la secțiunea motivație, au fost incluse și întrebări care dau o notă de la 1 la 5 pentru
 fiecare tip de simulare 3D de la diferite materii din platformă în videoclipuri atașate. Au fost două tipuri de întrebări, 
-una care cerea să se ofere o notă interactivității și una care cerea să se ofere o notă utilității simulărilor.
+una care cerea să se ofere o notă interactivității și una care cerea să se ofere o notă utilității simulărilor. S-a
+înregistrat un număr de peste 35 de răspunsuri.
 
 Pentru simulările de fizică peste 71\% dintre respondenți au dat nota maximă 5 pentru interactivitate și peste
 68\% au dat nota maximă 5 pentru utilitate. Pentru exemplele de scene de chimie din videoclipurile atașate,
 peste 64\% dintre respondenți au dat nota maximă 5 pentru interactivitate și peste 68\% au dat nota maximă 5 pentru utilitate.
 Pentru simulările din zona de informatică, peste 71\% dintre respondenți au dat nota maximă 5 
 pentru interactivitate și peste 65\% au dat nota maximă 5 pentru utilitate. De menționat este si că la toate
-întrebările peste 95\% dintre respondenți au dat o notă mai mare de 3/5 pentru interactivitate și utilitate la toate
+întrebările peste 95\% dintre respondenți au dat o notă mai mare sau egală cu 3/5 pentru interactivitate și utilitate la toate
 materiile incluse.
 
 În final, ca evaluare generală a platformei, am întrebat și dacă ar fi fost utilă o platformă ca aceasta dacă
@@ -29,44 +28,41 @@ indicând că sunt de acord sau foarte de acord că o platformă ca aceasta ar f
 
 \fig[width=0.8\textwidth]{imgs/ajutorForms.png}{fig:invatamatesjoc}{Ar fi fost utilă o platformă ca aceasta în școală?}
 
+\section{Evaluarea back-endului}
+\label{subsec:evaluare-backend}
 
 \subsection{Testarea back-endului}
 \label{subsubsec:evaluare-backend-testare}
 
 Testarea back-endului s-a concentrat pe validarea funcționalităților API-urilor dezvoltate pentru interacțiunea cu baza de date
-și manipularea datelor. Pentru aceasta, au fost utilizate soluții precum Postman și inspecția manuală a codului. În plus, au fost
-testate diverse scenarii de utilizare pentru a verifica integritatea fluxului de date între componentele back-endului. Acestea includ
-inclusiv inserarea, modificarea și ștergerea de date în MongoDB și performanța acestora.
-
-De exemplu s-a testat API-ul pentru accesarea și manipularea formulelor a fost testat pentru răspunsuri rapide de sub
-200ms pentru 1000 de cereri simultane.
+și manipularea datelor. Pentru aceasta, au fost utilizate soluții precum Postman și scripturi locale pentru a trimite cereri. În plus, au fost
+testate diverse scenarii de utilizare pentru a verifica integritatea fluxului de date între componentele back-endului și frontend. Acestea includ
+inserarea, modificarea și ștergerea de date în MongoDB, precum și verificarea corectitudinii răspunsurilor API-urilor.
 
 \subsection{Monitorizarea back-endului}
 \label{subsubsec:evaluare-backend-monitorizare}
 
-Pentru monitorizarea back-endului, s-au utilizat instrumente de monitorizare și colectare precum Prometheus și Grafana pentru a
+Pentru monitorizarea back-endului, s-au utilizat instrumente de adăugare și colectare precum Prometheus și Grafana pentru a
 urmări performanța sistemului și a verifica orice problemă de scalabilitate sau fiabilitate. Datele colectate au arătat o utilizare 
 constantă de resurse, cu peste 95\% din cereri servite în mod eficient, fără a depăși limitele impuse de infrastructura curentă.
 
 \subsection{Evaluarea performanței back-endului}
 \label{subsubsec:evaluare-backend-performanta}
 
-Performanța back-endului a fost evaluată pe baza unui set de scenarii de utilizare. Scenariile au inclus de exemplu 100 de cereri simultane
-la un API de calcul al formulelor pentru volum.
-
-Testele au arătat o latență medie de răspuns de 250ms pe cereri simple și sub 2 secunde pentru încărcarea fișierelor mari. În ceea ce
-privește scalabilitatea, s-au făcut teste de încărcare pentru a evalua comportamentul sistemului la mai mult de 1000 de cereri simultane,
+Performanța back-endului a fost evaluată pe baza unui set de testare a scenariilor de utilizare normale.
+Testele au arătat o latență medie de răspuns de 250ms pe cereri simple și sub 2 secunde pentru încărcarea obiectelor mari din scene. În ceea ce
+privește scalabilitatea, s-au făcut teste de încărcare pentru a evalua comportamentul sistemului la un număr mare de cereri simultane,
 iar infrastructura a rămas stabilă, fără scăderi semnificative ale performanței chiar și testat în mediu de dezvoltare cu resurse locale limitate.
 
-Alt nivel de testare în timpul dezvoltării a fost prin \textbf{teste unitare},
-rulate local cu \verb|go test|. Folosind pachetul \texttt{httptest} am
-simulat cereri HTTP către ruterul unui serviciu din interior şi am putut
+Alt nivel de testare în timpul dezvoltării a fost prin teste unitare,
+rulate local cu go test. Folosind pachetul httptest am
+simulat cereri HTTP către ruterul unui serviciu din interiorul podului şi am putut
 itera rapid și prinde bug-urile, fără să reconstruim imaginea Docker
 sau să dăm deploy în Kubernetes de fiecare dată.
 
 Rularea comenzii \verb|go test ./...| rulează orice test rapid,
 oferind feedback aproape instant asupra
-regresiilor de exemplu din transormatorul de cod, parserul sau din logica de
+regresiilor de exemplu din transformatorul de cod, parser sau din logica de
 gestionare și propagare a erorilor de compilare către frontend.
 
 \section{Evaluarea front-endului}
@@ -75,17 +71,17 @@ gestionare și propagare a erorilor de compilare către frontend.
 \subsection{Testarea front-endului}
 \label{subsubsec:evaluare-frontend-testare}
 
-Testarea front-endului a fost realizată prin testare manuală a interacțiunilor cu utilizatorul pe diverse dispozitive. 
+Testarea front-endului a fost realizată prin testare manuală a interacțiunilor cu utilizatorul. 
 S-au testat funcționalitățile de navigare, interactivitatea componentelor (de exemplu, meniurile rotative, butoanele de creare a quiz-urilor),
-și integrarea corectă a 3D-ului în scene. Testele au arătat că 95\% dintre interacțiuni au fost realizate fără erori, iar platforma a funcționat
-decent pe dispozitivele de testare.
+și integrarea corectă a modelelor în scene. Testele au arătat că 95\% dintre interacțiuni au fost realizate fără erori, iar platforma a funcționat
+decent pe mașina de testare.
 
 
 \subsection{Monitorizarea front-endului}
 \label{subsubsec:evaluare-frontend-monitorizare}
 
 Majoritatea paginilor se încarcă complet în mai puțin de 2 secunde pe majoritatea dispozitivelor, iar utilizarea memoriei este sub 
-150MB pentru majoritatea scenelor 3D care încarcă obiecte și texturi.
+200MB pentru majoritatea scenelor 3D care încarcă obiecte și texturi.
 
 \subsection{Evaluarea performanței front-endului}
 \label{subsubsec:evaluare-frontend-performanta}
@@ -97,11 +93,10 @@ Performanța front-endului a fost evaluată prin testarea mai multor scenarii de
 \section{Testarea infrastructurii / platformei}
 \label{subsec:evaluare-infrastructura}
 
-S-au utilizat teste de scalabilitate și failover, iar platforma a demonstrat un comportament robust și o scalabilitate bună
-în fața unui număr mare de cereri. De exemplu, un scenariu de testare a implicat 1000 de cereri simultane, iar sistemul a rămas stabil,
+S-au utilizat teste de scalabilitate, iar platforma a demonstrat un comportament robust și o scalabilitate bună
+în fața unui număr mare de cereri. De exemplu, un scenariu de testare a implicat multiple cereri simultane, iar sistemul a rămas stabil,
 fără erori sau timp de nefuncționare. În plus, în caz că apar probleme de performanță, se pot scala serviciile în mod dinamic, adăugând
 replici direct din scalarea oferită de Kubernetes pentru a răspunde la cerințele crescute.
-
 
 \section{Probleme întâmpinate}
 \label{subsec:probleme}
@@ -110,7 +105,7 @@ replici direct din scalarea oferită de Kubernetes pentru a răspunde la cerinț
 Una dintre principalele provocări întâmpinate a fost accesibilitatea Kong Ingress Controller în mediul local, care nu este disponibilă implicit.
 Soluția implementată a fost folosirea unui port-forward pentru a expune Ingress-ul. Totodată, expunerea microserviciilor prin Kong a 
 necesitat sincronizarea corectă a valorilor pentru containerPort și targetPort, configurarea serviciilor de tip ClusterIP și adnotările 
-specifice pentru Ingress. Ajustările făcute au asigurat că traficul extern poate accesa microserviciile într-un mod stabil și controlat.
+specifice pentru Ingress. Ajustările făcute au asigurat că traficul extern poate accesa serviciile într-un mod stabil și mai ales controlat.
 
 \subsection{Accesibilitate CI/CD Build \& Rollout Workflow}
 Fluxul de lucru pentru CI/CD a fost un alt punct dificil de gestionat. Fiecare schimbare în cod presupunea reconstruirea și încărcarea
@@ -126,19 +121,18 @@ de texturi comprimate pentru a reduce consumul de memorie și a preveni pierderi
 
 \subsection{Crearea fluxului de parsare a codului C++}
 
-Cea mai dificilă parte a fost design-ul antetului \texttt{tracer.h}: au trebuit definite
-meta-trăsături (\textit{type traits}) care să distingă între \texttt{vector}, \texttt{list},
-\texttt{map}, \texttt{priority_queue} sau chiar \texttt{std::array} și altele, fără ajutorul
-reflecţiei native. În plus, a fost nevoie de serializarea stării fiecărui 
+Cea mai dificilă parte a fost design-ul antetului tracer.h: au trebuit definite
+meta-trăsături care să distingă între vector,  list,
+map, priority_queue sau chiar std::array și altele, fără ajutorul
+reflecţiei native asupra tipului. În plus, a fost nevoie de serializarea stării fiecărui 
 container. Asta a complicat puternic manipularea tipurilor compuse, precum 
-\texttt{std::pair<K,V>} din map-uri. Implementarea funcţiei auxiliare
-\lstinline{serializePair()} şi a ramurilor specializate din \lstinline{getState()}
-/ \lstinline{getMetadata()} a solicitat multe iteraţii pentru a gestiona corect
+std::pair<K,V> din map-uri. Implementarea funcţiei auxiliare
+serializePair() şi a ramurilor specializate din getState()
+/ getMetadata() a solicitat multă muncă pentru a gestiona corect
 conversiile către JSON. În final s-a putut evita ambiguitatea dintre clasele STL şi tipurile
 primitive. Nu în ultimul rând, menţinerea consistenţei între operaţiile detectate
-în \lstinline{TransformCode()} şi cele raportate de template-urile tracer a
-cerut testare repetată, deoarece o singură pierdere (de exemplu
-\lstinline{deque::shrink_to_fit}) genera stări incoerente.
+în TransformCode() şi cele raportate de template-urile tracer a
+implicat testare repetată, deoarece o singură pierdere genera stări incoerente la final.
 
 \subsection{Dimensiunea clusterului Kubernetes}
 
@@ -151,8 +145,9 @@ de mai multe ori pentru a putea continua dezvoltarea.
 
 \subsection{Popularea și accesul extern la intrările in baza de date}
 Pentru a crea entități noi sau a adauga date educaționale în MongoDB într-un pod
-de Kubernetes, a fost necesară crearea unui job dedicat care să aibă acces în interiorul
-clusterului, deoarece nu se poate accesa direct din afara clusterului cu cereri
+de Kubernetes, a fost necesară crearea unui job\footnote{https://kubernetes.io/docs/concepts/workloads/controllers/job/}
+dedicat care să aibă acces în interiorul
+clusterului, deoarece nu se poate accesa direct din afară cu cereri
 directe. Asta a însemnat crearea unui fișier de configurare YAML pentru jobul respectiv și 
 crearea unui pod dedicat pentru rularea acestuia.
 
@@ -163,12 +158,12 @@ crearea unui pod dedicat pentru rularea acestuia.
 Cei mai reprezentativi indicatori de exploatare în contextul unei platforme ca VisioScience3D 
 sunt timpii de răspuns, rata de cadre pe secundă (FPS) în scenele 3D, costurile de licențiere
 și consumul de memorie RAM. Timpul de răspuns a fost constant sub 250ms pentru majoritatea cererilor
-în mediul de dezvoltare, putând să difere în eventuala producție în funcție de încărcarea serverului.
+în mediul de dezvoltare, putând să difere în eventuala producție în funcție de încărcarea și performanțele serverului.
 Rata de cadre pe secundă este asigurată de tehnologiile WebGL și Three.js folosite și de 
-tehnicile de optimizare incluse. În general se menține constantă la cel puțin 60 FPS.
+tehnicile de optimizare incluse. În general se menține constantă la cel puțin 60 cadre pe secundă.
 Costurile de licențiere sunt zero pentru VisioScience3D, în timp ce alte platforme competitoare
 implică taxe anuale semnificative. În ceea ce privește consumul de memorie RAM, platforma
-se menține sub 150MB în majoritatea scenelor, ne încărcând resurse de foarte mari
+se menține sub 200MB în majoritatea scenelor, ne încărcând resurse de foarte mari
 dimensiuni.
 
 Metricile au fost obținute prin utilizarea browserului Chrome pentru accesarea siteurilor și folosind informațiile
@@ -176,11 +171,9 @@ de latență la nivel de cerere, resursele utilizate raportate de browser și ra
 la utilizare (sub 60 de cadre pe secundă se resimt mici sacadări în animații și interacțiuni).
 
 VisioScience3D răspunde în medie mai repede cel puțin în mediul de dezvoltare decât platforme gratuite 
-şi depăşeşte nivelul minim de 60 cadre pe secundă, prag important pentru
-experienţa vizuală fluidă. În testele de stres pe arhitectura backend-ului, aplicaţia a susţinut
-până la sute de cereri concurente fără să rescalaze pod-urile folosite pentru servicii.
-Din punct de vedere monetar, lipsa taxei de licenţiere o poziţionează peste Mozaweb şi IQBoard,
-care introduc un cost de utilizare semnificativ.
-Tehnicile adăugate ca optimizarea texturilor şi încărcarea leneșă ajută și mai mult la menţinerea
-consumului de memorie sub 150 MB.
+şi depăşeşte nivelul minim de 60 cadre pe secundă, prag important pentru o
+experienţă vizuală fluidă. În testele executate pe arhitectura backend-ului, aplicaţia a susţinut
+până multiple cereri concurente fără să rescalaze pod-urile folosite.
+Din punct de vedere monetar, lipsa taxei de licenţiere o poziţionează peste Mozaweb şi IQBoard prezentate la secțiunea Studiu
+de piață, care introduc un cost de utilizare semnificativ.
 

@@ -9,19 +9,19 @@
 Înregistrarea și autentificarea utilizatorilor se face după un proces clasic, în care dacă utilizatorul există deja,
 se va autentifica cu numele de utilizator și parola, iar dacă nu există, se va înregistra cu un email și o parolă.
 În caz de succes la înregistrare se trimit datele în back-end, se stocheaza în baza de date, se va afișa un mesaj de succes
-și se va porni animatația de succes la înregistrare a mascotei balon. După înregistrare, utilizatorul poate intra în 
+și se va porni animația de succes la înregistrare a mascotei balon. După înregistrare, utilizatorul poate intra în 
 pagina de logare și se poate autentifica cu datele introduse la înregistrare. Înregistrarea are două moduri posibile
 pentru conturi de profesor și conturi de elev.
 
 În cazul în care utilizatorul nu există, se va afișa un mesaj de eroare și se va rămâne pe pagina de logare.
-În cazul în care utilizatorul credentțialele sunt corecte și există în sistem se va afișa un mesaj de succes,
+În cazul în care credențialele sunt corecte și există în sistem se va afișa un mesaj de succes,
 se va face animatia mascotei balon pentru logare și se va redirecționa utilizatorul către pagina principală a aplicației.
-Modelul 3D al mascotei este responsiv și la scrierea caraterelor în promptul de înregistrare și logare.
+Modelul 3D al mascotei este responsiv și la scrierea caracterelor în promptul de înregistrare și logare.
 
 \section{Explorarea meniul principal}
 \label{sec:explorare-meniu-principal}
 
-Meniul principal al aplicației este afișat după autentificare și conține un model 3D principal cu on insulă mare și mai multe insule
+Meniul principal al aplicației este afișat după autentificare și conține un model 3D principal cu o insulă mare și mai multe insule
 mici care reprezintă secțiunile educaționale disponibile în aplicație. Navigarea se face prin rotire cu mouse-ul. Restul meniului 
 este reprezentat print-o bară clasică de navigare în partea de sus a ecranului, care conține butoane pentru accesarea profilului,
 magazinului de cărți, secțiunilor despre și contact.
@@ -30,8 +30,9 @@ magazinului de cărți, secțiunilor despre și contact.
 
 
 Magazinul online este o secțiune dedicată unde utilizatorii pot achiziționa cărți educaționale care a fost realizat separat de aplicație
-utilizând tehnologia Shopify și care este disponibil de lansare către producție împreună cu platforma finală.
-Pagina de contact este o secțiune unde utilizatorii pot trimite feedback, sugestii sau întrebări către echipa platformei.
+utilizând tehnologia Shopify\footnote{https://www.shopify.com/}
+și care este disponibil de lansare către producție împreună cu platforma finală.
+Pagina de contact este o secțiune unde utilizatorii pot trimite feedback, sugestii sau întrebări către dezvoltatorii platformei.
 
 \begin{figure}[htb]
   \centering
@@ -52,20 +53,20 @@ Pagina de contact este o secțiune unde utilizatorii pot trimite feedback, suges
 
 Fiecare secțiune conține multiple scene 3D educaționale care reprezintă noțiuni sau fenomene specifice domeniului respectiv.
 Cu fiecare dintre ele se poate interacționa prin rotirea camerei, zoom și mișcarea camerei în jurul scenei.
-Pentru secțiunea de geometrie avem următoarele scene 3D educaționale:
+Pentru secțiunea de geometrie avem următoarele scene:
 Cub, Piramidă, Paralelipiped, Cilindru, Con și Sferă.
 
-Pentru materia de fizică avem următoarele scene 3D educaționale: plan înclinat, scripete simplu,
+Pentru materia de fizică avem scenele: plan înclinat, scripete simplu,
 scripete mobil, pendul și oscilații, resort și legea lui Hooke, mișcarea circulară uniformă,
 mișcarea de proiectil, cădere liberă, coliziune elastică și coliziune plastică.
 
 Pentru materia de chimie avem scene educaționale customizabile prin încărcarea manuală a moleculelor chimice în format .mol, ele fiind
 parsate și transmise înapoi la front-end care le transformă în scene 3D.
 
-În cazul scenelor de astronomie avem suport pentru toate planetaele din sistemul solar, cât și pentru sistemul solar în sine cu 
-animația rotațiilor planetelor.
+În cazul scenelor de astronomie avem suport pentru toate planetele din sistemul Solar, cât și pentru sistemul Solar în sine cu 
+animația rotațiilor planetelor în jurul Soarelui.
 
-Și ultima materie suportată curent este informatica care conține scene educaționale despre structuri de date și algoritmi,
+Ultima materie suportată curent este informatica care conține scene educaționale despre structuri de date și algoritmi,
 cum ar fi: array, vector, unordered map, ordered map, unordered set, ordered set, multiset,
 priority queue, deque, stack, queue, list și doubly linked list.
 
@@ -79,8 +80,8 @@ priority queue, deque, stack, queue, list și doubly linked list.
 
 Pe lângă interacțiunea clasică cu scenele 3D prin rotirea camerei, zoom și mișcare, la secțiunea de chimie se pot defini propriile
 molecule chimice prin fișiere cu format .mol. Alt tip de interacțiune este de exemplu prin operațiile de modificare a structurilor de date
-și algoritmilor din secțiunea de informatică, unde se pot adăuga sau elimina elemente din structuri de date, se pot vizualiza
-elementele și se pot anima operațiile de inserare, ștergere sau căutare a elementelor în structuri de date.
+și algoritmilor din secțiunea de informatică, unde se pot adăuga sau elimina elemente din structurile de date în cauză, se pot vizualiza
+elementele și se pot anima operațiile de inserare, ștergere sau căutare a elementelor.
 
 \begin{figure}[htb]
   \centering
@@ -118,7 +119,7 @@ simple sau cu răspuns multiplu, cu sistem de punctaj customizabil.
 \label{subsec:vizualizare-rezultate}
 
 Profesorul poate vizualiza rezultatele testelor elevilor săi, inclusiv scorurile și răspunsurile la întrebări.
-Profesorii au și un panou complex integrat pentru a vizualiza metrici mai complexe despre rezultatele elevilor, despre
+Profesorii au și un panou complex integrat pentru a vizualiza metrici mai complexe legat de rezultatele elevilor, despre
 care se va discuta ulterior.
 
 \section{Gestionarea contului de elev}
@@ -127,7 +128,7 @@ care se va discuta ulterior.
 \subsection{Intrarea în clasele profesorului}
 \label{subsec:intrare-clase-profesor}
 
-Intrarea într-o anumită clasă se face pe bază de invitație de la profesor, direct din platform și care apare în panoul de control
+Intrarea într-o anumită clasă se face pe bază de invitație de la profesor, direct din platformă în panoul de control
 al elevului. Elevul poate vedea clasele la care este înscris și poate accesa resursele și testele disponibile în acele clase.
 
 \subsection{Accesarea testelor și vizualizarea rezultatelor}
@@ -162,7 +163,7 @@ execuție extrași din cod după rulare și expuși sub formă de listă prin ca
 de navigare sau prin cel de rulare automată. În partea dreaptă avem intrarea pe care o dăm codului
 și ieșirea pe care o generează codul după rulare. În partea de jos avem scena 3D cu structurile de 
 date identificate care se actualizează în timp real cu fiecare pas de rulare a codului prin care
-trecem.
+trecem cum se poate observa mai jos.
 
 \fig[width=1\textwidth]{imgs/editorvizual.png}{fig:compilator-elev}{Editorul vizual cu pași de rulare}
 
@@ -170,22 +171,22 @@ Această zonă este integrată în pagina de editare a codului împreună cu par
 în sine. În partea dreaptă se află ce am descris anterior. În partea stângă avem editorul care folosește 
 tema de Visual Studio Code\footnote{https://code.visualstudio.com/} și care are suport pentru 
 limbajul C++ la momentul actual. El suportă redimensionare, copiere automată a codului sau 
-resetare la modelul de cod inițial.
+resetare la exemplul de cod inițial.
 
-\subsection{Tabloul de elemente interactiv}
+\subsection{Tabelul de elemente interactiv}
 \label{subsec:tablou-elemente-interactiv}
 
-La zona de chimie avem și un tablou interactiv Mendeleev care permite elevilor să interacționeze
+La zona de chimie avem și un tabel periodic Mendeleev interactiv care permite elevilor să interacționeze
 cu elementele chimice și să le dispună în diferite forme. Tabelul este responsiv și reactiv
-la selectare oricărui element în orice poziție și deschide un panou de detalii despre acel element
-care arată numărul atomic, simbolul chimic, masa atomică, grupul, perioada și o descriere pe scurt 
+la selectarea oricărui element în orice poziție și deschide un panou de detalii despre acel element
+care arată numărul atomic, simbolul chimic, masa atomică, grupa, perioada și o descriere pe scurt 
 despre elementul selectat.
 
 \fig[width=1\textwidth]{imgs/chemtable.png}{fig:tabel-chimie}{Tabloul de elemente chimice interactiv}
 
 Elementele au multiple moduri de așezare interactivă, precum tabel, sferă, helix, grid, 
 spirală, piramidă, val, floare, torus, cub, galaxie, ADN, copac, vortex, stea, fagure, solar,
-fractal sau matrice. Mai jos se pot observa câteva exemple.
+fractal sau matrice.
 
 \subsection{Panoul profesorului}
 \label{subsec:panou-profesor}
@@ -193,7 +194,7 @@ fractal sau matrice. Mai jos se pot observa câteva exemple.
 Profesorul are acces la diferite metrici actualizate automat despre elevi, clase, teste și resurse.
 Există patru secțiuni principale în panoul profesorului. Prima este clasamentul elevilor, unde se 
 poate vedea topul elevilor după rezultatele obținute la teste. A doua este secțiunea de performanță
-a clasei unde se poate vedea scorul mediu la teste în clasă, procentul de îmbunătățire a clasei și
+a clasei unde se poate vedea scorul mediu în clasă, procentul de îmbunătățire a clasei și
 performanța fiecărui test per clasă. A treia este secțiunea de îmbunătățiri ale elevilor, unde
 vedem detalii ca performanța generală, tendințe de performanță și elevii cu cea mai mare îmbunătățire.
 Ultima secțiune este cea de statistici per test, unde se pot vedea detalii despre rata de completare,

@@ -18,10 +18,10 @@ func CreateQuiz(writer, req)
   var i QuizInput
   if Decode(req.Body, &input) fails return err
   classID, err := ToObjectID(input.ClassID)
-  if err != nil return Error(w, "Invalid id de clasa") 
+  if err != nil return Error(w, "Id de clasa invalid") 
   quiz := {newObjId, i.Title, classID, i.Q&As, time}
   if InsertOne("quizzes", quiz) fails return error
-  Respond(w, quiz, Created)
+  Respond(w, quiz, Created, 200)
 \end{lstlisting}
 
 \begin{lstlisting}[language=JavaScript, basicstyle=\ttfamily\small, breaklines=true, caption={Exemplu de componentă React pentru un balon animat}, label={lst:react-baloon}]
@@ -62,11 +62,11 @@ const Molecule = ({moleculeId}) =>
     bonds.map(b,i)=> const start=atoms[b.a1], end=atoms[b.a2];
       if(!start||!end) return null;
       const startV=new THREE.Vector3(start.x,start.y,start.z);
-      const endV=new THREE.Vector3(end.x,end.y,end.z);
-      const mid = startV.clone().add(endV).multiply(0.5);
-      const dir = endV.clone().sub(startV).normalize();
-      const len = startV.distanceTo(endV);
-      const quat = Quaternion().setFrom(Vector3(0,1,0), dir);
+      const endV= new THREE.Vector3(end.x,end.y,end.z);
+      const mid= startV.clone().add(endV).multiply(0.5);
+      const dir= endV.clone().sub(startV).normalize();
+      const len= startV.distanceTo(endV);
+      const quat= Quaternion().setFrom(Vector3(0,1,0), dir);
       return <mesh key=i pos=mid quaternion=quat><cylinder args={} /><standardMaterial color={} /></mesh>;
 \end{lstlisting}
 
