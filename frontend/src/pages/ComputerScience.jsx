@@ -305,7 +305,9 @@ const ComputerScience = () => {
               frontIndicatorColor="#D4A5A5"
               backIndicatorColor="#9B6B9E"
               width="100%"
-              height="600px"
+              height="800px"
+              canvasHeight="100%"
+              layoutMode="vertical"
             />
             <DequeFormulas />
           </div>
@@ -323,7 +325,9 @@ const ComputerScience = () => {
               arrowColor="#D4A5A5"
               nullColor="#9B6B9E"
               width="100%"
-              height="600px"
+              height="800px"
+              canvasHeight="100%"
+              layoutMode="vertical"
             />
             <ListFormulas />
           </div>
@@ -358,8 +362,10 @@ const ComputerScience = () => {
               nodeColor="#9B6B9E"
               highlightGetColor="#D4A5A5"
               highlightSetColor="#9B6B9E"
+              height="800px"
               width="100%"
-              height="600px"
+              canvasHeight="100%"
+              layoutMode="vertical"
             />
             <ArrayFormulas />
           </div>

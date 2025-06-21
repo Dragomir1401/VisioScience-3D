@@ -24,6 +24,7 @@ export default function DequeDemo({
   width = "100%",
   height = "100%",
   canvasHeight = "100%",
+  layoutMode = "horizontal",
 }) {
   const [internalElements, setInternalElements] = useState([]);
   const elements =
@@ -83,8 +84,8 @@ export default function DequeDemo({
   const camZ = Math.max(count * spacing, 10);
 
   return (
-    <div className="flex gap-6" style={{ height: "100%" }}>
-      {showControls && (
+    <div className={layoutMode === "vertical" ? "flex flex-col gap-6" : "flex gap-6"} style={{ height: height }}>
+      {showControls && layoutMode === "horizontal" && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
           <h4 className="text-xl font-bold text-mulberry">
             Deque &lt;T&gt; Demo
@@ -153,12 +154,20 @@ export default function DequeDemo({
       )}
 
       <div
-        className={showControls ? "w-2/3" : "w-full"}
-        style={{ height: "100%" }}
+        className={showControls && layoutMode === "horizontal" ? "w-2/3" : "w-full"}
+        style={{ 
+          height: layoutMode === "vertical" ? "calc(100% - 344px)" : canvasHeight,
+          width: width,
+          minHeight: layoutMode === "vertical" ? "500px" : "400px"
+        }}
       >
         <Canvas
           camera={{ position: [centerX, camY, camZ], fov: 50 }}
-          style={{ height: canvasHeight, width: width }}
+          style={{ 
+            height: layoutMode === "vertical" ? "calc(100% - 344px)" : canvasHeight, 
+            width: width,
+            minHeight: layoutMode === "vertical" ? "500px" : "400px"
+          }}
         >
           <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />
@@ -230,6 +239,74 @@ export default function DequeDemo({
           />
         </Canvas>
       </div>
+
+      {showControls && layoutMode === "vertical" && (
+        <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 h-80">
+          <h4 className="text-xl font-bold text-mulberry">
+            Deque &lt;T&gt; Demo
+          </h4>
+          <input
+            type="text"
+            placeholder="Valoare"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-mulberry"
+          />
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={pushFront}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-blue-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white py-2 rounded-lg shadow text-sm"
+            >
+              <ChevronLeftIcon className="w-4 h-4" />
+              push_front
+            </button>
+            <button
+              onClick={pushBack}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white py-2 rounded-lg shadow text-sm"
+            >
+              push_back
+              <ChevronRightIcon className="w-4 h-4" />
+            </button>
+            <button
+              onClick={popFront}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white py-2 rounded-lg shadow text-sm"
+            >
+              <ArrowLeftIcon className="w-4 h-4" />
+              pop_front
+            </button>
+            <button
+              onClick={popBack}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white py-2 rounded-lg shadow text-sm"
+            >
+              pop_back
+              <ArrowRightIcon className="w-4 h-4" />
+            </button>
+            <button
+              onClick={showFront}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-white py-2 rounded-lg shadow text-sm"
+            >
+              front()
+            </button>
+            <button
+              onClick={showBack}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700 text-white py-2 rounded-lg shadow text-sm"
+            >
+              back()
+            </button>
+            <button
+              onClick={clearAll}
+              className="flex items-center justify-center gap-1 bg-gray-400 hover:bg-gray-500 text-white py-2 rounded-lg shadow text-sm"
+            >
+              <TrashIcon className="w-4 h-4" />
+              clear()
+            </button>
+          </div>
+          {message && <p className="text-gray-700 mt-2 text-sm">{message}</p>}
+          <p className="text-sm text-gray-600">
+            Conținut: [{elements.join(", ")}]
+          </p>
+        </div>
+      )}
     </div>
   );
 }

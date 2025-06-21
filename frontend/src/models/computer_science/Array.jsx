@@ -21,6 +21,7 @@ export default function ArrayDemo({
   width = "100%",
   height = "100%",
   canvasHeight = "100%",
+  layoutMode = "horizontal",
 }) {
   const [internalElements, setInternalElements] = useState([]);
   const elements =
@@ -88,11 +89,11 @@ export default function ArrayDemo({
   const count = elements.length;
   const centerX = count > 0 ? ((count - 1) * spacing) / 2 : 0;
   const camY = 2;
-  const camZ = Math.max(count * spacing, 25);
+  const camZ = Math.max(count * spacing, 5);
 
   return (
-    <div className="flex gap-6" style={{ height: "100%" }}>
-      {showControls && (
+    <div className={layoutMode === "vertical" ? "flex flex-col gap-6" : "flex gap-6"} style={{ height: height }}>
+      {showControls && layoutMode === "horizontal" && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
           <h4 className="text-lg font-semibold text-mulberry">Static Array</h4>
           <div className="flex items-center gap-2">
@@ -159,12 +160,20 @@ export default function ArrayDemo({
       )}
 
       <div
-        className={showControls ? "w-2/3" : "w-full"}
-        style={{ height: "100%" }}
+        className={showControls && layoutMode === "horizontal" ? "w-2/3" : "w-full"}
+        style={{ 
+          height: layoutMode === "vertical" ? "calc(100% - 344px)" : canvasHeight,
+          width: width,
+          minHeight: layoutMode === "vertical" ? "500px" : "400px"
+        }}
       >
         <Canvas
           camera={{ position: [centerX, camY, camZ], fov: 50 }}
-          style={{ height: canvasHeight, width: width }}
+          style={{ 
+            height: layoutMode === "vertical" ? "calc(100% - 344px)" : canvasHeight, 
+            width: width,
+            minHeight: layoutMode === "vertical" ? "500px" : "400px"
+          }}
         >
           <color attach="background" args={[backgroundColor]} />
           <ambientLight intensity={0.4} />
@@ -214,6 +223,72 @@ export default function ArrayDemo({
           <OrbitControls enablePan enableZoom enableRotate />
         </Canvas>
       </div>
+
+      {showControls && layoutMode === "vertical" && (
+        <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 h-80">
+          <h4 className="text-lg font-semibold text-mulberry">Static Array</h4>
+          <div className="flex items-center gap-2">
+            <input
+              type="number"
+              min="0"
+              placeholder="Size"
+              value={sizeInput}
+              onChange={(e) => setSizeInput(e.target.value)}
+              className="flex-1 border rounded px-2 py-1"
+            />
+            <button
+              onClick={handleCreate}
+              className="flex items-center gap-1 bg-gradient-to-r from-green-500 to-teal-400 hover:from-teal-500 hover:to-green-600 text-white py-2 px-4 rounded-lg shadow transition"
+            >
+              <PlusIcon className="w-5 h-5" />
+              <span className="text-sm">create()</span>
+            </button>
+          </div>
+
+          <div className="flex gap-2">
+            <input
+              type="number"
+              placeholder="Index"
+              value={idxInput}
+              onChange={(e) => setIdxInput(e.target.value)}
+              className="w-20 border rounded px-2 py-1"
+            />
+            <input
+              type="text"
+              placeholder="Value"
+              value={valInput}
+              onChange={(e) => setValInput(e.target.value)}
+              className="flex-1 border rounded px-2 py-1"
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-2">
+            <button
+              onClick={handleGet}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-indigo-600 hover:to-blue-600 text-white py-2 px-3 rounded-lg shadow transition text-sm"
+            >
+              <EyeIcon className="w-4 h-4" />
+              <span>get()</span>
+            </button>
+            <button
+              onClick={handleSet}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-orange-500 to-pink-500 hover:from-pink-600 hover:to-purple-600 text-white py-2 px-3 rounded-lg shadow transition text-sm"
+            >
+              <PencilIcon className="w-4 h-4" />
+              <span>set()</span>
+            </button>
+            <button
+              onClick={handleClear}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-3 rounded-lg shadow transition text-sm"
+            >
+              <RefreshIcon className="w-4 h-4" />
+              <span>clear()</span>
+            </button>
+          </div>
+
+          {message && <p className="text-sm text-gray-600">{message}</p>}
+          <div className="text-sm text-gray-700">Length: {elements.length}</div>
+        </div>
+      )}
     </div>
   );
 }

@@ -23,6 +23,7 @@ export default function ListDemo({
   width = "100%",
   height = "100%",
   canvasHeight = "100%",
+  layoutMode = "horizontal",
 }) {
   const [internalElements, setInternalElements] = useState([]);
   const elements =
@@ -99,8 +100,8 @@ export default function ListDemo({
   }, [positions, spacing, arrowColor]);
 
   return (
-    <div className="flex gap-6" style={{ height: "100%" }}>
-      {showControls && (
+    <div className={layoutMode === "vertical" ? "flex flex-col gap-6" : "flex gap-6"} style={{ height: height }}>
+      {showControls && layoutMode === "horizontal" && (
         <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 w-1/3">
           <h4 className="text-lg font-semibold text-mulberry">
             Singly Linked List
@@ -159,13 +160,21 @@ export default function ListDemo({
       )}
 
       <div
-        className={showControls ? "w-2/3" : "w-full"}
-        style={{ height: "100%" }}
+        className={showControls && layoutMode === "horizontal" ? "w-2/3" : "w-full"}
+        style={{ 
+          height: layoutMode === "vertical" ? "calc(100% - 344px)" : canvasHeight,
+          width: width,
+          minHeight: layoutMode === "vertical" ? "500px" : "400px"
+        }}
       >
         <div style={{ width: "100%", height: "100%" }}>
           <Canvas
             camera={{ position: [centerX, camY, camZ], fov: 50 }}
-            style={{ height: canvasHeight, width: width }}
+            style={{ 
+              height: layoutMode === "vertical" ? "calc(100% - 344px)" : canvasHeight, 
+              width: width,
+              minHeight: layoutMode === "vertical" ? "500px" : "400px"
+            }}
           >
             <color attach="background" args={[backgroundColor]} />
             <ambientLight intensity={0.4} />
@@ -220,6 +229,64 @@ export default function ListDemo({
           </Canvas>
         </div>
       </div>
+
+      {showControls && layoutMode === "vertical" && (
+        <div className="bg-white p-6 rounded-xl shadow-md border border-mulberry space-y-4 h-80">
+          <h4 className="text-lg font-semibold text-mulberry">
+            Singly Linked List
+          </h4>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Value"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="flex-1 border rounded px-2 py-1"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={handlePushFront}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-blue-600 hover:to-indigo-600 text-white py-2 px-3 rounded-lg shadow transition text-sm"
+            >
+              <ArrowLeftIcon className="w-4 h-4" />
+              <span>push_front()</span>
+            </button>
+            <button
+              onClick={handlePushBack}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-mulberry to-pink-500 hover:from-pink-600 hover:to-mulberry text-white py-2 px-3 rounded-lg shadow transition text-sm"
+            >
+              <PlusIcon className="w-4 h-4" />
+              <span>push_back()</span>
+            </button>
+            <button
+              onClick={handlePopFront}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-orange-600 hover:to-yellow-600 text-white py-2 px-3 rounded-lg shadow transition text-sm"
+            >
+              <ArrowCircleRightIcon className="w-4 h-4 transform rotate-180" />
+              <span>pop_front()</span>
+            </button>
+            <button
+              onClick={handlePopBack}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-red-500 to-rose-500 hover:from-rose-600 hover:to-red-600 text-white py-2 px-3 rounded-lg shadow transition text-sm"
+            >
+              <TrashIcon className="w-4 h-4" />
+              <span>pop_back()</span>
+            </button>
+            <button
+              onClick={handleClear}
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2 px-3 rounded-lg shadow transition text-sm col-span-2"
+            >
+              <RefreshIcon className="w-4 h-4" />
+              <span>clear()</span>
+            </button>
+          </div>
+          {message && <p className="text-sm text-gray-600">{message}</p>}
+          <div className="text-sm text-gray-700">
+            Contents: [{elements.join(", ")}]
+          </div>
+        </div>
+      )}
     </div>
   );
 }
