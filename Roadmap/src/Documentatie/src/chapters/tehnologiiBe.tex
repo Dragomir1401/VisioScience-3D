@@ -21,7 +21,7 @@ principal, făcând diferența între datele utilizatorilor, datele educațional
 Clusterul este configurat folosind Kubernetes\footnote{https://kubernetes.io/}, care permite orchestrarea containerelor și
 gestionarea resurselor print-o soluție larg folosită. Fiecare serviciu este containerizat folosind Docker,
 permițându-ne să rulăm aplicațiile într-un mediu izolat și consistent. Apoi containerele sunt încărcate în Docker,
-de unde se poate face lansarea sau oprilea lor în unități logice numite pod-uri. Kubernetes gestionează
+de unde se poate face lansarea sau oprirea lor în unități logice numite pod-uri. Kubernetes gestionează
 scalarea automată a serviciilor, distribuția sarcinilor și asigură disponibilitatea acestora.
 
 Alegerea Kubernetes este justificată de specificul platformei dezvoltate, dar și de publicații precum \cite{k8sBenefits}, care scoate în
@@ -54,9 +54,9 @@ resursele necesare, rutarea, porturile expuse și alte setări specifice.
 
 \subsection{Structurarea şi crearea fişierelor YAML}
 
-Pentru fiecare componentă a backend‐ului (\texttt{Deployment}, \texttt{Service}, 
-\texttt{Ingress}, \texttt{ConfigMap}, \texttt{PersistentVolumeClaim}) s-au creat fişiere YAML
-separate în directoarele \file{./k8s/} ale fiecărui serviciu. Denumirea fișierelor corespunde resursei Kubernetes pe care o gestionează.
+Pentru fiecare componentă a backend‐ului (Deployment, Service, 
+Ingress, ConfigMap, PersistentVolumeClaim) s-au creat fişiere YAML
+separate în directoarele ./k8s/ ale fiecărui serviciu. Denumirea fișierelor corespunde resursei Kubernetes pe care o gestionează.
 
 S-au folosit
 *-deployment.yaml\footnote{https://kubernetes.io/docs/concepts/workloads/controllers/deployment/},
@@ -110,7 +110,7 @@ spec: ingressClassName, rules: - http: paths: - path, backend: service: name, po
 \textbf{ConfigMap\footnote{https://kubernetes.io/docs/concepts/configuration/configmap/} \& 
 PVC\footnote{https://kubernetes.io/docs/concepts/storage/persistent-volumes/}}:
 ConfigMap este folosit pentru configurări directe (de ex. pentru serviciul de provizionare
-\texttt{prometheus.yml}) şi PVC este folosit de exemplu pentru volumul serviciului de vizualizare a metricilor în
+prometheus.yml) şi PVC este folosit de exemplu pentru volumul serviciului de vizualizare a metricilor în
 Grafana. Putem observa structura de configurare a celor două tipuri adiționale de resurse.
   \begin{lstlisting}[style=yamlstyle]
 apiVersion: v1, kind: ConfigMap
@@ -121,12 +121,12 @@ metadata: name, spec: accessModes, res: requests: storage
 \end{lstlisting}
 
 Fiecărei resurse îi corespunde un singur fişier YAML care conţine versiunea api-ului, tipul resursei kind,
-metadatele şi specificațiile. Acestea pot fi aplicate cu \cmd{kubectl apply -f <fișier>}, sau
+metadatele şi specificațiile. Acestea pot fi aplicate cu kubectl apply -f <fișier>, sau
 automatizat printr-un pipeline de integrare continuă / livrare continuă (CI/CD) cum am discutat anterior.
 
 \subsection{Gestionarea clusterului}
 
-Clusterul este creat și gestionat după cum s-a prezentat în primul rând cu Kubernetes, folosind manifesturi YAML.
+Clusterul este creat și gestionat după cum s-a prezentat anterior cu Kubernetes, folosind manifesturi YAML.
 Pe lângă linia de comandă, am integrat Portainer\footnote{https://www.portainer.io/},
 pentru o interfață web de administrare. Portainer rulează ca un Deployment sub
 serviciul portainer-sa, căruia i s-a atribuit un ClusterRole\footnote{https://kubernetes.io/docs/reference/access-authn-authz/rbac/}
@@ -169,7 +169,7 @@ port-forwarding\footnote{https://kubernetes.io/docs/tasks/access-application-clu
 local prin:
 
 \noindent
-\cmd{kubectl port-forward svc/kong-kong-proxy 8000:80}
+kubectl port-forward svc/kong-kong-proxy 8000:80
 
 Astfel, apelurile HTTP către portul 8000 local sunt tunelate prin Kong şi pot 
 fi testate rapid în legătură cu serviciile din cluster fără configurări suplimentare de reţea.
@@ -306,13 +306,13 @@ ca o necesitate esențială în platformele moderne.
 \subsection{Colectare Prometheus}  
 În fiecare serviciu Go am folosit clientul official Prometheus:
 
-\texttt{github.com/prometheus/client\_golang/prometheus} pentru definirea contoarelor, 
+github.com/prometheus/client\_golang/prometheus pentru definirea contoarelor, 
 histogramelor şi gauge-urilor.
 
-\texttt{github.com/prometheus/client\_golang/prometheus/promhttp} pentru expunerea 
-endpoint-ului \texttt{/\$SERVICIU/metrics}.
+github.com/prometheus/client\_golang/prometheus/promhttp pentru expunerea 
+endpoint-ului /\$SERVICIU/metrics.
 
-De exemplu, în \texttt{evaluation-service} în codul responsabil de metrici definim astfel. 
+De exemplu, în evaluation-service în codul responsabil de metrici definim astfel. 
 \begin{lstlisting}[style=yamlstyle]
 registry := prometheus.NewRegistry()
 reqTotal := prometheus.NewCounterVec(...)
@@ -321,13 +321,13 @@ http.Handle("/eval/metrics", HandlerFor(registry, opt))
 \end{lstlisting}
 
 \subsection{Grafana Dashboard}  
-De exemplu după ce Prometheus trece prin \texttt{evaluation\_service\_http\_requests\_total}, se crează un dashboard 
+De exemplu după ce Prometheus trece prin evaluation\_service\_http\_requests\_total, se crează un dashboard 
 persistent prin volumele Kubernetes. Dashboard-ul Grafana are în general două tipuri de panouri pentru metrici 
 similare. De exemplu pentru metrica de cereri și evaluări active din serviciul de evaluare:
 
-Timeseries (serie temporală de date) pentru \texttt{eval\_svc\_req\_total}.
+Timeseries (serie temporală de date) pentru eval\_svc\_req\_total.
 
-Gauge (serie de valori) pentru \texttt{eval\_svc\_active\_evals}.
+Gauge (serie de valori) pentru eval\_svc\_active\_evals.
 
 Iar apoi ele sunt definite și legate în configurația panoului din Grafana.
 \begin{lstlisting}[style=yamlstyle]
@@ -427,7 +427,7 @@ securitatea și accesul și mai granular la datele sensibile.
 
 MongoDB permite scalarea orizontală prin sharding\footnote{https://www.mongodb.com/docs/manual/sharding/}, facilitând distribuția datelor pe mai multe noduri când 
 cantitatea datelor ar ajunge la dimensiuni mari. Indecșii sunt definiți pe câmpuri critice 
-(ex: \texttt{\_id}, \texttt{class\_id}) pentru a optimiza căutările și interogările.
+(ex: \_id, class\_id) pentru a optimiza căutările și interogările.
 
 De asemenea, conexiunile sunt gestionate eficient prin pool-uri în clientul Go, iar operațiile
 lungi sunt efectuate cu timeout-uri pentru a evita blocarea serviciilor sau cu reîncercare pentru
@@ -440,7 +440,7 @@ complet pentru operațiile pe colecții și documente, tranzacții și agregări
 
 La pornire, fiecare serviciu inițializează o conexiune persistentă la baza de date. Modelele Go
 definite permit maparea clară între structurile din cod și documentele mongo.
-De exemplu, în \texttt{evaluation-service}, obiectele \texttt{Quiz} și \texttt{QuizResult}
+De exemplu, în evaluation-service, obiectele Quiz și QuizResult
 sunt manipulate direct în cod, iar metodele expun un API REST pentru aceste resurse prin CRUD\footnote{Create, Read, Update, and Delete}.
 
 

@@ -224,7 +224,7 @@ materiale, permițându-ne să transformăm obiecte glb în jsx.
 \subsubsection{Interacțiunea cu obiectele 3D}
 
 Folosim useFrame pentru a actualiza scena la fiecare cadru, simulând callback-urile clasice
-din loop-uril din jocuri. UseEffect e utilizat să actualizeze starea componentelor în funcție de modificările 
+din buclele din jocuri. UseEffect e utilizat să actualizeze starea componentelor în funcție de modificările 
 din props, practic folosind addEventListener pentru a asculta evenimentele de schimbare a stării pe canvas
 sau document. UseRef, UseGLTF și UseThree au rolul de a crea referințe la obiectele din scenă,
 permițându-ne să le manipulăm direct în timpul animațiilor sau interacțiunilor. Folosim callbackuri
@@ -245,40 +245,40 @@ Pentru a optimiza performanța graficii 3D pe framework-ul bazat pe WebGL\footno
     obiectele invizibile să nu fie trimise GPU–ului.
 \end{itemize}
 
-React Three Fiber (\texttt{@react-three/fiber}) și Drei (\texttt{@react-three/drei}) oferă setări și hook-uri
+React Three Fiber (react-three/fiber) și Drei (react-three/drei) oferă setări și hook-uri
 dedicate pentru performanță, care sunt esențiale pentru optimizare. De exemplu, setarea
-\texttt{<Canvas dpr={[1,1]} />} limitează \emph{device pixel ratio}\footnote{DPR reprezintă raportul dintre pixelii fizici și pixelii logici, afectând claritatea graficii.}
+<Canvas dpr={[1,1]} /> limitează device pixel ratio\footnote{DPR reprezintă raportul dintre pixelii fizici și pixelii logici, afectând claritatea graficii.}
 la un interval controlat, prevenind 
-supraîncărcarea GPU-ului pe ecranele cu densitate mare. De asemenea, proprietatea \texttt{performance={min:0.5, max:1}}
+supraîncărcarea GPU-ului pe ecranele cu densitate mare. De asemenea, proprietatea performance={min:0.5, max:1}
 ajustează dinamic rata de reîmprospătare a canvas-ului în funcție de activitate, reducând numărul de 
-cadre atunci când scena este statică. Un alt hook important din Drei este \texttt{useTexture}, care 
+cadre atunci când scena este statică. Un alt hook important din Drei este useTexture, care 
 preîncarcă și cache-uiește texturile, evitând alocările repetate și blocările de I/O în bucla de randare.
 
-În proiectul \textit{VisioScience3D}, aceste principii au fost aplicate în mai multe moduri pentru a 
+În proiectul VisioScience3D, aceste principii au fost aplicate în mai multe moduri pentru a 
 îmbunătăți performanța aplicației. Texturile au fost decupate și redimensionate la rezoluții de 
 \emph{1k}–\emph{2k} și convertite în formate comprimate (JPEG/PNG cu bitrate optim), reducând încărcarea pe GPU.
 Geometria sferică a planetelor utilizează un număr optim de segmente (32–64), 
 echilibrând netezimea cu numărul de vârfuri procesate. Pentru a evita recrearea geometriilor 
-și materialelor la fiecare rerandare, am folosit \texttt{React.memo} și \texttt{useMemo}. 
-Animațiile sunt gestionate exclusiv pe GPU prin \texttt{useFrame}, asigurându-se astfel un randament
-mai bun. În plus, setările WebGL \texttt{toneMapping} și \texttt{outputEncoding} au fost ajustate
-pentru a profita de hardware-ul mai slab și cel mobil, folosind \texttt{powerPreference:low-power}.
+și materialelor la fiecare rerandare, am folosit React.memo și useMemo. 
+Animațiile sunt gestionate exclusiv pe GPU prin useFrame, asigurându-se astfel un randament
+mai bun. În plus, setările WebGL toneMapping și outputEncoding au fost ajustate
+pentru a profita de hardware-ul mai slab și cel mobil, folosind powerPreference:low-power.
 De asemenea, pentru a optimiza performanța graficii 3D, folosim texturi de dimensiuni mici și medii,
 pentru a asigura stabilitate și un consum redus de resurse.
 
 \subsection{Integrarea cu frontend-ul}
 
 Pentru integrarea modelelor 3D în platformă, fiecare scenă sau obiect (.glb) este 
-încărcat cu declanșatorul \texttt{useGLTF} din \texttt{\@react-three/drei} şi convertit într-o
+încărcat cu declanșatorul useGLTF din @react-three/drei şi convertit într-o
 componentă React care reacţionează la stările de aplicaţie. De exemplu, componenta 
-\texttt{Baloon} foloseşte un \texttt{useEffect} pentru a schimba periodic \texttt{animationState}
-într-o listă de stări (idle, swayLeft, floatUp etc.), iar declanșatorul \texttt{useSpring}
-din \texttt{\@react-spring/three} transformă această stare într-un set de proprietăţi
-\texttt{position} şi \texttt{rotation} animate, atribuite mai departe unui element 
-\texttt{mesh}.
+Baloon foloseşte un useEffect pentru a schimba periodic animationState
+dintr-o listă de stări (idle, swayLeft, floatUp etc.), iar declanșatorul useSpring
+din @react-spring/three transformă această stare într-un set de proprietăţi
+position şi rotation animate, atribuite mai departe unui element 
+mesh.
 
-În plus, componenta de background ataşează direct evenimente DOM (\texttt{mousedown}, \texttt{mousemove},
-\texttt{keydown}) şi le gestionează în interiorul \texttt{useFrame} din frameworkul de React,
+În plus, componenta de background ataşează direct evenimente DOM (mousedown, mousemove,
+keydown) şi le gestionează în interiorul useFrame din frameworkul de React,
 permiţând controlul direct al rotaţiei scenei în funcţie de interacţiunea utilizatorului.
 Starea şi logica aplicației se propagă în lumea 3D, creând o legătură reactivă între UI-ul
 convenţional şi grafica gestionată prin WebGL.

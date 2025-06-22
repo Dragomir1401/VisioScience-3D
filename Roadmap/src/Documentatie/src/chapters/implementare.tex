@@ -22,7 +22,7 @@ care este inserat pentru detectarea structurilor de date și pentru a crea rapor
 pentru a asigura integrare nativă cu codul primit de la utilizator.
 
 
-\begin{lstlisting}[language=Go, caption={Middleware Prometheus pentru monitorizarea duratei cererilor HTTP}]
+\begin{lstlisting}[language=Go, caption={Antetul pentru raportarea operațiilor în C++}]
 template<typename Container>
 class ContainerTracer: public Traceable 
   ContainerTracer(n, c): name(n), container(c) 
@@ -47,7 +47,7 @@ să fie integrat în acest tip general de raportare a operațiilor și conținut
 \hline
 \textbf{Simplitate și claritate} & Sintaxă simplă, tipuri de date clare, cod ușor de întreținut & Flexibil, dar poate duce la cod greu de urmărit & Sintaxă clară, dar structurile mari pot deveni greu de gestionat \\
 \hline
-\textbf{Ecosistem} & Ecosistem în creștere rapidă, multe biblioteci pentru zona de microservicii & Ecosistem foarte matur și extins, multe biblioteci, framework-uri & Ecosistem matur, multe biblioteci pentru ML, backend, dar nu neapărat pentru performanță \\
+\textbf{Ecosistem} & În creștere rapidă, multe biblioteci pentru zona de microservicii & Foarte matur și extins, multe biblioteci, framework-uri & Destul de matur, multe biblioteci pentru ML, backend, dar nu neapărat pentru performanță \\
 \hline
 \textbf{Scalabilitate} & Foarte scalabil, folosit în microservicii și sisteme distribuite & Scalabil pe I/O, dar single-threaded cu limite pe CPU & Scalabilitate limitată, se bazează pe external scaling și caching \\
 \hline
@@ -121,7 +121,7 @@ erorile de execuție, fiind capabil să returneze informații detaliate despre
 fiecare pas al execuției. De asemenea, timpul de execuție 
 este limitat pentru a evita blocarea back-endului.
 
-\texttt{Cpp-compiler-service} este implementat scalabil și poate fi extins 
+Cpp-compiler-service este implementat scalabil și poate fi extins 
 pentru a include noi funcționalități, cum ar fi analiza codului pentru optimizări 
 automate sau integrarea cu alte platforme externe.
 
@@ -246,7 +246,7 @@ returnând rezultatele intermediare în format JSON.
 
 Pentru a vizualiza stările fiecărui container la runtime s-au parcurs următorii paşi:
 \begin{enumerate}
-  \item Se inserează antetul \verb|tracer.h| şi instanţa globală a lui în fişierul C++.
+  \item Se inserează antetul tracer.h şi instanţa globală a lui în fişierul C++.
   \item Funcţia Go TransformCode parcurge sursa linie cu linie şi:
         \begin{itemize}
           \item detectează declaraţii de containere STL (vector, map, stack, etc.);
