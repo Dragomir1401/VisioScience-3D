@@ -134,7 +134,7 @@ function Achievements() {
           className="text-center mb-8"
         >
           <h1 className="text-4xl font-bold text-indigo-900 mb-8 text-center">
-            Recompense și Badge-uri
+            Realizări
           </h1>
           <p
             className="text-indigo-300"
@@ -174,7 +174,7 @@ function Achievements() {
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-indigo-900">
-                Challenge-uri Active
+                Provocări Active
               </h3>
               <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
                 <span className="text-2xl">🎯</span>
@@ -231,7 +231,7 @@ function Achievements() {
             className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-indigo-200"
           >
             <h2 className="text-2xl font-semibold text-indigo-900 mb-6">
-              Challenge-uri Active
+              Provocări Active
             </h2>
             <div className="space-y-4">
               {badges
@@ -249,13 +249,12 @@ function Achievements() {
                         {badge.title}
                       </h3>
                       <span
-                        className={`px-2 py-1 rounded-full text-sm ${
-                          badge.type === "bronze"
+                        className={`px-2 py-1 rounded-full text-sm ${badge.type === "bronze"
                             ? "bg-amber-100 text-amber-700"
                             : badge.type === "silver"
-                            ? "bg-slate-100 text-slate-700"
-                            : "bg-yellow-100 text-yellow-700"
-                        }`}
+                              ? "bg-slate-100 text-slate-700"
+                              : "bg-yellow-100 text-yellow-700"
+                          }`}
                       >
                         {badge.type.charAt(0).toUpperCase() +
                           badge.type.slice(1)}{" "}

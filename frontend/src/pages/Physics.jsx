@@ -78,7 +78,7 @@ const Physics = () => {
         {!selectedObject && <PhysicsLanding />}
         {selectedObject && selectedObject.id === "inclined_plane" && (
           <div className="space-y-6">
-            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md relative">
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md relative">
               <InclinedPlaneScene sliderValue={sliderValue} />
             </div>
 
@@ -99,7 +99,7 @@ const Physics = () => {
         )}
         {selectedObject && selectedObject.id === "pulley_system2" && (
           <>
-            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md relative">
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md relative">
               <Pulley2Scene sliderValue={sliderValue} />
             </div>
 
@@ -122,7 +122,7 @@ const Physics = () => {
         )}
         {selectedObject && selectedObject.id === "pulley_system3" && (
           <>
-            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-rosy-brown bg-white shadow-md relative">
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-rosy-brown bg-white shadow-md relative">
               <Pulley3Scene sliderValue={sliderValue} />
             </div>
 
@@ -145,7 +145,7 @@ const Physics = () => {
         )}
         {selectedObject && selectedObject.id === "pendulum" && (
           <>
-            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md relative">
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md relative">
               <PendulumScene sliderValue={sliderValue} />
             </div>
 
@@ -168,7 +168,7 @@ const Physics = () => {
         )}
         {selectedObject?.id === "spring" && (
           <>
-            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
               <SpringMassScene extension={sliderValue} />
             </div>
             <div className="flex items-center gap-4 mt-4">
@@ -190,7 +190,7 @@ const Physics = () => {
         )}
         {selectedObject?.id === "circular_motion" && (
           <>
-            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
               <CircularMotionScene speed={sliderValue} />
             </div>
             <div className="flex items-center gap-4 mt-4">
@@ -212,7 +212,7 @@ const Physics = () => {
         )}
         {selectedObject?.id === "projectile_motion" && (
           <>
-            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
               <ProjectileScene time={sliderValue} />
             </div>
             <div className="flex items-center gap-4 mt-4">
@@ -232,7 +232,7 @@ const Physics = () => {
         )}
         {selectedObject?.id === "free_fall" && (
           <>
-            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
               <FreeFallScene time={sliderValue} />
             </div>
             <div className="flex items-center gap-4 mt-4">
@@ -252,7 +252,7 @@ const Physics = () => {
         )}
         {selectedObject?.id === "elastic_collision" && (
           <>
-            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
               <ElasticCollisionScene />
             </div>
             <ElasticCollisionFormulas />
@@ -260,7 +260,7 @@ const Physics = () => {
         )}
         {selectedObject?.id === "plastic_collision" && (
           <>
-            <div className="h-[500px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
+            <div className="h-[600px] w-full rounded-xl overflow-hidden border-2 border-mulberry bg-white shadow-md">
               <PlasticCollisionScene />
             </div>
             <PlasticCollisionFormulas />
