@@ -54,6 +54,46 @@ func main() {
 			Icon:        "💯",
 			CreatedAt:   time.Now(),
 		},
+		{
+			ID:          primitive.NewObjectID(),
+			Title:       "Maraton de Quiz-uri",
+			Description: "Completează 25 quiz-uri în total",
+			Type:        "DiamondBadge",
+			Icon:        "💎",
+			CreatedAt:   time.Now(),
+		},
+		{
+			ID:          primitive.NewObjectID(),
+			Title:       "Provocarea Fulger",
+			Description: "Completează 5 quiz-uri în mai puțin de 2 minute fiecare",
+			Type:        "SpeedBadge",
+			Icon:        "⚡",
+			CreatedAt:   time.Now(),
+		},
+		{
+			ID:          primitive.NewObjectID(),
+			Title:       "Provocarea Consistenței",
+			Description: "Obține scor perfect la 3 quiz-uri consecutive",
+			Type:        "StreakBadge",
+			Icon:        "🔥",
+			CreatedAt:   time.Now(),
+		},
+		{
+			ID:          primitive.NewObjectID(),
+			Title:       "Maestrul Dificultății",
+			Description: "Completează 15 quiz-uri cu dificultate ridicată (>90% scor)",
+			Type:        "MasterBadge",
+			Icon:        "👑",
+			CreatedAt:   time.Now(),
+		},
+		{
+			ID:          primitive.NewObjectID(),
+			Title:       "Legenda Quiz-urilor",
+			Description: "Obține 50 de scoruri perfecte în total",
+			Type:        "LegendBadge",
+			Icon:        "🏅",
+			CreatedAt:   time.Now(),
+		},
 	}
 
 	var badgeDocs []interface{}

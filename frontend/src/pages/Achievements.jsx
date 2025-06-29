@@ -8,6 +8,11 @@ const ACCENTS = {
   silver: "#C0C0C0",
   gold: "#FFA500",
   perfect: "#FF69B4",
+  diamond: "#B9F2FF",
+  speed: "#FF6B35",
+  streak: "#FF4500",
+  master: "#9370DB",
+  legend: "#FFD700",
 };
 
 function getUniqueBadgesByType(badges) {
@@ -122,7 +127,7 @@ function Achievements() {
     (badge) => !badge.earned && badge.progress > 0
   ).length;
   const perfectScores = badges.filter(
-    (badge) => badge.type === "perfect" && badge.earned
+    (badge) => (badge.type === "PerfectBadge" || badge.type === "LegendBadge") && badge.earned
   ).length;
 
   return (
@@ -253,7 +258,21 @@ function Achievements() {
                             ? "bg-amber-100 text-amber-700"
                             : badge.type === "silver"
                               ? "bg-slate-100 text-slate-700"
-                              : "bg-yellow-100 text-yellow-700"
+                              : badge.type === "gold"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : badge.type === "perfect"
+                                  ? "bg-pink-100 text-pink-700"
+                                  : badge.type === "diamond"
+                                    ? "bg-cyan-100 text-cyan-700"
+                                    : badge.type === "speed"
+                                      ? "bg-orange-100 text-orange-700"
+                                      : badge.type === "streak"
+                                        ? "bg-red-100 text-red-700"
+                                        : badge.type === "master"
+                                          ? "bg-purple-100 text-purple-700"
+                                          : badge.type === "legend"
+                                            ? "bg-yellow-100 text-yellow-700"
+                                            : "bg-indigo-100 text-indigo-700"
                           }`}
                       >
                         {badge.type.charAt(0).toUpperCase() +

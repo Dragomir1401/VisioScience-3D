@@ -6,7 +6,7 @@ import * as THREE from "three";
 interface Badge {
   id: string;
   title: string;
-  type: "BronzeBadge" | "SilverBadge" | "GoldBadge" | "PerfectBadge";
+  type: "BronzeBadge" | "SilverBadge" | "GoldBadge" | "PerfectBadge" | "DiamondBadge" | "SpeedBadge" | "StreakBadge" | "MasterBadge" | "LegendBadge";
   earned: boolean;
   progress: number;
   earnedAt?: string;
@@ -48,6 +48,16 @@ export function BadgeDisplay({ badge, position, onClick }: BadgeDisplayProps) {
         return "#FFD700";
       case "PerfectBadge":
         return "#FF69B4";
+      case "DiamondBadge":
+        return "#B9F2FF";
+      case "SpeedBadge":
+        return "#FF6B35";
+      case "StreakBadge":
+        return "#FF4500";
+      case "MasterBadge":
+        return "#9370DB";
+      case "LegendBadge":
+        return "#FFD700";
       default:
         return "#4f46e5";
     }

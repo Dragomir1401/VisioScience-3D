@@ -32,7 +32,7 @@ declare module "@react-three/fiber" {
 interface Badge {
   id: string;
   title: string;
-  type: "BronzeBadge" | "SilverBadge" | "GoldBadge" | "PerfectBadge";
+  type: "BronzeBadge" | "SilverBadge" | "GoldBadge" | "PerfectBadge" | "DiamondBadge" | "SpeedBadge" | "StreakBadge" | "MasterBadge" | "LegendBadge";
   earned: boolean;
   progress: number;
   earnedAt?: string;
@@ -68,6 +68,26 @@ const BADGE_COLORS = {
   PerfectBadge: {
     accent: "#f3e8ff",
     default: "#FF69B4",
+  },
+  DiamondBadge: {
+    accent: "#00BFFF",
+    default: "#B9F2FF",
+  },
+  SpeedBadge: {
+    accent: "#FF4500",
+    default: "#FF6B35",
+  },
+  StreakBadge: {
+    accent: "#FF0000",
+    default: "#FF4500",
+  },
+  MasterBadge: {
+    accent: "#4B0082",
+    default: "#9370DB",
+  },
+  LegendBadge: {
+    accent: "#FFD700",
+    default: "#FFD700",
   },
 } as const;
 

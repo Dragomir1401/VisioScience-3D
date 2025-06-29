@@ -56,6 +56,46 @@ func (bc *BadgeController) EnsureBadgesExist(ctx context.Context) error {
 			Icon:        "💯",
 			CreatedAt:   time.Now(),
 		},
+		{
+			ID:          primitive.NewObjectID(),
+			Title:       "Maraton Quiz",
+			Description: "Completează 25 quiz-uri în total",
+			Type:        "DiamondBadge",
+			Icon:        "💎",
+			CreatedAt:   time.Now(),
+		},
+		{
+			ID:          primitive.NewObjectID(),
+			Title:       "Provocare Fulger",
+			Description: "Completează 5 quiz-uri în mai puțin de 2 minute fiecare",
+			Type:        "SpeedBadge",
+			Icon:        "⚡",
+			CreatedAt:   time.Now(),
+		},
+		{
+			ID:          primitive.NewObjectID(),
+			Title:       "Provocare Consistenței",
+			Description: "Obține scor perfect la 3 quiz-uri consecutive",
+			Type:        "StreakBadge",
+			Icon:        "🔥",
+			CreatedAt:   time.Now(),
+		},
+		{
+			ID:          primitive.NewObjectID(),
+			Title:       "Maestrul Dificultății",
+			Description: "Completează 15 quiz-uri cu dificultate ridicată (>90% scor)",
+			Type:        "MasterBadge",
+			Icon:        "👑",
+			CreatedAt:   time.Now(),
+		},
+		{
+			ID:          primitive.NewObjectID(),
+			Title:       "Legenda Quiz-urilor",
+			Description: "Obține 50 de scoruri perfecte în total",
+			Type:        "LegendBadge",
+			Icon:        "🏅",
+			CreatedAt:   time.Now(),
+		},
 	}
 
 	for _, badge := range defaultBadges {
@@ -222,6 +262,76 @@ func (bc *BadgeController) CheckAndUpdateBadges(ctx context.Context, userID stri
 				log.Printf("      - Progress: 0%%")
 				log.Printf("      - Current value: 0")
 			}
+
+		case "DiamondBadge":
+			progress = math.Min(float64(len(user.QuizResults))/25*100, 100)
+			currentValue = float64(len(user.QuizResults))
+			log.Printf("   		Diamond badge calculation:")
+			log.Printf("      - Total quizzes completed: %d/25", len(user.QuizResults))
+			log.Printf("      - Progress: %.0f%%", progress)
+			log.Printf("      - Current value: %.0f", currentValue)
+
+		case "SpeedBadge":
+			fastQuizzes := 0
+			for _, qr := range user.QuizResults {
+				if qr.CompletionTime > 0 && qr.CompletionTime < 120 { // Less than 2 minutes (120 seconds)
+					fastQuizzes++
+				}
+			}
+			progress = math.Min(float64(fastQuizzes)/5*100, 100)
+			currentValue = float64(fastQuizzes)
+			log.Printf("   		Speed badge calculation:")
+			log.Printf("      - Fast quizzes (<2min): %d/5", fastQuizzes)
+			log.Printf("      - Progress: %.0f%%", progress)
+			log.Printf("      - Current value: %.0f", currentValue)
+
+		case "StreakBadge":
+			consecutivePerfect := 0
+			maxConsecutive := 0
+			for i := len(user.QuizResults) - 1; i >= 0; i-- {
+				if user.QuizResults[i].PerfectScore {
+					consecutivePerfect++
+					if consecutivePerfect > maxConsecutive {
+						maxConsecutive = consecutivePerfect
+					}
+				} else {
+					consecutivePerfect = 0
+				}
+			}
+			progress = math.Min(float64(maxConsecutive)/3*100, 100)
+			currentValue = float64(maxConsecutive)
+			log.Printf("   		Streak badge calculation:")
+			log.Printf("      - Max consecutive perfect: %d/3", maxConsecutive)
+			log.Printf("      - Progress: %.0f%%", progress)
+			log.Printf("      - Current value: %.0f", currentValue)
+
+		case "MasterBadge":
+			highDifficultyQuizzes := 0
+			for _, qr := range user.QuizResults {
+				if qr.MaxScore > 0 && float64(qr.Score)/float64(qr.MaxScore) > 0.9 {
+					highDifficultyQuizzes++
+				}
+			}
+			progress = math.Min(float64(highDifficultyQuizzes)/15*100, 100)
+			currentValue = float64(highDifficultyQuizzes)
+			log.Printf("   		Master badge calculation:")
+			log.Printf("      - High difficulty quizzes (>90%%): %d/15", highDifficultyQuizzes)
+			log.Printf("      - Progress: %.0f%%", progress)
+			log.Printf("      - Current value: %.0f", currentValue)
+
+		case "LegendBadge":
+			perfectScores := 0
+			for _, qr := range user.QuizResults {
+				if qr.PerfectScore {
+					perfectScores++
+				}
+			}
+			progress = math.Min(float64(perfectScores)/50*100, 100)
+			currentValue = float64(perfectScores)
+			log.Printf("   		Legend badge calculation:")
+			log.Printf("      - Total perfect scores: %d/50", perfectScores)
+			log.Printf("      - Progress: %.0f%%", progress)
+			log.Printf("      - Current value: %.0f", currentValue)
 		}
 
 		existingBadge, exists := existingBadges[badge.ID.Hex()]
