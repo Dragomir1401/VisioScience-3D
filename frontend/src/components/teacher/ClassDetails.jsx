@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import ClassActions from "./ClassActions";
 
 const ClassDetails = () => {
@@ -13,6 +14,8 @@ const ClassDetails = () => {
   const [loadingQuizzes, setLoadingQuizzes] = useState(true);
   const [errorStudents, setErrorStudents] = useState("");
   const [errorQuizzes, setErrorQuizzes] = useState("");
+  const [hoveredStudent, setHoveredStudent] = useState(null);
+  const [studentStats, setStudentStats] = useState({});
 
   useEffect(() => {
     fetchStudents();
@@ -29,6 +32,24 @@ const ClassDetails = () => {
       if (!res.ok) throw new Error();
       const data = await res.json();
       setStudents(Array.isArray(data) ? data : []);
+      
+      // Fetch student statistics
+      const stats = {};
+      for (const student of data) {
+        try {
+          const statsRes = await fetch(
+            `http://localhost:8000/user/${student.id}/stats`,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          if (statsRes.ok) {
+            const studentData = await statsRes.json();
+            stats[student.id] = studentData;
+          }
+        } catch (error) {
+          console.log("Could not fetch stats for student:", student.id);
+        }
+      }
+      setStudentStats(stats);
     } catch {
       setErrorStudents("Eroare la încărcarea elevilor.");
       setStudents([]);
@@ -101,6 +122,20 @@ const ClassDetails = () => {
     }
   };
 
+  const getStudentPerformance = (stats) => {
+    if (!stats || !stats.quizResults || stats.quizResults.length === 0) {
+      return { level: "Fără activitate", color: "text-gray-500", bg: "bg-gray-100" };
+    }
+    
+    const avgScore = stats.quizResults.reduce((sum, quiz) => sum + (quiz.score / quiz.maxScore), 0) / stats.quizResults.length;
+    const percentage = avgScore * 100;
+    
+    if (percentage >= 90) return { level: "Excelent", color: "text-green-600", bg: "bg-green-100" };
+    if (percentage >= 80) return { level: "Bun", color: "text-blue-600", bg: "bg-blue-100" };
+    if (percentage >= 70) return { level: "Satisfăcător", color: "text-yellow-600", bg: "bg-yellow-100" };
+    return { level: "În curs de îmbunătățire", color: "text-red-600", bg: "bg-red-100" };
+  };
+
   const studentList = Array.isArray(students) ? students : [];
   const quizList = Array.isArray(quizzes) ? quizzes : [];
 
@@ -150,7 +185,7 @@ const ClassDetails = () => {
 
         <div className="bg-white p-6 rounded-xl shadow-md border border-purple-200">
           <h3 className="text-lg font-semibold text-purple-700 mb-4">
-            Elevi înscriși
+            Elevi înscriși ({studentList.length})
           </h3>
           {loadingStudents ? (
             <p className="text-gray-500">Se încarcă elevii…</p>
@@ -159,12 +194,176 @@ const ClassDetails = () => {
           ) : studentList.length === 0 ? (
             <p className="italic text-gray-500">Niciun elev înscris.</p>
           ) : (
-            <ul className="list-disc list-inside space-y-2 text-sm text-gray-700">
-              {studentList.map((s) => (
-                <li key={s.id}>
-                  {s.email} <span className="text-gray-500">(ID: {s.id})</span>
-                </li>
-              ))}
+            <ul className="space-y-2">
+              {studentList.map((s) => {
+                const stats = studentStats[s.id] || {};
+                const performance = getStudentPerformance(stats);
+                return (
+                  <li key={s.id} className="relative">
+                    <div
+                      onMouseEnter={() => setHoveredStudent(s.id)}
+                      onMouseLeave={() => setHoveredStudent(null)}
+                      className="p-3 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100 transition"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                            <span className="text-sm font-medium text-purple-700">
+                              {s.email.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                          <div>
+                            <div className="font-medium text-gray-900">{s.email}</div>
+                            <div className="text-sm text-gray-500">ID: {s.id}</div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${performance.color} ${performance.bg}`}>
+                            {performance.level}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Hover Tooltip */}
+                    <AnimatePresence>
+                      {hoveredStudent === s.id && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute z-50 left-0 top-full mt-2 w-[440px] bg-white border border-gray-200 rounded-2xl shadow-2xl p-6"
+                        >
+                          {/* Arrow */}
+                          <div className="absolute -top-2 left-8 w-4 h-4 bg-white border-l border-t border-gray-200 transform rotate-45"></div>
+                          {/* DASHBOARD-LIKE STATS PREVIEW */}
+                          <div className="space-y-6">
+                            {/* Header: Email, ID */}
+                            <div className="mb-2">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="font-semibold text-mulberry text-base">{s.email}</span>
+                                <span className="text-xs bg-gray-100 text-gray-500 rounded px-2 py-0.5">ID: {s.id}</span>
+                              </div>
+                              <div className="flex flex-wrap gap-2 text-xs text-gray-500">
+                                <span>Quiz-uri: <b>{stats.total_quizzes ?? 0}</b></span>
+                                <span>Scor mediu: <b>{stats.average_score ? stats.average_score.toFixed(1) : "0.0"}%</b></span>
+                                <span>Perfecte: <b>{stats.perfect_scores ?? 0}</b></span>
+                                <span>Puncte: <b>{stats.total_points ?? 0}</b></span>
+                              </div>
+                            </div>
+
+                            {/* Performance & Rankings */}
+                            <div className="flex flex-wrap gap-4 items-center">
+                              <div className="flex flex-col items-center">
+                                <span className={`px-3 py-1 rounded-full text-xs font-bold mb-1 ${stats.performance_level === "Excelent" ? "bg-green-100 text-green-700" : stats.performance_level === "Bun" ? "bg-blue-100 text-blue-700" : stats.performance_level === "Satisfăcător" ? "bg-yellow-100 text-yellow-700" : stats.performance_level === "În curs de îmbunătățire" ? "bg-orange-100 text-orange-700" : stats.performance_level === "Necesită atenție" ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-700"}`}>{stats.performance_level || "-"}</span>
+                                <span className="text-xs text-gray-500">Nivel performanță</span>
+                              </div>
+                              <div className="flex flex-col items-center">
+                                <span className={`px-3 py-1 rounded-full text-xs font-bold mb-1 ${stats.improvement_trend === "Îmbunătățire" ? "text-green-600" : stats.improvement_trend === "Scădere" ? "text-red-600" : stats.improvement_trend === "Stabil" ? "text-blue-600" : "text-gray-600"}`}>{stats.improvement_trend === "Îmbunătățire" ? "↗️ " : stats.improvement_trend === "Scădere" ? "↘️ " : stats.improvement_trend === "Stabil" ? "→ " : ""}{stats.improvement_trend || "-"}</span>
+                                <span className="text-xs text-gray-500">Tendință</span>
+                              </div>
+                              <div className="flex flex-col items-center">
+                                <span className="px-3 py-1 rounded-full text-xs font-bold mb-1 bg-indigo-100 text-indigo-700">#{stats.global_ranking ?? '-'}</span>
+                                <span className="text-xs text-gray-500">Global</span>
+                              </div>
+                              <div className="flex flex-col items-center">
+                                <span className="px-3 py-1 rounded-full text-xs font-bold mb-1 bg-pink-100 text-pink-700">#{stats.class_ranking ?? '-'}</span>
+                                <span className="text-xs text-gray-500">Clasă</span>
+                              </div>
+                            </div>
+
+                            {/* Categories & Difficulties */}
+                            <div className="flex flex-wrap gap-4">
+                              <div>
+                                <div className="font-semibold text-xs text-gray-700 mb-1">Categorii quiz:</div>
+                                <div className="flex flex-wrap gap-1">
+                                  {(stats.quiz_categories || []).map((cat, idx) => (
+                                    <span key={idx} className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full text-xs font-medium">
+                                      {cat.category} <b>x{cat.count}</b>
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="font-semibold text-xs text-gray-700 mb-1">Dificultăți:</div>
+                                <div className="flex flex-wrap gap-1">
+                                  {(stats.difficulty_stats || []).map((diff, idx) => (
+                                    <span key={idx} className="bg-yellow-50 text-yellow-700 px-2 py-0.5 rounded-full text-xs font-medium">
+                                      {diff.difficulty} <b>x{diff.count}</b> ({diff.average ? diff.average.toFixed(1) : "0.0"}%)
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+
+                            {stats.recent_performance && stats.recent_performance.length > 0 && (
+                              <div>
+                                <div className="font-semibold text-xs text-gray-700 mb-1">Performanță recentă:</div>
+                                <div className="flex items-end gap-1 h-16">
+                                  {stats.recent_performance.slice(-9).map((perf, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex-1 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t"
+                                      style={{
+                                        height: `${Math.max(perf.score * 0.4, 4)}px`,
+                                        minHeight: '4px'
+                                      }}
+                                      title={`${perf.date}: ${perf.score.toFixed(1)}%`}
+                                    />
+                                  ))}
+                                </div>
+                                <div className="text-xs text-gray-500 mt-1">
+                                  Ultimele {stats.recent_performance.length} quiz-uri
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Weekly Progress Chart */}
+                            {stats.weekly_progress && stats.weekly_progress.length > 0 && (
+                              <div>
+                                <div className="font-semibold text-xs text-gray-700 mb-1">Progres săptămânal:</div>
+                                <div className="flex items-end gap-1 h-16">
+                                  {stats.weekly_progress.map((week, idx) => (
+                                    <div key={idx} className="flex flex-col items-center flex-1">
+                                      <div
+                                        className="w-4 rounded-t bg-gradient-to-t from-pink-500 to-pink-300"
+                                        style={{ height: `${Math.max(week.avg_score * 0.4, 4)}px`, minHeight: '4px' }}
+                                        title={`Săpt. ${week.week}: ${week.avg_score ? week.avg_score.toFixed(1) : "0.0"}% (${week.quizzes} quiz-uri)`}
+                                      ></div>
+                                      <span className="text-[10px] text-gray-400 mt-0.5">{week.quizzes}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                <div className="text-xs text-gray-500 mt-1">Scor mediu / săptămână (număr quiz-uri sub bară)</div>
+                              </div>
+                            )}
+
+                            {/* Actions */}
+                            <div className="border-t pt-3">
+                              <h5 className="font-medium text-gray-900 mb-2">Acțiuni disponibile:</h5>
+                              <div className="space-y-1 text-sm text-gray-600">
+                                <div className="flex items-center gap-2">
+                                  <span>📊</span>
+                                  <span>Vezi rezultate detaliate</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <span>📈</span>
+                                  <span>Analizează progresul</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <span>🎯</span>
+                                  <span>Verifică performanța</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>

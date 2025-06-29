@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const TeacherDashboard = () => {
   const [classes, setClasses] = useState([]);
   const [newClassName, setNewClassName] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [hoveredClass, setHoveredClass] = useState(null);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -58,6 +60,14 @@ const TeacherDashboard = () => {
     navigate(`/classes/${cls.id}`);
   };
 
+  const getClassStatus = (students) => {
+    const studentCount = students ? students.length : 0;
+    if (studentCount === 0) return { text: "Fără elevi", color: "text-gray-500", bg: "bg-gray-100" };
+    if (studentCount < 5) return { text: "Clasă mică", color: "text-blue-600", bg: "bg-blue-100" };
+    if (studentCount < 15) return { text: "Clasă medie", color: "text-green-600", bg: "bg-green-100" };
+    return { text: "Clasă mare", color: "text-purple-600", bg: "bg-purple-100" };
+  };
+
   return (
     <div className="mt-10 px-4 max-w-4xl mx-auto space-y-10">
       {/* Analytics Button */}
@@ -97,21 +107,103 @@ const TeacherDashboard = () => {
           <p className="text-sm text-gray-500">Nu ai creat nicio clasă încă.</p>
         ) : (
           <ul className="space-y-3">
-            {classes.map((cls) => (
-              <li
-                key={cls.id}
-                onClick={() => handleGoToClass(cls)}
-                className="p-4 bg-purple-50 border border-purple-200 rounded shadow-sm cursor-pointer hover:bg-purple-100 transition"
-              >
-                <div className="font-semibold text-purple-800">{cls.name}</div>
-                <div className="text-sm text-gray-600">
-                  Cod înscriere: <code className="font-mono">{cls.code}</code>
-                </div>
-                <div className="text-sm text-gray-600">
-                  Elevi înscriși: {cls.students ? cls.students.length : 0}
-                </div>
-              </li>
-            ))}
+            {classes.map((cls) => {
+              const status = getClassStatus(cls.students);
+              return (
+                <li
+                  key={cls.id}
+                  className="relative"
+                >
+                  <div
+                    onClick={() => handleGoToClass(cls)}
+                    onMouseEnter={() => setHoveredClass(cls.id)}
+                    onMouseLeave={() => setHoveredClass(null)}
+                    className="p-4 bg-purple-50 border border-purple-200 rounded shadow-sm cursor-pointer hover:bg-purple-100 transition"
+                  >
+                    <div className="font-semibold text-purple-800">{cls.name}</div>
+                    <div className="text-sm text-gray-600">
+                      Cod înscriere: <code className="font-mono">{cls.code}</code>
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      Elevi înscriși: {cls.students ? cls.students.length : 0}
+                    </div>
+                  </div>
+
+                  {/* Hover Tooltip */}
+                  <AnimatePresence>
+                    {hoveredClass === cls.id && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute z-50 left-0 top-full mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg p-4"
+                      >
+                        {/* Arrow */}
+                        <div className="absolute -top-2 left-4 w-4 h-4 bg-white border-l border-t border-gray-200 transform rotate-45"></div>
+                        
+                        {/* Class Details */}
+                        <div className="space-y-3">
+                          <div>
+                            <h4 className="font-semibold text-gray-900 text-base mb-2">
+                              {cls.name}
+                            </h4>
+                            <p className="text-sm text-gray-600">
+                              Clasă creată pentru gestionarea quiz-urilor și elevilor
+                            </p>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm text-gray-600">Cod de înscriere:</span>
+                              <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">
+                                {cls.code}
+                              </code>
+                            </div>
+                            
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm text-gray-600">Număr elevi:</span>
+                              <span className="text-sm font-medium text-purple-700">
+                                {cls.students ? cls.students.length : 0}
+                              </span>
+                            </div>
+                            
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm text-gray-600">Status clasă:</span>
+                              <span className={`text-xs px-2 py-1 rounded-full font-medium ${status.color} ${status.bg}`}>
+                                {status.text}
+                              </span>
+                            </div>
+                          </div>
+                          
+                          <div className="border-t pt-3">
+                            <h5 className="font-medium text-gray-900 mb-2">Acțiuni disponibile:</h5>
+                            <div className="space-y-1 text-sm text-gray-600">
+                              <div className="flex items-center gap-2">
+                                <span>📊</span>
+                                <span>Vizualizează detalii complete</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span>👥</span>
+                                <span>Gestionează elevii</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span>📝</span>
+                                <span>Creează quiz-uri</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span>📈</span>
+                                <span>Vezi rezultate</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>

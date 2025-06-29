@@ -12,6 +12,7 @@ import (
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"user-data-service/models"
@@ -970,4 +971,283 @@ func GetQuestionStatistics(w http.ResponseWriter, r *http.Request) {
 	metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "200").Inc()
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(questionStatsList)
+}
+
+// GET /user/{userId}/stats
+func GetUserStats(w http.ResponseWriter, r *http.Request) {
+	userID := mux.Vars(r)["userId"]
+	if userID == "" {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "userId is required", http.StatusBadRequest)
+		return
+	}
+
+	userOID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "400").Inc()
+		http.Error(w, "Invalid user ID", http.StatusBadRequest)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var user models.User
+	err = db.UserCollection.FindOne(ctx, bson.M{"_id": userOID}).Decode(&user)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "404").Inc()
+			http.Error(w, "User not found", http.StatusNotFound)
+			return
+		}
+		metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "500").Inc()
+		http.Error(w, "Failed to fetch user", http.StatusInternalServerError)
+		return
+	}
+
+	var totalQuizzes int
+	var totalScore int
+	var totalMaxScore int
+	var perfectScores int
+	var averageTime float64
+	var totalTime int64
+	var quizCategories = make(map[string]int)
+	var difficultyStats = make(map[string]struct {
+		Count int
+		Total int
+		Max   int
+	})
+	var recentPerformance []struct {
+		Date  string  `json:"date"`
+		Score float64 `json:"score"`
+	}
+	var weeklyProgress []struct {
+		Week     string  `json:"week"`
+		Quizzes  int     `json:"quizzes"`
+		AvgScore float64 `json:"avg_score"`
+	}
+
+	for _, qr := range user.QuizResults {
+		if qr.MaxScore > 0 {
+			totalQuizzes++
+			totalScore += qr.Score
+			totalMaxScore += qr.MaxScore
+			totalTime += int64(qr.TimeTaken)
+
+			if qr.Score == qr.MaxScore {
+				perfectScores++
+			}
+
+			if qr.QuizType != "" {
+				quizCategories[qr.QuizType]++
+			}
+
+			if qr.DifficultyLevel != "" {
+				stats := difficultyStats[qr.DifficultyLevel]
+				stats.Count++
+				stats.Total += qr.Score
+				stats.Max += qr.MaxScore
+				difficultyStats[qr.DifficultyLevel] = stats
+			}
+
+			if len(recentPerformance) < 10 {
+				scorePercentage := float64(qr.Score) / float64(qr.MaxScore) * 100
+				recentPerformance = append(recentPerformance, struct {
+					Date  string  `json:"date"`
+					Score float64 `json:"score"`
+				}{
+					Date:  qr.Timestamp.Format("2006-01-02"),
+					Score: scorePercentage,
+				})
+			}
+		}
+	}
+
+	var averageScore float64
+	if totalMaxScore > 0 {
+		averageScore = float64(totalScore) / float64(totalMaxScore) * 100
+	}
+
+	if totalQuizzes > 0 {
+		averageTime = float64(totalTime) / float64(totalQuizzes)
+	}
+
+	now := time.Now()
+	weekStats := make(map[string]struct {
+		Quizzes    int
+		TotalScore int
+		TotalMax   int
+	})
+
+	for _, qr := range user.QuizResults {
+		if qr.MaxScore > 0 {
+			weekStart := qr.Timestamp.AddDate(0, 0, -int(qr.Timestamp.Weekday()))
+			weekKey := weekStart.Format("2006-01-02")
+
+			stats := weekStats[weekKey]
+			stats.Quizzes++
+			stats.TotalScore += qr.Score
+			stats.TotalMax += qr.MaxScore
+			weekStats[weekKey] = stats
+		}
+	}
+
+	for i := 7; i >= 0; i-- {
+		weekStart := now.AddDate(0, 0, -7*i)
+		weekKey := weekStart.Format("2006-01-02")
+
+		stats := weekStats[weekKey]
+		var avgScore float64
+		if stats.TotalMax > 0 {
+			avgScore = float64(stats.TotalScore) / float64(stats.TotalMax) * 100
+		}
+
+		weeklyProgress = append(weeklyProgress, struct {
+			Week     string  `json:"week"`
+			Quizzes  int     `json:"quizzes"`
+			AvgScore float64 `json:"avg_score"`
+		}{
+			Week:     weekKey,
+			Quizzes:  stats.Quizzes,
+			AvgScore: avgScore,
+		})
+	}
+
+	var difficultyArray []struct {
+		Difficulty string  `json:"difficulty"`
+		Count      int     `json:"count"`
+		Average    float64 `json:"average"`
+	}
+	for difficulty, stats := range difficultyStats {
+		var avg float64
+		if stats.Max > 0 {
+			avg = float64(stats.Total) / float64(stats.Max) * 100
+		}
+		difficultyArray = append(difficultyArray, struct {
+			Difficulty string  `json:"difficulty"`
+			Count      int     `json:"count"`
+			Average    float64 `json:"average"`
+		}{
+			Difficulty: difficulty,
+			Count:      stats.Count,
+			Average:    avg,
+		})
+	}
+
+	var categoryArray []struct {
+		Category string `json:"category"`
+		Count    int    `json:"count"`
+	}
+	for category, count := range quizCategories {
+		categoryArray = append(categoryArray, struct {
+			Category string `json:"category"`
+			Count    int    `json:"count"`
+		}{
+			Category: category,
+			Count:    count,
+		})
+	}
+
+	sort.Slice(difficultyArray, func(i, j int) bool {
+		return difficultyArray[i].Count > difficultyArray[j].Count
+	})
+	sort.Slice(categoryArray, func(i, j int) bool {
+		return categoryArray[i].Count > categoryArray[j].Count
+	})
+
+	var improvementTrend string
+	if len(recentPerformance) >= 2 {
+		firstHalf := recentPerformance[:len(recentPerformance)/2]
+		secondHalf := recentPerformance[len(recentPerformance)/2:]
+
+		var firstAvg, secondAvg float64
+		for _, perf := range firstHalf {
+			firstAvg += perf.Score
+		}
+		for _, perf := range secondHalf {
+			secondAvg += perf.Score
+		}
+
+		if len(firstHalf) > 0 {
+			firstAvg /= float64(len(firstHalf))
+		}
+		if len(secondHalf) > 0 {
+			secondAvg /= float64(len(secondHalf))
+		}
+
+		if secondAvg > firstAvg+5 {
+			improvementTrend = "Îmbunătățire"
+		} else if secondAvg < firstAvg-5 {
+			improvementTrend = "Scădere"
+		} else {
+			improvementTrend = "Stabil"
+		}
+	} else {
+		improvementTrend = "Insufficient data"
+	}
+
+	var performanceLevel string
+	if averageScore >= 90 {
+		performanceLevel = "Excelent"
+	} else if averageScore >= 80 {
+		performanceLevel = "Bun"
+	} else if averageScore >= 70 {
+		performanceLevel = "Satisfăcător"
+	} else if averageScore >= 60 {
+		performanceLevel = "În curs de îmbunătățire"
+	} else {
+		performanceLevel = "Necesită atenție"
+	}
+
+	response := struct {
+		UserID           string  `json:"user_id"`
+		Email            string  `json:"email"`
+		TotalQuizzes     int     `json:"total_quizzes"`
+		AverageScore     float64 `json:"average_score"`
+		PerfectScores    int     `json:"perfect_scores"`
+		AverageTime      float64 `json:"average_time"`
+		TotalPoints      int64   `json:"total_points"`
+		PerformanceLevel string  `json:"performance_level"`
+		ImprovementTrend string  `json:"improvement_trend"`
+		QuizCategories   []struct {
+			Category string `json:"category"`
+			Count    int    `json:"count"`
+		} `json:"quiz_categories"`
+		DifficultyStats []struct {
+			Difficulty string  `json:"difficulty"`
+			Count      int     `json:"count"`
+			Average    float64 `json:"average"`
+		} `json:"difficulty_stats"`
+		RecentPerformance []struct {
+			Date  string  `json:"date"`
+			Score float64 `json:"score"`
+		} `json:"recent_performance"`
+		WeeklyProgress []struct {
+			Week     string  `json:"week"`
+			Quizzes  int     `json:"quizzes"`
+			AvgScore float64 `json:"avg_score"`
+		} `json:"weekly_progress"`
+		GlobalRanking int `json:"global_ranking"`
+		ClassRanking  int `json:"class_ranking"`
+	}{
+		UserID:            user.ID.Hex(),
+		Email:             user.Email,
+		TotalQuizzes:      totalQuizzes,
+		AverageScore:      averageScore,
+		PerfectScores:     perfectScores,
+		AverageTime:       averageTime,
+		TotalPoints:       user.TotalPoints,
+		PerformanceLevel:  performanceLevel,
+		ImprovementTrend:  improvementTrend,
+		QuizCategories:    categoryArray,
+		DifficultyStats:   difficultyArray,
+		RecentPerformance: recentPerformance,
+		WeeklyProgress:    weeklyProgress,
+		GlobalRanking:     user.GlobalRanking,
+		ClassRanking:      user.ClassRanking,
+	}
+
+	metrics.HTTPRequestsTotal.WithLabelValues("GET", utils.NormalizePath(r.URL.Path), "200").Inc()
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
 }

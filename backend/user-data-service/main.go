@@ -110,6 +110,8 @@ func main() {
 	r.Handle("/user/quiz/{quizId}/challenging-questions", middleware.JWTAuth(http.HandlerFunc(handlers.GetChallengingQuestions))).Methods("GET")
 	r.Handle("/user/quiz/{quizId}/question-statistics", middleware.JWTAuth(http.HandlerFunc(handlers.GetQuestionStatistics))).Methods("GET")
 
+	r.Handle("/user/{userId}/stats", middleware.JWTAuth(http.HandlerFunc(handlers.GetUserStats))).Methods("GET")
+
 	r.Handle("/user/badges/{userId}", middleware.JWTAuth(http.HandlerFunc(handlers.GetUserBadges))).Methods("GET")
 	r.Handle("/user/badges/{badgeId}/user/{userId}", middleware.JWTAuth(http.HandlerFunc(handlers.GetBadgeDetails))).Methods("GET")
 	r.Handle("/user/badges/{badgeId}/user/{userId}/progress", middleware.JWTAuth(http.HandlerFunc(handlers.UpdateBadgeProgress))).Methods("PUT")
