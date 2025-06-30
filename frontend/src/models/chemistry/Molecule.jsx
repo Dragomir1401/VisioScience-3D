@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import ForestBackground3 from '../ForestBackground3';
 
@@ -30,6 +30,7 @@ const Molecule = ({ moleculeId, onParsed }) => {
   const groupRef = useRef();
   const [atoms, setAtoms] = useState([]);
   const [bonds, setBonds] = useState([]);
+  const [hoveredAtom, setHoveredAtom] = useState(null);
 
   useEffect(() => {
     fetch(`http://localhost:8000/feed/chem/molecules/${moleculeId}/3d`)
@@ -51,15 +52,84 @@ const Molecule = ({ moleculeId, onParsed }) => {
     }
   }, [atoms, bonds]);
 
+  useEffect(() => {
+    document.body.style.cursor = hoveredAtom ? "pointer" : "auto";
+    return () => {
+      document.body.style.cursor = "auto";
+    };
+  }, [hoveredAtom]);
+
   return (
     <group ref={groupRef}>
+      {hoveredAtom && (
+        <Html
+          position={[
+            hoveredAtom.x,
+            hoveredAtom.y + (vdwRadii[hoveredAtom.type] || 1.5) * 0.4 + 0.3,
+            hoveredAtom.z,
+          ]}
+          zIndexRange={[100, 0]}
+        >
+          <div className="bg-gray-800 text-white p-2 rounded-lg shadow-lg text-xs w-44">
+            <div className="font-bold border-b border-gray-600 pb-1 mb-1">
+              Atom Details
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between items-center">
+                <span>Type:</span>
+                <div className="flex items-center gap-2">
+                  <span
+                    className="inline-block w-3 h-3 rounded-full border border-gray-400"
+                    style={{
+                      background: elementColors[hoveredAtom.type],
+                    }}
+                  ></span>
+                  <span className="font-mono bg-gray-700 px-1 rounded">
+                    {hoveredAtom.type}
+                  </span>
+                </div>
+              </div>
+              <div className="flex justify-between">
+                <span>Index:</span>
+                <span>{hoveredAtom.idx}</span>
+              </div>
+              <div>
+                <span>Position (Å):</span>
+                <div className="font-mono bg-gray-700 p-1 rounded mt-1 text-center">
+                  {hoveredAtom.x.toFixed(2)}, {hoveredAtom.y.toFixed(2)},{" "}
+                  {hoveredAtom.z.toFixed(2)}
+                </div>
+              </div>
+            </div>
+          </div>
+        </Html>
+      )}
       {atoms.map((atom, idx) => {
         const radius = vdwRadii[atom.type] || 1.5;
         const color = new THREE.Color().setStyle(elementColors[atom.type] || '#cccccc');
+        const isHovered = hoveredAtom?.idx === idx;
+        const atomColor = isHovered ? new THREE.Color("#ff69b4") : color;
+        const scale = isHovered ? 1.25 : 1;
         return (
-          <mesh key={idx} position={[atom.x, atom.y, atom.z]}>
+          <mesh
+            key={idx}
+            position={[atom.x, atom.y, atom.z]}
+            scale={scale}
+            onPointerOver={(e) => {
+              e.stopPropagation();
+              setHoveredAtom({ ...atom, idx });
+            }}
+            onPointerOut={(e) => {
+              e.stopPropagation();
+              setHoveredAtom(null);
+            }}
+          >
             <sphereGeometry args={[radius * 0.4, 32, 32]} />
-            <meshStandardMaterial color={color} />
+            <meshStandardMaterial
+              color={atomColor}
+              emissive={isHovered ? atomColor : "#000000"}
+              emissiveIntensity={isHovered ? 0.75 : 0}
+            />
           </mesh>
         );
       })}
