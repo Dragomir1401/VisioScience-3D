@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { a, useSpring } from "@react-spring/three";
 import islandScene from "../assets/3d/final_islands.glb";
+import * as THREE from "three";
 
 const Island = ({
   isRotatingIsland,
@@ -13,12 +14,21 @@ const Island = ({
 }) => {
   const islandRef = useRef();
   const { nodes, materials } = useGLTF(islandScene);
-  const { gl, viewport } = useThree();
+  const { gl, viewport, camera } = useThree();
   const lastMouseX = useRef(0);
+  const lastMouseY = useRef(0);
   const rotationSpeed = useRef(0);
   const dampingFactor = 0.8;
   const alfa = 0.0075;
   const baseY = props.position[1];
+  const freeLookSensitivity = 0.15;
+
+  const [isFreeLook, setIsFreeLook] = useState(false);
+  const isFreeLookRef = useRef(isFreeLook);
+  isFreeLookRef.current = isFreeLook;
+
+  const [isDragging, setIsDragging] = useState(false);
+  const originalCameraState = useRef(null);
 
   const { floatY } = useSpring({
     from: { floatY: baseY - 0.15 },
@@ -31,10 +41,28 @@ const Island = ({
     config: { mass: 5, tension: 30, friction: 20 },
   });
 
+  const [, cameraApi] = useSpring(() => ({
+    position: camera.position.toArray(),
+    rotation: camera.rotation.toArray(),
+    onChange: ({ value }) => {
+      if (!isFreeLookRef.current) {
+        camera.position.fromArray(value.position);
+        camera.rotation.fromArray(value.rotation);
+      }
+    },
+  }));
 
   const handleMouseDown = (e) => {
     e.stopPropagation();
     e.preventDefault();
+
+    if (isFreeLook) {
+      setIsDragging(true);
+      lastMouseX.current = e.touches ? e.touches[0].clientX : e.clientX;
+      lastMouseY.current = e.touches ? e.touches[0].clientY : e.clientY;
+      return;
+    }
+
     isRotatingIslandSetter(true);
     lastMouseX.current = e.touches ? e.touches[0].clientX : e.clientX;
   };
@@ -42,12 +70,51 @@ const Island = ({
   const handleMouseUp = (e) => {
     e.stopPropagation();
     e.preventDefault();
+
+    if (isDragging) {
+      setIsDragging(false);
+      return;
+    }
+
     isRotatingIslandSetter(false);
   };
 
   const handleMouseMove = (e) => {
     e.stopPropagation();
     e.preventDefault();
+
+    if (isDragging && isFreeLook) {
+      const currentX = e.touches ? e.touches[0].clientX : e.clientX;
+      const deltaX = currentX - lastMouseX.current;
+      lastMouseX.current = currentX;
+
+      const currentY = e.touches ? e.touches[0].clientY : e.clientY;
+      const deltaY = currentY - lastMouseY.current;
+      lastMouseY.current = currentY;
+
+      const target = islandRef.current.position;
+      const cameraOffset = new THREE.Vector3().subVectors(
+        camera.position,
+        target
+      );
+      const spherical = new THREE.Spherical().setFromVector3(cameraOffset);
+
+      spherical.theta -=
+        ((deltaX / viewport.width) * Math.PI) * freeLookSensitivity;
+      spherical.phi -=
+        ((deltaY / viewport.height) * Math.PI) * freeLookSensitivity;
+      spherical.phi = Math.max(0.2, Math.min(Math.PI - 0.2, spherical.phi));
+
+      cameraOffset.setFromSpherical(spherical);
+      camera.position.copy(target).add(cameraOffset);
+      camera.lookAt(target);
+
+      cameraApi.set({
+        position: camera.position.toArray(),
+        rotation: camera.rotation.toArray(),
+      });
+      return;
+    }
 
     if (isRotatingIsland) {
       const currentX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -59,7 +126,15 @@ const Island = ({
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "ArrowRight") {
+    if (e.key === "Shift") {
+      if (!isFreeLook) {
+        originalCameraState.current = {
+          position: camera.position.clone(),
+          rotation: camera.rotation.clone(),
+        };
+        setIsFreeLook(true);
+      }
+    } else if (e.key === "ArrowRight") {
       if (!isRotatingIsland) {
         isRotatingIslandSetter(true);
         islandRef.current.rotation.y += alfa * Math.PI;
@@ -73,7 +148,23 @@ const Island = ({
   };
 
   const handleKeyUp = (e) => {
-    if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+    if (e.key === "Shift") {
+      setIsFreeLook(false);
+      setIsDragging(false);
+      if (originalCameraState.current) {
+        cameraApi.start({
+          from: {
+            position: camera.position.toArray(),
+            rotation: camera.rotation.toArray(),
+          },
+          to: {
+            position: originalCameraState.current.position.toArray(),
+            rotation: originalCameraState.current.rotation.toArray(),
+          },
+          config: { mass: 1, tension: 170, friction: 30 },
+        });
+      }
+    } else if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
       isRotatingIslandSetter(false);
     }
   };

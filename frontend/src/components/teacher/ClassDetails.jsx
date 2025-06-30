@@ -361,7 +361,7 @@ const ClassDetails = () => {
                         </motion.div>
                       )}
                     </AnimatePresence>
-                  </li>
+                </li>
                 );
               })}
             </ul>
