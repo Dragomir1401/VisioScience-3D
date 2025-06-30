@@ -14,13 +14,12 @@ const BucketScene = ({
 }) => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const spacing = 2;
-  const count = buckets.length;
-  const centerX = count > 0 ? ((count - 1) * spacing) / 2 : 0;
 
   return (
     <>
       <ambientLight intensity={0.4} />
       <directionalLight position={[5, 5, 5]} intensity={1} />
+
       {hoveredItem && (
         <Html
           position={[
@@ -28,6 +27,7 @@ const BucketScene = ({
             1.2 + hoveredItem.itemIndex * 1.2 + 0.8,
             0,
           ]}
+          zIndexRange={[100, 0]}
         >
           <div className="bg-gray-800 text-white p-2 rounded-lg shadow-lg text-xs w-36">
             <div className="font-bold border-b border-gray-600 pb-1 mb-1">
@@ -48,6 +48,7 @@ const BucketScene = ({
           </div>
         </Html>
       )}
+
       {buckets.map((bucket, i) => {
         const x = i * spacing;
         return (
@@ -66,39 +67,42 @@ const BucketScene = ({
               b{i}
             </Text>
 
-            {bucket.map((key, j) => (
-              <mesh
-                key={j}
-                position={[0, 1.2 + j * 1.2, 0]}
-                onPointerOver={(e) => {
-                  e.stopPropagation();
-                  setHoveredItem({ bucketIndex: i, itemIndex: j, key });
-                }}
-                onPointerOut={(e) => {
-                  e.stopPropagation();
-                  setHoveredItem(null);
-                }}
-              >
-                <boxGeometry args={[1.4, 1, 1.4]} />
-                <meshStandardMaterial
-                  color={
-                    hoveredItem?.bucketIndex === i &&
-                    hoveredItem?.itemIndex === j
-                      ? "#ff69b4"
-                      : nodeColor
-                  }
-                />
-                <Text
-                  position={[0, 0, 0.8]}
-                  fontSize={0.2}
-                  color={textColor}
-                  anchorX="center"
-                  anchorY="middle"
+            {bucket.map((key, j) => {
+              const isHovered =
+                hoveredItem?.bucketIndex === i && hoveredItem?.itemIndex === j;
+              const color = isHovered ? "#ff69b4" : nodeColor;
+
+              return (
+                <mesh
+                  key={j}
+                  position={[0, 1.2 + j * 1.2, 0]}
+                  onPointerOver={(e) => {
+                    e.stopPropagation();
+                    setHoveredItem({ bucketIndex: i, itemIndex: j, key });
+                  }}
+                  onPointerOut={(e) => {
+                    e.stopPropagation();
+                    setHoveredItem(null);
+                  }}
                 >
-                  {key}
-                </Text>
-              </mesh>
-            ))}
+                  <boxGeometry args={[1.4, 1, 1.4]} />
+                  <meshStandardMaterial
+                    color={color}
+                    emissive={isHovered ? color : "#000000"}
+                    emissiveIntensity={0.5}
+                  />
+                  <Text
+                    position={[0, 0, 0.8]}
+                    fontSize={0.2}
+                    color={textColor}
+                    anchorX="center"
+                    anchorY="middle"
+                  >
+                    {key}
+                  </Text>
+                </mesh>
+              );
+            })}
           </group>
         );
       })}
