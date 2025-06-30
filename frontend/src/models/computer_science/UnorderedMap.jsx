@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Text } from "@react-three/drei";
+import { OrbitControls, Text, Html } from "@react-three/drei";
 import ForestBackground2 from "../ForestBackground2";
 import useMeasure from "react-use-measure";
 
@@ -25,6 +25,7 @@ export const UnorderedMapScene = ({
   canvasHeight = "100%",
 }) => {
   const [isRotating, setIsRotating] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState(null);
   const spacing = 2;
   const count = buckets.length;
   const centerX = count > 0 ? ((count - 1) * spacing) / 2 : 0;
@@ -55,6 +56,40 @@ export const UnorderedMapScene = ({
           isRotatingForestBackgroundSetter={setIsRotating}
         />
 
+        {hoveredItem && (
+          <Html
+            position={[
+              hoveredItem.bucketIndex * spacing,
+              1.2 + hoveredItem.itemIndex * 1.2 + 0.8,
+              0,
+            ]}
+          >
+            <div className="bg-gray-800 text-white p-2 rounded-lg shadow-lg text-xs w-40">
+              <div className="font-bold border-b border-gray-600 pb-1 mb-1">
+                Entry
+              </div>
+              <div className="space-y-1">
+                <div className="flex justify-between">
+                  <span>Key:</span>
+                  <span className="font-mono bg-gray-700 px-1 rounded">
+                    {hoveredItem.entry.key}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Value:</span>
+                  <span className="font-mono bg-gray-700 px-1 rounded">
+                    {hoveredItem.entry.value}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Bucket:</span>
+                  <span>{hoveredItem.bucketIndex}</span>
+                </div>
+              </div>
+            </div>
+          </Html>
+        )}
+
         {buckets.map((bucket, i) => {
           const x = i * spacing;
           return (
@@ -74,9 +109,27 @@ export const UnorderedMapScene = ({
               </Text>
 
               {bucket.map((entry, j) => (
-                <mesh key={j} position={[0, 1.2 + j * 1.2, 0]}>
+                <mesh
+                  key={j}
+                  position={[0, 1.2 + j * 1.2, 0]}
+                  onPointerOver={(e) => {
+                    e.stopPropagation();
+                    setHoveredItem({ bucketIndex: i, itemIndex: j, entry });
+                  }}
+                  onPointerOut={(e) => {
+                    e.stopPropagation();
+                    setHoveredItem(null);
+                  }}
+                >
                   <boxGeometry args={[1.4, 1, 1.4]} />
-                  <meshStandardMaterial color={nodeColor} />
+                  <meshStandardMaterial
+                    color={
+                      hoveredItem?.bucketIndex === i &&
+                      hoveredItem?.itemIndex === j
+                        ? "#ff69b4"
+                        : nodeColor
+                    }
+                  />
                   <Text
                     position={[0, 0, 0.8]}
                     fontSize={0.2}

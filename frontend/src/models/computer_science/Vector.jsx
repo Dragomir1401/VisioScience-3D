@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Text } from "@react-three/drei";
+import { OrbitControls, Text, Html } from "@react-three/drei";
 import * as THREE from "three";
 import ForestBackground2 from "../ForestBackground2";
 
@@ -12,27 +12,72 @@ const ArrayScene = ({
   backgroundColor = "#2D2D2D",
   width = "100%",
   height = "100%",
-}) => (
-  <>
-    <ambientLight intensity={0.4} />
-    <directionalLight position={[5, 5, 5]} intensity={1} />
-    {elements.map((val, i) => (
-      <mesh key={i} position={[i * spacing, 0, 0]}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={nodeColor} />
-        <Text
-          position={[0, 0, 0.6]}
-          fontSize={0.3}
-          color={textColor}
-          anchorX="center"
-          anchorY="middle"
-        >
-          {val}
-        </Text>
-      </mesh>
-    ))}
-  </>
-);
+}) => {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  return (
+    <>
+      <ambientLight intensity={0.4} />
+      <directionalLight position={[5, 5, 5]} intensity={1} />
+      {hoveredIndex !== null && elements[hoveredIndex] !== undefined && (
+        <Html position={[hoveredIndex * spacing, 0.8, 0]}>
+          <div className="bg-gray-800 text-white p-2 rounded-lg shadow-lg text-xs w-32">
+            <div className="font-bold border-b border-gray-600 pb-1 mb-1">
+              Element
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between">
+                <span>Value:</span>
+                <span className="font-mono bg-gray-700 px-1 rounded">
+                  {elements[hoveredIndex]}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span>Index:</span>
+                <span>{hoveredIndex}</span>
+              </div>
+            </div>
+          </div>
+        </Html>
+      )}
+      {elements.map((val, i) => {
+        const isHovered = i === hoveredIndex;
+        const scale = isHovered ? 1.15 : 1;
+        const color = isHovered ? "#ff69b4" : nodeColor;
+        return (
+          <mesh
+            key={i}
+            position={[i * spacing, 0, 0]}
+            scale={scale}
+            onPointerOver={(e) => {
+              e.stopPropagation();
+              setHoveredIndex(i);
+            }}
+            onPointerOut={(e) => {
+              e.stopPropagation();
+              setHoveredIndex(null);
+            }}
+          >
+            <boxGeometry args={[1, 1, 1]} />
+            <meshStandardMaterial
+              color={color}
+              emissive={isHovered ? color : "#000000"}
+              emissiveIntensity={isHovered ? 0.5 : 0}
+            />
+            <Text
+              position={[0, 0, 0.6]}
+              fontSize={0.3}
+              color={textColor}
+              anchorX="center"
+              anchorY="middle"
+            >
+              {val}
+            </Text>
+          </mesh>
+        );
+      })}
+    </>
+  );
+};
 
 const VectorScene = ({
   elements = [],

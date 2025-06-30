@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Text, Line } from "@react-three/drei";
+import { OrbitControls, Text, Line, Html } from "@react-three/drei";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -39,6 +39,7 @@ export default function DequeDemo({
 
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const pushFront = () => {
     if (!input) return;
@@ -76,6 +77,13 @@ export default function DequeDemo({
     setElements([]);
     setMessage("clear()");
   };
+
+  useEffect(() => {
+    document.body.style.cursor = hoveredIndex !== null ? "pointer" : "auto";
+    return () => {
+      document.body.style.cursor = "auto";
+    };
+  }, [hoveredIndex]);
 
   const spacing = 2;
   const count = elements.length;
@@ -173,10 +181,50 @@ export default function DequeDemo({
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 5, 5]} intensity={1} />
           <ForestBackground2 />
+          {hoveredIndex !== null && elements[hoveredIndex] !== undefined && (
+            <Html position={[hoveredIndex * spacing, 0.8, 0]}>
+              <div className="bg-gray-800 text-white p-2 rounded-lg shadow-lg text-xs w-32">
+                <div className="font-bold border-b border-gray-600 pb-1 mb-1">
+                  Element
+                </div>
+                <div className="flex justify-between">
+                  <span>Value:</span>
+                  <span className="font-mono bg-gray-700 px-1 rounded">
+                    {elements[hoveredIndex]}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Index:</span>
+                  <span>{hoveredIndex}</span>
+                </div>
+                {hoveredIndex === 0 && (
+                  <div className="text-center mt-1 text-green-400 font-bold">
+                    FRONT
+                  </div>
+                )}
+                {hoveredIndex === elements.length - 1 && (
+                  <div className="text-center mt-1 text-red-400 font-bold">
+                    BACK
+                  </div>
+                )}
+              </div>
+            </Html>
+          )}
           {elements.map((val, i) => {
             const x = i * spacing;
             return (
-              <group key={i} position={[x, 0, 0]}>
+              <group
+                key={i}
+                position={[x, 0, 0]}
+                onPointerOver={(e) => {
+                  e.stopPropagation();
+                  setHoveredIndex(i);
+                }}
+                onPointerOut={(e) => {
+                  e.stopPropagation();
+                  setHoveredIndex(null);
+                }}
+              >
                 <mesh>
                   <boxGeometry args={[1.8, 1, 1.8]} />
                   <meshStandardMaterial color={nodeColor} />

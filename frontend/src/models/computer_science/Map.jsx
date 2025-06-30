@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Text, Line } from "@react-three/drei";
+import { OrbitControls, Text, Line, Html } from "@react-three/drei";
 import ForestBackground2 from "../ForestBackground2";
 import { PlusIcon, TrashIcon, RefreshIcon } from "@heroicons/react/solid";
 import useMeasure from "react-use-measure";
@@ -153,6 +153,7 @@ export default function AVLTreeDemo({
   const [message, setMessage] = useState("");
   const [inorderList, setInorderList] = useState([]);
   const [isRotating, setIsRotating] = useState(false);
+  const [hoveredNodeKey, setHoveredNodeKey] = useState(null);
 
   const handleInsert = () => {
     if (!keyInput) return;
@@ -184,6 +185,13 @@ export default function AVLTreeDemo({
     setInorderList(inorder(root).map((n) => `${n.key}:${n.value}`));
   }, [root]);
 
+  useEffect(() => {
+    document.body.style.cursor = hoveredNodeKey !== null ? "pointer" : "auto";
+    return () => {
+      document.body.style.cursor = "auto";
+    };
+  }, [hoveredNodeKey]);
+
   const flat = [];
   const edges = [];
   const total = inorder(root).length;
@@ -197,6 +205,14 @@ export default function AVLTreeDemo({
     if (node.right)
       edges.push({ from: [x, y, 0], to: [...posMap.get(node.right), 0] });
   });
+
+  const hoveredNodeData = hoveredNodeKey
+    ? flat.find(({ node }) => node.key === hoveredNodeKey)
+    : null;
+  const hoveredNode = hoveredNodeData?.node;
+  const hoveredNodePos = hoveredNodeData
+    ? [hoveredNodeData.x, hoveredNodeData.y, 0]
+    : null;
 
   const [bounds, ref] = useMeasure();
 
@@ -284,6 +300,53 @@ export default function AVLTreeDemo({
             isRotatingForestBackgroundSetter={setIsRotating}
           />
 
+          {hoveredNode && hoveredNodePos && (
+            <Html
+              position={[hoveredNodePos[0] + 0.7, hoveredNodePos[1], 0]}
+              zIndexRange={[100, 0]}
+            >
+              <div className="bg-gray-800 text-white p-3 rounded-lg shadow-lg text-xs w-48">
+                <div className="font-bold text-base mb-2 border-b border-gray-600 pb-1">
+                  Node Details
+                </div>
+                <div className="space-y-1">
+                  <div className="flex justify-between">
+                    <span>Key:</span>
+                    <span className="font-mono bg-gray-700 px-1 rounded">
+                      {hoveredNode.key}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Value:</span>
+                    <span className="font-mono bg-gray-700 px-1 rounded">
+                      {hoveredNode.value}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Height:</span>
+                    <span>{getNodeHeight(hoveredNode)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Balance:</span>
+                    <span>{balanceFactor(hoveredNode)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Left:</span>
+                    <span>
+                      {hoveredNode.left ? hoveredNode.left.key : "null"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Right:</span>
+                    <span>
+                      {hoveredNode.right ? hoveredNode.right.key : "null"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Html>
+          )}
+
           {edges.map((e, i) => (
             <Line
               key={i}
@@ -294,7 +357,18 @@ export default function AVLTreeDemo({
           ))}
 
           {flat.map(({ node, x, y }) => (
-            <group key={node.key} position={[x, y, 0]}>
+            <group
+              key={node.key}
+              position={[x, y, 0]}
+              onPointerOver={(e) => {
+                e.stopPropagation();
+                setHoveredNodeKey(node.key);
+              }}
+              onPointerOut={(e) => {
+                e.stopPropagation();
+                setHoveredNodeKey(null);
+              }}
+            >
               <mesh>
                 <sphereGeometry args={[0.5, 16, 16]} />
                 <meshStandardMaterial color={nodeColor} />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Text } from "@react-three/drei";
+import { OrbitControls, Text, Html } from "@react-three/drei";
 import ForestBackground2 from "../ForestBackground2";
 import {
   PlusIcon,
@@ -40,6 +40,7 @@ export default function ArrayDemo({
   const [message, setMessage] = useState("");
   const [highlight, setHighlight] = useState({ index: null, type: null });
   const [isRotating, setIsRotating] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const handleCreate = () => {
     const n = parseInt(sizeInput, 10);
@@ -84,6 +85,13 @@ export default function ArrayDemo({
     const t = setTimeout(() => setHighlight({ index: null, type: null }), 1000);
     return () => clearTimeout(t);
   }, [highlight]);
+
+  useEffect(() => {
+    document.body.style.cursor = hoveredIndex !== null ? "pointer" : "auto";
+    return () => {
+      document.body.style.cursor = "auto";
+    };
+  }, [hoveredIndex]);
 
   const spacing = 2;
   const count = elements.length;
@@ -183,6 +191,26 @@ export default function ArrayDemo({
             isRotatingForestBackgroundSetter={setIsRotating}
           />
 
+          {hoveredIndex !== null && elements[hoveredIndex] !== undefined && (
+            <Html position={[hoveredIndex * spacing, 1, 0]}>
+              <div className="bg-gray-800 text-white p-2 rounded-lg shadow-lg text-xs w-32">
+                <div className="font-bold border-b border-gray-600 pb-1 mb-1">
+                  Element
+                </div>
+                <div className="flex justify-between">
+                  <span>Value:</span>
+                  <span className="font-mono bg-gray-700 px-1 rounded">
+                    {elements[hoveredIndex]}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Index:</span>
+                  <span>{hoveredIndex}</span>
+                </div>
+              </div>
+            </Html>
+          )}
+
           {elements.map((val, i) => {
             let color = nodeColor;
             if (highlight.index === i) {
@@ -193,7 +221,18 @@ export default function ArrayDemo({
             }
             const x = i * spacing;
             return (
-              <group key={i} position={[x, 0, 0]}>
+              <group
+                key={i}
+                position={[x, 0, 0]}
+                onPointerOver={(e) => {
+                  e.stopPropagation();
+                  setHoveredIndex(i);
+                }}
+                onPointerOut={(e) => {
+                  e.stopPropagation();
+                  setHoveredIndex(null);
+                }}
+              >
                 <mesh>
                   <boxGeometry args={[1.8, 1, 1.8]} />
                   <meshStandardMaterial color={color} />

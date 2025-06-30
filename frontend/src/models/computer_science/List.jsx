@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Text } from "@react-three/drei";
+import { OrbitControls, Text, Html } from "@react-three/drei";
 import * as THREE from "three";
 import ForestBackground2 from "../ForestBackground2";
 import {
@@ -39,6 +39,7 @@ export default function ListDemo({
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
   const [isRotating, setIsRotating] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const handlePushBack = () => {
     if (!input) return;
@@ -68,6 +69,13 @@ export default function ListDemo({
     setElements([]);
     setMessage("cleared");
   };
+
+  useEffect(() => {
+    document.body.style.cursor = hoveredIndex !== null ? "pointer" : "auto";
+    return () => {
+      document.body.style.cursor = "auto";
+    };
+  }, [hoveredIndex]);
 
   const spacing = 3;
   const count = elements.length;
@@ -184,10 +192,49 @@ export default function ListDemo({
               isRotatingForestBackgroundSetter={setIsRotating}
             />
 
+            {hoveredIndex !== null && elements[hoveredIndex] !== undefined && (
+              <Html position={[positions[hoveredIndex].x, 1, 0]}>
+                <div className="bg-gray-800 text-white p-2 rounded-lg shadow-lg text-xs w-36">
+                  <div className="font-bold border-b border-gray-600 pb-1 mb-1">
+                    Node Details
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex justify-between">
+                      <span>Value:</span>
+                      <span className="font-mono bg-gray-700 px-1 rounded">
+                        {elements[hoveredIndex]}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Index:</span>
+                      <span>{hoveredIndex}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Next:</span>
+                      <span>
+                        {elements[hoveredIndex + 1] ?? "null"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Html>
+            )}
+
             {elements.map((val, i) => {
               const pos = positions[i];
               return (
-                <group key={i} position={pos.toArray()}>
+                <group
+                  key={i}
+                  position={pos.toArray()}
+                  onPointerOver={(e) => {
+                    e.stopPropagation();
+                    setHoveredIndex(i);
+                  }}
+                  onPointerOut={(e) => {
+                    e.stopPropagation();
+                    setHoveredIndex(null);
+                  }}
+                >
                   <mesh>
                     <boxGeometry args={[2, 1, 1]} />
                     <meshStandardMaterial color={nodeColor} />

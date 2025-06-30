@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Text, Line } from "@react-three/drei";
+import { OrbitControls, Text, Line, Html } from "@react-three/drei";
 import ForestBackground2 from "../ForestBackground2";
 import {
   PlusIcon,
@@ -18,6 +18,7 @@ const PriorityQueueScene = ({
   width = "100%",
   height = "100%",
 }) => {
+  const [hoveredNodeIndex, setHoveredNodeIndex] = useState(null);
   const list = useMemo(() => [...elements], [elements]);
   const root = buildTree(list);
   const flat = [];
@@ -42,6 +43,28 @@ const PriorityQueueScene = ({
     }
   });
 
+  useEffect(() => {
+    document.body.style.cursor = hoveredNodeIndex !== null ? "pointer" : "auto";
+    return () => {
+      document.body.style.cursor = "auto";
+    };
+  }, [hoveredNodeIndex]);
+
+  const hoveredNodeData =
+    hoveredNodeIndex !== null
+      ? flat.find(({ node }) => node.index === hoveredNodeIndex)
+      : null;
+  const hoveredNode = hoveredNodeData?.node;
+  const hoveredNodePos = hoveredNodeData
+    ? [hoveredNodeData.x, hoveredNodeData.y, 0]
+    : null;
+  const parentIndex =
+    hoveredNodeIndex !== null ? Math.floor((hoveredNodeIndex - 1) / 2) : null;
+  const parentValue =
+    parentIndex !== null && list[parentIndex] !== undefined
+      ? list[parentIndex]
+      : "null";
+
   return (
     <div
       style={{
@@ -62,6 +85,35 @@ const PriorityQueueScene = ({
           isRotatingForestBackgroundSetter={() => {}}
         />
 
+        {hoveredNode && hoveredNodePos && (
+          <Html
+            position={[hoveredNodePos[0] + 0.7, hoveredNodePos[1], 0]}
+            zIndexRange={[100, 0]}
+          >
+            <div className="bg-gray-800 text-white p-3 rounded-lg shadow-lg text-xs w-40">
+              <div className="font-bold text-base mb-2 border-b border-gray-600 pb-1">
+                Node Details
+              </div>
+              <div className="space-y-1">
+                <div className="flex justify-between">
+                  <span>Value:</span>
+                  <span className="font-mono bg-gray-700 px-1 rounded">
+                    {hoveredNode.value}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Index:</span>
+                  <span>{hoveredNode.index}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Parent:</span>
+                  <span>{parentValue}</span>
+                </div>
+              </div>
+            </div>
+          </Html>
+        )}
+
         {edges.map((edge, i) => (
           <Line
             key={i}
@@ -72,7 +124,18 @@ const PriorityQueueScene = ({
         ))}
 
         {flat.map(({ node, x, y }, i) => (
-          <group key={i} position={[x, y, 0]}>
+          <group
+            key={i}
+            position={[x, y, 0]}
+            onPointerOver={(e) => {
+              e.stopPropagation();
+              setHoveredNodeIndex(node.index);
+            }}
+            onPointerOut={(e) => {
+              e.stopPropagation();
+              setHoveredNodeIndex(null);
+            }}
+          >
             <mesh>
               <sphereGeometry args={[0.5, 32, 32]} />
               <meshStandardMaterial color={nodeColor} />
@@ -96,8 +159,9 @@ const PriorityQueueScene = ({
 };
 
 class TreeNode {
-  constructor(value) {
+  constructor(value, index) {
     this.value = value;
+    this.index = index;
     this.left = null;
     this.right = null;
   }
@@ -105,7 +169,7 @@ class TreeNode {
 
 const buildTree = (arr) => {
   if (!arr.length) return null;
-  const nodes = arr.map((v) => new TreeNode(v));
+  const nodes = arr.map((v, i) => new TreeNode(v, i));
   arr.forEach((_, i) => {
     const left = 2 * i + 1;
     const right = 2 * i + 2;

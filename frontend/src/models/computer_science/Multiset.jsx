@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Text, Line } from "@react-three/drei";
+import { OrbitControls, Text, Line, Html } from "@react-three/drei";
 import ForestBackground2 from "../ForestBackground2";
 import { PlusIcon, TrashIcon, RefreshIcon } from "@heroicons/react/solid";
 
@@ -119,6 +119,7 @@ const MultisetScene = ({
   width = "100%",
   height = "100%",
 }) => {
+  const [hoveredNodeKey, setHoveredNodeKey] = useState(null);
   const flat = [];
   const edges = [];
   const total = inorder(root).length;
@@ -136,6 +137,21 @@ const MultisetScene = ({
       edges.push({ from: [x, y, 0], to: [rx, ry, 0] });
     }
   });
+
+  useEffect(() => {
+    document.body.style.cursor = hoveredNodeKey !== null ? "pointer" : "auto";
+    return () => {
+      document.body.style.cursor = "auto";
+    };
+  }, [hoveredNodeKey]);
+
+  const hoveredNodeData = hoveredNodeKey
+    ? flat.find(({ node }) => node.key === hoveredNodeKey)
+    : null;
+  const hoveredNode = hoveredNodeData?.node;
+  const hoveredNodePos = hoveredNodeData
+    ? [hoveredNodeData.x, hoveredNodeData.y, 0]
+    : null;
 
   return (
     <div
@@ -157,6 +173,51 @@ const MultisetScene = ({
           isRotatingForestBackgroundSetter={() => {}}
         />
 
+        {hoveredNode && hoveredNodePos && (
+          <Html
+            position={[hoveredNodePos[0] + 0.7, hoveredNodePos[1], 0]}
+            zIndexRange={[100, 0]}
+          >
+            <div className="bg-gray-800 text-white p-3 rounded-lg shadow-lg text-xs w-48">
+              <div className="font-bold text-base mb-2 border-b border-gray-600 pb-1">
+                Node Details
+              </div>
+              <div className="space-y-1">
+                <div className="flex justify-between">
+                  <span>Key:</span>
+                  <span className="font-mono bg-gray-700 px-1 rounded">
+                    {hoveredNode.key}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Count:</span>
+                  <span>{hoveredNode.count}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Height:</span>
+                  <span>{height}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Balance:</span>
+                  <span>{balanceFactor}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Left:</span>
+                  <span>
+                    {hoveredNode.left ? hoveredNode.left.key : "null"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Right:</span>
+                  <span>
+                    {hoveredNode.right ? hoveredNode.right.key : "null"}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </Html>
+        )}
+
         {edges.map((edge, i) => (
           <Line
             key={i}
@@ -166,34 +227,55 @@ const MultisetScene = ({
           />
         ))}
 
-        {flat.map(({ node, x, y }, i) => (
-          <group key={i} position={[x, y, 0]}>
-            <mesh>
-              <sphereGeometry args={[0.5, 32, 32]} />
-              <meshStandardMaterial color={nodeColor} />
-            </mesh>
-            <Text
-              position={[0, 0, 0.6]}
-              fontSize={0.4}
-              color={textColor}
-              anchorX="center"
-              anchorY="middle"
+        {flat.map(({ node, x, y }, i) => {
+          const isHovered = hoveredNodeKey === node.key;
+          const scale = isHovered ? 1.2 : 1;
+          const color = isHovered ? "#ff69b4" : nodeColor;
+
+          return (
+            <group
+              key={i}
+              position={[x, y, 0]}
+              onPointerOver={(e) => {
+                e.stopPropagation();
+                setHoveredNodeKey(node.key);
+              }}
+              onPointerOut={(e) => {
+                e.stopPropagation();
+                setHoveredNodeKey(null);
+              }}
             >
-              {node.key}
-            </Text>
-            {node.count > 1 && (
+              <mesh scale={scale}>
+                <sphereGeometry args={[0.5, 32, 32]} />
+                <meshStandardMaterial
+                  color={color}
+                  emissive={isHovered ? color : "#000000"}
+                  emissiveIntensity={isHovered ? 0.75 : 0}
+                />
+              </mesh>
               <Text
-                position={[0, -0.6, 0.6]}
-                fontSize={0.3}
+                position={[0, 0, 0.6]}
+                fontSize={0.4}
                 color={textColor}
                 anchorX="center"
                 anchorY="middle"
               >
-                x{node.count}
+                {node.key}
               </Text>
-            )}
-          </group>
-        ))}
+              {node.count > 1 && (
+                <Text
+                  position={[0, -0.6, 0.6]}
+                  fontSize={0.3}
+                  color={textColor}
+                  anchorX="center"
+                  anchorY="middle"
+                >
+                  x{node.count}
+                </Text>
+              )}
+            </group>
+          );
+        })}
 
         <OrbitControls enablePan enableZoom enableRotate />
       </Canvas>
